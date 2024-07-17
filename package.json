@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "npx supabase gen types --lang=typescript --project-id abijrjpibayqrzanhqcq --schema public > src/types/supabase.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.1",
