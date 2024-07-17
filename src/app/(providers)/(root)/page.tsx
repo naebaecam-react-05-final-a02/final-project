@@ -1,6 +1,6 @@
 const RootPage = () => {
   console.log('A');
-  return <div>룯 페이지</div>;
+  return <div>로그인</div>;
 };
 
 export default RootPage;
