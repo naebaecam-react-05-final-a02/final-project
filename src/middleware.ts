@@ -1,28 +1,8 @@
 import { updateSession } from '@/supabase/middleware';
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  if (request.method === 'OPTIONS') {
-    return new NextResponse(null, {
-      headers: {
-        'Access-Control-Allow-Origin': request.headers.get('origin') || '*',
-        'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-      status: 204,
-    });
-  }
-
-  const response = await updateSession(request);
-
-  // Set CORS headers for the actual request
-  response.headers.set('Access-Control-Allow-Origin', request.headers.get('origin') || '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  response.headers.set('Access-Control-Allow-Credentials', 'true');
-
-  return response;
+  return await updateSession(request);
 }
 
 export const config = {

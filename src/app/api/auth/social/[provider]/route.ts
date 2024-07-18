@@ -1,5 +1,6 @@
 import { createClient } from '@/supabase/server';
 import { Provider } from '@supabase/supabase-js';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`,
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
       },
     });
 
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
 
     if (data && data.url) {
       console.log(data.url);
-      return NextResponse.json({ data: data.url });
+      return NextResponse.redirect(data.url);
     } else {
       throw new Error('No URL returned from Supabase');
     }

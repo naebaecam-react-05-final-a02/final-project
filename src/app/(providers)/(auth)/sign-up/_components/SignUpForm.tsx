@@ -1,6 +1,6 @@
 'use client';
 
-import { useSignUp } from '@/api/auth/useUsers';
+import { useSignUp } from '@/hooks/auth/useUsers';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

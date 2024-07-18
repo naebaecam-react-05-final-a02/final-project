@@ -1,5 +1,5 @@
 import { Provider, User } from '@supabase/supabase-js';
-import api from '../api';
+import api from '../../service/service';
 
 export const usersQueryKeys = {
   all: ['user'] as const,
@@ -24,7 +24,7 @@ export const mutationOptions = {
   signOut: {
     mutationFn: () => api.auth.signOut(),
   },
-  socialSignIn: (provider: Provider) => ({
-    mutationFn: () => api.auth.signInWithOAuth(provider),
+  socialSignIn: () => ({
+    mutationFn: (provider: Provider) => api.auth.signInWithOAuth(provider),
   }),
 };

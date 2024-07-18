@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     const supabase = createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      console.log('콜백 리다이렉트 값', origin, next);
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

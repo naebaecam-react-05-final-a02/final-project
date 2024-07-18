@@ -1,5 +1,5 @@
 'use client';
-import { useSignIn, useSocialSignIn } from '@/api/auth/useUsers';
+import { useSignIn, useSocialSignIn } from '@/hooks/auth/useUsers';
 import { Provider } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,11 +15,10 @@ const LogInForm = () => {
     email: '',
     password: '',
   });
-  const [socialProvider, setSocialProvider] = useState<Provider | null>(null);
 
   const router = useRouter();
   const { mutate: signIn, isPending, error } = useSignIn();
-  const { mutate: socialSignIn, isPending: isSocialSignInPending } = useSocialSignIn(socialProvider as Provider);
+  const { mutate: socialSignIn, isPending: isSocialSignInPending } = useSocialSignIn();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,8 +40,7 @@ const LogInForm = () => {
 
   const handleSocialSignIn = (e: React.FormEvent<HTMLButtonElement>, provider: Provider) => {
     e.preventDefault();
-    setSocialProvider(provider);
-    socialSignIn(undefined, {
+    socialSignIn(provider, {
       onError: (error) => {
         console.error(`${provider} sign-in error:`, error);
       },
@@ -85,23 +83,15 @@ const LogInForm = () => {
             회원가입
           </Link>
         </div>
+        <div>
+          <button type="button" onClick={(e) => handleSocialSignIn(e, 'google')}>
+            구글 로그인
+          </button>
+          <button type="button" onClick={(e) => handleSocialSignIn(e, 'kakao')}>
+            카카오 로그인
+          </button>
+        </div>
       </form>
-      <div>
-        <button
-          type="button"
-          onClick={(e) => handleSocialSignIn(e, 'google')}
-          disabled={isSocialSignInPending && socialProvider === 'google'}
-        >
-          {isSocialSignInPending && socialProvider === 'google' ? 'Google 로그인 중...' : 'Google로 로그인'}
-        </button>
-        <button
-          type="button"
-          onClick={(e) => handleSocialSignIn(e, 'kakao')}
-          disabled={isSocialSignInPending && socialProvider === 'kakao'}
-        >
-          {isSocialSignInPending && socialProvider === 'kakao' ? 'Kakao 로그인 중...' : 'Kakao로 로그인'}
-        </button>
-      </div>
     </>
   );
 };

@@ -1,4 +1,3 @@
-import { Provider } from '@supabase/supabase-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { mutationOptions, queryOptions } from './queries';
 
@@ -15,4 +14,4 @@ export const useSignIn = () => useMutation(mutationOptions.signIn);
 export const useSignOut = () => useMutation(mutationOptions.signOut);
 
 // 소셜로그인
-export const useSocialSignIn = (provider: Provider) => useMutation(mutationOptions.socialSignIn(provider));
+export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn());

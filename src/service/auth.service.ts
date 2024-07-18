@@ -2,6 +2,8 @@ import { Tables } from '@/types/supabase';
 import { Provider, User } from '@supabase/supabase-js';
 import axios from 'axios';
 
+type UserInfo = User & Tables<'users'>;
+
 class AuthAPI {
   private baseUrl: string;
 
@@ -10,7 +12,7 @@ class AuthAPI {
   }
 
   // 회원가입
-  signUp = async (email: string, password: string, nickname: string): Promise<Tables<'users'>> => {
+  signUp = async (email: string, password: string, nickname: string): Promise<UserInfo> => {
     console.log(email, password, nickname);
     try {
       const response = await axios.post(
@@ -35,7 +37,7 @@ class AuthAPI {
   };
 
   // 로그인
-  signIn = async (email: string, password: string): Promise<User> => {
+  signIn = async (email: string, password: string): Promise<UserInfo> => {
     try {
       const response = await axios.post(
         `${this.baseUrl}/log-in`,
@@ -70,7 +72,7 @@ class AuthAPI {
   };
 
   // 유저 정보 확인
-  getUserInfo = async (): Promise<User> => {
+  getUserInfo = async (): Promise<UserInfo> => {
     try {
       const response = await axios.get(`${this.baseUrl}/info`);
       if (response.status === 204) {
@@ -86,16 +88,10 @@ class AuthAPI {
   };
 
   // 소셜 로그인
-  signInWithOAuth = async (provider: Provider): Promise<any> => {
+  signInWithOAuth = async (provider: Provider): Promise<void> => {
     try {
-      const response = await axios.get(`${this.baseUrl}/social/${provider}`, {
-        params: { provider },
-      });
-      window.location.href = response.data.url;
+      window.location.href = `${this.baseUrl}/social/${provider}?provider=${provider}`;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
       throw error;
     }
   };

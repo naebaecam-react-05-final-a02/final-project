@@ -1,5 +1,5 @@
 'use client';
-import { useGetUser } from '@/api/auth/useUsers';
+import { useGetUser } from '@/hooks/auth/useUsers';
 
 const UserProfile = () => {
   const { data: user, error, isLoading } = useGetUser();

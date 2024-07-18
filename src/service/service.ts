@@ -1,4 +1,4 @@
-import AuthAPI from './auth/auth.api';
+import AuthAPI from './auth.service';
 
 class API {
   auth: AuthAPI;

@@ -2,19 +2,6 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
-  // Handle CORS preflight request
-  if (request.method === 'OPTIONS') {
-    return new NextResponse(null, {
-      headers: {
-        'Access-Control-Allow-Origin': request.headers.get('origin') || '*',
-        'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-      status: 204,
-    });
-  }
-
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -45,15 +32,15 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log('왜 소셜은 안됌?', user);
 
-  console.log('Cookies:', request.cookies.getAll());
-  console.log('User:', user);
-  console.log('Current path:', request.nextUrl.pathname);
-
-  const publicRoutes = ['/log-in', '/sign-up', '/auth', '/api', '/api/auth', 'api/auth/check'];
-
-  if (!user && !publicRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
+  if (
+    !user &&
+    !request.nextUrl.pathname.startsWith('/log-in') &&
+    !request.nextUrl.pathname.startsWith('/sign-up') &&
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    !request.nextUrl.pathname.startsWith('/api/auth/social') &&
+    !request.nextUrl.pathname.startsWith('/api')
+  ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = '/log-in';
@@ -72,11 +59,6 @@ export async function updateSession(request: NextRequest) {
   //    return myNewResponse
   // If this is not done, you may be causing the browser and server to go out
   // of sync and terminate the user's session prematurely!
-
-  supabaseResponse.headers.set('Access-Control-Allow-Origin', request.headers.get('origin') || '*');
-  supabaseResponse.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  supabaseResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  supabaseResponse.headers.set('Access-Control-Allow-Credentials', 'true');
 
   return supabaseResponse;
 }
