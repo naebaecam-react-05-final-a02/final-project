@@ -1,4 +1,4 @@
-import { Provider, User } from '@supabase/supabase-js';
+import { Provider } from '@supabase/supabase-js';
 import api from '../../service/service';
 
 export const usersQueryKeys = {
@@ -8,8 +8,14 @@ export const usersQueryKeys = {
 export const queryOptions = {
   user: () => ({
     queryKey: usersQueryKeys.all,
-    queryFn: api.auth.getUserInfo,
-    select: (user: User) => user.id,
+    queryFn: async () => {
+      const user = await api.auth.getUserInfo();
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+      return user;
+    },
   }),
 };
 
@@ -27,4 +33,13 @@ export const mutationOptions = {
   socialSignIn: () => ({
     mutationFn: (provider: Provider) => api.auth.signInWithOAuth(provider),
   }),
+  requestPasswordReset: {
+    mutationFn: (email: string) => api.auth.requestPasswordReset(email),
+  },
+  resetPassword: {
+    mutationFn: (data: { newPassword: string; token: string }) => api.auth.resetPassword(data.newPassword, data.token),
+  },
+  deleteAccount: {
+    mutationFn: () => api.auth.deleteAccount(),
+  },
 };

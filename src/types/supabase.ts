@@ -48,32 +48,80 @@ export type Database = {
           },
         ]
       }
+      challengeReviews: {
+        Row: {
+          challengeId: string
+          content: string
+          createdAt: string
+          id: number
+          rating: number
+          userId: string
+        }
+        Insert: {
+          challengeId: string
+          content: string
+          createdAt?: string
+          id?: number
+          rating: number
+          userId: string
+        }
+        Update: {
+          challengeId?: string
+          content?: string
+          createdAt?: string
+          id?: number
+          rating?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challengeReviews_challengeId_fkey"
+            columns: ["challengeId"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challengeReviews_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenges: {
         Row: {
           createdBy: string
           desc: string
-          endDate: string | null
+          endDate: string
           id: string
           isProgress: boolean
+          rating: number | null
           startDate: string
+          tags: string | null
           title: string
         }
         Insert: {
           createdBy: string
           desc: string
-          endDate?: string | null
+          endDate: string
           id?: string
           isProgress?: boolean
+          rating?: number | null
           startDate?: string
+          tags?: string | null
           title: string
         }
         Update: {
           createdBy?: string
           desc?: string
-          endDate?: string | null
+          endDate?: string
           id?: string
           isProgress?: boolean
+          rating?: number | null
           startDate?: string
+          tags?: string | null
           title?: string
         }
         Relationships: [
@@ -140,6 +188,7 @@ export type Database = {
           repPerSets: number | null
           resistance: number | null
           sets: number | null
+          todayImageURL: string
           userId: string
           weight: number | null
         }
@@ -152,6 +201,7 @@ export type Database = {
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
+          todayImageURL: string
           userId: string
           weight?: number | null
         }
@@ -164,6 +214,7 @@ export type Database = {
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
+          todayImageURL?: string
           userId?: string
           weight?: number | null
         }
@@ -219,32 +270,32 @@ export type Database = {
         Row: {
           createdAt: string
           email: string
-          height: number
+          height: number | null
           id: string
-          nickname: string
+          nickname: string | null
           profileURL: string | null
           userIndex: number
-          weight: number
+          weight: number | null
         }
         Insert: {
           createdAt?: string
           email: string
-          height: number
+          height?: number | null
           id: string
-          nickname: string
+          nickname?: string | null
           profileURL?: string | null
           userIndex?: number
-          weight: number
+          weight?: number | null
         }
         Update: {
           createdAt?: string
           email?: string
-          height?: number
+          height?: number | null
           id?: string
-          nickname?: string
+          nickname?: string | null
           profileURL?: string | null
           userIndex?: number
-          weight?: number
+          weight?: number | null
         }
         Relationships: [
           {
@@ -267,7 +318,7 @@ export type Database = {
           date?: string
           id?: string
           userId: string
-          weight?: number
+          weight: number
         }
         Update: {
           date?: string

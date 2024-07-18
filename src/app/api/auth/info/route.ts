@@ -31,7 +31,7 @@ export async function GET() {
         console.error('Supabase query error:', queryError);
         return NextResponse.json({ error: queryError.message }, { status: 404 });
       }
-      console.log(data);
+
       return NextResponse.json(data);
     } catch (queryError) {
       console.error('Unexpected query error:', queryError);

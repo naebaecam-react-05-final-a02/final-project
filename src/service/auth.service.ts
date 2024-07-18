@@ -78,7 +78,8 @@ class AuthAPI {
       if (response.status === 204) {
         throw new Error('User not found');
       }
-      return response.data.user;
+      console.log(response);
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || error.message);
@@ -92,6 +93,44 @@ class AuthAPI {
     try {
       window.location.href = `${this.baseUrl}/social/${provider}?provider=${provider}`;
     } catch (error) {
+      throw error;
+    }
+  };
+  // 비밀번호 재설정 요청 (비밀번호 찾기)
+
+  requestPasswordReset = async (email: string): Promise<void> => {
+    try {
+      await axios.post(`${this.baseUrl}/reset-password`, { email });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  // 새 비밀번호 설정 (비밀번호 변경)
+  resetPassword = async (newPassword: string, token: string): Promise<void> => {
+    try {
+      await axios.post(`${this.baseUrl}/update-password`, {
+        newPassword,
+        token,
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+  // 회원탈퇴
+  deleteAccount = async (): Promise<void> => {
+    try {
+      await axios.delete(`${this.baseUrl}/delete-account`);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
       throw error;
     }
   };

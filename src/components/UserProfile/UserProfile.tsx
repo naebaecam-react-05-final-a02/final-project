@@ -11,7 +11,7 @@ const UserProfile = () => {
 
   return (
     <div>
-      <h1>Welcome, {user}</h1>
+      <h1>유저 닉네임~ (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ = {user?.nickname ?? `헬린이_${user?.userIndex}`}</h1>
       {/* 다른 사용자 정보 표시 */}
     </div>
   );
