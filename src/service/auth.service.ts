@@ -104,8 +104,6 @@ class AuthAPI {
 
   // 새 비밀번호 설정 (비밀번호 변경)
   resetPassword = async (newPassword: string, token: string, email: string): Promise<void> => {
-    const data = { newPassword, token };
-
     try {
       await axios.post(`${this.baseUrl}/update-password`, {
         newPassword,
