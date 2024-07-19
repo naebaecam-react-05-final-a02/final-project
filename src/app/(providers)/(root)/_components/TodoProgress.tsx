@@ -33,9 +33,9 @@ const TodoProgress = () => {
       </ResponsiveContainer>
       <div
         className="select-none absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-gray-500 
-          rounded-full size-10 flex items-center justify-center text-white text-sm"
+          rounded-full size-10 flex items-center justify-center text-white text-xs"
       >
-        {data[0].value}
+        {data[0].value}%
       </div>
     </div>
   );
