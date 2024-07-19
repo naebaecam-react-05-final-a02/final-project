@@ -28,7 +28,7 @@ const TodoProgress = () => {
           endAngle={-270}
         >
           <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-          <RadialBar background dataKey="value" cornerRadius={circleSize / 2} fill="red" />
+          <RadialBar background={{ fill: 'gray' }} dataKey="value" cornerRadius={circleSize / 2} fill="white" />
         </RadialBarChart>
       </ResponsiveContainer>
       <div
