@@ -15,17 +15,11 @@ class AuthAPI {
   signUp = async (email: string, password: string, nickname: string): Promise<UserInfo> => {
     console.log(email, password, nickname);
     try {
-      const response = await axios.post(
-        `${this.baseUrl}/sign-up`,
-        {
-          email,
-          password,
-          nickname,
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
+      const response = await axios.post(`${this.baseUrl}/sign-up`, {
+        email,
+        password,
+        nickname,
+      });
 
       return response.data;
     } catch (error) {
@@ -46,7 +40,6 @@ class AuthAPI {
           password,
         },
         {
-          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
         },
       );
@@ -91,7 +84,7 @@ class AuthAPI {
   // 소셜 로그인
   signInWithOAuth = async (provider: Provider): Promise<void> => {
     try {
-      window.location.href = `${this.baseUrl}/social/${provider}?provider=${provider}`;
+      window.location.href = `${this.baseUrl}/social/?provider=${provider}`;
     } catch (error) {
       throw error;
     }
@@ -110,12 +103,14 @@ class AuthAPI {
   };
 
   // 새 비밀번호 설정 (비밀번호 변경)
-  resetPassword = async (newPassword: string, token: string): Promise<void> => {
+  resetPassword = async (newPassword: string, token: string, email: string): Promise<void> => {
     const data = { newPassword, token };
 
     try {
       await axios.post(`${this.baseUrl}/update-password`, {
-        data,
+        newPassword,
+        token,
+        email,
       });
     } catch (error) {
       if (axios.isAxiosError(error)) {

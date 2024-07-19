@@ -37,8 +37,8 @@ export const mutationOptions = {
     mutationFn: (email: string) => api.auth.requestPasswordReset(email),
   },
   resetPassword: {
-    mutationFn: ({ newPassword, token }: { newPassword: string; token: string }) =>
-      api.auth.resetPassword(newPassword, token),
+    mutationFn: ({ newPassword, token, email }: { newPassword: string; token: string; email: string }) =>
+      api.auth.resetPassword(newPassword, token, email),
   },
   deleteAccount: {
     mutationFn: () => api.auth.deleteAccount(),

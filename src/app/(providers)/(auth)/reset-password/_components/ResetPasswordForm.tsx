@@ -3,36 +3,42 @@
 import { useResetPassword } from '@/hooks/auth/useUsers';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+
 const ResetPasswordForm = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('code');
-  const { mutate: resetPassword, isPending, error } = useResetPassword();
+  const { mutate: resetPassword, isPending } = useResetPassword();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
+      setError('비밀번호가 일치하지 않습니다.');
       return;
     }
+
+    setError(null);
+
     const token = searchParams.get('code');
-    if (!token) {
-      alert('유효하지 않은 비밀번호 재설정 링크입니다.');
+    const email = searchParams.get('email');
+
+    if (!token || !email) {
+      setError('유효하지 않은 비밀번호 재설정 링크입니다.');
       return;
     }
 
     resetPassword(
-      { newPassword, token },
+      { newPassword, token, email },
       {
         onSuccess: () => {
           alert('비밀번호가 성공적으로 변경되었습니다.');
-          router.push('/login');
+          router.push('/log-in');
         },
         onError: (error) => {
           console.error('Password reset error:', error);
-          alert(error instanceof Error ? error.message : '비밀번호 변경에 실패했습니다.');
+          setError(error instanceof Error ? error.message : '비밀번호 변경에 실패했습니다.');
         },
       },
     );
@@ -59,7 +65,7 @@ const ResetPasswordForm = () => {
       <button type="submit" disabled={isPending} className="px-2 py-1.5 border border-black">
         {isPending ? '처리 중...' : '비밀번호 변경'}
       </button>
-      {error && <p className="text-red-500">에러: {error instanceof Error ? error.message : '알 수 없는 오류'}</p>}
+      {error && <p className="text-red-500">에러: {error}</p>}
     </form>
   );
 };
