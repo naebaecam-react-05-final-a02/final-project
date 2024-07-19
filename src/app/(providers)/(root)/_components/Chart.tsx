@@ -19,7 +19,9 @@ const Chart = () => {
   console.log('WEIGHTS___', weights);
 
   const minWeight = Math.min(...data.map((d) => d.weight));
+  const maxWeight = Math.max(...data.map((d) => d.weight));
   const yAxisMin = Math.floor(minWeight / 10) * 10;
+  const yAxisMax = Math.ceil((maxWeight + 1) / 10) * 10;
 
   return (
     <ResponsiveContainer width="100%" minHeight={120}>
@@ -27,7 +29,7 @@ const Chart = () => {
         <CartesianGrid stroke="black" />
         <XAxis dataKey="date" stroke="black" tick={{ fontSize: 12 }} />
         <YAxis
-          domain={[yAxisMin, 'dataMax']}
+          domain={[yAxisMin, yAxisMax]}
           tickFormatter={(tick) => `${tick}kg`}
           stroke="black"
           tick={{ fontSize: 12 }}
