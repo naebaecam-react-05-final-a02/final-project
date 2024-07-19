@@ -1,5 +1,6 @@
 import UserProfile from '@/components/UserProfile/UserProfile';
 import Chart from './_components/Chart';
+import GradeProgress from './_components/GradeProgress';
 import TodoProgress from './_components/TodoProgress';
 
 const RootPage = () => {
@@ -16,7 +17,13 @@ const RootPage = () => {
 
         {/* 등급/투두 진행 상황 */}
         <div className="grid grid-cols-2 gap-x-1">
-          <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">등급</div>
+          <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col gap-y-4 items-center justify-center">
+            <h3>등급</h3>
+            <div className="flex flex-col gap-y-1 w-[140px] justify-center items-center">
+              <h4 className="font-bold">Lv.2</h4>
+              <GradeProgress />
+            </div>
+          </div>
           <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col items-center justify-center">
             <h4>투두 진행 상황</h4>
             <TodoProgress />
