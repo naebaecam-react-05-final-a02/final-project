@@ -11,16 +11,7 @@ const ResetPasswordForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { mutate: resetPassword, isPending } = useResetPassword();
-  // const [isPending, setIsPending] = useState(false);
-  // const supabase = createClient();
-
-  // useEffect(() => {
-  //   const code = searchParams.get('code');
-  //   if (code) {
-  //     supabase.auth.exchangeCodeForSession(code).catch(console.error);
-  //   }
-  // }, [searchParams, supabase.auth]);
-
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -38,19 +29,6 @@ const ResetPasswordForm = () => {
       setError('유효하지 않은 비밀번호 재설정 링크입니다.');
       return;
     }
-
-    // try {
-    //   const { error } = await supabase.auth.updateUser({ password: newPassword });
-    //   if (error) throw error;
-
-    //   alert('비밀번호가 성공적으로 변경되었습니다.');
-    //   router.push('/log-in');
-    // } catch (error) {
-    //   console.error('Password reset error:', error);
-    //   setError(error instanceof Error ? error.message : '비밀번호 변경에 실패했습니다.');
-    // } finally {
-    //   setIsPending(false);
-    // }
 
     resetPassword(
       { newPassword, token, email },
