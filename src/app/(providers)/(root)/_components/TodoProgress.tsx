@@ -2,11 +2,6 @@
 
 import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts';
 
-// const data = [
-//   { name: 'A', x: 1, fill: 'green' },
-//   { name: 'B', x: 2, fill: 'yellow' },
-// ];
-
 const data = [{ name: 'L1', value: 75 }];
 
 const circleSize = 30;
