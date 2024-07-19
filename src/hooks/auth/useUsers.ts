@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, UseMutationOptions, useQuery } from '@tanstack/react-query';
 import { mutationOptions, queryOptions } from './queries';
 
 // 유저정보
@@ -11,7 +11,8 @@ export const useSignUp = () => useMutation(mutationOptions.signUp);
 export const useSignIn = () => useMutation(mutationOptions.signIn);
 
 // 로그아웃
-export const useSignOut = () => useMutation(mutationOptions.signOut);
+export const useSignOut = (options?: Omit<UseMutationOptions, 'mutationFn'>) =>
+  useMutation({ ...mutationOptions.signOut, ...options });
 
 // 소셜로그인
 export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn());
@@ -23,4 +24,5 @@ export const useRequestPasswordReset = () => useMutation(mutationOptions.request
 export const useResetPassword = () => useMutation(mutationOptions.resetPassword);
 
 // 회원탈퇴
-export const useDeleteAccount = () => useMutation(mutationOptions.deleteAccount);
+export const useDeleteAccount = (options?: Omit<UseMutationOptions, 'mutationFn'>) =>
+  useMutation({ ...mutationOptions.deleteAccount, ...options });
