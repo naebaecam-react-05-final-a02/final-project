@@ -30,7 +30,8 @@ const RootPage = () => {
         <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">식단 기록</div>
 
         {/* 체중 변화 그래프 */}
-        <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">
+        <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col items-center justify-center select-none">
+          <div>이번주</div>
           <Chart />
         </div>
       </main>
