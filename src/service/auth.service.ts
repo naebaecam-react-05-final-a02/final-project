@@ -96,8 +96,8 @@ class AuthAPI {
       throw error;
     }
   };
-  // 비밀번호 재설정 요청 (비밀번호 찾기)
 
+  // 비밀번호 재설정 요청 (비밀번호 찾기)
   requestPasswordReset = async (email: string): Promise<void> => {
     try {
       await axios.post(`${this.baseUrl}/reset-password`, { email });
@@ -111,10 +111,11 @@ class AuthAPI {
 
   // 새 비밀번호 설정 (비밀번호 변경)
   resetPassword = async (newPassword: string, token: string): Promise<void> => {
+    const data = { newPassword, token };
+
     try {
       await axios.post(`${this.baseUrl}/update-password`, {
-        newPassword,
-        token,
+        data,
       });
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -123,6 +124,7 @@ class AuthAPI {
       throw error;
     }
   };
+
   // 회원탈퇴
   deleteAccount = async (): Promise<void> => {
     try {

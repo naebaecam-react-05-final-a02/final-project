@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
 
     if (data && data.url) {
-      console.log(data.url);
       return NextResponse.redirect(data.url);
     } else {
       throw new Error('No URL returned from Supabase');

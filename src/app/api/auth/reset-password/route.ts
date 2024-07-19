@@ -1,13 +1,13 @@
 import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(requset: NextRequest) {
-  const { email } = await requset.json();
+export async function POST(request: NextRequest) {
+  const { email } = await request.json();
 
   const supabase = createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password?email=${encodeURIComponent(email)}`,
   });
 
   if (error) {

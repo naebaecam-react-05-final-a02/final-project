@@ -41,51 +41,56 @@ const SignUpForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">이메일:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          className="border border-black"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password">비밀번호:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="border border-black"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="nickname">닉네임:</label>
-        <input
-          type="text"
-          id="nickname"
-          name="nickname"
-          className="border border-black"
-          value={formData.nickname}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      {error && <div className="text-red-500">{(error as Error).message}</div>}
-      <button type="submit" disabled={isPending}>
-        {isPending ? '처리 중...' : '회원가입'}
-      </button>
-      <div>
-        이미 계정이 있으신가요? <Link href="/log-in">로그인</Link>
-      </div>
-    </form>
+    <div className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4  items-center justify-center">
+        <div className="flex flex-col">
+          <label htmlFor="email">이메일:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="border border-black"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="password">비밀번호:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="border border-black"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="nickname">닉네임:</label>
+          <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            className="border border-black"
+            value={formData.nickname}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        {error && <div className="text-red-500">{(error as Error).message}</div>}
+        <button type="submit" className="border border-black px-2 py-1.5" disabled={isPending}>
+          {isPending ? '처리 중...' : '회원가입'}
+        </button>
+        <div>
+          {' '}
+          <Link href="/log-in" className="border border-black px-2 py-1.5">
+            로그인
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 };
 
