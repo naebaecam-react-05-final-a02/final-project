@@ -1,4 +1,5 @@
 import UserProfile from '@/components/UserProfile/UserProfile';
+import Chart from './_components/Chart';
 
 const RootPage = () => {
   return (
@@ -29,7 +30,9 @@ const RootPage = () => {
         <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">식단 기록</div>
 
         {/* 체중 변화 그래프 */}
-        <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">그래푸</div>
+        <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">
+          <Chart />
+        </div>
       </main>
     </div>
   );
