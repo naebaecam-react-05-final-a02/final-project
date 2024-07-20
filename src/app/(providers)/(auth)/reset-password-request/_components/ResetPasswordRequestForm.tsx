@@ -1,6 +1,7 @@
 'use client';
 
 import { useRequestPasswordReset } from '@/hooks/auth/useUsers';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const ResetPasswordRequestForm = () => {
@@ -21,7 +22,7 @@ const ResetPasswordRequestForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center  ">
+    <div className="flex flex-col justify-center items-center  ">
       <form onSubmit={handleSubmit} className="p-8">
         <h2 className="text-2xl font-bold mb-6 text-center">비밀번호 재설정 요청</h2>
         <div className="mb-4">
@@ -42,6 +43,15 @@ const ResetPasswordRequestForm = () => {
           {isPending ? '처리 중...' : '비밀번호 재설정 링크 받기'}
         </button>
       </form>
+      <div className="relative mb-4">
+        <Link
+          className="bg-green-600 w-full rounded-md py-3 px-6 transition-all duration-300 ease-in-out hover:translate-y-1 shadow-md border-b-4 border-black border-opacity-85 relative z-10 inline-block text-white font-semibold"
+          href="/"
+        >
+          홈으로 가기
+        </Link>
+        <span className={`absolute top-1 left-0 bg-black opacity-80 rounded-md w-full h-full z-0`}></span>
+      </div>
     </div>
   );
 };

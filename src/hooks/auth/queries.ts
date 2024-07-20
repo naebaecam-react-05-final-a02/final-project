@@ -33,6 +33,9 @@ export const mutationOptions = {
   socialSignIn: () => ({
     mutationFn: (provider: Provider) => api.auth.signInWithOAuth(provider),
   }),
+  verifyOtp: {
+    mutationFn: (data: { email: string; token: string }) => api.auth.verifyOtp(data.email, data.token),
+  },
   requestPasswordReset: {
     mutationFn: (email: string) => api.auth.requestPasswordReset(email),
   },

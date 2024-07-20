@@ -17,6 +17,14 @@ export const useSignOut = (options?: Omit<UseMutationOptions, 'mutationFn'>) =>
 // 소셜로그인
 export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn());
 
+// 이메일 회원가입 Otp 확인
+export const useVerifyOtp = (
+  options?: Omit<
+    UseMutationOptions<{ message: string; session: any }, Error, { email: string; token: string }>,
+    'mutationFn'
+  >,
+) => useMutation({ ...mutationOptions.verifyOtp, ...options });
+
 // 비밀번호 재설정 요청
 export const useRequestPasswordReset = () => useMutation(mutationOptions.requestPasswordReset);
 

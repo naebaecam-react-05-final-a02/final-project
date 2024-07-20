@@ -2,8 +2,8 @@ import { createClient } from '@/supabase/server';
 
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(requset: NextRequest) {
-  const data = await requset.json();
+export async function POST(request: NextRequest) {
+  const data = await request.json();
 
   const nickname = data.nickname as string;
   const password = data.password as string;
@@ -20,6 +20,7 @@ export async function POST(requset: NextRequest) {
       data: {
         nickname,
       },
+      // emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`, 배포할 때 사용, 이메일 확인 후 리디렉션
     },
   });
   if (signUpError) {

@@ -90,6 +90,22 @@ class AuthAPI {
     }
   };
 
+  // OTP 확인 (이메일 인증)
+  verifyOtp = async (email: string, token: string): Promise<{ message: string; session: any }> => {
+    try {
+      const response = await axios.post(`${this.baseUrl}/checkotp`, {
+        email,
+        token,
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   // 비밀번호 재설정 요청 (비밀번호 찾기)
   requestPasswordReset = async (email: string): Promise<void> => {
     try {
