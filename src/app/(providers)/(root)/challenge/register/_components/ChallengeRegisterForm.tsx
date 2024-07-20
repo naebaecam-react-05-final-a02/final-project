@@ -8,7 +8,7 @@ import FormInput from '../../_components/FormInput';
 import FormTextArea from '../../_components/FormTextArea';
 import FormCalendar from './FormCalendar';
 
-const ChallengeForm = () => {
+const ChallengeRegisterForm = () => {
   const supabase = createClient();
   const { data: user } = useGetUser();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -93,4 +93,4 @@ const ChallengeForm = () => {
   );
 };
 
-export default ChallengeForm;
+export default ChallengeRegisterForm;
