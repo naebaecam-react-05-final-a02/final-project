@@ -3,15 +3,18 @@
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
-import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useRef, useState } from 'react';
 
 const MAX_LENGTH = 300;
 
 const ChallengeForm = () => {
   const supabase = createClient();
   const { data: user } = useGetUser();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [textAreaLength, setTextAreaLength] = useState<number>(0);
+
+  const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
 
   const handleChangeTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length > MAX_LENGTH) {
@@ -25,7 +28,23 @@ const ChallengeForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+    const currentTarget = e.currentTarget;
+    const file = inputRef?.current?.files?.[0] || null;
+
+    if (!file) return;
+
+    const extension = file.name.split('.').slice(-1);
+    const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
+    const res = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
+
+    if (!res.data) {
+      console.log('FILE UPLOAD FAILED___', res);
+      return;
+    }
+
+    const imageURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${res.data.fullPath}`;
+
+    const formData = new FormData(currentTarget);
 
     /**
      * id,
@@ -50,8 +69,6 @@ const ChallengeForm = () => {
       imageURL,
       desc: formData.get('desc'),
     };
-    // console.log('USER___', user);
-    console.log('FORM DATA___', data);
 
     const response = await supabase.from('challenges').insert(data);
 
@@ -60,36 +77,30 @@ const ChallengeForm = () => {
 
   const handleFileChange = async (file: File | null) => {
     if (!file) return;
-
-    const extension = file.name.split('.').slice(-1);
-    const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
-    const response = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
-
-    if (!response.data) {
-      console.log('UPLOAD FAILED___', response);
-      return;
-    }
-
-    const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${response.data.fullPath}`;
-    setImageURL(url);
+    setImageURL(URL.createObjectURL(file));
   };
 
+  console.log();
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 w-full">
+    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full">
       {/* 사진 */}
-      <div className="relative border-4 border-gray-400 border-dashed w-full aspect-video">
-        {imageURL && <Image src={imageURL} alt="ChallengeImg" fill className="object-cover" />}
-        <label className="size-full bg-green-200 flex items-center justify-center  cursor-pointer" htmlFor="file">
+      <div className="w-full select-none">
+        <div className="relative border-4 border-blue-400 border-dashed w-full aspect-video">
+          {imageURL && <Image src={imageURL} alt="ChallengeImg" fill className="object-cover" />}
+          <input
+            ref={inputRef}
+            id="file"
+            type="file"
+            className="hidden"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
+          />
+        </div>
+
+        <label className="w-full bg-blue-300 flex items-center justify-center  cursor-pointer" htmlFor="file">
           사진을 올려주세요.
         </label>
-        <input
-          id="file"
-          name="file"
-          type="file"
-          className="hidden"
-          accept=".jpg, .jpeg, .png"
-          onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
-        />
       </div>
       {/* 챌린지 이름 */}
       <div className="flex flex-col gap-y-2 w-full select-none">
@@ -138,7 +149,8 @@ const ChallengeForm = () => {
             id="startDate"
             name="startDate"
             type="date"
-            defaultValue={new Date().toISOString().slice(0, 10)}
+            min={today}
+            defaultValue={today}
           />
           <span>~</span>
           <input
@@ -146,6 +158,7 @@ const ChallengeForm = () => {
             className="flex-1 bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
             name="endDate"
             type="date"
+            min={today}
           />
         </div>
       </div>

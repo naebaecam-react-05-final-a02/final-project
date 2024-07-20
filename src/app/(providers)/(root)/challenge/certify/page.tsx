@@ -1,4 +1,12 @@
+'use client';
+
+import Image from 'next/image';
+import { useId, useState } from 'react';
+
 const ChallengeCertifyPage = () => {
+  const [imageURL, setImageURL] = useState<string | null>(null);
+  const id = useId();
+
   return (
     <main className="grid gap-y-6 w-full">
       {/* 챌린지 이름인가? */}
@@ -7,7 +15,21 @@ const ChallengeCertifyPage = () => {
       </div>
 
       {/* 인증 사진 */}
-      <div className="bg-gray-300 w-full aspect-video flex justify-center items-center">사진진</div>
+      <div className="w-full select-none">
+        <div className="border-2 border-dashed border-blue-400 w-full aspect-video relative">
+          <input
+            id={id}
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            className="hidden"
+            onChange={(e) => setImageURL(URL.createObjectURL(e.target.files?.[0]!))}
+          />
+          {imageURL && <Image className="object-contain" src={imageURL} fill alt="이미지" />}
+        </div>
+        <label className="flex justify-center items-center w-full  bg-blue-200 cursor-pointer" htmlFor={id}>
+          사진 업로드
+        </label>
+      </div>
 
       {/* 오늘의 소감 */}
       <div className="flex flex-col gap-y-2 w-full select-none">
