@@ -2,7 +2,7 @@ import ChallengeForm from './_components/ChallengeForm';
 
 const ChallengeRegisterPage = () => {
   return (
-    <main className="grid place-items-center gap-y-11">
+    <main className="grid gap-y-11 w-full">
       <ChallengeForm />
     </main>
   );

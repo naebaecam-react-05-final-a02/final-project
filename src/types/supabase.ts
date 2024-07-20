@@ -12,21 +12,21 @@ export type Database = {
       challengeParticipants: {
         Row: {
           certificateURL: string
-          challengeId: string
+          challengeId: number
           id: string
           isCompleted: boolean
           userId: string
         }
         Insert: {
           certificateURL: string
-          challengeId: string
+          challengeId?: number
           id?: string
           isCompleted?: boolean
           userId: string
         }
         Update: {
           certificateURL?: string
-          challengeId?: string
+          challengeId?: number
           id?: string
           isCompleted?: boolean
           userId?: string
@@ -35,7 +35,7 @@ export type Database = {
           {
             foreignKeyName: "challengeParticipants_challengeId_fkey"
             columns: ["challengeId"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "challenges"
             referencedColumns: ["id"]
           },
@@ -50,7 +50,7 @@ export type Database = {
       }
       challengeReviews: {
         Row: {
-          challengeId: string
+          challengeId: number
           content: string
           createdAt: string
           id: number
@@ -58,7 +58,7 @@ export type Database = {
           userId: string
         }
         Insert: {
-          challengeId: string
+          challengeId?: number
           content: string
           createdAt?: string
           id?: number
@@ -66,7 +66,7 @@ export type Database = {
           userId: string
         }
         Update: {
-          challengeId?: string
+          challengeId?: number
           content?: string
           createdAt?: string
           id?: number
@@ -77,7 +77,7 @@ export type Database = {
           {
             foreignKeyName: "challengeReviews_challengeId_fkey"
             columns: ["challengeId"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "challenges"
             referencedColumns: ["id"]
           },
@@ -92,10 +92,10 @@ export type Database = {
       }
       challenges: {
         Row: {
+          content: string
           createdBy: string
-          desc: string
           endDate: string
-          id: string
+          id: number
           isProgress: boolean
           rating: number | null
           startDate: string
@@ -103,21 +103,21 @@ export type Database = {
           title: string
         }
         Insert: {
+          content: string
           createdBy: string
-          desc: string
           endDate: string
-          id?: string
+          id?: number
           isProgress?: boolean
           rating?: number | null
-          startDate?: string
+          startDate: string
           tags?: string | null
           title: string
         }
         Update: {
+          content?: string
           createdBy?: string
-          desc?: string
           endDate?: string
-          id?: string
+          id?: number
           isProgress?: boolean
           rating?: number | null
           startDate?: string
@@ -134,14 +134,14 @@ export type Database = {
           },
         ]
       }
-      diet: {
+      diets: {
         Row: {
           carbohydrate: number
           date: string
           dietType: string
           fat: number
           foodName: string
-          id: string
+          id: number
           kcal: number
           protein: number
           userId: string
@@ -152,7 +152,7 @@ export type Database = {
           dietType: string
           fat?: number
           foodName: string
-          id?: string
+          id?: number
           kcal?: number
           protein?: number
           userId: string
@@ -163,7 +163,7 @@ export type Database = {
           dietType?: string
           fat?: number
           foodName?: string
-          id?: string
+          id?: number
           kcal?: number
           protein?: number
           userId?: string
@@ -184,7 +184,7 @@ export type Database = {
           distance: number | null
           duration: number
           exeriseType: string
-          id: string
+          id: number
           repPerSets: number | null
           resistance: number | null
           sets: number | null
@@ -197,7 +197,7 @@ export type Database = {
           distance?: number | null
           duration: number
           exeriseType: string
-          id?: string
+          id?: number
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
@@ -210,7 +210,7 @@ export type Database = {
           distance?: number | null
           duration?: number
           exeriseType?: string
-          id?: string
+          id?: number
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
@@ -233,7 +233,7 @@ export type Database = {
           completedDate: string | null
           createdAt: string
           desc: string
-          id: string
+          id: number
           isCompleted: boolean
           title: string
           userId: string
@@ -242,7 +242,7 @@ export type Database = {
           completedDate?: string | null
           createdAt?: string
           desc: string
-          id?: string
+          id?: number
           isCompleted?: boolean
           title: string
           userId: string
@@ -251,7 +251,7 @@ export type Database = {
           completedDate?: string | null
           createdAt?: string
           desc?: string
-          id?: string
+          id?: number
           isCompleted?: boolean
           title?: string
           userId?: string
@@ -307,22 +307,22 @@ export type Database = {
           },
         ]
       }
-      weight: {
+      weights: {
         Row: {
           date: string
-          id: string
+          id: number
           userId: string
           weight: number
         }
         Insert: {
-          date?: string
-          id?: string
+          date: string
+          id?: number
           userId: string
           weight: number
         }
         Update: {
           date?: string
-          id?: string
+          id?: number
           userId?: string
           weight?: number
         }
