@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useId, useState } from 'react';
+import FormTextArea from '../_components/FormTextArea';
 
 const ChallengeCertifyPage = () => {
   const [imageURL, setImageURL] = useState<string | null>(null);
@@ -32,18 +33,12 @@ const ChallengeCertifyPage = () => {
       </div>
 
       {/* 오늘의 소감 */}
-      <div className="flex flex-col gap-y-2 w-full select-none">
-        <label className="text-xs font-bold" htmlFor="title">
-          한별님, 오늘 챌린지는 어떠셨나요?
-        </label>
-        <input
-          className="bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
-          id="title"
-          name="title"
-          type="text"
-          placeholder="정말 조았습니다요"
-        />
-      </div>
+      <FormTextArea
+        label="오늘 챌린지는 어떠셨나요"
+        maxLength={100}
+        name="impression"
+        placeholder="정말 조았습니다요"
+      />
 
       <button className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">제출하기</button>
     </main>
