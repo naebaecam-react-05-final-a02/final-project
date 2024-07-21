@@ -90,17 +90,31 @@ class AuthAPI {
     }
   };
 
-  // OTP 확인 (이메일 인증)
-  verifyOtp = async (email: string, token: string): Promise<{ message: string; session: any }> => {
+  // 이메일 인증 코드 생성
+  generateVerificationEmail = async (email: string): Promise<string> => {
     try {
-      const response = await axios.post(`${this.baseUrl}/checkotp`, {
-        email,
-        token,
-      });
-      return response.data;
+      const response = await axios.post(`${this.baseUrl}/generate-verification-code`, { email });
+      console.log(response);
+      return response.data.message;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
+        throw new Error(error.response?.data?.message || error.message);
+      }
+      throw error;
+    }
+  };
+
+  // 이메일 인증 코드 확인
+  verifyCode = async (email: string, code: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const response = await axios.post(`${this.baseUrl}/verify-code`, {
+        email,
+        code,
+      });
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return { success: false, message: error.response?.data?.error || error.message };
       }
       throw error;
     }

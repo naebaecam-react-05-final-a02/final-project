@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   const nickname = data.nickname as string;
   const password = data.password as string;
   const email = data.email as string;
-  console.log(nickname, password, email);
+
   const supabase = createClient();
   const {
     data: { user },
@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
       data: {
         nickname,
       },
-      // emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`, 배포할 때 사용, 이메일 확인 후 리디렉션
     },
   });
   if (signUpError) {

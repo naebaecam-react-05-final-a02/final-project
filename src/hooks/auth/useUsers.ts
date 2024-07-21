@@ -17,13 +17,17 @@ export const useSignOut = (options?: Omit<UseMutationOptions, 'mutationFn'>) =>
 // 소셜로그인
 export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn());
 
-// 이메일 회원가입 Otp 확인
-export const useVerifyOtp = (
+// 이메일 인증 코드 생성
+export const useGenerateVerificationEmail = (options?: Omit<UseMutationOptions<string, Error, string>, 'mutationFn'>) =>
+  useMutation({ ...mutationOptions.generateVerificationEmail, ...options });
+
+// 이메일 인증 코드 확인
+export const useVerifyCode = (
   options?: Omit<
-    UseMutationOptions<{ message: string; session: any }, Error, { email: string; token: string }>,
+    UseMutationOptions<{ success: boolean; message: string }, Error, { email: string; code: string }>,
     'mutationFn'
   >,
-) => useMutation({ ...mutationOptions.verifyOtp, ...options });
+) => useMutation({ ...mutationOptions.verifyCode, ...options });
 
 // 비밀번호 재설정 요청
 export const useRequestPasswordReset = () => useMutation(mutationOptions.requestPasswordReset);
