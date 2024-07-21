@@ -1,7 +1,7 @@
 import { FoodType } from '@/types/diet';
 import { useState } from 'react';
 
-const useDietForm = (MAX_FOOD: number) => {
+const useDietForm = () => {
   const initialFoodData: FoodType = {
     foodName: '',
     kcal: 0,
@@ -18,9 +18,10 @@ const useDietForm = (MAX_FOOD: number) => {
   };
 
   const handleAddFoodForm = (index: number) => {
-    if (foodForms.length < MAX_FOOD) {
-      setFoodForms([...foodForms, initialFoodData]);
-    }
+    const { foodName, kcal, carbohydrate, protein, fat } = foodForms[index];
+    if (!foodName) return alert('음식 이름을 입력해주세요');
+    if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) return alert('영양 성분을 올바르게 입력해주세요');
+    setFoodForms([...foodForms, initialFoodData]);
   };
 
   const handleDeleteFoodForm = (index: number) => {

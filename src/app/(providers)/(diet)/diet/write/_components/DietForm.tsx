@@ -11,7 +11,7 @@ const MAX_IMAGE = 3;
 const MAX_FOOD = 5;
 
 const DietForm = () => {
-  const { foodForms, handleChange: handleFormChange, handleAddFoodForm, handleDeleteFoodForm } = useDietForm(MAX_FOOD);
+  const { foodForms, handleChange: handleFormChange, handleAddFoodForm, handleDeleteFoodForm } = useDietForm();
   const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(['아침', '점심', '저녁']);
   const imageFilesRef = useRef<File[]>([]);
 
@@ -83,7 +83,7 @@ const DietForm = () => {
               onChange={(e) => handleFormChange(idx, 'fat', e.target.value)}
             />
           </div>
-          {idx + 1 === foodForms.length && (
+          {idx + 1 === foodForms.length && idx + 1 !== MAX_FOOD && (
             <button
               type="button"
               className="bg-[#949494] text-white p-2 hover:brightness-90"
