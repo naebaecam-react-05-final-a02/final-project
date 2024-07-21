@@ -24,9 +24,7 @@ const useDietForm = (MAX_FOOD: number) => {
   };
 
   const handleDeleteFoodForm = (index: number) => {
-    if (foodForms.length > 1) {
-      setFoodForms(foodForms.filter((_, idx) => idx !== index));
-    }
+    setFoodForms(foodForms.filter((_, idx) => idx !== index));
   };
 
   return { foodForms, handleChange, handleAddFoodForm, handleDeleteFoodForm };

@@ -7,10 +7,10 @@ import FoodFormInput from './FoodFormInput';
 import ImageInputGroup from './ImageInputGroup';
 import RadioGroup from './RadioGroup';
 
-const DietForm = () => {
-  const MAX_IMAGE = 3;
-  const MAX_FOOD = 5;
+const MAX_IMAGE = 3;
+const MAX_FOOD = 5;
 
+const DietForm = () => {
   const { foodForms, handleChange: handleFormChange, handleAddFoodForm, handleDeleteFoodForm } = useDietForm(MAX_FOOD);
   const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(['아침', '점심', '저녁']);
   const imageFilesRef = useRef<File[]>([]);
@@ -38,9 +38,11 @@ const DietForm = () => {
       </div>
       {foodForms.map((foodForm, idx) => (
         <div key={`food-form-${idx}`} className="flex flex-col gap-5 p-5 border border-gray-300">
-          <button type="button" onClick={() => handleDeleteFoodForm(idx)}>
-            X
-          </button>
+          {foodForms.length > 1 && (
+            <button type="button" className="w-fit ml-auto" onClick={() => handleDeleteFoodForm(idx)}>
+              X
+            </button>
+          )}
           <FoodFormInput
             title="무엇을 드셨나요?"
             name="foodName"
@@ -51,6 +53,7 @@ const DietForm = () => {
             type="number"
             title="칼로리를 입력해주세요"
             name="kcal"
+            unit="kcal"
             value={foodForm['kcal']}
             onChange={(e) => handleFormChange(idx, 'kcal', e.target.value)}
           />
@@ -59,6 +62,7 @@ const DietForm = () => {
               type="number"
               title="탄수화물"
               name="carbohydrate"
+              unit="g"
               value={foodForm['carbohydrate']}
               onChange={(e) => handleFormChange(idx, 'carbohydrate', e.target.value)}
             />
@@ -66,6 +70,7 @@ const DietForm = () => {
               type="number"
               title="단백질"
               name="protein"
+              unit="g"
               value={foodForm['protein']}
               onChange={(e) => handleFormChange(idx, 'protein', e.target.value)}
             />
@@ -73,6 +78,7 @@ const DietForm = () => {
               type="number"
               title="지방"
               name="fat"
+              unit="g"
               value={foodForm['fat']}
               onChange={(e) => handleFormChange(idx, 'fat', e.target.value)}
             />

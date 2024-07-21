@@ -4,15 +4,16 @@ import TextInput from './TextInput';
 interface FoodFormInputProps {
   title: string;
   name: string;
+  unit?: string;
 }
 
-const FoodFormInput = ({ title, name, ...props }: FoodFormInputProps & ComponentProps<'input'>) => {
+const FoodFormInput = ({ title, name, unit, ...props }: FoodFormInputProps & ComponentProps<'input'>) => {
   return (
     <div>
       <h2 className="font-bold">{title}</h2>
       <div>
         <TextInput {...props} />
-        {props?.type === 'number' && 'kcal'}
+        {unit}
       </div>
     </div>
   );
