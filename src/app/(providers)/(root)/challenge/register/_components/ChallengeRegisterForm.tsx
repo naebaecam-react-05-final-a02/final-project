@@ -11,6 +11,14 @@ import FormInput from '../../_components/FormInput';
 import FormTextArea from '../../_components/FormTextArea';
 import FormCalendar from './FormCalendar';
 
+interface FormFields {
+  title: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+  verify: string;
+}
+
 const ChallengeRegisterForm = () => {
   const router = useRouter();
   const { data: user } = useGetUser();
@@ -19,8 +27,6 @@ const ChallengeRegisterForm = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   //TODO Rating, Tags 생각
-  //TODO pending으로 로딩상태 보여주기?,
-  //TODO endDate에서 시작일보다 뒤에 클릭 못하게..
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -32,36 +38,19 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const title = formData.get('title') as string;
-    const content = formData.get('content') as string;
-    const startDate = formData.get('startDate') as string;
-    const endDate = formData.get('endDate') as string;
-    const verify = formData.get('verify') as string;
+    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'verify'];
+    const formFields: Partial<FormFields> = {};
 
-    if (!title) {
-      console.error('Challenge Register Title Error : 제목을 입력 해주세요.');
-      return;
+    for (const field of fields) {
+      const value = formData.get(field);
+      if (typeof value !== 'string' || value.trim() === '') {
+        console.error(`Challenge Register ${field} Error : ${field}을(를) 입력 해주세요.`);
+        return;
+      }
+      formFields[field] = value.trim();
     }
 
-    if (!content) {
-      console.error('Challenge Register Content Error : 내용을 입력 해주세요.');
-      return;
-    }
-
-    if (!startDate) {
-      console.error('Challenge Register Date Error : 시작하는 날을 설정 해주세요.');
-      return;
-    }
-
-    if (!endDate) {
-      console.error('Challenge Register Date Error : 끝나는 날을 설정 해주세요.');
-      return;
-    }
-
-    if (!verify) {
-      console.error('Challenge Register Verify Error : 인증 방법을 입력해주세요.');
-      return;
-    }
+    const { title, content, startDate, endDate, verify } = formFields as FormFields;
 
     const form = new FormData();
     form.append('file', file);
