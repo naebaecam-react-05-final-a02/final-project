@@ -4,13 +4,13 @@ import { useGetWeights } from '@/hooks/dashboard/useDashBoard';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 const data = [
-  { weight: 60, date: '07-15' },
-  { weight: 73, date: '07-16' },
-  { weight: 74, date: '07-16' },
-  { weight: 53, date: '07-17' },
-  { weight: 68, date: '07-18' },
-  { weight: 63, date: '07-19' },
-  { weight: 33, date: '07-20' },
+  { weight: 60, date: '07-15', test: 40 },
+  { weight: 73, date: '07-16', test: 54 },
+  { weight: 74, date: '07-16', test: 23 },
+  { weight: 53, date: '07-17', test: 76 },
+  { weight: 68, date: '07-18', test: 98 },
+  { weight: 66, date: '07-19', test: 66 },
+  { weight: 33, date: '07-20', test: 55 },
 ];
 
 const Chart = () => {
@@ -25,8 +25,8 @@ const Chart = () => {
 
   return (
     <ResponsiveContainer width="100%" minHeight={120}>
-      <LineChart data={data}>
-        <CartesianGrid stroke="black" />
+      <LineChart data={data} margin={{ right: 15, left: -15 }}>
+        <CartesianGrid stroke="black" fill="#ccc" />
         <XAxis dataKey="date" stroke="black" tick={{ fontSize: 12 }} />
         <YAxis
           domain={[yAxisMin, yAxisMax]}
@@ -35,7 +35,8 @@ const Chart = () => {
           tick={{ fontSize: 12 }}
         />
         <Tooltip formatter={(value) => `${value}kg`} />
-        <Line dot={false} dataKey="weight" stroke="black" />
+        <Line dot={false} dataKey="weight" stroke="blue" />
+        <Line dot={false} dataKey="test" stroke="red" />
       </LineChart>
     </ResponsiveContainer>
   );
