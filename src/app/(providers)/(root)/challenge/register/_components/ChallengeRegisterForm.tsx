@@ -20,6 +20,7 @@ const ChallengeRegisterForm = () => {
 
   //TODO Rating, Tags 생각
   //TODO pending으로 로딩상태 보여주기?,
+  //TODO endDate에서 시작일보다 뒤에 클릭 못하게..
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

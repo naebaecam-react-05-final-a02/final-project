@@ -1,11 +1,19 @@
 'use client';
 
-import React, { KeyboardEvent, useId } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 const FormCalendar = () => {
-  const id = useId();
   const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
+  const [start, setStart] = useState<string>(today);
+  const [end, setEnd] = useState<string>(today);
 
+  const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newStartDate = e.target.value;
+    setStart(newStartDate);
+    if (newStartDate > end) {
+      setEnd(newStartDate);
+    }
+  };
   return (
     <div className="flex flex-col gap-y-2 w-full select-none">
       <label className="text-xs font-bold" htmlFor="startDate">
@@ -15,11 +23,11 @@ const FormCalendar = () => {
         <input
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => e.preventDefault()}
           className="flex-1 bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
-          id={id}
           name="startDate"
           type="date"
-          min={today}
-          defaultValue={today}
+          min={start}
+          value={start}
+          onChange={handleStartDateChange}
         />
         <span>~</span>
         <input
@@ -27,7 +35,9 @@ const FormCalendar = () => {
           className="flex-1 bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
           name="endDate"
           type="date"
-          min={today}
+          min={start}
+          value={end}
+          onChange={(e) => setEnd(e.target.value)}
         />
       </div>
     </div>
