@@ -10,7 +10,7 @@
     "gen": "npx supabase gen types --lang=typescript --project-id abijrjpibayqrzanhqcq --schema public > src/types/supabase.ts"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
+    "@emailjs/nodejs": "^4.0.4",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.51.1",
