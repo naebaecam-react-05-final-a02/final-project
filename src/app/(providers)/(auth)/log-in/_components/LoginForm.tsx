@@ -102,7 +102,7 @@ const LogInForm = () => {
       </div>
       <div>
         비밀번호가 기억나지 않으신가요?{' '}
-        <Link href={'/reset-password-request'} className="">
+        <Link href={'/reset-password'} className="">
           비밀번호 찾기
         </Link>
       </div>

@@ -20,6 +20,9 @@ export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn())
 // 비밀번호 재설정 요청
 export const useRequestPasswordReset = () => useMutation(mutationOptions.requestPasswordReset);
 
+// 인증 번호 확인
+export const useVerifyResetCode = () => useMutation(mutationOptions.verifyResetCode);
+
 // 비밀번호 변경
 export const useResetPassword = () => useMutation(mutationOptions.resetPassword);
 

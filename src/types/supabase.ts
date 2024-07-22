@@ -9,26 +9,118 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      challengeParticipants: {
+      challengeReviews: {
         Row: {
-          certificateURL: string
-          challengeId: string
-          id: string
-          isCompleted: boolean
+          challengeId: number
+          content: string
+          createdAt: string
+          id: number
+          rating: number
           userId: string
         }
         Insert: {
-          certificateURL: string
-          challengeId: string
-          id?: string
-          isCompleted?: boolean
+          challengeId?: number
+          content: string
+          createdAt?: string
+          id?: number
+          rating: number
           userId: string
         }
         Update: {
-          certificateURL?: string
-          challengeId?: string
-          id?: string
-          isCompleted?: boolean
+          challengeId?: number
+          content?: string
+          createdAt?: string
+          id?: number
+          rating?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challengeReviews_challengeId_fkey"
+            columns: ["challengeId"]
+            isOneToOne: true
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challengeReviews_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenges: {
+        Row: {
+          content: string
+          createdBy: string
+          endDate: string
+          id: number
+          imageURL: string
+          isProgress: boolean
+          rating: number | null
+          startDate: string
+          tags: string | null
+          title: string
+          verify: string
+        }
+        Insert: {
+          content: string
+          createdBy: string
+          endDate: string
+          id?: number
+          imageURL: string
+          isProgress?: boolean
+          rating?: number | null
+          startDate: string
+          tags?: string | null
+          title: string
+          verify: string
+        }
+        Update: {
+          content?: string
+          createdBy?: string
+          endDate?: string
+          id?: number
+          imageURL?: string
+          isProgress?: boolean
+          rating?: number | null
+          startDate?: string
+          tags?: string | null
+          title?: string
+          verify?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenges_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challengeVerify: {
+        Row: {
+          challengeId: number
+          id: number
+          imageURL: string
+          impression: string
+          userId: string
+        }
+        Insert: {
+          challengeId: number
+          id?: number
+          imageURL: string
+          impression: string
+          userId: string
+        }
+        Update: {
+          challengeId?: number
+          id?: number
+          imageURL?: string
+          impression?: string
           userId?: string
         }
         Relationships: [
@@ -48,124 +140,29 @@ export type Database = {
           },
         ]
       }
-      challengeReviews: {
+      diets: {
         Row: {
-          challengeId: string
-          content: string
-          createdAt: string
-          id: number
-          rating: number
-          userId: string
-        }
-        Insert: {
-          challengeId: string
-          content: string
-          createdAt?: string
-          id?: number
-          rating: number
-          userId: string
-        }
-        Update: {
-          challengeId?: string
-          content?: string
-          createdAt?: string
-          id?: number
-          rating?: number
-          userId?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "challengeReviews_challengeId_fkey"
-            columns: ["challengeId"]
-            isOneToOne: false
-            referencedRelation: "challenges"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "challengeReviews_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      challenges: {
-        Row: {
-          createdBy: string
-          desc: string
-          endDate: string
-          id: string
-          isProgress: boolean
-          rating: number | null
-          startDate: string
-          tags: string | null
-          title: string
-        }
-        Insert: {
-          createdBy: string
-          desc: string
-          endDate: string
-          id?: string
-          isProgress?: boolean
-          rating?: number | null
-          startDate?: string
-          tags?: string | null
-          title: string
-        }
-        Update: {
-          createdBy?: string
-          desc?: string
-          endDate?: string
-          id?: string
-          isProgress?: boolean
-          rating?: number | null
-          startDate?: string
-          tags?: string | null
-          title?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "challenges_createdBy_fkey"
-            columns: ["createdBy"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      diet: {
-        Row: {
-          carbohydrate: number
           date: string
           dietType: string
-          fat: number
-          foodName: string
-          id: string
-          kcal: number
-          protein: number
+          foodInfo: Json[]
+          id: number
+          images: string[] | null
           userId: string
         }
         Insert: {
-          carbohydrate?: number
           date?: string
           dietType: string
-          fat?: number
-          foodName: string
-          id?: string
-          kcal?: number
-          protein?: number
+          foodInfo?: Json[]
+          id?: number
+          images?: string[] | null
           userId: string
         }
         Update: {
-          carbohydrate?: number
           date?: string
           dietType?: string
-          fat?: number
-          foodName?: string
-          id?: string
-          kcal?: number
-          protein?: number
+          foodInfo?: Json[]
+          id?: number
+          images?: string[] | null
           userId?: string
         }
         Relationships: [
@@ -184,7 +181,7 @@ export type Database = {
           distance: number | null
           duration: number
           exeriseType: string
-          id: string
+          id: number
           repPerSets: number | null
           resistance: number | null
           sets: number | null
@@ -197,7 +194,7 @@ export type Database = {
           distance?: number | null
           duration: number
           exeriseType: string
-          id?: string
+          id?: number
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
@@ -210,7 +207,7 @@ export type Database = {
           distance?: number | null
           duration?: number
           exeriseType?: string
-          id?: string
+          id?: number
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
@@ -233,7 +230,7 @@ export type Database = {
           completedDate: string | null
           createdAt: string
           desc: string
-          id: string
+          id: number
           isCompleted: boolean
           title: string
           userId: string
@@ -242,7 +239,7 @@ export type Database = {
           completedDate?: string | null
           createdAt?: string
           desc: string
-          id?: string
+          id?: number
           isCompleted?: boolean
           title: string
           userId: string
@@ -251,7 +248,7 @@ export type Database = {
           completedDate?: string | null
           createdAt?: string
           desc?: string
-          id?: string
+          id?: number
           isCompleted?: boolean
           title?: string
           userId?: string
@@ -270,32 +267,32 @@ export type Database = {
         Row: {
           createdAt: string
           email: string
-          height: number | null
+          height: number
           id: string
-          nickname: string | null
+          nickname: string
           profileURL: string | null
           userIndex: number
-          weight: number | null
+          weight: number
         }
         Insert: {
           createdAt?: string
           email: string
-          height?: number | null
+          height?: number
           id: string
-          nickname?: string | null
+          nickname?: string
           profileURL?: string | null
           userIndex?: number
-          weight?: number | null
+          weight?: number
         }
         Update: {
           createdAt?: string
           email?: string
-          height?: number | null
+          height?: number
           id?: string
-          nickname?: string | null
+          nickname?: string
           profileURL?: string | null
           userIndex?: number
-          weight?: number | null
+          weight?: number
         }
         Relationships: [
           {
@@ -307,22 +304,22 @@ export type Database = {
           },
         ]
       }
-      weight: {
+      weights: {
         Row: {
           date: string
-          id: string
+          id: number
           userId: string
           weight: number
         }
         Insert: {
-          date?: string
-          id?: string
+          date: string
+          id?: number
           userId: string
           weight: number
         }
         Update: {
           date?: string
-          id?: string
+          id?: number
           userId?: string
           weight?: number
         }

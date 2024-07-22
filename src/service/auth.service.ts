@@ -102,13 +102,23 @@ class AuthAPI {
     }
   };
 
+  // 인증 번호 확인
+  verifyResetCode = async (email: string, code: string): Promise<void> => {
+    try {
+      await axios.post(`${this.baseUrl}/verify-otp`, { email, code });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   // 새 비밀번호 설정 (비밀번호 변경)
-  resetPassword = async (newPassword: string, token: string, email: string): Promise<void> => {
+  resetPassword = async (newPassword: string): Promise<void> => {
     try {
       await axios.post(`${this.baseUrl}/update-password`, {
         newPassword,
-        token,
-        email,
       });
     } catch (error) {
       if (axios.isAxiosError(error)) {
