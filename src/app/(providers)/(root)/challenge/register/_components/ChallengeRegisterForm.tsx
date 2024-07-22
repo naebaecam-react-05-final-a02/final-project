@@ -13,62 +13,88 @@ const ChallengeRegisterForm = () => {
   const { data: user } = useGetUser();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //TODO 유효성 검사
   //TODO hooks로 로직 따로 빼야함
+  //TODO Rating, Tags 생각
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const currentTarget = e.currentTarget;
     const file = inputRef?.current?.files?.[0] || null;
 
-    if (!file) return;
-
-    const extension = file.name.split('.').slice(-1);
-    const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
-    const res = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
-
-    if (!res.data) {
-      console.log('FILE UPLOAD FAILED___', res);
+    if (!file) {
+      console.error('Challenge Register Image Error : 사진을 올려주세요.');
       return;
     }
 
-    const imageURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${res.data.fullPath}`;
+    const formData = new FormData(e.currentTarget);
+    const title = formData.get('title');
+    const content = formData.get('content');
+    const startDate = formData.get('startDate');
+    const endDate = formData.get('endDate');
+    const certify = formData.get('certify');
 
-    const formData = new FormData(currentTarget);
+    if (!title) {
+      console.error('Challenge Register Title Error : 제목을 입력 해주세요.');
+      return;
+    }
 
-    /**
-     * id,
-     * title,
-     * content,
-     * startDate.
-     * endDate,
-     * isProgress,
-     * createdBy -> userId
-     * rating?,
-     * tags?,
-     * imageURL,
-     * desc,
-     */
-    const data = {
-      title: formData.get('title'),
-      content: formData.get('content'),
-      startDate: formData.get('startDate'),
-      endDate: formData.get('endDate'),
-      isProgress: true,
-      createdBy: user?.id,
-      imageURL,
-      desc: formData.get('desc'),
-    };
+    if (!content) {
+      console.error('Challenge Register Content Error : 내용을 입력 해주세요.');
+      return;
+    }
 
-    const response = await supabase.from('challenges').insert(data);
+    if (!startDate) {
+      console.error('Challenge Register Date Error : 시작하는 날을 설정 해주세요.');
+      return;
+    }
 
-    console.log('RESPONSE___', response);
+    if (!endDate) {
+      console.error('Challenge Register Date Error : 끝나는 날을 설정 해주세요.');
+      return;
+    }
+
+    if (!certify) {
+      console.error('Challenge Register Certify Error : 인증 방법을 입력해주세요.');
+      return;
+    }
+
+    try {
+      const extension = file.name.split('.').slice(-1);
+      const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
+      const res = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
+
+      const imageURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${res.data?.fullPath}`;
+
+      const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
+
+      const data = {
+        title,
+        content,
+        startDate,
+        endDate,
+        isProgress: today == startDate,
+        createdBy: user?.id,
+        imageURL,
+        certify,
+      };
+
+      console.log(data);
+      try {
+        const response = await supabase.from('challenges').insert(data);
+        console.log('Challenge Register Response___', response);
+      } catch (error) {
+        console.log('Challenge Register Error___', error);
+      }
+    } catch (error) {
+      console.log('Challenge Register Image Upload Error___', error);
+    }
   };
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full">
       {/* 사진 */}
       <FormImageUploader ref={inputRef} />
+
       {/* 챌린지 이름 */}
       <FormInput label="챌린지 이름" name="title" placeholder="누워서 숨쉬기?" />
 
@@ -84,7 +110,7 @@ const ChallengeRegisterForm = () => {
       <FormCalendar />
 
       {/* 인증 방법 */}
-      <FormInput label="인증 방법" name="desc" placeholder="누워서 셀카를 올려주세용" />
+      <FormInput label="인증 방법" name="certify" placeholder="누워서 셀카를 올려주세용" />
 
       <button type="submit" className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
         입력 안해?
