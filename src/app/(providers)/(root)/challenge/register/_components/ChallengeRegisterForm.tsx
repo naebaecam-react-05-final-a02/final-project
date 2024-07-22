@@ -33,7 +33,7 @@ const ChallengeRegisterForm = () => {
     const content = formData.get('content') as string;
     const startDate = formData.get('startDate') as string;
     const endDate = formData.get('endDate') as string;
-    const certify = formData.get('certify') as string;
+    const verify = formData.get('verify') as string;
 
     if (!title) {
       console.error('Challenge Register Title Error : 제목을 입력 해주세요.');
@@ -55,8 +55,8 @@ const ChallengeRegisterForm = () => {
       return;
     }
 
-    if (!certify) {
-      console.error('Challenge Register Certify Error : 인증 방법을 입력해주세요.');
+    if (!verify) {
+      console.error('Challenge Register Verify Error : 인증 방법을 입력해주세요.');
       return;
     }
 
@@ -76,7 +76,7 @@ const ChallengeRegisterForm = () => {
           isProgress: today == startDate,
           createdBy: user?.id!,
           imageURL: response.imageURL,
-          certify,
+          verify,
           tags: null,
           rating: 0,
         };
@@ -110,7 +110,7 @@ const ChallengeRegisterForm = () => {
       <FormCalendar />
 
       {/* 인증 방법 */}
-      <FormInput label="인증 방법" name="certify" placeholder="누워서 셀카를 올려주세용" />
+      <FormInput label="인증 방법" name="verify" placeholder="누워서 셀카를 올려주세용" />
 
       <button type="submit" className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
         입력 안해?

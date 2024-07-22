@@ -9,45 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      challengeParticipants: {
-        Row: {
-          certificateURL: string
-          challengeId: number
-          content: string
-          id: string
-          userId: string
-        }
-        Insert: {
-          certificateURL: string
-          challengeId?: number
-          content: string
-          id?: string
-          userId: string
-        }
-        Update: {
-          certificateURL?: string
-          challengeId?: number
-          content?: string
-          id?: string
-          userId?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "challengeParticipants_challengeId_fkey"
-            columns: ["challengeId"]
-            isOneToOne: true
-            referencedRelation: "challenges"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "challengeParticipants_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       challengeReviews: {
         Row: {
           challengeId: number
@@ -92,7 +53,6 @@ export type Database = {
       }
       challenges: {
         Row: {
-          certify: string
           content: string
           createdBy: string
           endDate: string
@@ -103,9 +63,9 @@ export type Database = {
           startDate: string
           tags: string | null
           title: string
+          verify: string
         }
         Insert: {
-          certify: string
           content: string
           createdBy: string
           endDate: string
@@ -116,9 +76,9 @@ export type Database = {
           startDate: string
           tags?: string | null
           title: string
+          verify: string
         }
         Update: {
-          certify?: string
           content?: string
           createdBy?: string
           endDate?: string
@@ -129,6 +89,7 @@ export type Database = {
           startDate?: string
           tags?: string | null
           title?: string
+          verify?: string
         }
         Relationships: [
           {
@@ -140,41 +101,68 @@ export type Database = {
           },
         ]
       }
-      diets: {
+      challengeVerify: {
         Row: {
-          carbohydrate: number
-          date: string
-          dietType: string
-          fat: number
-          foodName: string[]
+          challengeId: number
           id: number
-          images: string[] | null
-          kcal: number
-          protein: number
+          imageURL: string
+          impression: string
           userId: string
         }
         Insert: {
-          carbohydrate?: number
-          date?: string
-          dietType: string
-          fat?: number
-          foodName: string[]
+          challengeId?: number
           id?: number
-          images?: string[] | null
-          kcal?: number
-          protein?: number
+          imageURL: string
+          impression: string
           userId: string
         }
         Update: {
-          carbohydrate?: number
+          challengeId?: number
+          id?: number
+          imageURL?: string
+          impression?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challengeParticipants_challengeId_fkey"
+            columns: ["challengeId"]
+            isOneToOne: true
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challengeParticipants_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      diets: {
+        Row: {
+          date: string
+          dietType: string
+          foodInfo: Json[]
+          id: number
+          images: string[] | null
+          userId: string
+        }
+        Insert: {
           date?: string
-          dietType?: string
-          fat?: number
-          foodName?: string[]
+          dietType: string
+          foodInfo?: Json[]
           id?: number
           images?: string[] | null
-          kcal?: number
-          protein?: number
+          userId: string
+        }
+        Update: {
+          date?: string
+          dietType?: string
+          foodInfo?: Json[]
+          id?: number
+          images?: string[] | null
           userId?: string
         }
         Relationships: [
@@ -186,24 +174,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      emailVerification: {
-        Row: {
-          code: string
-          email: string
-          id: number
-        }
-        Insert: {
-          code: string
-          email: string
-          id?: number
-        }
-        Update: {
-          code?: string
-          email?: string
-          id?: number
-        }
-        Relationships: []
       }
       exercises: {
         Row: {

@@ -19,6 +19,18 @@ class ChallengeAPI {
       throw error;
     }
   };
+
+  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id'>) => {
+    try {
+      const response = await axios.post(`${this.baseURL}/verify`, verifyData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
 }
 
 export default ChallengeAPI;
