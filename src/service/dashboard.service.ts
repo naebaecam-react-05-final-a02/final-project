@@ -10,7 +10,7 @@ class DashBoardAPI {
 
   getWeightsData = async () => {
     try {
-      const response = await axios.get<Tables<'weight'>>(`${this.baseUrl}`);
+      const response = await axios.get<Tables<'weights'>>(`${this.baseUrl}`);
       if (response.status === 204) {
         throw new Error('User not found');
       }

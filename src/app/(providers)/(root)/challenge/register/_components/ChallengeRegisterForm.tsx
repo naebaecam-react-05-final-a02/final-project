@@ -1,7 +1,9 @@
 'use client';
 
 import { useGetUser } from '@/hooks/auth/useUsers';
+import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { createClient } from '@/supabase/client';
+import axios from 'axios';
 import { FormEvent, useRef } from 'react';
 import FormImageUploader from '../../_components/FormImageUploader';
 import FormInput from '../../_components/FormInput';
@@ -9,6 +11,7 @@ import FormTextArea from '../../_components/FormTextArea';
 import FormCalendar from './FormCalendar';
 
 const ChallengeRegisterForm = () => {
+  const { data: challengeRegister, isPending, error } = useChallengeRegister();
   const supabase = createClient();
   const { data: user } = useGetUser();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -18,7 +21,6 @@ const ChallengeRegisterForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const currentTarget = e.currentTarget;
     const file = inputRef?.current?.files?.[0] || null;
 
     if (!file) {
@@ -58,36 +60,38 @@ const ChallengeRegisterForm = () => {
       return;
     }
 
-    try {
-      const extension = file.name.split('.').slice(-1);
-      const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
-      const res = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
+    const response = await axios.post('/api/image/challengeRegister');
 
-      const imageURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${res.data?.fullPath}`;
+    // try {
+    //   const extension = file.name.split('.').slice(-1);
+    //   const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
+    //   const res = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
 
-      const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
+    //   const imageURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${res.data?.fullPath}`;
 
-      const data = {
-        title,
-        content,
-        startDate,
-        endDate,
-        isProgress: today == startDate,
-        createdBy: user?.id,
-        imageURL,
-        certify,
-      };
+    //   const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
 
-      console.log(data);
-      try {
-        const response = await supabase.from('challenges').insert(data);
-        console.log('Challenge Register Response___', response);
-      } catch (error) {
-        console.log('Challenge Register Error___', error);
-      }
-    } catch (error) {
-      console.log('Challenge Register Image Upload Error___', error);
-    }
+    //   const data = {
+    //     title,
+    //     content,
+    //     startDate,
+    //     endDate,
+    //     isProgress: today == startDate,
+    //     createdBy: user?.id,
+    //     imageURL,
+    //     certify,
+    //   };
+
+    //   console.log(data);
+    //   try {
+    //     const response = await supabase.from('challenges').insert(data);
+    //     console.log('Challenge Register Response___', response);
+    //   } catch (error) {
+    //     console.log('Challenge Register Error___', error);
+    //   }
+    // } catch (error) {
+    //   console.log('Challenge Register Image Upload Error___', error);
+    // }
   };
 
   return (

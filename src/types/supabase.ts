@@ -13,22 +13,22 @@ export type Database = {
         Row: {
           certificateURL: string
           challengeId: number
+          content: string
           id: string
-          isCompleted: boolean
           userId: string
         }
         Insert: {
           certificateURL: string
           challengeId?: number
+          content: string
           id?: string
-          isCompleted?: boolean
           userId: string
         }
         Update: {
           certificateURL?: string
           challengeId?: number
+          content?: string
           id?: string
-          isCompleted?: boolean
           userId?: string
         }
         Relationships: [
@@ -92,10 +92,12 @@ export type Database = {
       }
       challenges: {
         Row: {
+          certify: string
           content: string
           createdBy: string
           endDate: string
           id: number
+          imageURL: string
           isProgress: boolean
           rating: number | null
           startDate: string
@@ -103,10 +105,12 @@ export type Database = {
           title: string
         }
         Insert: {
+          certify: string
           content: string
           createdBy: string
           endDate: string
           id?: number
+          imageURL: string
           isProgress?: boolean
           rating?: number | null
           startDate: string
@@ -114,10 +118,12 @@ export type Database = {
           title: string
         }
         Update: {
+          certify?: string
           content?: string
           createdBy?: string
           endDate?: string
           id?: number
+          imageURL?: string
           isProgress?: boolean
           rating?: number | null
           startDate?: string
@@ -140,8 +146,9 @@ export type Database = {
           date: string
           dietType: string
           fat: number
-          foodName: string
+          foodName: string[]
           id: number
+          images: string[] | null
           kcal: number
           protein: number
           userId: string
@@ -151,8 +158,9 @@ export type Database = {
           date?: string
           dietType: string
           fat?: number
-          foodName: string
+          foodName: string[]
           id?: number
+          images?: string[] | null
           kcal?: number
           protein?: number
           userId: string
@@ -162,8 +170,9 @@ export type Database = {
           date?: string
           dietType?: string
           fat?: number
-          foodName?: string
+          foodName?: string[]
           id?: number
+          images?: string[] | null
           kcal?: number
           protein?: number
           userId?: string
@@ -177,6 +186,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      emailVerification: {
+        Row: {
+          code: string
+          email: string
+          id: number
+        }
+        Insert: {
+          code: string
+          email: string
+          id?: number
+        }
+        Update: {
+          code?: string
+          email?: string
+          id?: number
+        }
+        Relationships: []
       }
       exercises: {
         Row: {
