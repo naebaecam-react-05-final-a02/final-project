@@ -7,6 +7,8 @@ import FormTextArea from '../_components/FormTextArea';
 const ChallengeCertifyPage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  //TODO 유효성 검사
+  //TODO hooks로 로직 따로 빼야함
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -17,6 +19,10 @@ const ChallengeCertifyPage = () => {
 
     const formData = new FormData(currentTarget);
 
+    /**
+     * id,
+     * impression,
+     */
     const data = {
       impression: formData.get('impression'),
     };
