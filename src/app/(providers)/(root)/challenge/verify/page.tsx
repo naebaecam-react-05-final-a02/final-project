@@ -4,11 +4,13 @@ import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerify } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
 import FormImageUploader from '../_components/FormImageUploader';
 import FormTextArea from '../_components/FormTextArea';
 
 const ChallengeVerifyPage = () => {
+  const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: verify } = useChallengeVerify();
@@ -37,24 +39,28 @@ const ChallengeVerifyPage = () => {
     const form = new FormData();
     form.append('file', file);
 
-    const data = { storage: 'challengeVerify', form };
+    upload(
+      { storage: 'challengeVerify', form },
+      {
+        onSuccess: async (response) => {
+          const verifyData: Omit<Tables<'challengeVerify'>, 'id'> = {
+            impression,
+            imageURL: response.imageURL,
+            userId: user?.id!,
+            challengeId: 15,
+          };
 
-    upload(data, {
-      onSuccess: async (response) => {
-        const data: Omit<Tables<'challengeVerify'>, 'id'> = {
-          impression,
-          imageURL: response.imageURL,
-          userId: user?.id!,
-          challengeId: 15,
-        };
-
-        verify(data, {
-          onSuccess: () => console.log('Challenge Verify Successfully'),
-          onError: (error) => console.error('Chaalenge Verify Failed', error),
-        });
+          verify(verifyData, {
+            onSuccess: () => {
+              console.log('Challenge Verify Successfully');
+              router.push('/');
+            },
+            onError: (error) => console.error('Chaalenge Verify Failed', error),
+          });
+        },
+        onError: (error) => console.error('UPLOAD FAILED', error),
       },
-      onError: (error) => console.error('UPLOAD FAILED', error),
-    });
+    );
   };
 
   return (
