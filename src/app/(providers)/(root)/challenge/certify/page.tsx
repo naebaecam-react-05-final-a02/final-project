@@ -14,8 +14,7 @@ const ChallengeVerifyPage = () => {
   const { mutate: verify } = useChallengeVerify();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //TODO hooks로 로직 따로 빼야함
-  //TODO challengeId는 Params?
+  //TODO challengeId는 Params? 현재 하드코딩임
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
