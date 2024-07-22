@@ -6,25 +6,30 @@ import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
-import FormImageUploader from '../_components/FormImageUploader';
-import FormTextArea from '../_components/FormTextArea';
+import FormImageUploader from '../../_components/FormImageUploader';
+import FormTextArea from '../../_components/FormTextArea';
 
-const ChallengeVerifyPage = () => {
+const ChallengeVerifyPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: verify, isPending } = useChallengeVerify();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //TODO challengeId는 Params? 현재 하드코딩임
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const currentTarget = e.currentTarget;
     const file = inputRef?.current?.files?.[0] || null;
+    const challengeId = params.id;
 
     if (!file) {
       console.error('Challenge Verify Image Error : 사진을 올려주세요.');
+      return;
+    }
+
+    if (!challengeId) {
+      console.error('Challenge Id is invalid', params);
       return;
     }
 
@@ -47,7 +52,7 @@ const ChallengeVerifyPage = () => {
             impression,
             imageURL: response.imageURL,
             userId: user?.id!,
-            challengeId: 15,
+            challengeId: Number(challengeId),
           };
 
           verify(verifyData, {
