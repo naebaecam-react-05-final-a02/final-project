@@ -2,6 +2,7 @@
 import useDietForm from '@/hooks/diet/useDietForm';
 import useRadio from '@/hooks/diet/useRadio';
 import { DietTimeType } from '@/types/diet';
+import axios from 'axios';
 import { FormEvent, useRef } from 'react';
 import FoodFormInput from './FoodFormInput';
 import ImageInputGroup from './ImageInputGroup';
@@ -15,13 +16,22 @@ const DietForm = () => {
   const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(['아침', '점심', '저녁']);
   const imageFilesRef = useRef<File[]>([]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('<< submit >>');
-    console.log('images : ', imageFilesRef.current);
-    console.log('dietType : ', dietType);
-    console.log('foodForms : ', foodForms);
-    // INSERT FOOD DATA - https://supabase.com/docs/reference/javascript/insert
+    const imageFiles = imageFilesRef.current;
+    const formData = new FormData();
+    imageFiles.forEach((file: File) => {
+      formData.append('imageFiles', file);
+    });
+    formData.append('dietType', dietType);
+    formData.append('foodInfo', JSON.stringify(foodForms));
+    const response = await axios.post('/api/diets', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    // ! 예외 처리 필요
+    if (response.status === 200) alert(response.data.message);
   };
 
   return (
