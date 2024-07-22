@@ -3,6 +3,6 @@ import { Tables } from '@/types/supabase';
 
 export const mutationOptions = {
   register: {
-    mutationFn: (challengeData: Tables<'challenges'>) => api.challenge.register(challengeData),
+    mutationFn: (challengeData: Omit<Tables<'challenges'>, 'id'>) => api.challenge.register(challengeData),
   },
 };

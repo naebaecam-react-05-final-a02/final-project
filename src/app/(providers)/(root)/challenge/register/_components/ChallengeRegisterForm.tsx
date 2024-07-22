@@ -2,8 +2,8 @@
 
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
-import { createClient } from '@/supabase/client';
-import axios from 'axios';
+import { useImageUpload } from '@/hooks/image/useImage';
+import { Tables } from '@/types/supabase';
 import { FormEvent, useRef } from 'react';
 import FormImageUploader from '../../_components/FormImageUploader';
 import FormInput from '../../_components/FormInput';
@@ -11,13 +11,13 @@ import FormTextArea from '../../_components/FormTextArea';
 import FormCalendar from './FormCalendar';
 
 const ChallengeRegisterForm = () => {
-  const { data: challengeRegister, isPending, error } = useChallengeRegister();
-  const supabase = createClient();
   const { data: user } = useGetUser();
+  const { mutate: upload, isPending: uploading } = useImageUpload();
+  const { mutate: challengeRegister, isPending } = useChallengeRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //TODO hooks로 로직 따로 빼야함
   //TODO Rating, Tags 생각
+  //TODO pending으로 로딩상태 보여주기?,
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -29,11 +29,11 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const title = formData.get('title');
-    const content = formData.get('content');
-    const startDate = formData.get('startDate');
-    const endDate = formData.get('endDate');
-    const certify = formData.get('certify');
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+    const startDate = formData.get('startDate') as string;
+    const endDate = formData.get('endDate') as string;
+    const certify = formData.get('certify') as string;
 
     if (!title) {
       console.error('Challenge Register Title Error : 제목을 입력 해주세요.');
@@ -60,38 +60,34 @@ const ChallengeRegisterForm = () => {
       return;
     }
 
-    const response = await axios.post('/api/image/challengeRegister');
+    const form = new FormData();
+    form.append('file', file);
 
-    // try {
-    //   const extension = file.name.split('.').slice(-1);
-    //   const filename = `_${Math.random().toString(36).slice(2, 16)}.${extension}`;
-    //   const res = await supabase.storage.from('challengeRegister').upload(`/${filename}`, file);
+    const data = { storage: 'challengeRegister', form };
 
-    //   const imageURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${res.data?.fullPath}`;
+    upload(data, {
+      onSuccess: async (response) => {
+        const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
+        const data: Omit<Tables<'challenges'>, 'id'> = {
+          title,
+          content,
+          startDate,
+          endDate,
+          isProgress: today == startDate,
+          createdBy: user?.id!,
+          imageURL: response.imageURL,
+          certify,
+          tags: null,
+          rating: 0,
+        };
 
-    //   const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
-
-    //   const data = {
-    //     title,
-    //     content,
-    //     startDate,
-    //     endDate,
-    //     isProgress: today == startDate,
-    //     createdBy: user?.id,
-    //     imageURL,
-    //     certify,
-    //   };
-
-    //   console.log(data);
-    //   try {
-    //     const response = await supabase.from('challenges').insert(data);
-    //     console.log('Challenge Register Response___', response);
-    //   } catch (error) {
-    //     console.log('Challenge Register Error___', error);
-    //   }
-    // } catch (error) {
-    //   console.log('Challenge Register Image Upload Error___', error);
-    // }
+        challengeRegister(data, {
+          onSuccess: () => console.log('Challenge Register Successfully'),
+          onError: (error) => console.error('Chaalenge Register Failed', error),
+        });
+      },
+      onError: (error) => console.error('UPLOAD FAILED', error),
+    });
   };
 
   return (

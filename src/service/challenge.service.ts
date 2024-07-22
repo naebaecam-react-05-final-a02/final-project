@@ -8,9 +8,7 @@ class ChallengeAPI {
     this.baseURL = baseURL;
   }
 
-  register = async (challengeData: Tables<'challenges'>) => {
-    console.log('SERVICE REGISTER___', challengeData);
-
+  register = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/register`, challengeData);
       return response.data;
