@@ -90,36 +90,6 @@ class AuthAPI {
     }
   };
 
-  // 이메일 인증 코드 생성
-  generateVerificationEmail = async (email: string): Promise<string> => {
-    try {
-      const response = await axios.post(`${this.baseUrl}/generate-verification-code`, { email });
-      console.log(response);
-      return response.data.message;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || error.message);
-      }
-      throw error;
-    }
-  };
-
-  // 이메일 인증 코드 확인
-  verifyCode = async (email: string, code: string): Promise<{ success: boolean; message: string }> => {
-    try {
-      const response = await axios.post(`${this.baseUrl}/verify-code`, {
-        email,
-        code,
-      });
-      return { success: true, message: response.data.message };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return { success: false, message: error.response?.data?.error || error.message };
-      }
-      throw error;
-    }
-  };
-
   // 비밀번호 재설정 요청 (비밀번호 찾기)
   requestPasswordReset = async (email: string): Promise<void> => {
     try {

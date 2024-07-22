@@ -1,7 +1,12 @@
+import { Suspense } from 'react';
 import ResetPasswordForm from './_components/ResetPasswordForm';
 
 const ResetPasswordPage = async () => {
-  return <ResetPasswordForm />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
+  );
 };
 
 export default ResetPasswordPage;
