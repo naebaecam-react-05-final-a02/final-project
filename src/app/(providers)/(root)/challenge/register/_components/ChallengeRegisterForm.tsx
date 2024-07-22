@@ -98,6 +98,8 @@ const ChallengeRegisterForm = () => {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full">
+      {uploading && <div>이미지 업로딩..</div>}
+      {isPending && <div>로우딩딩딩..</div>}
       {/* 사진 */}
       <FormImageUploader ref={inputRef} />
 

@@ -13,7 +13,7 @@ const ChallengeVerifyPage = () => {
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
-  const { mutate: verify } = useChallengeVerify();
+  const { mutate: verify, isPending } = useChallengeVerify();
   const inputRef = useRef<HTMLInputElement>(null);
 
   //TODO challengeId는 Params? 현재 하드코딩임
@@ -65,6 +65,8 @@ const ChallengeVerifyPage = () => {
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-y-6 w-full">
+      {uploading && <div>이미지 업로딩..</div>}
+      {isPending && <div>로우딩딩딩..</div>}
       {/* 챌린지 이름인가? */}
       <div className="w-full h-14 bg-[#5c5c5c] text-white text-sm flex items-center px-6 rounded-md">
         매일 유산소 챌린지
