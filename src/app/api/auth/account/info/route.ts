@@ -11,6 +11,7 @@ export async function GET() {
       error: authError,
     } = await supabase.auth.getUser();
 
+    console.log(user);
     if (authError && authError.message === 'Auth session missing!') {
       return new Response(null, { status: 204 });
     }
@@ -25,7 +26,7 @@ export async function GET() {
     if (!userId) {
       return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
     }
-
+    console.log(userId);
     try {
       const { data, error: queryError } = await supabase.from('users').select('*').eq('id', userId).single();
 
