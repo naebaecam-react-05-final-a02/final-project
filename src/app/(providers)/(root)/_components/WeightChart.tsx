@@ -67,10 +67,18 @@ const WeightChart = ({ chartDatas }: { chartDatas: WeightChartType[] }) => {
   return (
     <div className="size-full">
       <DateRange />
-      <ResponsiveContainer width="100%" minHeight={100}>
+      <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
         <LineChart data={datas} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
-          <CartesianGrid stroke="gray" fill="white" />
-          <XAxis dataKey="date" stroke="black" tick={{ fontSize: 12 }} />
+          <CartesianGrid stroke="gray" fill="white" strokeDasharray="3 3" />
+          <XAxis
+            dataKey="date"
+            stroke="black"
+            tick={{ fontSize: 10 }}
+            padding={{ left: 10, right: 10 }}
+            interval={'preserveEnd'}
+            // angle={-25}  // 기울기
+            // textAnchor="end" // 기울기
+          />
           <YAxis
             domain={[yAxisMin, yAxisMax]}
             tickFormatter={(tick) => `${tick}kg`}
@@ -79,18 +87,23 @@ const WeightChart = ({ chartDatas }: { chartDatas: WeightChartType[] }) => {
             tickCount={(yAxisMax - yAxisMin) / 5 + 1}
           />
           <Tooltip formatter={(value) => `${value}kg`} />
-          <Line dataKey="weight" stroke="#93c5fd" activeDot={{ r: 4 }} />
+          <Line
+            connectNulls // 안끊기게?
+            dataKey="weight"
+            stroke="#93c5fd"
+            activeDot={{ r: 4 }}
+          />
           <ReferenceLine
             y={avgWeight}
             // label={{ value: `Avg: ${avgWeight}kg`, position: 'insideTopLeft', fill: 'green', fontSize: 12 }}
             stroke="#32be65"
-            strokeDasharray="3 3"
+            // strokeDasharray="3 3"
           />
           <ReferenceLine
             y={63}
             // label={{ value: `Target: ${65}kg`, position: 'insideTopRight', fill: 'red', fontSize: 12 }}
             stroke="#ff6a6a"
-            strokeDasharray="3 3"
+            // strokeDasharray="3 3"
             ifOverflow="extendDomain"
           />
           <Legend
