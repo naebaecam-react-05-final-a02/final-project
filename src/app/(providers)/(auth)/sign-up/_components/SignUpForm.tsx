@@ -10,7 +10,6 @@ interface SignUpFormData {
   password: string;
   nickname: string;
 }
-const MAX_ATTEMPTS = 3;
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState<SignUpFormData>({

@@ -33,6 +33,17 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // 'keepLoggedIn' 쿠키 확인
+  const keepLoggedIn = request.cookies.get('keepLoggedIn')?.value === 'true';
+
+  if (user && keepLoggedIn) {
+    // 세션 갱신 시도
+    const { data, error } = await supabase.auth.refreshSession();
+    if (error) {
+      console.error('Failed to refresh session:', error);
+    }
+  }
+
   const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
   const authRoutes = ['/log-in', '/sign-up'];
 
