@@ -10,7 +10,7 @@ function useInputs<T>(initialForm: T) {
     setForm((form) => ({ ...form, [name]: value }));
   }, []);
   const reset = useCallback(() => setForm(initialForm), [initialForm]);
-  return [form, onChange, reset];
+  return [form, onChange, reset, setForm] as const;
 }
 
 export default useInputs;
