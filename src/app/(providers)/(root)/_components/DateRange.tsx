@@ -16,19 +16,19 @@ const DateRange = () => {
   };
   return (
     <div className="flex text-xs gap-x-2 justify-around">
-      <button onClick={() => handleRange('7')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
+      <button onClick={() => handleRange('last_7_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
         7일
       </button>
-      <button onClick={() => handleRange('30')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
+      <button onClick={() => handleRange('last_30_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
         30일
       </button>
-      <button onClick={() => handleRange('90')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
+      <button onClick={() => handleRange('last_90_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
         90일
       </button>
-      <button onClick={() => handleRange('365')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
+      <button onClick={() => handleRange('last_365_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
         365일
       </button>
-      <button onClick={() => handleRange('all')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
+      <button onClick={() => handleRange('all_time')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
         All
       </button>
     </div>

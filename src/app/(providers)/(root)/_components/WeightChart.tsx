@@ -1,7 +1,16 @@
 'use client';
 
-import { useGetWeights } from '@/hooks/dashboard/useDashBoard';
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import DateRange from './DateRange';
 
 const data = [
@@ -36,55 +45,30 @@ const data = [
   { weight: 57, date: '07-29' },
   { weight: 58, date: '07-30' },
   { weight: 59, date: '07-31' },
-
-  // { weight: 60, date: '08-01' },
-  // { weight: 62, date: '08-02' },
-  // { weight: 63, date: '08-03' },
-  // { weight: 63, date: '08-04' },
-  // { weight: 64, date: '08-05' },
-  // { weight: 65, date: '08-06' },
-  // { weight: 65, date: '08-07' },
-  // { weight: 66, date: '08-08' },
-  // { weight: 65, date: '08-09' },
-  // { weight: 63, date: '08-10' },
-  // { weight: 61, date: '08-11' },
-  // { weight: 59, date: '08-12' },
-  // { weight: 58, date: '08-13' },
-  // { weight: 58, date: '08-14' },
-  // { weight: 60, date: '08-15' },
-  // { weight: 63, date: '08-16' },
-  // { weight: 64, date: '08-16' },
-  // { weight: 63, date: '08-17' },
-  // { weight: 65, date: '08-18' },
-  // { weight: 66, date: '08-19' },
-  // { weight: 65, date: '08-20' },
-  // { weight: 63, date: '08-21' },
-  // { weight: 62, date: '08-22' },
-  // { weight: 61, date: '08-23' },
-  // { weight: 59, date: '08-24' },
-  // { weight: 58, date: '08-25' },
-  // { weight: 57, date: '08-26' },
-  // { weight: 55, date: '08-28' },
-  // { weight: 57, date: '08-29' },
-  // { weight: 58, date: '08-30' },
-  // { weight: 59, date: '08-31' },
 ];
 
-const WeightChart = () => {
-  const { data: weights, isLoading } = useGetWeights();
-  if (isLoading) return <div>나우 로우딩...</div>;
-  console.log('WEIGHTS___', weights);
+type WeightChartType = {
+  date: string;
+  id: number;
+  userId: string;
+  weight: number;
+};
 
-  const minWeight = Math.min(...data.map((d) => d.weight));
-  const maxWeight = Math.max(...data.map((d) => d.weight));
-  const yAxisMin = Math.floor(minWeight / 10) * 10;
-  const yAxisMax = Math.ceil((maxWeight + 1) / 10) * 10;
+const WeightChart = ({ chartDatas }: { chartDatas: WeightChartType[] }) => {
+  const datas = chartDatas || data;
+  const avgWeight = (datas.reduce((acc, cur) => acc + cur.weight, 0) / datas.length).toFixed(2);
+  const minWeight = Math.min(...datas.map((d) => d.weight));
+  const maxWeight = Math.max(...datas.map((d) => d.weight));
+  const yAxisMin = Math.floor(Math.min(minWeight, 63) / 5) * 5;
+  const yAxisMax = Math.ceil(Math.max(maxWeight, 63) / 5) * 5;
+
+  console.log(chartDatas);
 
   return (
     <div className="size-full">
       <DateRange />
-      <ResponsiveContainer width="100%" minHeight={150}>
-        <LineChart data={data} margin={{ right: 10, left: -15 }}>
+      <ResponsiveContainer width="100%" minHeight={100}>
+        <LineChart data={datas} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
           <CartesianGrid stroke="gray" fill="white" />
           <XAxis dataKey="date" stroke="black" tick={{ fontSize: 12 }} />
           <YAxis
@@ -92,9 +76,57 @@ const WeightChart = () => {
             tickFormatter={(tick) => `${tick}kg`}
             stroke="black"
             tick={{ fontSize: 12 }}
+            tickCount={(yAxisMax - yAxisMin) / 5 + 1}
           />
           <Tooltip formatter={(value) => `${value}kg`} />
-          <Line dot={false} dataKey="weight" stroke="#8884d8" activeDot={{ r: 4 }} />
+          <Line dataKey="weight" stroke="#93c5fd" activeDot={{ r: 4 }} />
+          <ReferenceLine
+            y={avgWeight}
+            // label={{ value: `Avg: ${avgWeight}kg`, position: 'insideTopLeft', fill: 'green', fontSize: 12 }}
+            stroke="#32be65"
+            strokeDasharray="3 3"
+          />
+          <ReferenceLine
+            y={63}
+            // label={{ value: `Target: ${65}kg`, position: 'insideTopRight', fill: 'red', fontSize: 12 }}
+            stroke="#ff6a6a"
+            strokeDasharray="3 3"
+            ifOverflow="extendDomain"
+          />
+          <Legend
+            verticalAlign="top"
+            height={36}
+            content={({ payload }) => (
+              <ul className="p-0 text-xs flex justify-center gap-x-2">
+                {payload?.map((e, i) => (
+                  <li key={i} className="flex items-center gap-x-1">
+                    <div className={`${'size-2'} ${i == 0 ? 'bg-blue-300' : i == 1 ? 'bg-red-300' : 'bg-green-300'}`} />
+                    {e.value}
+                  </li>
+                ))}
+              </ul>
+            )}
+            payload={[
+              {
+                value: '체중',
+                type: 'square',
+                id: 'ID01',
+                color: '#93c5fd',
+              },
+              {
+                value: '목표',
+                type: 'square',
+                id: 'ID02',
+                color: 'red',
+              },
+              {
+                value: '평균',
+                type: 'square',
+                id: 'ID03',
+                color: 'green',
+              },
+            ]}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
