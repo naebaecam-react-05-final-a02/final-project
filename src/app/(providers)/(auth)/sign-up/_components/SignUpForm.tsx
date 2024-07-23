@@ -9,7 +9,6 @@ interface SignUpFormData {
   email: string;
   password: string;
   nickname: string;
-  verificationCode: string;
 }
 const MAX_ATTEMPTS = 3;
 
@@ -18,7 +17,6 @@ const SignUpForm = () => {
     email: '',
     password: '',
     nickname: '',
-    verificationCode: '',
   });
 
   const router = useRouter();

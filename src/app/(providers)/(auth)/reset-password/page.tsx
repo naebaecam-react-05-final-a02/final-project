@@ -1,7 +1,7 @@
-import ResetPasswordRequestForm from './_components/ResetPasswordProcess';
+import ResetPasswordProcess from './_components/ResetPasswordProcess';
 
 const ResetPasswordQuestPage = async () => {
-  return <ResetPasswordRequestForm />;
+  return <ResetPasswordProcess />;
 };
 
 export default ResetPasswordQuestPage;
