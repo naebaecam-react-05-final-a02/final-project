@@ -1,10 +1,15 @@
 import { createClient } from '@/supabase/server';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
-  const password = data.password as string;
-  const email = data.email as string;
+
+  if (typeof data.email !== 'string' || typeof data.password !== 'string' || typeof data.keepLoggedIn !== 'boolean') {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+  }
+  console.log(data);
+  const { email, password, keepLoggedIn } = data;
 
   const supabase = createClient();
   const {
@@ -19,6 +24,19 @@ export async function POST(request: NextRequest) {
   }
   if (!user) {
     return NextResponse.json({ message: 'Sign in process initiated, but no data returned' }, { status: 200 });
+  }
+
+  // 로그인 상태 유지 옵션을 쿠키에 저장
+  if (keepLoggedIn) {
+    cookies().set('keepLoggedIn', 'true', {
+      httpOnly: true,
+      secure: false, // secure: process.env.NODE_ENV === 'production', 배포 시 변경
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 30 * 24 * 60 * 60, // 30일
+    });
+  } else {
+    cookies().delete('keepLoggedIn');
   }
 
   return NextResponse.json(user);

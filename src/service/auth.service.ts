@@ -31,23 +31,16 @@ class AuthAPI {
   };
 
   // 로그인
-  signIn = async (email: string, password: string): Promise<UserInfo> => {
+  signIn = async (email: string, password: string, keepLoggedIn: boolean): Promise<UserInfo> => {
     try {
       const response = await axios.post(
         `${this.baseUrl}/log-in`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        },
+        { email, password, keepLoggedIn },
+        { withCredentials: true },
       );
-      return response.data.user;
+
+      return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
       throw error;
     }
   };
