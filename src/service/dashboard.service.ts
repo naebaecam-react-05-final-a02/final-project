@@ -1,5 +1,5 @@
 import { Tables } from '@/types/supabase';
-import { getRangeOption } from '@/utils/chartRange';
+import { getRangeOption, RANGE_OPTIONS } from '@/utils/chartRange';
 import axios from 'axios';
 
 class DashBoardAPI {
@@ -11,7 +11,7 @@ class DashBoardAPI {
 
   getWeights = async (query: string) => {
     try {
-      const opt = getRangeOption(query);
+      const opt = getRangeOption(query) ?? RANGE_OPTIONS.last_7_days;
       const response = await axios.get<Tables<'weights'>[]>(`${this.baseUrl}/weights`, {
         params: { query: opt?.startDate },
       });

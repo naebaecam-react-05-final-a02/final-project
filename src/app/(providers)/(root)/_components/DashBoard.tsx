@@ -1,14 +1,15 @@
 'use client';
 
 import { useWeights } from '@/hooks/dashboard/useDashBoard';
+import { RANGE_OPTIONS } from '@/utils/chartRange';
 import GradeProgress from './GradeProgress';
 import TodoProgress from './TodoProgress';
 import WeightChart from './WeightChart';
 
 // 식단은 넘기는거 말고 오늘것만
-// 체중은 그래프, 날짜별? 날짜선택
+//TODO 그래프 불러오는동안(로딩) 없어지는거 손봐야함..
 const DashBoard = ({ query }: { query: string }) => {
-  const { data: weights, isLoading } = useWeights(query);
+  const { data: weights, isLoading } = useWeights(query ?? RANGE_OPTIONS.last_7_days);
 
   return (
     <main className="mb-2 flex flex-col gap-y-2">
