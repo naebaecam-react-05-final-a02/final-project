@@ -21,7 +21,7 @@ export const POST = async (request: NextRequest) => {
     for (const file of imageFiles) {
       const fileName = `diet_${crypto.randomUUID()}.${file.name.split('.').pop()}`;
       const { data: paths, error: uploadFileError } = await supabase.storage.from('dietImages').upload(fileName, file);
-      if (uploadFileError) return NextResponse.json({ error: 'Image upload Failed' }, { status: 400 });
+      if (uploadFileError) return NextResponse.json({ error: '이미지 등록 도중 실패했습니다' }, { status: 400 });
       images.push(paths.path);
     }
 
@@ -29,8 +29,8 @@ export const POST = async (request: NextRequest) => {
     const { error } = await supabase.from('diets').insert({ dietType, foodInfo, images, userId: user.id });
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
-    return NextResponse.json({ message: 'Diet uploaded successfully' }, { status: 200 });
+    return NextResponse.json({ message: '다이어트가 성공적으로 등록되었습니다' }, { status: 200 });
   } catch (e) {
-    return NextResponse.json({ message: 'Diet upload failed' }, { status: 400 });
+    return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
   }
 };
