@@ -1,15 +1,15 @@
 import { FoodType } from '@/types/diet';
 import { useState } from 'react';
 
-const useDietForm = () => {
-  const initialFoodData: FoodType = {
-    foodName: '',
-    kcal: 0,
-    carbohydrate: 0,
-    protein: 0,
-    fat: 0,
-  };
+const initialFoodData: FoodType = {
+  foodName: '',
+  kcal: 0,
+  carbohydrate: 0,
+  protein: 0,
+  fat: 0,
+};
 
+const useDietForm = () => {
   const [foodForms, setFoodForms] = useState<FoodType[]>([initialFoodData]);
 
   const handleChange = (index: number, field: keyof FoodType, value: string | number) => {
