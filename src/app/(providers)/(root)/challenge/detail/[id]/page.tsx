@@ -1,28 +1,21 @@
 import React from 'react';
 import Image from 'next/image';
-import { GetServerSideProps } from 'next';
-const fetchChallenge = async (id: number) => {
-  const res = await fetch(`http://localhost:3000/api/challenge/${id}`);
+
+const fetchChallengeData = async (id: number) => {
+  const res = await fetch(`http://localhost:3000/api/challenges/detail/?id=${id}`);
   if (!res.ok) {
-    throw new Error('Failed to fetch challenge');
+    throw new Error('Failed to fetch challenge data');
   }
   return res.json();
 };
 
 const ChallengeDetailPage = async ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
-  const challenge = await fetchChallenge(id);
+  const challenge = await fetchChallengeData(id);
 
   if (!challenge) {
     return <div>없따!</div>;
   }
-  //
-  // const {id} = params
-  // const { data: challenge, isPending, isError, error } = useChallenge(+id);
-  // console.log('@@ challenge', challenge)
-  // if (isPending) return <div>Loading...</div>;
-  // if (error) return <div>Error</div>;
-  // if (!challenge) return <div>No challenges found</div>; // 데이터가 없을 경우 처리
 
   return (
     <div className="h-screen">
