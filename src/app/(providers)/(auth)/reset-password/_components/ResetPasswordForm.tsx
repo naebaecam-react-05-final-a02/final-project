@@ -11,7 +11,7 @@ const ResetPasswordForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { mutate: resetPassword, isPending } = useResetPassword();
-
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -19,6 +19,7 @@ const ResetPasswordForm = () => {
       return;
     }
 
+    // setIsPending(true);
     setError(null);
 
     const token = searchParams.get('code');
