@@ -5,15 +5,8 @@ export const usersQueryKeys = {
 };
 
 export const queryOptions = {
-  dashboard: () => ({
-    queryKey: usersQueryKeys.all,
-    queryFn: async () => {
-      const weights = await api.dashboard.getWeightsData();
-
-      if (!weights) {
-        throw new Error('weights not found');
-      }
-      return weights;
-    },
+  weights: (query: string) => ({
+    queryKey: ['weights', { query }],
+    queryFn: async () => api.dashboard.getWeights(query),
   }),
 };

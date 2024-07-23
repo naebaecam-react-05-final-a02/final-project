@@ -1,5 +1,6 @@
 'use client';
 
+import { Tables } from '@/types/supabase';
 import {
   CartesianGrid,
   Legend,
@@ -13,62 +14,20 @@ import {
 } from 'recharts';
 import DateRange from './DateRange';
 
-const data = [
-  { weight: 60, date: '07-01' },
-  { weight: 62, date: '07-02' },
-  { weight: 63, date: '07-03' },
-  { weight: 63, date: '07-04' },
-  { weight: 64, date: '07-05' },
-  { weight: 65, date: '07-06' },
-  { weight: 65, date: '07-07' },
-  { weight: 66, date: '07-08' },
-  { weight: 65, date: '07-09' },
-  { weight: 63, date: '07-10' },
-  { weight: 61, date: '07-11' },
-  { weight: 59, date: '07-12' },
-  { weight: 58, date: '07-13' },
-  { weight: 58, date: '07-14' },
-  { weight: 60, date: '07-15' },
-  { weight: 63, date: '07-16' },
-  { weight: 64, date: '07-16' },
-  { weight: 63, date: '07-17' },
-  { weight: 65, date: '07-18' },
-  { weight: 66, date: '07-19' },
-  { weight: 65, date: '07-20' },
-  { weight: 63, date: '07-21' },
-  { weight: 62, date: '07-22' },
-  { weight: 61, date: '07-23' },
-  { weight: 59, date: '07-24' },
-  { weight: 58, date: '07-25' },
-  { weight: 57, date: '07-26' },
-  { weight: 55, date: '07-28' },
-  { weight: 57, date: '07-29' },
-  { weight: 58, date: '07-30' },
-  { weight: 59, date: '07-31' },
-];
-
-type WeightChartType = {
-  date: string;
-  id: number;
-  userId: string;
-  weight: number;
-};
-
-const WeightChart = ({ chartDatas }: { chartDatas: WeightChartType[] }) => {
-  const datas = chartDatas || data;
-  const avgWeight = (datas.reduce((acc, cur) => acc + cur.weight, 0) / datas.length).toFixed(2);
-  const minWeight = Math.min(...datas.map((d) => d.weight));
-  const maxWeight = Math.max(...datas.map((d) => d.weight));
+const WeightChart = ({ weightsData }: { weightsData: Tables<'weights'>[] }) => {
+  const avgWeight = (weightsData.reduce((acc, cur) => acc + cur.weight, 0) / weightsData.length).toFixed(2);
+  const minWeight = Math.min(...weightsData.map((d) => d.weight));
+  const maxWeight = Math.max(...weightsData.map((d) => d.weight));
   const yAxisMin = Math.floor(Math.min(minWeight, 63) / 5) * 5;
   const yAxisMax = Math.ceil(Math.max(maxWeight, 63) / 5) * 5;
 
-  console.log(chartDatas);
+  console.log('weightsData___', weightsData);
 
   return (
     <div className="size-full">
       <DateRange />
       <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
-        <LineChart data={datas} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
+        <LineChart data={weightsData} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
           <CartesianGrid stroke="gray" fill="white" strokeDasharray="3 3" />
           <XAxis
             dataKey="date"

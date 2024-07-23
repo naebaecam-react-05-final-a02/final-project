@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import DashBoard from './_components/DashBoard';
 
-const RootPage = () => {
+const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
   return (
     <div className="h-screen">
       <Link
@@ -10,7 +10,7 @@ const RootPage = () => {
       >
         Auth 관련
       </Link>
-      <DashBoard />
+      <DashBoard query={query} />
     </div>
   );
 };

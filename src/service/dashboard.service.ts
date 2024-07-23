@@ -1,4 +1,5 @@
 import { Tables } from '@/types/supabase';
+import { getRangeOption } from '@/utils/chartRange';
 import axios from 'axios';
 
 class DashBoardAPI {
@@ -8,13 +9,17 @@ class DashBoardAPI {
     this.baseUrl = baseUrl;
   }
 
-  getWeightsData = async () => {
+  getWeights = async (query: string) => {
     try {
-      const response = await axios.get<Tables<'weights'>>(`${this.baseUrl}`);
+      const opt = getRangeOption(query);
+      const response = await axios.get<Tables<'weights'>[]>(`${this.baseUrl}/weights`, {
+        params: { query: opt?.startDate },
+      });
+
       if (response.status === 204) {
-        throw new Error('User not found');
+        throw new Error('No content available for the requested query.');
       }
-      console.log('GET WEIGHTS DATA___', response);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
