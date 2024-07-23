@@ -4,16 +4,16 @@ import { useGetWeights } from '@/hooks/dashboard/useDashBoard';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 const data = [
-  { weight: 60, date: '07-15', test: 40 },
-  { weight: 73, date: '07-16', test: 54 },
-  { weight: 74, date: '07-16', test: 23 },
-  { weight: 53, date: '07-17', test: 76 },
-  { weight: 68, date: '07-18', test: 98 },
-  { weight: 66, date: '07-19', test: 66 },
-  { weight: 33, date: '07-20', test: 55 },
+  { weight: 60, date: '07-15' },
+  { weight: 73, date: '07-16' },
+  { weight: 74, date: '07-16' },
+  { weight: 53, date: '07-17' },
+  { weight: 68, date: '07-18' },
+  { weight: 66, date: '07-19' },
+  { weight: 33, date: '07-20' },
 ];
 
-const Chart = () => {
+const WeightChart = () => {
   const { data: weights, isLoading } = useGetWeights();
   if (isLoading) return <div>나우 로우딩...</div>;
   console.log('WEIGHTS___', weights);
@@ -36,10 +36,9 @@ const Chart = () => {
         />
         <Tooltip formatter={(value) => `${value}kg`} />
         <Line dot={false} dataKey="weight" stroke="blue" />
-        <Line dot={false} dataKey="test" stroke="red" />
       </LineChart>
     </ResponsiveContainer>
   );
 };
 
-export default Chart;
+export default WeightChart;

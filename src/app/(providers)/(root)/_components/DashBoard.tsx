@@ -1,6 +1,6 @@
-import Chart from './Chart';
 import GradeProgress from './GradeProgress';
 import TodoProgress from './TodoProgress';
+import WeightChart from './WeightChart';
 
 const DashBoard = () => {
   return (
@@ -36,7 +36,7 @@ const DashBoard = () => {
       {/* 체중 변화 그래프 */}
       <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col items-center justify-center select-none">
         <div>이번주</div>
-        <Chart />
+        <WeightChart />
       </div>
     </main>
   );
