@@ -2,6 +2,7 @@ import { createClient } from '@/supabase/server';
 import { Tables } from '@/types/supabase';
 import { getRangeOption, RANGE_OPTIONS } from '@/utils/chartRange';
 import Link from 'next/link';
+import DietLog from './_components/DietLog';
 import GradeProgress from './_components/GradeProgress';
 import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
@@ -56,7 +57,9 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         </div>
 
         {/* 식단 기록 */}
-        <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">식단 기록</div>
+        <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">
+          <DietLog />
+        </div>
 
         {/* 체중 변화 그래프 */}
         <div className="bg-gray-300 border-gray-500 border h-[200px] flex flex-col items-center justify-center select-none">
