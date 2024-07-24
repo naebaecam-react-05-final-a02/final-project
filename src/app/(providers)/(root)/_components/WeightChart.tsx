@@ -14,20 +14,18 @@ import {
 } from 'recharts';
 import DateRange from './DateRange';
 
-const WeightChart = ({ weightsData }: { weightsData: Tables<'weights'>[] }) => {
-  const avgWeight = (weightsData.reduce((acc, cur) => acc + cur.weight, 0) / weightsData.length).toFixed(2);
-  const minWeight = Math.min(...weightsData.map((d) => d.weight));
-  const maxWeight = Math.max(...weightsData.map((d) => d.weight));
+const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
+  const avgWeight = (weights.reduce((acc, cur) => acc + cur.weight, 0) / weights.length).toFixed(2);
+  const minWeight = Math.min(...weights.map((d) => d.weight));
+  const maxWeight = Math.max(...weights.map((d) => d.weight));
   const yAxisMin = Math.floor(Math.min(minWeight, 63) / 5) * 5;
   const yAxisMax = Math.ceil(Math.max(maxWeight, 63) / 5) * 5;
-
-  console.log('weightsData___', weightsData);
 
   return (
     <div className="size-full">
       <DateRange />
       <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
-        <LineChart data={weightsData} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
+        <LineChart data={weights} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
           <CartesianGrid stroke="gray" fill="white" strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
