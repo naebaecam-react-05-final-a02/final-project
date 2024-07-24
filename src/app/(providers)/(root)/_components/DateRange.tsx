@@ -1,6 +1,6 @@
 'use client';
 
-import { RANGE_OPTIONS } from '@/utils/chartRange';
+import { RANGE_OPTIONS } from '@/utils/dateFormatter';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const DateRange = () => {

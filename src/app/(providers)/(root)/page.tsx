@@ -1,13 +1,14 @@
 import { createClient } from '@/supabase/server';
+import { DietsLogType } from '@/types/diet';
 import { Tables } from '@/types/supabase';
-import { getRangeOption, RANGE_OPTIONS } from '@/utils/chartRange';
+import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
 import Link from 'next/link';
 import DietsLog from './_components/DietsLog';
 import GradeProgress from './_components/GradeProgress';
 import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
 
-export const getWeightsData = async (query: string) => {
+const getWeightsData = async (query: string) => {
   const supabase = createClient();
   const {
     data: { user },
@@ -18,8 +19,28 @@ export const getWeightsData = async (query: string) => {
   return response.data as Tables<'weights'>[];
 };
 
+const getTodayDiets = async () => {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const response = await supabase
+    .from('diets')
+    .select('*')
+    .eq('userId', user?.id)
+    .gte('date', getStartOfDayISO())
+    .lte('date', getEndOfDayISO())
+    .order('date');
+
+  return response.data as DietsLogType;
+};
+
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
-  const weights = await getWeightsData(getRangeOption(query)?.startDate ?? RANGE_OPTIONS.last_7_days.startDate);
+  const [weights, diets] = await Promise.all([
+    getWeightsData(getRangeOption(query)?.startDate ?? RANGE_OPTIONS.last_7_days.startDate),
+    getTodayDiets(),
+  ]);
 
   return (
     <div className="h-screen">
@@ -58,7 +79,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
         {/* 식단 기록 */}
         <div className="bg-gray-300 border-gray-500 border  flex items-center justify-center">
-          <DietsLog />
+          {diets && <DietsLog diets={diets} />}
         </div>
 
         {/* 체중 변화 그래프 */}
