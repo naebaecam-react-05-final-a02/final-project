@@ -5,8 +5,9 @@ import { useCheckDuplicate, useSignUp } from '@/hooks/auth/useUsers';
 import { FormState } from '@/types/auth';
 import Link from 'next/link';
 import { useState } from 'react';
-import { validatePassword } from '../../_utils/passwordValidation';
-import EssentialInfoForm from './EssentialInfoForm';
+import { validatePassword } from '../../../_utils/passwordValidation';
+import AdditionalInfoForm from '../AdditionalInfoForm';
+import EssentialInfoForm from '../EssentialInfoForm/EssentialInfoForm';
 
 const SignUpForm = () => {
   const [currentStep, setCurrentStep] = useState('essentialInfo');
@@ -46,6 +47,19 @@ const SignUpForm = () => {
   };
 
   const handleCheckDuplicate = async (field: 'email' | 'nickname') => {
+    if (!formState[field].value.trim()) {
+      setFormState((prev) => ({
+        ...prev,
+        [field]: {
+          ...prev[field],
+          error: `${field === 'email' ? '이메일' : '닉네임'}을 입력해주세요.`,
+          successMessage: null,
+          isVerified: false,
+        },
+      }));
+      return; // 함수 실행 중단
+    }
+
     setFormState((prev) => ({
       ...prev,
       [field]: {
@@ -75,6 +89,19 @@ const SignUpForm = () => {
           ...prev[field],
           error: '중복 확인 중 오류가 발생했습니다.',
           isChecking: false,
+        },
+      }));
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormState((prev) => ({
+        ...prev,
+        profileImage: {
+          value: file,
+          error: null,
         },
       }));
     }
@@ -121,15 +148,40 @@ const SignUpForm = () => {
 
   const handleAdditionalInfoSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    let hasError = false;
+    const newFormState = { ...formState };
 
-    // 추가 정보 유효성 검사 (필요한 경우) nullable이라 필요한 가?
+    // 추가 정보 유효성 검사
+    if (newFormState.height?.value) {
+      if (Number(newFormState.height.value) < 100 || Number(newFormState.height.value) > 250) {
+        newFormState.height.error = '유효한 키를 입력해주세요 (100cm ~ 250cm).';
+        hasError = true;
+      } else {
+        newFormState.height.error = null;
+      }
+    }
 
+    if (newFormState.weight?.value) {
+      if (Number(newFormState.weight.value) < 30 || Number(newFormState.weight.value) > 300) {
+        newFormState.weight.error = '유효한 몸무게를 입력해주세요 (30kg ~ 300kg).';
+        hasError = true;
+      } else {
+        newFormState.weight.error = null;
+      }
+    }
+
+    if (hasError) {
+      setFormState(newFormState);
+      return;
+    }
     try {
       const signUpData = {
         email: formState.email.value,
         nickname: formState.nickname.value,
         password: formState.password.value,
-        // 키, 프로필, 몸무게 추가
+        height: formState.height?.value,
+        weight: formState.weight?.value,
+        profileImage: formState.profileImage?.value,
       };
       await signUpAsync(signUpData);
       nextStep(); // 성공 페이지로 이동
@@ -157,12 +209,13 @@ const SignUpForm = () => {
         />
       )}
       {currentStep === 'additionalInfo' && (
-        <form
-          className="flex flex-col gap-4 items-center justify-center w-full max-w-[390px] sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px]"
-          onSubmit={handleAdditionalInfoSubmit}
-        >
-          {/* 추가 정보 필드들 */}
-          {/* 예: 프로필 이미지, 키, 몸무게 등 */}
+        <>
+          <AdditionalInfoForm
+            formState={formState}
+            handleChange={handleChange}
+            handleImageChange={handleImageChange}
+            onSubmit={handleAdditionalInfoSubmit}
+          />
           <div className="flex gap-2">
             <button
               type="button"
@@ -179,7 +232,7 @@ const SignUpForm = () => {
               {isSignUpPending ? '처리 중...' : '회원가입'}
             </button>
           </div>
-        </form>
+        </>
       )}
       {currentStep === 'success' && (
         <div className="text-center">

@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react';
 
+// 회원가입 폼 상태
 export interface FormState {
   email: {
     value: string;
@@ -36,10 +37,18 @@ export interface FormState {
     error: string | null;
   };
 }
-
+// 필수 입력 사항 폼 props
 export interface EssentialInfoFormProps {
   formState: FormState;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleCheckDuplicate: (field: 'email' | 'nickname') => Promise<void>;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+}
+
+//선택 입력 사항 폼 props
+export interface AdditionalInfoFormProps {
+  formState: FormState;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }

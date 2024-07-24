@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
-
+  console.log(data);
   const nickname = data.nickname as string;
   const password = data.password as string;
   const email = data.email as string;
