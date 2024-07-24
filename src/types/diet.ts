@@ -1,3 +1,7 @@
+import { Tables } from './supabase';
+
+export type DietTableType = Tables<'diets'>;
+
 export type DietType = {
   dietType: DietTimeType;
   images: File[];
