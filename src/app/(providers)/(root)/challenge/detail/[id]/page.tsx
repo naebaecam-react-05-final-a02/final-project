@@ -19,7 +19,6 @@ const ChallengeDetailPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="h-screen">
-      <header className="h-14 bg-amber-600">헤더</header>
       <main className="bg-amber-300 pb-7">
         <Image
           src={challenge.imageURL}
@@ -40,9 +39,7 @@ const ChallengeDetailPage = async ({ params }: { params: { id: string } }) => {
           </div>
           <div>
             <div className="mb-4">참여 인증 방법</div>
-            <p>
-              {challenge.verify}
-            </p>
+            <p>{challenge.verify}</p>
           </div>
           <div>
             <h1>후기</h1>
