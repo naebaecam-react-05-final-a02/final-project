@@ -9,7 +9,7 @@ const ChallengeReviewForm = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const newReview = {  content, title };
+    const newReview = { content, title };
 
     const response = await fetch('http://localhost:3000/api/challenges/review', {
       method: 'POST',
@@ -32,12 +32,7 @@ const ChallengeReviewForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <label>제목</label>
-      <input
-        type="text"
-        placeholder="제목을 입력하시오"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <input type="text" placeholder="제목을 입력하시오" value={title} onChange={(e) => setTitle(e.target.value)} />
       <div>
         별점
         {/*<StartRating rating={rating} setRating={setRating} />*/}
