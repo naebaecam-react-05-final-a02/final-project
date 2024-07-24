@@ -1,5 +1,6 @@
 'use client';
 
+import { RANGE_OPTIONS } from '@/utils/chartRange';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const DateRange = () => {
@@ -16,21 +17,15 @@ const DateRange = () => {
   };
   return (
     <div className="flex text-xs gap-x-2 justify-around">
-      <button onClick={() => handleRange('last_7_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
-        7일
-      </button>
-      <button onClick={() => handleRange('last_30_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
-        30일
-      </button>
-      <button onClick={() => handleRange('last_90_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
-        90일
-      </button>
-      <button onClick={() => handleRange('last_365_days')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
-        365일
-      </button>
-      <button onClick={() => handleRange('all_time')} className=" bg-blue-300 flex-1 py-px px-2 rounded">
-        All
-      </button>
+      {Object.entries(RANGE_OPTIONS).map(([key, value]) => (
+        <button
+          key={key}
+          onClick={() => handleRange(key)}
+          className="bg-white rounded py-px flex-1 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]"
+        >
+          {value.label}
+        </button>
+      ))}
     </div>
   );
 };
