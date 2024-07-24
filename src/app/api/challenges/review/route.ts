@@ -5,18 +5,58 @@ export async function POST(request: NextRequest) {
   const supabase = createClient();
 
   try {
-    const { content, title } = await request.json();
-    const {data: { user }} = await supabase.auth.getUser()
-    if (!content || !title) {
+    const formData = await request.formData();
+    const content = formData.get('content') as string;
+    const title = formData.get('title') as string;
+    const files = formData.getAll('imageFiles') as File[];
+
+    // const {data: { user }} = await supabase.auth.getUser();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ message: '인증 오류입니다.' }, { status: 401 });
+    }
+
+    if (!content || !title || files.length === 0) {
       return NextResponse.json({ message: '모든 필드를 채워주세요' }, { status: 400 });
     }
-    console.log('@@ user', user)
-    const userId = user?.id;
-    console.log('@@ userId', userId)
-    if(!userId){
+
+    const userId = user.id;
+    console.log('@@ userId', userId);
+    if (!userId) {
       return;
     }
-    const { data, error } = await supabase.from('challengeReviews').insert({ content,  title, userId:userId, rating:1, challengeId:15}).select();
+
+    // 이미지 파일을 Supabase 스토리지에 업로드
+    const imageUrls: string[] = [];
+    for (const file of files) {
+      const fileName = `review_${crypto.randomUUID()}.${file.name.split('.').pop()}`;
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('challengeReviewImages')
+        .upload(fileName, file);
+      if (storageError) {
+        throw storageError;
+      }
+      imageUrls.push(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/challengeReviewImages/${fileName}`,
+      );
+    }
+    console.log('@@ imageUrls', imageUrls);
+    // 리뷰 정보와 이미지 URL을 데이터베이스에 저장
+    const { data, error } = await supabase
+      .from('challengeReviews')
+      .insert({
+        content,
+        title,
+        userId,
+        rating: 5,
+        challengeId: 16,
+        reviewImages: imageUrls,
+      })
+      .select();
 
     if (error) {
       throw error;
