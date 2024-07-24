@@ -175,15 +175,16 @@ const SignUpForm = () => {
       return;
     }
     try {
-      const signUpData = {
-        email: formState.email.value,
-        nickname: formState.nickname.value,
-        password: formState.password.value,
-        height: formState.height?.value,
-        weight: formState.weight?.value,
-        profileImage: formState.profileImage?.value,
-      };
-      await signUpAsync(signUpData);
+      const formData = new FormData();
+      formData.append('email', formState.email.value);
+      formData.append('nickname', formState.nickname.value);
+      formData.append('password', formState.password.value);
+      if (formState.height?.value) formData.append('height', formState.height.value);
+      if (formState.weight?.value) formData.append('weight', formState.weight.value);
+      if (formState.profileImage?.value) formData.append('profileImage', formState.profileImage.value);
+
+      console.log('FormData content:', Object.fromEntries(formData));
+      await signUpAsync(formData);
       nextStep(); // 성공 페이지로 이동
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);

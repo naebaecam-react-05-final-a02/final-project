@@ -52,3 +52,13 @@ export interface AdditionalInfoFormProps {
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
+
+// 회원가입 필요한 사용자 정보
+export interface SignUpFields {
+  email: string;
+  password: string;
+  nickname: string;
+  height?: string;
+  weight?: string;
+  profileImage?: File | null;
+}

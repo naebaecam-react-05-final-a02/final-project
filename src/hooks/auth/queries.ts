@@ -21,8 +21,7 @@ export const queryOptions = {
 
 export const mutationOptions = {
   signUp: {
-    mutationFn: (data: { email: string; password: string; nickname: string }) =>
-      api.auth.signUp(data.email, data.password, data.nickname),
+    mutationFn: (data: FormData) => api.auth.signUp(data),
   },
   signIn: {
     mutationFn: (data: { email: string; password: string; keepLoggedIn: boolean }) =>

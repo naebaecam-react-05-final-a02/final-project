@@ -12,13 +12,13 @@ class AuthAPI {
   }
 
   // 회원가입
-  signUp = async (email: string, password: string, nickname: string): Promise<UserInfo> => {
-    console.log(email, password, nickname);
+  signUp = async (data: FormData): Promise<UserInfo> => {
+    console.log(data);
     try {
-      const response = await axios.post(`${this.baseUrl}/sign-up`, {
-        email,
-        password,
-        nickname,
+      const response = await axios.post(`${this.baseUrl}/sign-up`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       return response.data;
