@@ -34,6 +34,10 @@ export const mutationOptions = {
   socialSignIn: () => ({
     mutationFn: (provider: Provider) => api.auth.signInWithOAuth(provider),
   }),
+  checkDuplicate: {
+    mutationFn: (data: { field: 'email' | 'nickname'; value: string }) =>
+      api.auth.checkDuplicate(data.field, data.value),
+  },
   requestPasswordReset: {
     mutationFn: (email: string) => api.auth.requestPasswordReset(email),
   },

@@ -17,6 +17,9 @@ export const useSignOut = (options?: Omit<UseMutationOptions, 'mutationFn'>) =>
 // 소셜로그인
 export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn());
 
+// 이메일 또는 닉네임 중복 확인
+export const useCheckDuplicate = () => useMutation(mutationOptions.checkDuplicate);
+
 // 비밀번호 재설정 요청
 export const useRequestPasswordReset = () => useMutation(mutationOptions.requestPasswordReset);
 

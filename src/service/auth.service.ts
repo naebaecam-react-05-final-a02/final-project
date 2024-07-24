@@ -74,6 +74,19 @@ class AuthAPI {
     }
   };
 
+  // 이메일 또는 닉네임 중복 확인
+  checkDuplicate = async (field: 'email' | 'nickname', value: string): Promise<boolean> => {
+    try {
+      const response = await axios.post(`${this.baseUrl}/sign-up/check-duplicate`, { field, value });
+      return response.data.available;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   // 소셜 로그인
   signInWithOAuth = async (provider: Provider): Promise<void> => {
     try {

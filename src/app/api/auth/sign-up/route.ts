@@ -23,9 +23,9 @@ export async function POST(request: NextRequest) {
     },
   });
   if (signUpError) {
+    console.error('Sign up error:', signUpError);
     return NextResponse.json({ error: signUpError.message }, { status: 400 });
   }
-
   if (!user) {
     return NextResponse.json({ message: 'Sign up process initiated, but no data returned' }, { status: 200 });
   }
