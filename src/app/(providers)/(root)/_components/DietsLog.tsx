@@ -28,7 +28,7 @@ const DietsLog = ({ diets }: { diets: DietsLogType }) => {
             <p className="text-gray-500 text-[11px]">Kcal</p>
           </div>
         </div>
-        <div className="grid place-items-center flex-1 divide-y-[1px] divide-gray-300">
+        <div className="divide-y-[1px] divide-gray-300">
           <div className="flex justify-around w-full divide-x-[1px] divide-gray-300  font-bold p-2">
             <div className="w-full flex-1 flex justify-center items-center">탄수화물</div>
             <div className="w-full flex-1 flex justify-center items-center">단백질</div>
