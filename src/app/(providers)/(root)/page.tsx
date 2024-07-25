@@ -60,11 +60,22 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
         {/* 등급/투두 진행 상황 */}
         <div className="grid grid-cols-2 gap-x-1">
-          <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col gap-y-4 items-center justify-center">
+          <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col gap-y-4 items-center justify-center overflow-hidden">
             <h3>등급</h3>
-            <div className="flex flex-col gap-y-1 w-[140px] justify-center items-center">
-              <h4 className="font-bold">Lv.2</h4>
+            <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
+              <div className="absolute -left-[90px] -bottom-5 -rotate-[30deg] bg-[#37cc85] w-[100px] h-2" />
+              <div className="absolute -left-2 rounded-full bg-[#37cc85]/30 p-[2px] size-4 z-10 flex justify-center items-center">
+                <div className="size-full rounded-full bg-white p-px flex justify-center items-center">
+                  <div className="size-full rounded-full bg-[#37cc85]"></div>
+                </div>
+              </div>
               <GradeProgress />
+              <div className="absolute -right-2 rounded-full bg-[#37cc85]/30 p-[2px] size-4 z-10 flex justify-center items-center">
+                <div className="size-full rounded-full bg-white p-px flex justify-center items-center">
+                  <div className="size-full rounded-full bg-[#37cc85]"></div>
+                </div>
+              </div>
+              <div className="absolute -right-[90px] -top-5 -rotate-[30deg] bg-[#37cc85] w-[100px] h-2" />
             </div>
           </div>
           <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col items-center justify-center">
