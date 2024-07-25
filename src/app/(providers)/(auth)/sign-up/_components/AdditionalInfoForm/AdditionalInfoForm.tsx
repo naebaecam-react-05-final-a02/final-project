@@ -1,11 +1,77 @@
-import { AdditionalInfoFormProps } from '@/types/auth';
+import { AdditionalInfoFormProps, FormState } from '@/types/auth';
 import Image from 'next/image';
 
-const AdditionalInfoForm = ({ formState, handleChange, handleImageChange, onSubmit }: AdditionalInfoFormProps) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit(e);
+const AdditionalInfoForm = ({ formState, setFormState, onSubmit }: AdditionalInfoFormProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name as keyof FormState],
+        value,
+        error: null,
+      },
+    }));
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormState((prev) => ({
+        ...prev,
+        profileImage: {
+          value: file,
+          error: null,
+        },
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let hasError = false;
+    const newFormState = { ...formState };
+
+    // 추가 정보 유효성 검사
+    if (newFormState.height?.value) {
+      if (Number(newFormState.height.value) < 100 || Number(newFormState.height.value) > 250) {
+        newFormState.height.error = '유효한 키를 입력해주세요 (100cm ~ 250cm).';
+        hasError = true;
+      } else {
+        newFormState.height.error = null;
+      }
+    }
+
+    if (newFormState.weight?.value) {
+      if (Number(newFormState.weight.value) < 30 || Number(newFormState.weight.value) > 300) {
+        newFormState.weight.error = '유효한 몸무게를 입력해주세요 (30kg ~ 300kg).';
+        hasError = true;
+      } else {
+        newFormState.weight.error = null;
+      }
+    }
+
+    if (hasError) {
+      setFormState(newFormState);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('email', formState.email.value);
+    formData.append('nickname', formState.nickname.value);
+    formData.append('password', formState.password.value);
+    if (formState.height?.value) formData.append('height', formState.height.value);
+    if (formState.weight?.value) formData.append('weight', formState.weight.value);
+    if (formState.profileImage?.value) formData.append('profileImage', formState.profileImage.value);
+
+    try {
+      await onSubmit(formData);
+    } catch (error) {
+      console.error('회원가입 중 오류 발생:', error);
+      // 에러 처리 로직 추가
+    }
+  };
+
   return (
     <form
       onSubmit={handleSubmit}

@@ -11,7 +11,7 @@ import EssentialInfoForm from '../EssentialInfoForm/EssentialInfoForm';
 import WelcomePreviewSlider from '../WelcomePreviewSlider/WelcomePreviewSlider';
 
 const SignUpForm = () => {
-  const [currentStep, setCurrentStep] = useState('success');
+  const [currentStep, setCurrentStep] = useState('essentialInfo');
   const [formState, setFormState] = useState<FormState>(initialFormState);
 
   const { mutateAsync: signUpAsync, isPending: isSignUpPending, error: signUpError } = useSignUp();
@@ -24,20 +24,6 @@ const SignUpForm = () => {
     confirmPassword: (value: string, password: string) => (value !== password ? '비밀번호가 일치하지 않습니다.' : null),
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormState((prev) => ({
-      ...prev,
-      [name]: {
-        ...prev[name as keyof FormState],
-        value,
-        error: null,
-        successMessage: null,
-        isVerified: false,
-      },
-    }));
-  };
-
   const nextStep = () => {
     if (currentStep === 'essentialInfo') setCurrentStep('additionalInfo');
     else if (currentStep === 'additionalInfo') setCurrentStep('success');
@@ -47,148 +33,12 @@ const SignUpForm = () => {
     if (currentStep === 'additionalInfo') setCurrentStep('essentialInfo');
   };
 
-  const handleCheckDuplicate = async (field: 'email' | 'nickname') => {
-    if (!formState[field].value.trim()) {
-      setFormState((prev) => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          error: `${field === 'email' ? '이메일' : '닉네임'}을 입력해주세요.`,
-          successMessage: null,
-          isVerified: false,
-        },
-      }));
-      return; // 함수 실행 중단
-    }
-
-    setFormState((prev) => ({
-      ...prev,
-      [field]: {
-        ...prev[field],
-        isChecking: true,
-      },
-    }));
-
+  const handleSignUp = async (formData: FormData) => {
     try {
-      const result = await checkDuplicate({ field, value: formState[field].value });
-
-      setFormState((prev) => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          error: result ? null : `이미 사용 중인 ${field === 'email' ? '이메일' : '닉네임'}입니다.`,
-          successMessage: result ? `사용 가능한 ${field === 'email' ? '이메일' : '닉네임'}입니다.` : null,
-          isVerified: result,
-          isChecking: false,
-        },
-      }));
-    } catch (error) {
-      console.error(`${field} 중복 확인 중 오류 발생:`, error);
-      setFormState((prev) => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          error: '중복 확인 중 오류가 발생했습니다.',
-          isChecking: false,
-        },
-      }));
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormState((prev) => ({
-        ...prev,
-        profileImage: {
-          value: file,
-          error: null,
-        },
-      }));
-    }
-  };
-
-  const handleEssentialInfoNext = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    let hasError = false;
-    const newFormState = { ...formState };
-
-    // 모든 필수 필드 유효성 검사
-    for (const field of ['email', 'nickname', 'password', 'confirmPassword'] as const) {
-      let error = null;
-      if (field === 'confirmPassword') {
-        error = validationRules[field](newFormState[field].value, newFormState.password.value);
-      } else {
-        error = validationRules[field](newFormState[field].value);
-      }
-
-      if (error) {
-        newFormState[field].error = error;
-        hasError = true;
-      }
-    }
-
-    // 중복 확인 여부 체크
-    if (!newFormState.email.isVerified) {
-      newFormState.email.error = '이메일 중복 확인이 필요합니다.';
-      hasError = true;
-    }
-    if (!newFormState.nickname.isVerified) {
-      newFormState.nickname.error = '닉네임 중복 확인이 필요합니다.';
-      hasError = true;
-    }
-
-    if (hasError) {
-      setFormState(newFormState);
-      return;
-    }
-
-    nextStep();
-  };
-
-  const handleAdditionalInfoSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let hasError = false;
-    const newFormState = { ...formState };
-
-    // 추가 정보 유효성 검사
-    if (newFormState.height?.value) {
-      if (Number(newFormState.height.value) < 100 || Number(newFormState.height.value) > 250) {
-        newFormState.height.error = '유효한 키를 입력해주세요 (100cm ~ 250cm).';
-        hasError = true;
-      } else {
-        newFormState.height.error = null;
-      }
-    }
-
-    if (newFormState.weight?.value) {
-      if (Number(newFormState.weight.value) < 30 || Number(newFormState.weight.value) > 300) {
-        newFormState.weight.error = '유효한 몸무게를 입력해주세요 (30kg ~ 300kg).';
-        hasError = true;
-      } else {
-        newFormState.weight.error = null;
-      }
-    }
-
-    if (hasError) {
-      setFormState(newFormState);
-      return;
-    }
-    try {
-      const formData = new FormData();
-      formData.append('email', formState.email.value);
-      formData.append('nickname', formState.nickname.value);
-      formData.append('password', formState.password.value);
-      if (formState.height?.value) formData.append('height', formState.height.value);
-      if (formState.weight?.value) formData.append('weight', formState.weight.value);
-      if (formState.profileImage?.value) formData.append('profileImage', formState.profileImage.value);
-
-      console.log('FormData content:', Object.fromEntries(formData));
       await signUpAsync(formData);
-      nextStep(); // 성공 페이지로 이동
+      nextStep();
     } catch (error) {
-      console.error('회원가입 중 오류 발생:', error);
+      console.error('회원가입 중 오류 발생:', signUpError);
     }
   };
 
@@ -205,19 +55,14 @@ const SignUpForm = () => {
       {currentStep === 'essentialInfo' && (
         <EssentialInfoForm
           formState={formState}
-          handleChange={handleChange}
-          handleCheckDuplicate={handleCheckDuplicate}
-          onSubmit={handleEssentialInfoNext}
+          setFormState={setFormState}
+          checkDuplicate={async (field, value) => await checkDuplicate({ field, value })}
+          onNext={nextStep}
         />
       )}
       {currentStep === 'additionalInfo' && (
         <>
-          <AdditionalInfoForm
-            formState={formState}
-            handleChange={handleChange}
-            handleImageChange={handleImageChange}
-            onSubmit={handleAdditionalInfoSubmit}
-          />
+          <AdditionalInfoForm formState={formState} setFormState={setFormState} onSubmit={handleSignUp} />
           <div className="flex gap-2">
             <button
               type="button"
