@@ -24,3 +24,14 @@ export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>,
 
   return response.data as verificationsType[];
 };
+
+export const fetchVerificationTotalData = async (client: SupabaseClient<Database>, id: string) => {
+  const response = await client.from('challengeVerify').select('*').eq('challengeId', id);
+
+  const data = {
+    totalVerifications: response.data?.length,
+    totalUsers: new Set(response.data?.map((d) => d.userId)).size,
+  };
+
+  return data;
+};

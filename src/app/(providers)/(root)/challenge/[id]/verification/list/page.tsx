@@ -1,9 +1,10 @@
 import { createClient } from '@/supabase/server';
 import { verificationsType } from '@/types/challenge';
-import { fetchDataByInfinityQuery } from '@/utils/dataFetching';
+import { fetchDataByInfinityQuery, fetchVerificationTotalData } from '@/utils/dataFetching';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import VerificationList from './_components/VerificationList';
 
+//TODO hooks 작업?
 const ChallengeVerificationListPage = async ({ params }: { params: { id: string } }) => {
   const queryClient = new QueryClient();
   const supabase = createClient();
@@ -18,10 +19,12 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
     initialPageParam: 0,
   });
 
+  const counts = await fetchVerificationTotalData(supabase, params.id);
+
   return (
     <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <VerificationList />
+        <VerificationList counts={counts} />
       </HydrationBoundary>
     </div>
   );
