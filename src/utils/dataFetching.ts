@@ -4,10 +4,11 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 const DATA_PER_PAGE = 5;
 
-export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>, offset?: number) => {
+export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>, id: string, offset?: number) => {
   const query = client
     .from('challengeVerify')
     .select('*,users (id, nickname, email,profileURL)')
+    .eq('challengeId', id)
     .order('date', { ascending: false });
 
   if (offset) {

@@ -4,13 +4,13 @@ import { fetchDataByInfinityQuery } from '@/utils/dataFetching';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import VerificationList from './_components/VerificationList';
 
-const ChallengeVerificationListPage = async () => {
+const ChallengeVerificationListPage = async ({ params }: { params: { id: string } }) => {
   const queryClient = new QueryClient();
   const supabase = createClient();
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['verifications'],
-    queryFn: () => fetchDataByInfinityQuery(supabase),
+    queryFn: () => fetchDataByInfinityQuery(supabase, params.id),
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       const nextPage = lastPage.length ? allPage.length : undefined;
       return nextPage;
