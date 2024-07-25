@@ -1,21 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import StarRating from '@/app/(providers)/(root)/challenge/_components/StartRating';
+import { useParams } from 'next/navigation';
+import { useRegisterReview } from '@/hooks/review/useReview';
+
+export type ReviewFormData = {
+  content: string;
+  challengeId: string;
+  reviewImages: string[] | null;
+  title: string;
+  rating?: number;
+};
 
 const ChallengeReviewForm = () => {
+  const params = useParams();
+  const challengeId = params.id as string;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const { mutate: register, isPending } = useRegisterReview();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files);
       setFiles((prevFiles) => [...prevFiles, ...newFiles]);
 
-      const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+      const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
       setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
+    }
+  };
+
+  //이미지 지우기
+  const handleRemoveImage = (index: number) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setPreviewUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
+    // 파일 입력 필드 초기화
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -26,47 +50,39 @@ const ChallengeReviewForm = () => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
-    files.forEach(file => formData.append('imageFiles', file));
+    formData.append('challengeId', challengeId);
+    files.forEach((file) => formData.append('reviewImages', file));
     console.log('Submitting form data:', { title, content, files });
-
-    try {
-      const response = await fetch('/api/challenges/review', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        alert(errorResponse.message || '후기 등록에 실패했습니다.');
-        return;
-      }
-
-      const result = await response.json();
-      alert(result.message);
-    } catch (error) {
-      console.error('Error uploading review:', error);
-      alert('후기 등록에 실패했습니다.');
-    }
+    register(formData, {
+      onSuccess: () => {
+        console.log('@@ 등록되었습니다!');
+        //router push 추가
+      },
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <label>제목</label>
-      <input
-        type="text"
-        placeholder="제목을 입력하시오"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <input type="text" placeholder="제목을 입력하시오" value={title} onChange={(e) => setTitle(e.target.value)} />
       <div>
         별점
         <StarRating />
       </div>
       <label>이미지 업로드</label>
-      <input type="file" onChange={handleFileChange} />
-      <div className="image-previews">
+      <input type="file" onChange={handleFileChange} ref={fileInputRef} />
+      <div className="image-previews h-40 w-full overflow-y-auto flex flex-row gap-3">
         {previewUrls.map((url, index) => (
-          <img key={index} src={url} alt={`Preview ${index}`} className="preview-image" />
+          <div key={index} className="relative">
+            <img src={url} alt={`Preview ${index}`} className="preview-image object-cover h-full" />
+            <button
+              type="button"
+              onClick={() => handleRemoveImage(index)}
+              className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+            >
+              X
+            </button>
+          </div>
         ))}
       </div>
       <textarea
