@@ -31,6 +31,18 @@ class ChallengeAPI {
       throw error;
     }
   };
+
+  getChallengeDetail = async (id: number) => {
+    try {
+      const response = await axios.get(`${this.baseURL}s/detail?id=${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
 }
 
 export default ChallengeAPI;
