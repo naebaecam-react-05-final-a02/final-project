@@ -1,18 +1,17 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
+import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
+import { useGetReviews } from '@/hooks/review/useReview';
 
-const fetchChallengeData = async (id: number) => {
-  const res = await fetch(`http://localhost:3000/api/challenges/detail/?id=${id}`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch challenge data');
-  }
-  return res.json();
-};
-
-const ChallengeDetailPage = async ({ params }: { params: { id: string } }) => {
+const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
-  const challenge = await fetchChallengeData(id);
+  const { data: challenge } = useGetChallengeDetail(id);
+  const { data: reviews } = useGetReviews(id);
+  console.log('@@', reviews);
+  console.log('!!!!!', challenge);
 
+  //TODO: 로딩
   if (!challenge) {
     return <div>없따!</div>;
   }
@@ -44,18 +43,16 @@ const ChallengeDetailPage = async ({ params }: { params: { id: string } }) => {
           <div>
             <h1>후기</h1>
             <ul>
-              <li>
-                <div>
-                  <span>4.9</span>
-                  <p>
-                    유산소 안하고 집오기~~유산소 안하고 집오기~~유산소 안하고 집오기~~유산소 안하고 집오기~~유산소
-                    안하고 집오기~~
-                  </p>
-                  <span>작성자 - 소다</span>
-                </div>
-              </li>
-              <li></li>
-              <li></li>
+              {reviews &&
+                reviews.map((review) => (
+                  <li key={review.id} className="w-[180px] h-[110px] rounded-2xl border border-gray-100 p-2 bg-white">
+                    <div className="h-full">
+                      <span>{review.rating}</span>
+                      <p>{review.title}</p>
+                      <div className="overflow-hidden text-ellipsis line-clamp-2">{review.content}</div>
+                    </div>
+                  </li>
+                ))}
             </ul>
           </div>
           <button className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
