@@ -7,6 +7,7 @@ import DietsLog from './_components/DietsLog';
 import GradeProgress from './_components/GradeProgress';
 import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
+import ExerciseTodo from './diets/write/_components/ExerciseTodo';
 
 const getWeightsData = async (query: string) => {
   const supabase = createClient();
@@ -74,7 +75,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
         {/* 운동 투두 기록 */}
         <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">
-          운동 투두 기록
+          <ExerciseTodo />
         </div>
 
         {/* 식단 기록 */}
