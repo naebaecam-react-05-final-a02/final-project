@@ -4,10 +4,10 @@ import { Tables } from '@/types/supabase';
 import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
 import Link from 'next/link';
 import DietsLog from './_components/DietsLog';
+import ExerciseTodoList from './_components/ExerciseTodoList';
 import GradeProgress from './_components/GradeProgress';
 import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
-import ExerciseTodo from './diets/write/_components/ExerciseTodo';
 
 const getWeightsData = async (query: string) => {
   const supabase = createClient();
@@ -74,8 +74,8 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         </div>
 
         {/* 운동 투두 기록 */}
-        <div className="bg-gray-300 border-gray-500 border h-[140px] flex items-center justify-center">
-          <ExerciseTodo />
+        <div className="bg-gray-300 border-gray-500 border flex items-center justify-center">
+          <ExerciseTodoList />
         </div>
 
         {/* 식단 기록 */}
