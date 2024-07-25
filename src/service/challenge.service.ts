@@ -31,6 +31,18 @@ class ChallengeAPI {
       throw error;
     }
   };
+
+  getPopularChallenges = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/${this.baseURL}/popular`);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
 }
 
 export default ChallengeAPI;
