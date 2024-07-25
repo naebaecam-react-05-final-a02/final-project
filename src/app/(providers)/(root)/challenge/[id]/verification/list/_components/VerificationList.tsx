@@ -1,28 +1,70 @@
 'use client';
+
 import { createClient } from '@/supabase/client';
-import { fetchData } from '@/utils/utils';
+import { verificationsType } from '@/types/challenge';
+import { fetchDataByInfinityQuery } from '@/utils/dataFetching';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import VerificationCard from './VerificationCard';
+import VerificationCardSkeleton from './VerificationCardSkeleton';
 
 const VerificationList = () => {
+  const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
-  const { data } = useInfiniteQuery({
-    queryKey: ['ABC'],
-    queryFn: () => fetchData(supabase),
-    getNextPageParam: (lastPage: any) => lastPage.length + 1,
-    initialPageParam: 0,
+  const {
+    data: verifications,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['verifications'],
+    queryFn: ({ pageParam }) => fetchDataByInfinityQuery(supabase, pageParam),
+    getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
+      // console.log('LASTPAGE', lastPage);
+      // console.log('ALLPAGE', allPage);
+      const nextPage = lastPage.length === 5 ? allPage.length : undefined;
+      return nextPage;
+    },
+    initialPageParam: 1,
+    select: (data) => data.pages.flatMap((p) => p),
+    staleTime: Infinity,
   });
 
-  console.log('DATA___', data);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries, observer) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+          observer.unobserve(entries[0].target);
+        }
+      },
+      { threshold: 0.9 },
+    );
+
+    const currentRef = obsRef.current;
+
+    if (currentRef) obs.observe(currentRef);
+
+    return () => {
+      if (currentRef) obs.unobserve(currentRef);
+    };
+  }, [verifications, fetchNextPage, hasNextPage]);
+
   return (
-    <ul className="flex flex-col gap-y-4">
-      {Array.from({ length: 4 }, () => '1').map((_, i) => (
-        <li key={i}>
-          <VerificationCard />
-        </li>
-      ))}
-    </ul>
+    <>
+      <h4 className="text-right text-xs font-bold mb-5">오늘 벌써 총 456명이 인증했어요!</h4>
+      <ul className="flex flex-col gap-y-4">
+        {verifications?.map((verification, i) => (
+          <li key={verification.id}>
+            <VerificationCard verification={verification} />
+          </li>
+        ))}
+        {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
+      </ul>
+
+      {!isFetching && hasNextPage && <div ref={obsRef} className="h-20 w-full" />}
+    </>
   );
 };
 
