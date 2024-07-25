@@ -30,6 +30,7 @@ const AdditionalInfoForm = ({ formState, handleChange, handleImageChange, onSubm
             <label
               htmlFor="profileImage"
               className="absolute bottom-0 right-0 bg-green-500 rounded-full w-6 h-6 flex items-center justify-center cursor-pointer"
+              aria-label="profile-image-upload-button"
             >
               <span className="text-white text-xl">+</span>
             </label>
@@ -56,6 +57,7 @@ const AdditionalInfoForm = ({ formState, handleChange, handleImageChange, onSubm
             className="w-full bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
             value={formState.height?.value ?? ''}
             onChange={handleChange}
+            placeholder="선택사항"
           />
           {formState.height?.error && <p className="text-red-500 text-sm mt-1">{formState.height.error}</p>}
         </div>
@@ -71,6 +73,7 @@ const AdditionalInfoForm = ({ formState, handleChange, handleImageChange, onSubm
             className="w-full bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
             value={formState.weight?.value ?? ''}
             onChange={handleChange}
+            placeholder="선택사항"
           />
           {formState.weight?.error && <p className="text-red-500 text-sm mt-1">{formState.weight.error}</p>}
         </div>

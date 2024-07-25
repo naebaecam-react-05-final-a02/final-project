@@ -8,9 +8,10 @@ import { useState } from 'react';
 import { validatePassword } from '../../../_utils/passwordValidation';
 import AdditionalInfoForm from '../AdditionalInfoForm';
 import EssentialInfoForm from '../EssentialInfoForm/EssentialInfoForm';
+import WelcomePreviewSlider from '../WelcomePreviewSlider/WelcomePreviewSlider';
 
 const SignUpForm = () => {
-  const [currentStep, setCurrentStep] = useState('essentialInfo');
+  const [currentStep, setCurrentStep] = useState('success');
   const [formState, setFormState] = useState<FormState>(initialFormState);
 
   const { mutateAsync: signUpAsync, isPending: isSignUpPending, error: signUpError } = useSignUp();
@@ -236,9 +237,8 @@ const SignUpForm = () => {
         </>
       )}
       {currentStep === 'success' && (
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">회원가입 성공!</h2>
-          <p className="mb-4">회원가입이 성공적으로 완료되었습니다.</p>
+        <div className="flex flex-col items-center justify-center max-w-[390px]">
+          <WelcomePreviewSlider />
           <Link href="/" className="bg-blue-500 text-white px-4 py-2 rounded">
             홈으로 가기
           </Link>
