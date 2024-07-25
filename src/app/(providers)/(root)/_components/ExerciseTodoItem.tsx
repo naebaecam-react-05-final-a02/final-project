@@ -1,10 +1,18 @@
 'use client';
 
+import { Tables } from '@/types/supabase';
 import { useId, useState } from 'react';
 
-const ExerciseTodoItem = () => {
+const ExerciseTodoItem = ({ exercise }: { exercise: Tables<'exercises'> }) => {
   const id = useId();
   const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  let str = '';
+  if (exercise.sets) str += `${exercise.sets}세트 `;
+  if (exercise.weight) str += `${exercise.weight}kg `;
+  if (exercise.reps) str += `${exercise.reps}회 `;
+  if (exercise.duration) str += `${exercise.duration}분`;
+
   return (
     <div className="select-none bg-gradient-to-r from-[#292436] via-[#2e6e56] p-[2px] pt-0">
       <div className="flex items-center size-full bg-[#292436]">
@@ -20,8 +28,8 @@ const ExerciseTodoItem = () => {
             </div>
           </div>
           <div className="flex-1">
-            <div className="text-[#c9c6cb]">웜업 스트레칭</div>
-            <div className="text-[#585363]">15분</div>
+            <div className="text-[#c9c6cb]">{exercise.exeriseType}</div>
+            <div className="text-[#585363]">{str}</div>
           </div>
         </label>
         <div className="text-[#7d7984]">{'->'}</div>
