@@ -6,10 +6,10 @@ import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
-import FormImageUploader from '../../_components/FormImageUploader';
-import FormTextArea from '../../_components/FormTextArea';
+import FormImageUploader from '../../../_components/FormImageUploader';
+import FormTextArea from '../../../_components/FormTextArea';
 
-const ChallengeVerifyPage = ({ params }: { params: { id: string } }) => {
+const ChallengeVerificationRegisterPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
@@ -93,4 +93,4 @@ const ChallengeVerifyPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default ChallengeVerifyPage;
+export default ChallengeVerificationRegisterPage;
