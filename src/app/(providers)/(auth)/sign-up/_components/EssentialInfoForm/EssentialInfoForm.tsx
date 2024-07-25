@@ -8,10 +8,10 @@ const EssentialInfoForm = ({ formState, handleChange, handleCheckDuplicate, onSu
     >
       <div className="flex flex-col items-center w-2/3 sm:w-3/5 md:w-2/5 lg:w-1/3 xl:w-1/4">
         <div className="w-full">
-          <label htmlFor="email" className="block font-semibold text-[18px] mb-1.5">
+          <label htmlFor="email" className="block w-full font-semibold text-[18px] mb-1.5">
             이메일:
           </label>
-          <div className="flex">
+          <div className="flex w-full">
             <input
               type="email"
               id="email"
@@ -39,10 +39,10 @@ const EssentialInfoForm = ({ formState, handleChange, handleCheckDuplicate, onSu
 
       <div className="flex flex-col items-center w-2/3 sm:w-3/5 md:w-2/5 lg:w-1/3 xl:w-1/4">
         <div className="w-full">
-          <label htmlFor="nickname" className="block font-semibold text-[18px] mb-1.5">
+          <label htmlFor="nickname" className="w-full block font-semibold text-[18px] mb-1.5">
             닉네임:
           </label>
-          <div className="flex">
+          <div className="flex w-full">
             <input
               type="text"
               id="nickname"
