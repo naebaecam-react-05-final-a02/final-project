@@ -4,3 +4,7 @@ export interface TInputs {
   height: number;
   weight: number;
 }
+
+export interface ProfileFormTypes extends TInputs {
+  avatar: File | null;
+}

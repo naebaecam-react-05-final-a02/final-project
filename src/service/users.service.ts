@@ -1,13 +1,26 @@
-import { TInputs } from '@/app/(providers)/(root)/mypage/_types/types';
+import axios from 'axios';
 
-export const updateProfile = async (newProfile: TInputs) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/profile`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newProfile),
-  });
+class UsersAPI {
+  private baseUrl: string;
 
-  return response.status;
-};
+  constructor(baseUrl: string = '/api/users') {
+    this.baseUrl = baseUrl;
+  }
+
+  updateUserProfile = async ({ formData }: { formData: any }) => {
+    const response = await axios.patch(`${this.baseUrl}/profile`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(response);
+    return response;
+  };
+
+  deleteUserAvatar = async () => {
+    const response = await axios.delete(`${this.baseUrl}/profile/avatar`);
+    return response;
+  };
+}
+
+export default UsersAPI;

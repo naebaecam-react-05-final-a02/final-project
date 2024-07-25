@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const textInputVariants = cva('h-10 pl-2 text-sm ', {
+const textInputVariants = cva('h-10 pl-4 text-sm ', {
   variants: {
     intent: {
       enabled: 'bg-gray-100 text-gray-600 border-gray-500 border-b-[1px]',
@@ -29,7 +29,6 @@ const TextInput = ({ label, value, type = 'text', name, onChange, disabled = fal
       <label className="text-lg font-bold" htmlFor={name}>
         {label}
       </label>
-
       <input
         className={textInputVariants({ intent })}
         value={value}
