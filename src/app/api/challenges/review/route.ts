@@ -8,9 +8,8 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const content = formData.get('content') as string;
     const title = formData.get('title') as string;
-    const files = formData.getAll('imageFiles') as File[];
-
-    // const {data: { user }} = await supabase.auth.getUser();
+    const challengeId = formData.get('challengeId') as string;
+    const files = formData.getAll('reviewImages') as File[];
 
     const {
       data: { user },
@@ -53,7 +52,7 @@ export async function POST(request: NextRequest) {
         title,
         userId,
         rating: 5,
-        challengeId: 16,
+        challengeId,
         reviewImages: imageUrls,
       })
       .select();
@@ -65,6 +64,33 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: '후기가 성공적으로 등록되었습니다.', data }, { status: 200 });
   } catch (error) {
     console.error('@@ error', error);
-    return NextResponse.json({ message: '후기 등록에 실패했습니다.', error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: '후기 등록에 실패했습니다.', error: (error as Error).message },
+      { status: 500 },
+    );
+  }
+}
+
+// 후기 받아오기
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  const supabase = createClient();
+
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  }
+
+  try {
+    const { data, error } = await supabase.from('challengeReviews').select('*').eq('challengeId', id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
