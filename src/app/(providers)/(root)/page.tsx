@@ -59,7 +59,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         </div>
 
         {/* 등급/투두 진행 상황 */}
-        <div className="grid grid-cols-2 gap-x-1">
+        <div className="grid grid-cols-2 gap-x-1 select-none">
           <div className="bg-gray-300 border-gray-500 border h-[140px] flex flex-col gap-y-4 items-center justify-center overflow-hidden">
             <h3>등급</h3>
             <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
