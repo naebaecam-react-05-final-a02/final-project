@@ -34,7 +34,7 @@ class ChallengeAPI {
 
   getChallengeDetail = async (id: number) => {
     try {
-      const response = await axios.get(`${this.baseURL}s/detail?id=${id}`);
+      const response = await axios.get(`${this.baseURL}/detail?id=${id}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
