@@ -56,6 +56,8 @@ class ChallengeAPI {
   getPopularChallenges = async () => {
     try {
       console.log(1);
+      const url = `${this.baseURL}/popular`;
+      console.log('Request URL:', url);
       const response = await axios.get(`${this.baseURL}/popular`);
       console.log('response___', response);
       return response.data;
