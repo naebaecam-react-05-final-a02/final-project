@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import StarRating from '@/app/(providers)/(root)/challenge/_components/StartRating';
-import { useParams } from 'next/navigation';
 import { useRegisterReview } from '@/hooks/review/useReview';
+import { useParams } from 'next/navigation';
+import React, { useRef, useState } from 'react';
+import StarRating from '../StarRating/StarRating';
 
 export type ReviewFormData = {
   content: string;
