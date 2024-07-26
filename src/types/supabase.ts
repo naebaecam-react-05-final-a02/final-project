@@ -109,13 +109,13 @@ export type Database = {
       }
       challengeVerify: {
         Row: {
-          challengeId: number
-          date: string | null
-          id: number
-          imageURL: string
-          impression: string
-          userId: string
-        }
+          challengeId: number;
+          date: string | null;
+          id: number;
+          imageURL: string;
+          impression: string;
+          userId: string;
+        };
         Insert: {
           challengeId: number
           date?: string | null
@@ -125,13 +125,13 @@ export type Database = {
           userId: string
         }
         Update: {
-          challengeId?: number
-          date?: string | null
-          id?: number
-          imageURL?: string
-          impression?: string
-          userId?: string
-        }
+          challengeId?: number;
+          date?: string | null;
+          id?: number;
+          imageURL?: string;
+          impression?: string;
+          userId?: string;
+        };
         Relationships: [
           {
             foreignKeyName: "challengeParticipants_challengeId_fkey"
@@ -186,44 +186,44 @@ export type Database = {
       }
       exercises: {
         Row: {
-          date: string
-          distance: number | null
-          duration: number | null
-          exeriseType: string
-          id: number
-          repPerSets: number | null
-          reps: number | null
-          resistance: number | null
-          sets: number | null
-          userId: string
-          weight: number | null
-        }
+          date: string;
+          distance: number | null;
+          duration: number | null;
+          exeriseType: string;
+          id: number;
+          repPerSets: number | null;
+          reps: number | null;
+          resistance: number | null;
+          sets: number | null;
+          userId: string;
+          weight: number | null;
+        };
         Insert: {
-          date?: string
-          distance?: number | null
-          duration?: number | null
-          exeriseType: string
-          id?: number
-          repPerSets?: number | null
-          reps?: number | null
-          resistance?: number | null
-          sets?: number | null
-          userId: string
-          weight?: number | null
-        }
+          date?: string;
+          distance?: number | null;
+          duration?: number | null;
+          exeriseType: string;
+          id?: number;
+          repPerSets?: number | null;
+          reps?: number | null;
+          resistance?: number | null;
+          sets?: number | null;
+          userId: string;
+          weight?: number | null;
+        };
         Update: {
-          date?: string
-          distance?: number | null
-          duration?: number | null
-          exeriseType?: string
-          id?: number
-          repPerSets?: number | null
-          reps?: number | null
-          resistance?: number | null
-          sets?: number | null
-          userId?: string
-          weight?: number | null
-        }
+          date?: string;
+          distance?: number | null;
+          duration?: number | null;
+          exeriseType?: string;
+          id?: number;
+          repPerSets?: number | null;
+          reps?: number | null;
+          resistance?: number | null;
+          sets?: number | null;
+          userId?: string;
+          weight?: number | null;
+        };
         Relationships: [
           {
             foreignKeyName: "exercises_userId_fkey"
