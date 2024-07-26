@@ -7,6 +7,7 @@ import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
 
 //TODO 투두 달력으로 선택할수있어야함?
+//TODO 각 컴포넌트 안에서 데이터 없을때 표시해야함
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
   const { weights, diets, exercises } = await useDashBoard(query);
 
