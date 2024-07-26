@@ -1,3 +1,5 @@
+import { Tables } from './supabase';
+
 export type DietType = {
   dietType: DietTimeType;
   images: File[];
@@ -13,3 +15,5 @@ export type FoodType = {
   protein: number;
   fat: number;
 };
+
+export type DietsLogType = Omit<Tables<'diets'>, 'foodInfo'> & { foodInfo: FoodType[] }[];
