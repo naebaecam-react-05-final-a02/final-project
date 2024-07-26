@@ -1,7 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { mutationOptions, queryOptions } from './queries';
-import ChallengeAPI from '@/service/challenge.service';
-import api from '@/service/service';
 
 // 챌린지 리뷰 등록
 export const useRegisterReview = () => useMutation(mutationOptions.register);
