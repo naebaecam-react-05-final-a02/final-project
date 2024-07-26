@@ -67,6 +67,7 @@ const MyPage = () => {
   useEffect(() => {
     if (!isPending && data) {
       const { nickname, email, height, weight } = data;
+      if (!nickname || !email || !height || !weight) return;
       setInputs({ nickname, email, height, weight });
     }
   }, [isPending, data]);

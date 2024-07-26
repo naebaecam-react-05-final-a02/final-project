@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import ChallengeCard from '../ChallengeCard';
 
 interface ChallengeListProps {
@@ -9,7 +10,9 @@ const ChallengeList = ({ data }: ChallengeListProps) => {
     <ul className="grid grid-cols-2 gap-2">
       {data.map((challenge: any) => (
         <li key={challenge.id}>
-          <ChallengeCard challenge={challenge} />
+          <Link href={`/challenge/detail/${challenge.id}`}>
+            <ChallengeCard challenge={challenge} />
+          </Link>
         </li>
       ))}
     </ul>
