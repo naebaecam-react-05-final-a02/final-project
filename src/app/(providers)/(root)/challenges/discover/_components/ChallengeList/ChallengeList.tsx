@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import ChallengeCard from '../ChallengeCard';
 
-interface ChallengeListProps {
+export interface ChallengeListProps {
   data: any;
 }
 
