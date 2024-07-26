@@ -14,7 +14,7 @@ const GradeProgress = () => {
           fill="#37cc85"
           background={(props: any) => {
             const { x, y, width, height } = props;
-            return <rect x={x} y={y + 1} width={width} height={height - 2} fill="#424f50" rx={10} ry={10} />;
+            return <rect x={x} y={y + 1} width={width} height={height - 2} fill="#ffffff26" rx={10} ry={10} />;
           }}
           dataKey="value"
           radius={[10, 10, 10, 10]}
