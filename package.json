@@ -10,9 +10,10 @@
     "gen": "npx supabase gen types --lang=typescript --project-id abijrjpibayqrzanhqcq --schema public > src/types/supabase.ts"
   },
   "dependencies": {
+    "@emailjs/nodejs": "^4.0.4",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@tanstack/react-query": "^5.51.1",
+    "@tanstack/react-query": "^5.51.11",
     "@tanstack/react-query-devtools": "^5.51.1",
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
@@ -20,6 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "recharts": "^2.13.0-alpha.4",
+    "swiper": "^11.1.7",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

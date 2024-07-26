@@ -4,7 +4,7 @@ import axios from 'axios';
 class ChallengeAPI {
   private baseURL: string;
 
-  constructor(baseURL: string = '/api/challenge') {
+  constructor(baseURL: string = '/api/challenges') {
     this.baseURL = baseURL;
   }
 

@@ -1,3 +1,4 @@
+import NavBar from '@/components/common/NavBar';
 import UserProfile from '@/components/UserProfile';
 import React from 'react';
 
@@ -8,6 +9,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <UserProfile />
       </header>
       {children}
+      <NavBar />
     </div>
   );
 };
