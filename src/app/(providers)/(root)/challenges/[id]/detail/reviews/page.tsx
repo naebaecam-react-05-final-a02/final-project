@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import ChallengeReviewForm from '@/app/(providers)/(root)/challenge/_components/ChallengeReviewForm';
+import ChallengeReviewForm from '../_components/ChallengeReviewForm';
 
 const ChallengeReviewPage = () => {
   return (
