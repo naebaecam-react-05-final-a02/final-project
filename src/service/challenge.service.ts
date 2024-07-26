@@ -4,7 +4,7 @@ import axios from 'axios';
 class ChallengeAPI {
   private baseURL: string;
 
-  constructor(baseURL: string = '/api/challenge') {
+  constructor(baseURL: string = '/api/challenges') {
     this.baseURL = baseURL;
   }
 
@@ -20,7 +20,7 @@ class ChallengeAPI {
     }
   };
 
-  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id'>) => {
+  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/verify`, verifyData);
       return response.data;
