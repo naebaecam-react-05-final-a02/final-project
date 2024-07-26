@@ -53,6 +53,7 @@ const getExerciseTodoData = async () => {
   return response.data as Tables<'exercises'>[];
 };
 
+//TODO 투두 달력으로 선택할수있어야함?
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
   const [weights, diets, exercises] = await Promise.all([
     getWeightsData(getRangeOption(query)?.startDate ?? RANGE_OPTIONS.last_7_days.startDate),
@@ -104,8 +105,8 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         </div>
 
         {/* 운동 투두 기록 */}
-        <div className="bg-gray-300 border-gray-500 border flex items-center justify-center">
-          <ExerciseTodoList exercises={exercises} />
+        <div className="bg-gray-300 border-gray-500 border  flex items-center justify-center">
+          {exercises && <ExerciseTodoList exercises={exercises} />}
         </div>
 
         {/* 식단 기록 */}
