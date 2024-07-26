@@ -1,7 +1,4 @@
-import { createClient } from '@/supabase/server';
-import { DietsLogType } from '@/types/diet';
-import { Tables } from '@/types/supabase';
-import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
+import useDashBoard from '@/hooks/dashboard/useDashBoard';
 import Link from 'next/link';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
@@ -9,57 +6,9 @@ import GradeProgress from './_components/GradeProgress';
 import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
 
-const getWeightsData = async (query: string) => {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const response = await supabase.from('weights').select('*').eq('userId', user?.id).gte('date', query).order('date');
-
-  return response.data as Tables<'weights'>[];
-};
-
-const getTodayDiets = async () => {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const response = await supabase
-    .from('diets')
-    .select('*')
-    .eq('userId', user?.id)
-    .gte('date', getStartOfDayISO())
-    .lte('date', getEndOfDayISO())
-    .order('date');
-
-  return response.data as DietsLogType;
-};
-
-const getExerciseTodoData = async () => {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const response = await supabase
-    .from('exercises')
-    .select('*')
-    .eq('userId', user?.id)
-    .gte('date', getStartOfDayISO())
-    .lte('date', getEndOfDayISO())
-    .order('date');
-
-  return response.data as Tables<'exercises'>[];
-};
-
 //TODO 투두 달력으로 선택할수있어야함?
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
-  const [weights, diets, exercises] = await Promise.all([
-    getWeightsData(getRangeOption(query)?.startDate ?? RANGE_OPTIONS.last_7_days.startDate),
-    getTodayDiets(),
-    getExerciseTodoData(),
-  ]);
+  const { weights, diets, exercises } = await useDashBoard(query);
 
   return (
     <div className="h-screen">
