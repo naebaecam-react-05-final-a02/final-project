@@ -1,6 +1,30 @@
 import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const GET = async (request: NextRequest) => {
+  try {
+    const { searchParams } = new URL(request.url);
+    const date = searchParams.get('date');
+    console.log(date);
+
+    const supabase = createClient();
+    // get user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    // get by user and date
+    const { data, error } = await supabase.from('diets').select('*').eq('userId', user.id);
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+    return NextResponse.json(data);
+  } catch (e) {
+    return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
+  }
+};
+
 export const POST = async (request: NextRequest) => {
   try {
     const formData = await request.formData();
