@@ -20,7 +20,7 @@ class ChallengeAPI {
     }
   };
 
-  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id'>) => {
+  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/verify`, verifyData);
       return response.data;

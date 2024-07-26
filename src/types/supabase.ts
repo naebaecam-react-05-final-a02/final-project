@@ -110,7 +110,7 @@ export type Database = {
       challengeVerify: {
         Row: {
           challengeId: number
-          date: string
+          date: string | null
           id: number
           imageURL: string
           impression: string
@@ -118,7 +118,7 @@ export type Database = {
         }
         Insert: {
           challengeId: number
-          date?: string
+          date?: string | null
           id?: number
           imageURL: string
           impression: string
@@ -126,7 +126,7 @@ export type Database = {
         }
         Update: {
           challengeId?: number
-          date?: string
+          date?: string | null
           id?: number
           imageURL?: string
           impression?: string

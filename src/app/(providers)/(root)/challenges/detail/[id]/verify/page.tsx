@@ -48,7 +48,7 @@ const ChallengeVerifyPage = ({ params }: { params: { id: string } }) => {
       { storage: 'challengeVerify', form },
       {
         onSuccess: async (response) => {
-          const verifyData: Omit<Tables<'challengeVerify'>, 'id'> = {
+          const verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
             impression,
             imageURL: response.imageURL,
             userId: user?.id!,

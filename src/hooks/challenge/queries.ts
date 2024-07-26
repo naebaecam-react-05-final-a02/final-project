@@ -6,6 +6,6 @@ export const mutationOptions = {
     mutationFn: (challengeData: Omit<Tables<'challenges'>, 'id'>) => api.challenge.register(challengeData),
   },
   verify: {
-    mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id'>) => api.challenge.verify(verifyData),
+    mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => api.challenge.verify(verifyData),
   },
 };
