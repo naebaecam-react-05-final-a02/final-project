@@ -33,13 +33,28 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
+  // 'keepLoggedIn' 쿠키 확인
+  const keepLoggedIn = request.cookies.get('keepLoggedIn')?.value === 'true';
 
-  if (!user && !publicRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone();
-    url.pathname = '/log-in';
-    return NextResponse.redirect(url);
+  if (user && keepLoggedIn) {
+    // 세션 갱신 시도
+    const { data, error } = await supabase.auth.refreshSession();
+    if (error) {
+      console.error('Failed to refresh session:', error);
+    }
+  }
+
+  const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
+  const authRoutes = ['/log-in', '/sign-up'];
+
+  const path = request.nextUrl.pathname;
+
+  if (user && authRoutes.some((route) => path.startsWith(route))) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  if (!user && !publicRoutes.some((route) => path.startsWith(route))) {
+    return NextResponse.redirect(new URL('/log-in', request.url));
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

@@ -21,11 +21,11 @@ export const queryOptions = {
 
 export const mutationOptions = {
   signUp: {
-    mutationFn: (data: { email: string; password: string; nickname: string }) =>
-      api.auth.signUp(data.email, data.password, data.nickname),
+    mutationFn: (data: FormData) => api.auth.signUp(data),
   },
   signIn: {
-    mutationFn: (data: { email: string; password: string }) => api.auth.signIn(data.email, data.password),
+    mutationFn: (data: { email: string; password: string; keepLoggedIn: boolean }) =>
+      api.auth.signIn(data.email, data.password, data.keepLoggedIn),
   },
   signOut: {
     mutationFn: () => api.auth.signOut(),
@@ -33,12 +33,18 @@ export const mutationOptions = {
   socialSignIn: () => ({
     mutationFn: (provider: Provider) => api.auth.signInWithOAuth(provider),
   }),
+  checkDuplicate: {
+    mutationFn: (data: { field: 'email' | 'nickname'; value: string }) =>
+      api.auth.checkDuplicate(data.field, data.value),
+  },
   requestPasswordReset: {
     mutationFn: (email: string) => api.auth.requestPasswordReset(email),
   },
+  verifyResetCode: {
+    mutationFn: (data: { email: string; code: string }) => api.auth.verifyResetCode(data.email, data.code),
+  },
   resetPassword: {
-    mutationFn: ({ newPassword, token, email }: { newPassword: string; token: string; email: string }) =>
-      api.auth.resetPassword(newPassword, token, email),
+    mutationFn: ({ newPassword }: { newPassword: string }) => api.auth.resetPassword(newPassword),
   },
   deleteAccount: {
     mutationFn: () => api.auth.deleteAccount(),

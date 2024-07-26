@@ -17,3 +17,5 @@ export type FoodType = {
   protein: number;
   fat: number;
 };
+
+export type DietsLogType = Omit<Tables<'diets'>, 'foodInfo'> & { foodInfo: FoodType[] }[];
