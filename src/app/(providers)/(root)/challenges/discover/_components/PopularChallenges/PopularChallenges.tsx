@@ -1,11 +1,22 @@
-import api from '@/service/service';
+import { createClient } from '@/supabase/server';
+import dayjs from 'dayjs';
 import Link from 'next/link';
 import Categories from '../Categories';
 import ChallengeList from '../ChallengeList';
 
 const PopularChallenges = async () => {
   try {
-    const data = await api.challenge.getPopularChallenges();
+    const supabase = createClient();
+    const today = dayjs().format('YYYY-MM-DD');
+
+    const { data, error } = await supabase
+      .from('challenges')
+      .select('*')
+      .order('startDate', { ascending: true })
+      .gt('startDate', today)
+      .range(0, 3);
+
+    if (error) throw error;
 
     return (
       <div className="flex flex-col gap-4">
