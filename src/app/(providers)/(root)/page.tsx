@@ -3,7 +3,7 @@ import DashBoard from './_components/DashBoard';
 
 const RootPage = () => {
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <p>메인 페이지</p>
       <div className="flex flex-row gap-3">
         <Link

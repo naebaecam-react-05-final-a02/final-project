@@ -18,7 +18,7 @@ export type Database = {
           rating: number
           reviewImages: string[] | null
           title: string
-          userId: string | null
+          userId: string
         }
         Insert: {
           challengeId?: number
@@ -28,7 +28,7 @@ export type Database = {
           rating: number
           reviewImages?: string[] | null
           title: string
-          userId?: string | null
+          userId: string
         }
         Update: {
           challengeId?: number
@@ -38,7 +38,7 @@ export type Database = {
           rating?: number
           reviewImages?: string[] | null
           title?: string
-          userId?: string | null
+          userId?: string
         }
         Relationships: [
           {
@@ -110,7 +110,6 @@ export type Database = {
       challengeVerify: {
         Row: {
           challengeId: number
-          date: string
           id: number
           imageURL: string
           impression: string
@@ -118,7 +117,6 @@ export type Database = {
         }
         Insert: {
           challengeId: number
-          date?: string
           id?: number
           imageURL: string
           impression: string
@@ -126,7 +124,6 @@ export type Database = {
         }
         Update: {
           challengeId?: number
-          date?: string
           id?: number
           imageURL?: string
           impression?: string
@@ -188,36 +185,39 @@ export type Database = {
         Row: {
           date: string
           distance: number | null
-          duration: number | null
+          duration: number
           exeriseType: string
           id: number
           repPerSets: number | null
           resistance: number | null
           sets: number | null
+          todayImageURL: string
           userId: string
           weight: number | null
         }
         Insert: {
           date?: string
           distance?: number | null
-          duration?: number | null
+          duration: number
           exeriseType: string
           id?: number
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
+          todayImageURL: string
           userId: string
           weight?: number | null
         }
         Update: {
           date?: string
           distance?: number | null
-          duration?: number | null
+          duration?: number
           exeriseType?: string
           id?: number
           repPerSets?: number | null
           resistance?: number | null
           sets?: number | null
+          todayImageURL?: string
           userId?: string
           weight?: number | null
         }
@@ -275,7 +275,7 @@ export type Database = {
           email: string
           height: number | null
           id: string
-          nickname: string | null
+          nickname: string
           profileURL: string | null
           userIndex: number
           weight: number | null
@@ -285,7 +285,7 @@ export type Database = {
           email: string
           height?: number | null
           id: string
-          nickname?: string | null
+          nickname?: string
           profileURL?: string | null
           userIndex?: number
           weight?: number | null
@@ -295,7 +295,7 @@ export type Database = {
           email?: string
           height?: number | null
           id?: string
-          nickname?: string | null
+          nickname?: string
           profileURL?: string | null
           userIndex?: number
           weight?: number | null
