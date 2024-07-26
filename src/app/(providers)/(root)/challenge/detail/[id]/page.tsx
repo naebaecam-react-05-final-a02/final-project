@@ -43,7 +43,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
           <div>
             <h1>후기</h1>
-            <ul className="flex flex-row gap-3 overflow-y-auto p-4">
+            <ul className="flex flex-row gap-3 overflow-y-auto py-4">
               {reviews &&
                 reviews.map((review) => (
                   <li
