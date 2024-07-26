@@ -33,6 +33,7 @@ export async function updateSession(request: NextRequest) {
   //   data: { user },
   // } = await supabase.auth.getUser();
 
+<<<<<<< HEAD
   // const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
 
   // if (!user && !publicRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
@@ -41,6 +42,31 @@ export async function updateSession(request: NextRequest) {
   //   url.pathname = '/log-in';
   //   return NextResponse.redirect(url);
   // }
+=======
+  // 'keepLoggedIn' 쿠키 확인
+  const keepLoggedIn = request.cookies.get('keepLoggedIn')?.value === 'true';
+
+  if (user && keepLoggedIn) {
+    // 세션 갱신 시도
+    const { data, error } = await supabase.auth.refreshSession();
+    if (error) {
+      console.error('Failed to refresh session:', error);
+    }
+  }
+
+  const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
+  const authRoutes = ['/log-in', '/sign-up'];
+
+  const path = request.nextUrl.pathname;
+
+  if (user && authRoutes.some((route) => path.startsWith(route))) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  if (!user && !publicRoutes.some((route) => path.startsWith(route))) {
+    return NextResponse.redirect(new URL('/log-in', request.url));
+  }
+>>>>>>> dev
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:

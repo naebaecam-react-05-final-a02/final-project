@@ -5,15 +5,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-interface LogInFormData {
+export interface LogInFormData {
   email: string;
   password: string;
+  keepLoggedIn: boolean;
 }
 
 const LogInForm = () => {
   const [formData, setFormData] = useState<LogInFormData>({
     email: '',
     password: '',
+    keepLoggedIn: false,
   });
 
   const router = useRouter();
@@ -21,8 +23,11 @@ const LogInForm = () => {
   const { mutate: socialSignIn, isPending: isSocialSignInPending } = useSocialSignIn();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,6 +79,16 @@ const LogInForm = () => {
             required
           />
         </div>
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="keepLoggedIn"
+            name="keepLoggedIn"
+            checked={formData.keepLoggedIn}
+            onChange={(e) => setFormData((prev) => ({ ...prev, keepLoggedIn: e.target.checked }))}
+          />
+          <label htmlFor="keepLoggedIn">로그인 상태 유지</label>
+        </div>
         {error && <div className="text-red-500">{(error as Error).message}</div>}
         <button type="submit" className="border border-black px-2 py-1.5" disabled={isPending}>
           {isPending ? '로그인 중...' : '로그인'}
@@ -102,7 +117,7 @@ const LogInForm = () => {
       </div>
       <div>
         비밀번호가 기억나지 않으신가요?{' '}
-        <Link href={'/reset-password-request'} className="">
+        <Link href={'/reset-password'} className="">
           비밀번호 찾기
         </Link>
       </div>
