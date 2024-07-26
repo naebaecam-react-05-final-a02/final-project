@@ -1,7 +1,7 @@
 import React from 'react';
 
 const StarRating = () => {
-  return <div>StarRating</div>;
+  return <div>🌟 🌟 🌟 🌟 🌟</div>;
 };
 
 export default StarRating;

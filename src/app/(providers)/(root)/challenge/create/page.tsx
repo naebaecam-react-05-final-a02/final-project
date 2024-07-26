@@ -1,6 +1,7 @@
 'use client';
 
 import Mobile from '@/layouts/Mobile';
+import api from '@/service/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -23,7 +24,7 @@ const ChallengeCreatePage = () => {
     reader.readAsDataURL(file);
   };
 
-  const { mutate: updateProfile } = useMutation({
+  const { mutate: PostChallenge } = useMutation({
     mutationFn: async ({ formData }: { formData: FormData }) => api.users.updateUserProfile({ formData }),
     onSuccess: (result) => {
       if (result.status !== 200) return;
@@ -43,7 +44,7 @@ const ChallengeCreatePage = () => {
     formData.append('endDate', inputs.endDate);
     if (image) formData.append('image', image);
 
-    updateProfile({ formData });
+    PostChallenge({ formData });
   };
 
   console.log(inputs);

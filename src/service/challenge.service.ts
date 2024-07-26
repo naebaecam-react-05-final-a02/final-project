@@ -4,7 +4,7 @@ import axios from 'axios';
 class ChallengeAPI {
   private baseURL: string;
 
-  constructor(baseURL: string = '/api/challenge') {
+  constructor(baseURL: string = '/api/challenges') {
     this.baseURL = baseURL;
   }
 
@@ -20,7 +20,7 @@ class ChallengeAPI {
     }
   };
 
-  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id'>) => {
+  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/verify`, verifyData);
       return response.data;
@@ -32,10 +32,10 @@ class ChallengeAPI {
     }
   };
 
-  getPopularChallenges = async () => {
+  getChallengeDetail = async (id: number) => {
     try {
-      const response = await axios.get(`http://localhost:3000/${this.baseURL}/popular`);
-      return response;
+      const response = await axios.get(`${this.baseURL}s/detail?id=${id}`);
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || error.message);

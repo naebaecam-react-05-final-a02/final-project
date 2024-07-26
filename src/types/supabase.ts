@@ -5,7 +5,6 @@ export type Database = {
     Tables: {
       challengeReviews: {
         Row: {
-<<<<<<< HEAD
           challengeId: number;
           content: string;
           createdAt: string | null;
@@ -13,7 +12,7 @@ export type Database = {
           rating: number;
           reviewImages: string[] | null;
           title: string;
-          userId: string;
+          userId: string | null;
         };
         Insert: {
           challengeId?: number;
@@ -23,7 +22,7 @@ export type Database = {
           rating: number;
           reviewImages?: string[] | null;
           title: string;
-          userId: string;
+          userId?: string | null;
         };
         Update: {
           challengeId?: number;
@@ -33,39 +32,8 @@ export type Database = {
           rating?: number;
           reviewImages?: string[] | null;
           title?: string;
-          userId?: string;
+          userId?: string | null;
         };
-=======
-          challengeId: number
-          content: string
-          createdAt: string | null
-          id: number
-          rating: number
-          reviewImages: string[] | null
-          title: string
-          userId: string
-        }
-        Insert: {
-          challengeId?: number
-          content: string
-          createdAt?: string | null
-          id?: number
-          rating: number
-          reviewImages?: string[] | null
-          title: string
-          userId: string
-        }
-        Update: {
-          challengeId?: number
-          content?: string
-          createdAt?: string | null
-          id?: number
-          rating?: number
-          reviewImages?: string[] | null
-          title?: string
-          userId?: string
-        }
->>>>>>> dev
         Relationships: [
           {
             foreignKeyName: 'challengeReviews_challengeId_fkey';
@@ -136,32 +104,21 @@ export type Database = {
       challengeVerify: {
         Row: {
           challengeId: number;
-          date: string;
           id: number;
           imageURL: string;
           impression: string;
           userId: string;
         };
         Insert: {
-<<<<<<< HEAD
           challengeId: number;
-          date?: string;
+          date?: string | null;
           id?: number;
           imageURL: string;
           impression: string;
           userId: string;
         };
-=======
-          challengeId: number
-          id?: number
-          imageURL: string
-          impression: string
-          userId: string
-        }
->>>>>>> dev
         Update: {
           challengeId?: number;
-          date?: string;
           id?: number;
           imageURL?: string;
           impression?: string;
@@ -169,19 +126,11 @@ export type Database = {
         };
         Relationships: [
           {
-<<<<<<< HEAD
             foreignKeyName: 'challengeParticipants_challengeId_fkey';
             columns: ['challengeId'];
             isOneToOne: false;
             referencedRelation: 'challenges';
             referencedColumns: ['id'];
-=======
-            foreignKeyName: "challengeParticipants_challengeId_fkey"
-            columns: ["challengeId"]
-            isOneToOne: false
-            referencedRelation: "challenges"
-            referencedColumns: ["id"]
->>>>>>> dev
           },
           {
             foreignKeyName: 'challengeParticipants_userId_fkey';
@@ -237,6 +186,7 @@ export type Database = {
           repPerSets: number | null;
           resistance: number | null;
           sets: number | null;
+          todayImageURL: string;
           userId: string;
           weight: number | null;
         };
@@ -249,6 +199,7 @@ export type Database = {
           repPerSets?: number | null;
           resistance?: number | null;
           sets?: number | null;
+          todayImageURL: string;
           userId: string;
           weight?: number | null;
         };
@@ -261,6 +212,7 @@ export type Database = {
           repPerSets?: number | null;
           resistance?: number | null;
           sets?: number | null;
+          todayImageURL?: string;
           userId?: string;
           weight?: number | null;
         };
@@ -314,7 +266,6 @@ export type Database = {
       };
       users: {
         Row: {
-<<<<<<< HEAD
           createdAt: string;
           email: string;
           height: number | null;
@@ -344,37 +295,6 @@ export type Database = {
           userIndex?: number;
           weight?: number | null;
         };
-=======
-          createdAt: string
-          email: string
-          height: number | null
-          id: string
-          nickname: string
-          profileURL: string | null
-          userIndex: number
-          weight: number | null
-        }
-        Insert: {
-          createdAt?: string
-          email: string
-          height?: number | null
-          id: string
-          nickname?: string
-          profileURL?: string | null
-          userIndex?: number
-          weight?: number | null
-        }
-        Update: {
-          createdAt?: string
-          email?: string
-          height?: number | null
-          id?: string
-          nickname?: string
-          profileURL?: string | null
-          userIndex?: number
-          weight?: number | null
-        }
->>>>>>> dev
         Relationships: [
           {
             foreignKeyName: 'users_id_fkey';
