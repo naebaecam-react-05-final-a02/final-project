@@ -48,6 +48,7 @@ export interface AdditionalInfoFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
   onSubmit: (formData: FormData) => Promise<void>;
+  onPrevious: () => void;
 }
 
 // 회원가입 필요한 사용자 정보

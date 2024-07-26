@@ -5,24 +5,17 @@ import { useCheckDuplicate, useSignUp } from '@/hooks/auth/useUsers';
 import { FormState } from '@/types/auth';
 import Link from 'next/link';
 import { useState } from 'react';
-import { validatePassword } from '../../../_utils/passwordValidation';
 import AdditionalInfoForm from '../AdditionalInfoForm';
 import EssentialInfoForm from '../EssentialInfoForm/EssentialInfoForm';
 import WelcomePreviewSlider from '../WelcomePreviewSlider/WelcomePreviewSlider';
 
 const SignUpForm = () => {
   const [currentStep, setCurrentStep] = useState('essentialInfo');
+  // const [currentStep, setCurrentStep] = useState('success');
   const [formState, setFormState] = useState<FormState>(initialFormState);
 
   const { mutateAsync: signUpAsync, isPending: isSignUpPending, error: signUpError } = useSignUp();
-  const { mutateAsync: checkDuplicate, isPending: isCheckingDuplicate } = useCheckDuplicate();
-
-  const validationRules = {
-    email: (value: string) => (!value.includes('@') ? '유효한 이메일 주소를 입력해주세요.' : null),
-    nickname: (value: string) => (value.length < 2 ? '닉네임은 2자 이상이어야 합니다.' : null),
-    password: validatePassword,
-    confirmPassword: (value: string, password: string) => (value !== password ? '비밀번호가 일치하지 않습니다.' : null),
-  };
+  const { mutateAsync: checkDuplicate } = useCheckDuplicate();
 
   const nextStep = () => {
     if (currentStep === 'essentialInfo') setCurrentStep('additionalInfo');
@@ -62,23 +55,12 @@ const SignUpForm = () => {
       )}
       {currentStep === 'additionalInfo' && (
         <>
-          <AdditionalInfoForm formState={formState} setFormState={setFormState} onSubmit={handleSignUp} />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={previousStep}
-              className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:brightness-90"
-            >
-              이전
-            </button>
-            <button
-              type="submit"
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:brightness-90"
-              disabled={isSignUpPending}
-            >
-              {isSignUpPending ? '처리 중...' : '회원가입'}
-            </button>
-          </div>
+          <AdditionalInfoForm
+            formState={formState}
+            setFormState={setFormState}
+            onSubmit={handleSignUp}
+            onPrevious={previousStep}
+          />
         </>
       )}
       {currentStep === 'success' && (

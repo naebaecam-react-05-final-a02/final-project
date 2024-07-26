@@ -1,7 +1,7 @@
 import { AdditionalInfoFormProps, FormState } from '@/types/auth';
 import Image from 'next/image';
 
-const AdditionalInfoForm = ({ formState, setFormState, onSubmit }: AdditionalInfoFormProps) => {
+const AdditionalInfoForm = ({ formState, setFormState, onSubmit, onPrevious }: AdditionalInfoFormProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormState((prev) => ({
@@ -143,13 +143,21 @@ const AdditionalInfoForm = ({ formState, setFormState, onSubmit }: AdditionalInf
           />
           {formState.weight?.error && <p className="text-red-500 text-sm mt-1">{formState.weight.error}</p>}
         </div>
-
         <button
           type="submit"
           className="mt-8 bg-[#3ECF8E] w-full text-[20px] font-semibold px-4 py-2 rounded hover:brightness-90"
         >
           회원가입 완료
         </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onPrevious}
+            className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:brightness-90"
+          >
+            이전
+          </button>
+        </div>
       </div>
     </form>
   );
