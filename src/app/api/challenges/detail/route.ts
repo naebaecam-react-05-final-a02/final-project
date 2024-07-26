@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
 
-export async function GET(request:NextRequest) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
+
   const supabase = createClient();
 
   if (!id) {
@@ -11,11 +12,7 @@ export async function GET(request:NextRequest) {
   }
 
   try {
-    const { data, error } = await supabase
-      .from('challenges')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data, error } = await supabase.from('challenges').select('*').eq('id', id).single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
