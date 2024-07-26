@@ -6,8 +6,8 @@ import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
-import FormImageUploader from '../../_components/FormImageUploader';
-import FormTextArea from '../../_components/FormTextArea';
+import FormImageUploader from '../../../_components/FormImageUploader';
+import FormTextArea from '../../../_components/FormTextArea';
 
 const ChallengeVerifyPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -48,7 +48,7 @@ const ChallengeVerifyPage = ({ params }: { params: { id: string } }) => {
       { storage: 'challengeVerify', form },
       {
         onSuccess: async (response) => {
-          const verifyData: Omit<Tables<'challengeVerify'>, 'id'> = {
+          const verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
             impression,
             imageURL: response.imageURL,
             userId: user?.id!,
