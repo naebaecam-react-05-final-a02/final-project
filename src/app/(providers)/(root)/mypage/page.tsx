@@ -3,7 +3,7 @@
 import { useGetUser } from '@/hooks/auth/useUsers';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
@@ -19,14 +19,23 @@ const MyPage = () => {
   const { data, isPending } = useGetUser();
   const queryClient = useQueryClient();
 
-  // const { mutate } = useMutation({
-  //   mutationFn: (newProfile: ProfileFormTypes) => updateProfile(newProfile),
-  //   onSuccess: (status) => {
-  //     if (status !== 200) return;
-  //     queryClient.invalidateQueries({ queryKey: ['user'] });
-  //     alert('수정이 완료되었습니다');
-  //   },
-  // });
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: async ({ formData }: { formData: FormData }) => api.users.updateUserProfile({ formData }),
+    onSuccess: (result) => {
+      if (result.status !== 200) return;
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      alert('수정이 완료되었습니다');
+    },
+  });
+
+  const { mutate: deleteProfile } = useMutation({
+    mutationFn: async () => api.users.deleteUserAvatar(),
+    onSuccess: (result) => {
+      if (result.status !== 200) return;
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      alert('삭제가 완료되었습니다.');
+    },
+  });
 
   const handleUpdateProfile = async () => {
     const yes = confirm('수정사항을 저장하시겠습니까?');
@@ -38,8 +47,7 @@ const MyPage = () => {
     formData.append('weight', inputs.weight.toString());
     if (avatarFile) formData.append('avatar', avatarFile);
 
-    const response = await api.users.updateUserProfile({ formData });
-    console.log(response);
+    updateProfile({ formData });
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,14 +69,13 @@ const MyPage = () => {
     const yes = confirm('정말로 프로필 이미지를 삭제하시겠습니까?');
     if (!yes) return;
 
-    const response = await api.users.deleteUserAvatar();
+    deleteProfile();
   };
 
   useEffect(() => {
     if (!isPending && data) {
       const { nickname, email, height, weight } = data;
-      if (!nickname || !email || !height || !weight) return;
-      setInputs({ nickname, email, height, weight });
+      setInputs({ nickname: nickname as string, email, height: height as number, weight: weight as number });
     }
   }, [isPending, data]);
 

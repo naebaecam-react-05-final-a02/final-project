@@ -43,6 +43,15 @@ class ChallengeAPI {
       throw error;
     }
   };
+  postChallenge = async ({ formData }: { formData: any }) => {
+    const response = await axios.post(`${this.baseURL}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(response);
+    return response;
+  };
 }
 
 export default ChallengeAPI;

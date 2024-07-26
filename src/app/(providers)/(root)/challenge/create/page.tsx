@@ -1,12 +1,14 @@
 'use client';
 
 import Mobile from '@/layouts/Mobile';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
 import TextInput from './_components/Input/Input';
 import useInputs from './_hooks/useInputs';
 
 const ChallengeCreatePage = () => {
+  const queryClient = useQueryClient();
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [inputs, onChange, reset, setInputs] = useInputs({ title: '', content: '', startDate: '', endDate: '' });
@@ -19,6 +21,29 @@ const ChallengeCreatePage = () => {
       setImageUrl(reader.result as string);
     };
     reader.readAsDataURL(file);
+  };
+
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: async ({ formData }: { formData: FormData }) => api.users.updateUserProfile({ formData }),
+    onSuccess: (result) => {
+      if (result.status !== 200) return;
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      alert('수정이 완료되었습니다');
+    },
+  });
+
+  const handleUpdateProfile = async () => {
+    const yes = confirm('수정사항을 저장하시겠습니까?');
+    if (!yes) return;
+
+    const formData = new FormData();
+    formData.append('title', inputs.title);
+    formData.append('content', inputs.content);
+    formData.append('startDate', inputs.startDate);
+    formData.append('endDate', inputs.endDate);
+    if (image) formData.append('image', image);
+
+    updateProfile({ formData });
   };
 
   console.log(inputs);
@@ -44,6 +69,7 @@ const ChallengeCreatePage = () => {
           <p>~</p>
           <TextInput onChange={onChange} label="" name="endDate" value={inputs.endDate} type="date" />
         </div>
+        <button>저장하기</button>
       </div>
     </Mobile>
   );
