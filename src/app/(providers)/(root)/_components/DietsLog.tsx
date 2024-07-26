@@ -1,20 +1,17 @@
 import { DietsLogType } from '@/types/diet';
 
 const DietsLog = ({ diets }: { diets: DietsLogType }) => {
-  const totalNutrients = {
-    kcal: 0,
-    carbohydrate: 0,
-    protein: 0,
-    fat: 0,
-  };
-
-  diets.forEach((diet) =>
-    diet.foodInfo.forEach((food) => {
-      totalNutrients.kcal += Number(food?.kcal);
-      totalNutrients.carbohydrate += Number(food?.carbohydrate);
-      totalNutrients.protein += Number(food?.protein);
-      totalNutrients.fat += Number(food?.fat);
-    }),
+  const totalNutrients = diets.reduce(
+    (total, diet) => {
+      diet.foodInfo.forEach((food) => {
+        total.kcal += Number(food?.kcal || 0);
+        total.carbohydrate += Number(food?.carbohydrate || 0);
+        total.protein += Number(food?.protein || 0);
+        total.fat += Number(food?.fat || 0);
+      });
+      return total;
+    },
+    { kcal: 0, carbohydrate: 0, protein: 0, fat: 0 },
   );
 
   return (
