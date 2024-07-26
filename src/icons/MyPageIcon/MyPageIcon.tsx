@@ -1,12 +1,8 @@
-import { ComponentProps } from 'react';
+import { IconProps } from '@/types/icon';
 import MypageSVG from './mypage.svg';
 
-type MyPageIconProps = ComponentProps<typeof MypageSVG> & {
-  className?: string;
-};
-
-const MyPageIcon = ({ className, ...props }: MyPageIconProps) => {
-  return <MypageSVG className={className} {...props} />;
+const MyPageIcon = ({ className, color = 'rgba(255, 255, 255, 0.3)', ...props }: IconProps) => {
+  return <MypageSVG className={className} style={{ stroke: color }} {...props} />;
 };
 
 export default MyPageIcon;
