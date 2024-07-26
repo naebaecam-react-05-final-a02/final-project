@@ -1,6 +1,4 @@
-import { ReviewFormData } from '@/app/(providers)/(root)/challenge/_components/ChallengeReviewForm/ChallengeReviewForm';
 import api from '@/service/service';
-import { Tables } from '@/types/supabase';
 
 export const ReviewsQueryKeys = {
   all: ['challengeReview'] as const,

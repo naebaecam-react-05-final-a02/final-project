@@ -1,4 +1,3 @@
-import { ReviewFormData } from '@/app/(providers)/(root)/challenge/_components/ChallengeReviewForm/ChallengeReviewForm';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
