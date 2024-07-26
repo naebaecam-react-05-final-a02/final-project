@@ -2,12 +2,22 @@ import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  const { newPassword, token } = await request.json();
+  const { newPassword } = await request.json();
 
   const supabase = createClient();
 
   try {
-    await supabase.auth.exchangeCodeForSession(token);
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
+    console.log(session);
+
+    if (sessionError || !session) {
+      console.error('Session error:', sessionError);
+      return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+    }
 
     const { error } = await supabase.auth.updateUser({ password: newPassword });
 

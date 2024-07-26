@@ -13,25 +13,31 @@ export type Database = {
         Row: {
           challengeId: number
           content: string
-          createdAt: string
+          createdAt: string | null
           id: number
           rating: number
+          reviewImages: string[] | null
+          title: string
           userId: string
         }
         Insert: {
           challengeId?: number
           content: string
-          createdAt?: string
+          createdAt?: string | null
           id?: number
           rating: number
+          reviewImages?: string[] | null
+          title: string
           userId: string
         }
         Update: {
           challengeId?: number
           content?: string
-          createdAt?: string
+          createdAt?: string | null
           id?: number
           rating?: number
+          reviewImages?: string[] | null
+          title?: string
           userId?: string
         }
         Relationships: [
@@ -110,7 +116,7 @@ export type Database = {
           userId: string
         }
         Insert: {
-          challengeId?: number
+          challengeId: number
           id?: number
           imageURL: string
           impression: string
@@ -127,7 +133,7 @@ export type Database = {
           {
             foreignKeyName: "challengeParticipants_challengeId_fkey"
             columns: ["challengeId"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "challenges"
             referencedColumns: ["id"]
           },
@@ -269,7 +275,7 @@ export type Database = {
           email: string
           height: number | null
           id: string
-          nickname: string | null
+          nickname: string
           profileURL: string | null
           userIndex: number
           weight: number | null
@@ -279,7 +285,7 @@ export type Database = {
           email: string
           height?: number | null
           id: string
-          nickname?: string | null
+          nickname?: string
           profileURL?: string | null
           userIndex?: number
           weight?: number | null
@@ -289,7 +295,7 @@ export type Database = {
           email?: string
           height?: number | null
           id?: string
-          nickname?: string | null
+          nickname?: string
           profileURL?: string | null
           userIndex?: number
           weight?: number | null
