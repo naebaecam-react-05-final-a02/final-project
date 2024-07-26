@@ -6,11 +6,9 @@ interface ChallengeCard {
 }
 
 const ChallengeCard = ({ challenge }: ChallengeCard) => {
-  console.log(challenge.startDate);
   const today = dayjs();
   const ChallengeStartDate = dayjs(challenge.startDate);
   const restDate = ChallengeStartDate.diff(today, 'day') + 1;
-  console.log(restDate);
 
   return (
     <article>
