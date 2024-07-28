@@ -1,11 +1,10 @@
-import { DateType } from '@/types/date';
 import { useState } from 'react';
 import Month from './Month';
 import Week from './Week';
 
 interface CalendarProps {
-  selectedDate: DateType;
-  changeDate: (newDate: number) => void;
+  selectedDate: Date;
+  changeDate: (date: number, gap?: number) => void;
 }
 const Calendar = ({ selectedDate, changeDate }: CalendarProps) => {
   const [isOpen, setIsOpen] = useState(false); // open: 월 단위 | close: 주 단위
@@ -21,7 +20,7 @@ const Calendar = ({ selectedDate, changeDate }: CalendarProps) => {
       </button>
       <div className="mt-3">
         <div className="text-center my-2">
-          {selectedDate.year}년 {selectedDate.month}월
+          {selectedDate.getFullYear()}년 {selectedDate.getMonth() + 1}월
         </div>
         {isOpen ? (
           <Month selectedDate={selectedDate} changeDate={changeDate} />

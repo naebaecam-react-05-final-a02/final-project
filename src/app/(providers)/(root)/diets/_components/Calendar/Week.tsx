@@ -1,12 +1,11 @@
-import { DateType } from '@/types/date';
 import DateCell from './DateCell';
 
 const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
 const weekIterateArray: number[] = [-3, -2, -1, 0, 1, 2, 3];
 
 interface WeekProps {
-  selectedDate: DateType;
-  changeDate: (newDate: number) => void;
+  selectedDate: Date;
+  changeDate: (date: number, gap: number) => void;
 }
 
 const Week = ({ selectedDate, changeDate }: WeekProps) => {
@@ -26,15 +25,25 @@ const Week = ({ selectedDate, changeDate }: WeekProps) => {
       </thead>
       <tbody>
         <tr>
-          {weekIterateArray.map((i) => (
-            <DateCell key={`date-${date + i}`} isToday={i === 0} onClick={() => changeDate(selectedDate.date + i)}>
-              {selectedDate.date + i}
+          {weekIterateArray.map((gap) => (
+            <DateCell
+              key={`date-${date + gap}`}
+              isToday={gap === 0}
+              onClick={() => changeDate(selectedDate.getDate(), gap)}
+            >
+              {getCalculatedDate(selectedDate, gap)}
             </DateCell>
           ))}
         </tr>
       </tbody>
     </table>
   );
+};
+
+const getCalculatedDate = (selectedDate: Date, gap: number) => {
+  const calDate = new Date(selectedDate);
+  calDate.setDate(selectedDate.getDate() + gap);
+  return calDate.getDate();
 };
 
 export default Week;

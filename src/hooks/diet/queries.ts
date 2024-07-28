@@ -10,7 +10,6 @@ export const queryOptions = {
     queryKey: [dietsQueryKeys.all, date], // ! refactoring 필요
     queryFn: async () => {
       const diets = await api.diet.getDietsByDate(date);
-      console.log(diets);
       if (!diets) throw new Error('Diet not found');
       return diets;
     },

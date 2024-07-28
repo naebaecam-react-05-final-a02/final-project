@@ -1,21 +1,17 @@
 'use client';
-import { DateType } from '@/types/date';
 import { useState } from 'react';
 import Calendar from './_components/Calendar/Calendar';
 import DietList from './_components/DietList';
 
 const DietManagePage = () => {
-  const today = new Date();
-  const [selectedDate, setSelectedDate] = useState<DateType>({
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-    date: today.getDate(),
-  });
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  const date = `${selectedDate.year}-${selectedDate.month}-${selectedDate.date}`;
+  const date = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
 
-  const changeDate = (newDate: number) => {
-    setSelectedDate({ ...selectedDate, date: newDate });
+  const changeDate = (date: number, gap: number = 0) => {
+    const newDate = new Date();
+    newDate.setDate(date + gap);
+    setSelectedDate(newDate);
   };
 
   return (
