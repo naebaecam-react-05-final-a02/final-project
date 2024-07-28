@@ -19,7 +19,7 @@ const Week = ({ selectedDate, changeDate }: WeekProps) => {
       <thead>
         <tr>
           {weekIterateArray.map((i) => {
-            const dayName = dayNames[(day + i) % 7];
+            const dayName = dayNames[(day + i + 7) % 7];
             return <th key={dayName}>{dayName}</th>;
           })}
         </tr>
@@ -27,12 +27,8 @@ const Week = ({ selectedDate, changeDate }: WeekProps) => {
       <tbody>
         <tr>
           {weekIterateArray.map((i) => (
-            <DateCell
-              key={`date-${date + i}`}
-              isToday={selectedDate.date === date + i}
-              onClick={() => changeDate(date + i)}
-            >
-              {date + i}
+            <DateCell key={`date-${date + i}`} isToday={i === 0} onClick={() => changeDate(selectedDate.date + i)}>
+              {selectedDate.date + i}
             </DateCell>
           ))}
         </tr>

@@ -7,7 +7,7 @@ export const dietsQueryKeys = {
 
 export const queryOptions = {
   getDiets: (date: string) => ({
-    queryKey: dietsQueryKeys.all,
+    queryKey: [dietsQueryKeys.all, date], // ! refactoring 필요
     queryFn: async () => {
       const diets = await api.diet.getDietsByDate(date);
       console.log(diets);

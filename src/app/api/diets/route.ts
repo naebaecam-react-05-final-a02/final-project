@@ -4,8 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const date = searchParams.get('date');
-    console.log(date);
+    const date = searchParams.get('date') as string;
 
     const supabase = createClient();
     // get user
@@ -16,7 +15,16 @@ export const GET = async (request: NextRequest) => {
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     // get by user and date
-    const { data, error } = await supabase.from('diets').select('*').eq('userId', user.id);
+    const startDate = new Date(date).toISOString();
+    const endDate = getNextDate(startDate).toISOString();
+
+    const { data, error } = await supabase
+      .from('diets')
+      .select('*')
+      .eq('userId', user.id)
+      .gte('date', startDate)
+      .lt('date', endDate);
+
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
     return NextResponse.json(data);
@@ -57,4 +65,10 @@ export const POST = async (request: NextRequest) => {
   } catch (e) {
     return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
   }
+};
+
+const getNextDate = (today: Date | string) => {
+  const nextDate = new Date(today);
+  nextDate.setDate(nextDate.getDate() + 1);
+  return nextDate;
 };

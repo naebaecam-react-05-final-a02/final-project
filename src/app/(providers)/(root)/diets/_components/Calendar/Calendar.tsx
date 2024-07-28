@@ -19,7 +19,7 @@ const Calendar = ({ selectedDate, changeDate }: CalendarProps) => {
       <button className="bg-stone-200 px-2 py-1 hover:brightness-95" onClick={toggleView}>
         {isOpen ? '주별로 보기' : '월별로 보기'}
       </button>
-      <div className="my-3">
+      <div className="mt-3">
         <div className="text-center my-2">
           {selectedDate.year}년 {selectedDate.month}월
         </div>
