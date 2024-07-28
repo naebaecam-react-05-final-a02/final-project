@@ -41,9 +41,9 @@ const DietList = ({ date }: DietListProps) => {
                 ))}
               </div>
               <div>
-                {diet.foodInfo.map((food: any) => (
+                {diet.foodInfo.map((food) => (
                   <div
-                    key={`${diet.id}-food-${food.name}`}
+                    key={`${diet.id}-food-${food.foodName}`}
                     className="flex flex-col border border-gray-300 rounded p-3"
                   >
                     <div>{food.foodName}</div>

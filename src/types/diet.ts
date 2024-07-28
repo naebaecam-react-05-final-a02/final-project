@@ -1,6 +1,6 @@
 import { Tables } from './supabase';
 
-export type DietTableType = Tables<'diets'>;
+export type DietTableType = Omit<Tables<'diets'>, 'foodInfo'> & { foodInfo: FoodType[] };
 
 export type DietType = {
   dietType: DietTimeType;
