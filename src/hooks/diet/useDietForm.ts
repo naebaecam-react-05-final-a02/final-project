@@ -1,34 +1,23 @@
+import { initialFoodState } from '@/data/foodInitialState';
 import { FoodType } from '@/types/diet';
 import { useState } from 'react';
 
-const initialFoodData: FoodType = {
-  foodName: '',
-  kcal: 0,
-  carbohydrate: 0,
-  protein: 0,
-  fat: 0,
-};
-
 const useDietForm = () => {
-  const [foodForms, setFoodForms] = useState<FoodType[]>([initialFoodData]);
+  const [foodForm, setFoodForms] = useState<FoodType>(initialFoodState);
 
-  const handleChange = (index: number, field: keyof FoodType, value: string | number) => {
-    const updatedFoodForms = foodForms.map((food, idx) => (idx === index ? { ...food, [field]: value } : food));
-    setFoodForms(updatedFoodForms);
+  const handleChange = (field: keyof FoodType, value: string | number) => {
+    setFoodForms({ ...foodForm, [field]: value });
   };
 
-  const handleAddFoodForm = (index: number) => {
-    const { foodName, kcal, carbohydrate, protein, fat } = foodForms[index];
-    if (!foodName) return alert('음식 이름을 입력해주세요');
-    if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) return alert('영양 성분을 올바르게 입력해주세요');
-    setFoodForms([...foodForms, initialFoodData]);
+  const setForm = (foodData: FoodType) => {
+    setFoodForms(foodData);
   };
 
-  const handleDeleteFoodForm = (index: number) => {
-    setFoodForms(foodForms.filter((_, idx) => idx !== index));
+  const resetForm = () => {
+    setFoodForms(initialFoodData);
   };
 
-  return { foodForms, handleChange, handleAddFoodForm, handleDeleteFoodForm };
+  return { foodForm, handleChange, setForm, resetForm };
 };
 
 export default useDietForm;

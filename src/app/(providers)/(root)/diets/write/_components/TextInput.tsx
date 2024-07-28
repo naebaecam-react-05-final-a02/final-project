@@ -1,10 +1,21 @@
 import { ComponentProps, PropsWithChildren } from 'react';
 
-const TextInput = ({ children, ...props }: PropsWithChildren & ComponentProps<'input'>) => {
+interface TextInputProps {
+  unit?: string;
+}
+
+const TextInput = ({ unit, children, ...props }: PropsWithChildren<TextInputProps> & ComponentProps<'input'>) => {
   return (
-    <input className="bg-[#F6F6F6] border-b border-[#7B7B7B] outline-none p-2" {...props}>
+    <div className="relative">
       {children}
-    </input>
+      <input
+        className={`rounded-lg w-full bg-transparent bg-gradient-to-b from-[#ffffff36] to-[#ffffff0f] outline-none p-3 text-white text-[15px] border border-transparent focus:border-[#3ecf8e99] ${
+          children && 'pl-10'
+        }`}
+        {...props}
+      />
+      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-white opacity-50">{unit}</span>
+    </div>
   );
 };
 

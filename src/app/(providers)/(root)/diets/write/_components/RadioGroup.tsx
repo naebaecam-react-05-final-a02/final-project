@@ -30,9 +30,9 @@ const Radio = ({ name, checked, children, ...props }: PropsWithChildren<RadioPro
     <div>
       <input className="hidden" type="radio" id={id} name={name} checked={checked} {...props} />
       <label
-        className={`inline-block p-3 border border-black rounded cursor-pointer hover:brightness-90 ${
-          checked ? 'bg-[#3ECF8E]' : 'bg-white'
-        }`}
+        className={`border ${
+          checked ? 'border-[#3ecf8e99]' : 'border-transparent'
+        } inline-block rounded-lg w-full bg-transparent bg-gradient-to-b from-[#ffffff36] to-[#ffffff0f] outline-none p-3 text-white text-xs`}
         htmlFor={id}
       >
         {children}

@@ -9,11 +9,10 @@ interface FoodFormInputProps {
 
 const FoodFormInput = ({ title, name, unit, ...props }: FoodFormInputProps & ComponentProps<'input'>) => {
   return (
-    <div>
-      <h2 className="font-bold">{title}</h2>
+    <div className="w-full">
+      <h2 className="opacity-70 text-sm">{title}</h2>
       <div>
-        <TextInput {...props} />
-        {unit}
+        <TextInput unit={unit} {...props} />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { createClient } from '@/supabase/server';
+import { getDateISO, getNextDateISO } from '@/utils/dateFormatter';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
@@ -15,8 +16,8 @@ export const GET = async (request: NextRequest) => {
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     // get by user and date
-    const startDate = new Date(date).toISOString();
-    const endDate = getNextDate(startDate).toISOString();
+    const startDate = getDateISO(date);
+    const endDate = getNextDateISO(date);
 
     const { data, error } = await supabase
       .from('diets')
@@ -35,30 +36,19 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   try {
-    const formData = await request.formData();
-    const dietType = formData.get('dietType');
-    const foodInfo = JSON.parse(formData.get('foodInfo') as string);
-    const imageFiles = formData.getAll('imageFiles') as File[];
+    const { date, dietType, foods } = await request.json();
 
     const supabase = createClient();
-    // get user
+
     const {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    // save images in storage
-    const images: string[] = [];
-    for (const file of imageFiles) {
-      const fileName = `diet_${crypto.randomUUID()}.${file.name.split('.').pop()}`;
-      const { data: paths, error: uploadFileError } = await supabase.storage.from('dietImages').upload(fileName, file);
-      if (uploadFileError) return NextResponse.json({ error: '이미지 등록 도중 실패했습니다' }, { status: 400 });
-      images.push(paths.path);
-    }
-
-    // insert diets info
-    const { error } = await supabase.from('diets').insert({ dietType, foodInfo, images, userId: user.id });
+    const { error } = await supabase
+      .from('diets')
+      .insert({ date, dietType: dietTypeCode[dietType], foods, userId: user.id });
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
     return NextResponse.json({ message: '다이어트가 성공적으로 등록되었습니다' }, { status: 200 });
@@ -67,8 +57,4 @@ export const POST = async (request: NextRequest) => {
   }
 };
 
-const getNextDate = (today: Date | string) => {
-  const nextDate = new Date(today);
-  nextDate.setDate(nextDate.getDate() + 1);
-  return nextDate;
-};
+const dietTypeCode: { [key: string]: number } = { 아침: 0, 점심: 1, 저녁: 2 };
