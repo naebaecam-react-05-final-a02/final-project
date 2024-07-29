@@ -2,13 +2,12 @@
 
 import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
 import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
-import { useChallengeVerifyUpdate } from '@/hooks/challenge/useChallenge';
+import { useChallengeVerifyUpdate, useGetChallengeVerification } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
-import { deleteVerification, getVerification } from '@/utils/dataFetching';
+import { deleteVerification } from '@/utils/dataFetching';
 import { User } from '@supabase/supabase-js';
-import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,10 +30,7 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
   const supabase = createClient();
   const router = useRouter();
 
-  const { data: verification, isFetching } = useQuery({
-    queryKey: ['verifications', { cid: challengeId, vid: verificationId }],
-    queryFn: () => getVerification(supabase, challengeId, verificationId),
-  });
+  const { data: verification, isFetching } = useGetChallengeVerification(supabase, challengeId, verificationId);
 
   if (isFetching) {
     return <VerificationCardSkeleton />;
