@@ -1,4 +1,4 @@
-import { FoodType } from '@/types/diet';
+import { DietTableType, FoodType } from '@/types/diet';
 import axios from 'axios';
 
 class DietAPI {
@@ -8,7 +8,18 @@ class DietAPI {
     this.baseUrl = baseUrl;
   }
 
-  // 회원가입
+  getDietsByDate = async (date: string): Promise<DietTableType[]> => {
+    try {
+      const response = await axios.get(`${this.baseUrl}?date=${date}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   postDiet = async (
     imageFiles: File[],
     dietType: string,
