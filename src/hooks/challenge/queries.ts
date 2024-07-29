@@ -37,4 +37,7 @@ export const mutationOptions = {
     mutationFn: (data: { updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>; cid: string; vid: string }) =>
       api.challenge.updateVerification(data),
   },
+  deleteVerification: {
+    mutationFn: (data: { cid: string; vid: string }) => api.challenge.deleteVerification(data),
+  },
 };

@@ -14,7 +14,10 @@ export const useGetChallengeVerification = (client: SupabaseClient<Database>, ci
   useQuery(queryOptions.getVerification(client, cid, vid));
 
 // 챌린지 인증 수정
-export const useChallengeVerifyUpdate = () => useMutation(mutationOptions.updateVerification);
+export const useChallengeVerificationUpdate = () => useMutation(mutationOptions.updateVerification);
+
+// 챌린지 인증 삭제
+export const useChallengeVerificationDelete = () => useMutation(mutationOptions.deleteVerification);
 
 //챌린지 항목 조회
 export const useGetChallengeDetail = (id: number) => useQuery(queryOptions.getChallengeDetail(id));

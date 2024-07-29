@@ -2,12 +2,15 @@
 
 import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
 import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
-import { useChallengeVerifyUpdate, useGetChallengeVerification } from '@/hooks/challenge/useChallenge';
+import {
+  useChallengeVerificationDelete,
+  useChallengeVerificationUpdate,
+  useGetChallengeVerification,
+} from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
-import { deleteVerification } from '@/utils/dataFetching';
 import { User } from '@supabase/supabase-js';
 import { format } from 'date-fns';
 import Image from 'next/image';
@@ -29,7 +32,8 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
   const router = useRouter();
 
   const { mutate: upload, isPending: uploading } = useImageUpload();
-  const { mutate: updateVerification } = useChallengeVerifyUpdate();
+  const { mutate: updateVerification } = useChallengeVerificationUpdate();
+  const { mutate: deleteVerification } = useChallengeVerificationDelete();
   const { data: verification, isFetching } = useGetChallengeVerification(supabase, challengeId, verificationId);
 
   if (isFetching) {
@@ -55,10 +59,21 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
 
   const handleDelete = async () => {
     try {
-      const { data, error, details } = await deleteVerification(supabase, challengeId, verificationId);
-      alert('데이터가 삭제되었습니다.');
-      router.replace(`/challenges/${challengeId}/verification/list`);
+      deleteVerification(
+        { cid: challengeId, vid: verificationId },
+        {
+          onSuccess: () => {
+            console.log('Challenge Verify Delete Successfully');
+            queryClient.invalidateQueries({
+              queryKey: ['verifications'],
+            });
+            alert('데이터가 삭제되었습니다.');
+            router.push(`/challenges/${challengeId}/verification/list`);
+          },
+        },
+      );
     } catch (error) {
+      console.error(error);
       alert('모종의 이유로 실패!');
     }
   };

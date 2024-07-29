@@ -22,7 +22,7 @@ class ChallengeAPI {
 
   verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
     try {
-      const response = await axios.post(`${this.baseURL}/verify`, verifyData);
+      const response = await axios.post(`${this.baseURL}/verification`, verifyData);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -42,7 +42,19 @@ class ChallengeAPI {
     vid: string;
   }) => {
     try {
-      const response = await axios.post(`${this.baseURL}/verify/update?cid=${cid}&vid=${vid}`, updateData);
+      const response = await axios.patch(`${this.baseURL}/verification?cid=${cid}&vid=${vid}`, updateData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  deleteVerification = async ({ cid, vid }: { cid: string; vid: string }) => {
+    try {
+      const response = await axios.delete(`${this.baseURL}/verification?cid=${cid}&vid=${vid}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
