@@ -22,6 +22,7 @@ export const queryOptions = {
   getVerification: (client: SupabaseClient<Database>, cid: string, vid: string) => ({
     queryKey: ['verifications', { cid, vid }],
     queryFn: () => getVerification(client, cid, vid),
+    staleTime: Infinity,
   }),
 };
 

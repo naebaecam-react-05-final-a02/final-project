@@ -110,6 +110,9 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
                   queryClient.invalidateQueries({
                     queryKey: ['verifications'],
                   });
+                  queryClient.invalidateQueries({
+                    queryKey: ['verifications', { cid: challengeId, vid: verificationId }],
+                  });
                   router.push(`/challenges/${challengeId}/verification/list`);
                 },
                 onError: (error) => console.error('Chaalenge Verify Update Failed', error),
@@ -132,6 +135,12 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
         {
           onSuccess: () => {
             console.log('Challenge Verify Update Successfully');
+            queryClient.invalidateQueries({
+              queryKey: ['verifications'],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ['verifications', { cid: challengeId, vid: verificationId }],
+            });
             router.push(`/challenges/${challengeId}/verification/list`);
           },
           onError: (error) => console.error('Chaalenge Verify Update Failed', error),
