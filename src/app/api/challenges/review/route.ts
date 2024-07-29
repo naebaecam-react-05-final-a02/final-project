@@ -9,6 +9,7 @@ export async function POST(request: NextRequest) {
     const content = formData.get('content') as string;
     const title = formData.get('title') as string;
     const challengeId = formData.get('challengeId') as string;
+    const rating = Number(formData.get('rating')); // 별점 추가
     const files = formData.getAll('reviewImages') as File[];
 
     const {
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
         content,
         title,
         userId,
-        rating: 5,
+        rating,
         challengeId,
         reviewImages: imageUrls,
       })
