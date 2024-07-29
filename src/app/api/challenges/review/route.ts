@@ -48,14 +48,17 @@ export async function POST(request: NextRequest) {
     // 리뷰 정보와 이미지 URL을 데이터베이스에 저장
     const { data, error } = await supabase
       .from('challengeReviews')
-      .insert({
-        content,
-        title,
-        userId,
-        rating,
-        challengeId,
-        reviewImages: imageUrls,
-      })
+      .upsert(
+        {
+          content,
+          title,
+          userId,
+          rating,
+          challengeId,
+          reviewImages: imageUrls,
+        },
+        { onConflict: 'useId', ignoreDuplicates: false },
+      )
       .select();
 
     if (error) {
