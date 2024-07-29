@@ -137,31 +137,37 @@ const LogInForm = () => {
           </Link>
         </div>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
-        <button type="submit" className="border border-black px-2 py-1.5" disabled={isPending}>
+
+        <Button className="mt-12 mb-[77px]" disabled={isPending}>
           {isPending ? '로그인 중...' : '로그인'}
-        </button>
-        <Button />
+        </Button>
       </form>
-      <div>
-        <Link href="/sign-up" className="border border-black px-4 py-2">
+      <div className="flex flex-col gap-2 mb-16">
+        <div className="text-white text-[14px] font-['Pretendard'] leading-6">SNS로 간편 로그인하기</div>
+        <div className="flex items-center justify-center gap-6">
+          <button
+            type="button"
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            onClick={(e) => handleSocialSignIn(e, 'kakao')}
+            aria-label="카카오 로그인"
+          >
+            <Image src="/kakao.png" alt="Kakao 로그인" width={48} height={48} />
+          </button>
+          <button
+            type="button"
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            onClick={(e) => handleSocialSignIn(e, 'google')}
+            aria-label="구글 로그인"
+          >
+            <Image src="/google.png" alt="Google 로그인" width={48} height={48} />
+          </button>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <p className="text-white/50">아직 회원이 아니신가요?</p>
+        <Link href="/sign-up" className="text-[#12F287] border-b-2 border-[#12F287]">
           회원가입
         </Link>
-      </div>
-      <div className="flex flex-col gap-2">
-        <button
-          type="button"
-          className="border border-black px-2 py-1.5"
-          onClick={(e) => handleSocialSignIn(e, 'google')}
-        >
-          구글 로그인
-        </button>
-        <button
-          type="button"
-          className="border border-black px-2 py-1.5"
-          onClick={(e) => handleSocialSignIn(e, 'kakao')}
-        >
-          카카오 로그인
-        </button>
       </div>
     </div>
   );
