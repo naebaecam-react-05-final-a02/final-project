@@ -17,6 +17,7 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
       return nextPage;
     },
     initialPageParam: 0,
+    staleTime: Infinity,
   });
 
   const counts = await fetchVerificationTotalData(supabase, params.id);

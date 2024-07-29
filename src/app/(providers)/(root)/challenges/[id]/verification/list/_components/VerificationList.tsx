@@ -14,6 +14,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   const params = useParams();
   const path = usePathname();
   const redirect = `${path.replace('/list', '/register')}`;
+
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
@@ -74,9 +75,15 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
         <>
           <h4 className="text-right text-xs font-bold mb-5">오늘 벌써 총 {counts.totalUsers}명이 인증했어요!</h4>
           <ul className="flex flex-col gap-y-4">
-            {verifications?.map((verification, i) => (
-              <li key={verification.id}>
-                <VerificationCard verification={verification} />
+            {verifications?.map((verification) => (
+              <li
+                className="rounded-lg shadow-md group
+              hover:shadow-lg "
+                key={verification.id}
+              >
+                <Link href={`${path.replace('/list', `/${verification.id}`)}`}>
+                  <VerificationCard verification={verification} />
+                </Link>
               </li>
             ))}
             {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
