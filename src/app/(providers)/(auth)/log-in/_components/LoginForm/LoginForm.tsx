@@ -1,6 +1,7 @@
 'use client';
 import { useSignIn, useSocialSignIn } from '@/hooks/auth/useUsers';
 import { Provider } from '@supabase/supabase-js';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -53,10 +54,14 @@ const LogInForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center">
-        <div className="flex flex-col">
-          <label htmlFor="email">이메일:</label>
+    <div className="flex flex-col w-full items-center gap-4">
+      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className="mb-[70px]" />
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
+        <div className="flex flex-col w-full">
+          <label htmlFor="email" className="text-white/70 pl-1 pb-1 text-[12px]">
+            이메일
+          </label>
           <input
             className="border border-black mb-2"
             type="email"
