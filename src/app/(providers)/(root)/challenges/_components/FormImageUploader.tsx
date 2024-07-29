@@ -3,8 +3,12 @@
 import Image from 'next/image';
 import { ChangeEvent, forwardRef, Ref, useState } from 'react';
 
+type FormImageUploaderType = {
+  src?: string;
+};
+
 //TODO Drag and Drop 시 gif파일 안되게 수정해야함
-const FormImageUploader = forwardRef<HTMLInputElement, {}>((_, ref: Ref<HTMLInputElement>) => {
+const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(({ src }, ref: Ref<HTMLInputElement>) => {
   const [file, setFile] = useState<File>();
   const [isDrag, setIsDrag] = useState<boolean>(false);
 
@@ -58,7 +62,14 @@ const FormImageUploader = forwardRef<HTMLInputElement, {}>((_, ref: Ref<HTMLInpu
             </div>
           )}
           <div className="relative size-full">
-            {file && <Image src={URL.createObjectURL(file)} alt="ChallengeImg" fill className="object-cover" />}
+            {file ? (
+              <Image src={URL.createObjectURL(file)} alt="ChallengeImg" fill className="object-cover" />
+            ) : (
+              src && <Image src={src} alt="ChallengeImg" fill className="object-cover" />
+            )}
+            {/* {file && (
+              <Image src={URL.createObjectURL(file) } alt="ChallengeImg" fill className="object-cover" />
+            )} */}
           </div>
           <input
             ref={ref}

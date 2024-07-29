@@ -32,6 +32,26 @@ class ChallengeAPI {
     }
   };
 
+  updateVerification = async ({
+    updateData,
+    cid,
+    vid,
+  }: {
+    updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>;
+    cid: string;
+    vid: string;
+  }) => {
+    try {
+      const response = await axios.post(`${this.baseURL}/verify/update?cid=${cid}&vid=${vid}`, updateData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   getChallengeDetail = async (id: number) => {
     try {
       const response = await axios.get(`${this.baseURL}/detail?id=${id}`);
