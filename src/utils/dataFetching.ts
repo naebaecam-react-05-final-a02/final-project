@@ -51,16 +51,46 @@ export const getVerification = async (
       .match({ challengeId, id: verificationId });
 
     if (error) {
-      throw new Error('getVerification Error');
+      console.error('Database query error:', error);
+      return {
+        data: null,
+        error: 'Database query failed',
+        details: error.message,
+      };
     }
 
-    if (!verification || !verification.length) {
-      throw new Error('No data');
+    if (!verification || verification.length === 0) {
+      console.error('No data found:', error);
+      return {
+        data: null,
+        error: 'No data found',
+        details: `No verification data found for challengeId ${challengeId} and verificationId ${verificationId}`,
+      };
     }
 
-    return verification[0] as verificationsType;
+    return { data: verification[0] as verificationsType, error: null, details: null };
   } catch (error) {
-    console.error('Error');
-    throw error;
+    console.error('Unexpected error:', error);
+    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
+  }
+};
+
+export const deleteVerification = async (
+  client: SupabaseClient<Database>,
+  challengeId: string,
+  verificationId: string,
+) => {
+  try {
+    const { data, error } = await client.from('challengeVerify').delete().match({ challengeId, id: verificationId });
+
+    if (error) {
+      console.error('Database query error:', error);
+      return { data: null, error: 'Database query failed', details: error.message };
+    }
+
+    return { data, error: null, details: null };
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
   }
 };

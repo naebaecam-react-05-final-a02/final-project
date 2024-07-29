@@ -1,6 +1,7 @@
 import { createClient } from '@/supabase/server';
 import { getVerification } from '@/utils/dataFetching';
 import VerificationCard from '../list/_components/VerificationCard';
+import ButtonBox from './_components/ButtonBox';
 
 type VerificationDetailPageType = {
   params: {
@@ -10,29 +11,29 @@ type VerificationDetailPageType = {
 };
 
 const VerificationDetailPage = async ({ params }: VerificationDetailPageType) => {
-  const { id, verificationId } = params;
+  const { id: challengeId, verificationId } = params;
   const supabase = createClient();
-  const verification = await getVerification(supabase, id, verificationId);
+  const { data: verification, error, details } = await getVerification(supabase, challengeId, verificationId);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <main>
-      <VerificationCard verification={verification} type="detail" />
-      <div className="flex w-full justify-between gap-x-2 my-2 select-none">
-        <button
-          className="w-full bg-blue-300 hover:bg-blue-400 hover:shadow-lg 
-        active:shadow-[inset_0_4px_8px_blue]
-        rounded py-2 text-white font-bold"
-        >
-          수정
-        </button>
-        <button
-          className="w-full bg-red-300 hover:bg-red-400 hover:shadow-lg 
-        active:shadow-[inset_0_4px_8px_red]
-        rounded py-2 text-white font-bold"
-        >
-          삭제
-        </button>
-      </div>
+      {error && (
+        <div className="bg-red-500 text-white font-bold p-2">
+          <div className="text-lg">{error}</div>
+          <div className="text-sm">{details}</div>
+        </div>
+      )}
+      {verification && (
+        <>
+          <VerificationCard verification={verification} type="detail" />
+          {verification?.users.id === user?.id && (
+            <ButtonBox challengeId={challengeId} verificationId={verificationId} />
+          )}
+        </>
+      )}
     </main>
   );
 };
