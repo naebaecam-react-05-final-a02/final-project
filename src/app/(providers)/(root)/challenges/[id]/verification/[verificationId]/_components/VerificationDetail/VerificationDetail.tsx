@@ -4,6 +4,7 @@ import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/F
 import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
 import { useChallengeVerifyUpdate, useGetChallengeVerification } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
+import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 import { deleteVerification } from '@/utils/dataFetching';
@@ -22,14 +23,13 @@ type VerificationDetailType = {
 };
 
 const VerificationDetail = ({ challengeId, verificationId, user }: VerificationDetailType) => {
-  const { mutate: upload, isPending: uploading } = useImageUpload();
-  const { mutate: updateVerification } = useChallengeVerifyUpdate();
-
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
 
+  const { mutate: upload, isPending: uploading } = useImageUpload();
+  const { mutate: updateVerification } = useChallengeVerifyUpdate();
   const { data: verification, isFetching } = useGetChallengeVerification(supabase, challengeId, verificationId);
 
   if (isFetching) {
@@ -107,7 +107,10 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
               {
                 onSuccess: () => {
                   console.log('Challenge Verify Update Successfully');
-                  router.push('/');
+                  queryClient.invalidateQueries({
+                    queryKey: ['verifications'],
+                  });
+                  router.push(`/challenges/${challengeId}/verification/list`);
                 },
                 onError: (error) => console.error('Chaalenge Verify Update Failed', error),
               },
@@ -129,7 +132,7 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
         {
           onSuccess: () => {
             console.log('Challenge Verify Update Successfully');
-            router.push('/');
+            router.push(`/challenges/${challengeId}/verification/list`);
           },
           onError: (error) => console.error('Chaalenge Verify Update Failed', error),
         },

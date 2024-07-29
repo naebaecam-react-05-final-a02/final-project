@@ -1,5 +1,5 @@
+import { queryOptions } from '@/hooks/challenge/queries';
 import { createClient } from '@/supabase/server';
-import { getVerification } from '@/utils/dataFetching';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import VerificationDetail from './_components/VerificationDetail';
 
@@ -19,11 +19,7 @@ const VerificationDetailPage = async ({ params }: VerificationDetailPageType) =>
     data: { user },
   } = await supabase.auth.getUser();
 
-  await queryClient.prefetchQuery({
-    queryKey: ['verifications', { cid: challengeId, vid: verificationId }],
-    queryFn: () => getVerification(supabase, challengeId, verificationId),
-    staleTime: Infinity,
-  });
+  await queryClient.prefetchQuery(queryOptions.getVerification(supabase, challengeId, verificationId));
 
   return (
     <main>
