@@ -1,15 +1,24 @@
 'use client';
+import Button from '@/components/Button';
+import Checkbox from '@/components/Checkbox';
+import Input from '@/components/Input';
 import { useSignIn, useSocialSignIn } from '@/hooks/auth/useUsers';
+import ChevronRight from '@/icons/ChevronRight';
 import { Provider } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { validatePassword } from '../../../_utils/passwordValidation';
 
 export interface LogInFormData {
   email: string;
   password: string;
   keepLoggedIn: boolean;
+}
+
+interface FormErrors extends Partial<Record<keyof LogInFormData, string | null>> {
+  form?: string | null;
 }
 
 const LogInForm = () => {
@@ -18,10 +27,16 @@ const LogInForm = () => {
     password: '',
     keepLoggedIn: false,
   });
+  const [errors, setErrors] = useState<FormErrors>({});
 
   const router = useRouter();
-  const { mutate: signIn, isPending, error } = useSignIn();
+
+  const { mutate: signIn, isPending } = useSignIn();
   const { mutate: socialSignIn, isPending: isSocialSignInPending } = useSocialSignIn();
+
+  const validateEmail = (email: string) => {
+    return !email.includes('@') ? '유효한 이메일 주소를 입력해주세요.' : null;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -29,17 +44,46 @@ const LogInForm = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+
+    let error = null;
+    if (name === 'email') {
+      error = validateEmail(value);
+    } else if (name === 'password') {
+      error = validatePassword(value);
+    }
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+
+    if (emailError || passwordError) {
+      setErrors({
+        email: emailError,
+        password: passwordError,
+      });
+      return;
+    }
+
     signIn(formData, {
       onSuccess: () => {
         alert('로그인 성공!');
         router.push('/');
       },
-      onError: (error) => {
+      onError: (error: any) => {
         console.error('Login error:', error);
+        let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해 주세요.';
+        if (error.status === 400) {
+          errorMessage = '이메일 주소와 비밀번호를 확인해 주세요.';
+        }
+        setErrors((prev) => ({ ...prev, form: errorMessage }));
       },
     });
   };
@@ -58,46 +102,45 @@ const LogInForm = () => {
       <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className="mb-[70px]" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
-        <div className="flex flex-col w-full">
-          <label htmlFor="email" className="text-white/70 pl-1 pb-1 text-[12px]">
-            이메일
-          </label>
-          <input
-            className="border border-black mb-2"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+        <Input
+          label="이메일"
+          placeholder="이메일을 입력해 주세요."
+          value={formData.email}
+          onChange={handleChange}
+          name="email"
+          type="email"
+          error={errors.email}
+        />
+        <Input
+          label="비밀번호"
+          placeholder="비밀번호를 입력해 주세요."
+          value={formData.password}
+          onChange={handleChange}
+          name="password"
+          type="password"
+          error={errors.password}
+        />
+
+        <div className="flex w-full justify-between gap-2 mt-4">
+          <div>
+            <Checkbox
+              checked={formData.keepLoggedIn}
+              label="로그인 유지"
+              onChange={(e) => setFormData((prev) => ({ ...prev, keepLoggedIn: e.target.checked }))}
+            />
+          </div>
+          <Link href={'/reset-password'} className="text-white/50 hover:text-white">
+            <div className="flex">
+              비밀번호 찾기
+              <ChevronRight className="stroke-white/50 group-hover:stroke-white" />
+            </div>
+          </Link>
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="password">비밀번호:</label>
-          <input
-            className="border border-black mb-2"
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="keepLoggedIn"
-            name="keepLoggedIn"
-            checked={formData.keepLoggedIn}
-            onChange={(e) => setFormData((prev) => ({ ...prev, keepLoggedIn: e.target.checked }))}
-          />
-          <label htmlFor="keepLoggedIn">로그인 상태 유지</label>
-        </div>
-        {error && <div className="text-red-500">{(error as Error).message}</div>}
+        {errors.form && <div className="text-red-500">{errors.form}</div>}
         <button type="submit" className="border border-black px-2 py-1.5" disabled={isPending}>
           {isPending ? '로그인 중...' : '로그인'}
         </button>
+        <Button />
       </form>
       <div>
         <Link href="/sign-up" className="border border-black px-4 py-2">
@@ -119,12 +162,6 @@ const LogInForm = () => {
         >
           카카오 로그인
         </button>
-      </div>
-      <div>
-        비밀번호가 기억나지 않으신가요?{' '}
-        <Link href={'/reset-password'} className="">
-          비밀번호 찾기
-        </Link>
       </div>
     </div>
   );
