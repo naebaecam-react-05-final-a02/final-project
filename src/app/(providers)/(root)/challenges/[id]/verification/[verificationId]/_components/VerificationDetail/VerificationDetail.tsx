@@ -17,7 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
-import VerificationCardSkeleton from '../../../list/_components/VerificationCardSkeleton';
+import VerificationCardSkeleton from '../../../list/_components/VerificationCardSkeleton/VerificationCardSkeleton';
 
 type VerificationDetailType = {
   challengeId: string;

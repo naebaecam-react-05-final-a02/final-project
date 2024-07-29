@@ -1,7 +1,10 @@
 export const dynamic = 'force-dynamic';
+import {
+  fetchDataByInfinityQuery,
+  fetchVerificationTotalData,
+} from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import { createClient } from '@/supabase/server';
 import { verificationsType } from '@/types/challenge';
-import { fetchDataByInfinityQuery, fetchVerificationTotalData } from '@/utils/dataFetching';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import VerificationList from './_components/VerificationList';
 

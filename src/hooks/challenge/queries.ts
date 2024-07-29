@@ -1,6 +1,6 @@
+import { getVerification } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import api from '@/service/service';
 import { Database, Tables } from '@/types/supabase';
-import { getVerification } from '@/utils/dataFetching';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const challengesQueryKeys = {

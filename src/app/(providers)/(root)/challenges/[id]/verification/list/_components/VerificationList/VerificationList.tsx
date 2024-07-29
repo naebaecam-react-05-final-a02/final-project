@@ -1,14 +1,14 @@
 'use client';
 
+import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
-import { fetchDataByInfinityQuery } from '@/utils/dataFetching';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import VerificationCard from './VerificationCard';
-import VerificationCardSkeleton from './VerificationCardSkeleton';
+import VerificationCard from '../VerificationCard';
+import VerificationCardSkeleton from '../VerificationCardSkeleton';
 
 const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   const params = useParams();

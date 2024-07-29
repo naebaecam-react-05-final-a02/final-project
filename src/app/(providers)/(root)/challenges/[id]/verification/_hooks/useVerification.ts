@@ -1,7 +1,7 @@
 import { verificationsType } from '@/types/challenge';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { getEndOfDayISO, getStartOfDayISO } from './dateFormatter';
+import { getEndOfDayISO, getStartOfDayISO } from '../../../../../../../utils/dateFormatter';
 
 const DATA_PER_PAGE = 5;
 
@@ -69,26 +69,6 @@ export const getVerification = async (
     }
 
     return { data: verification[0] as verificationsType, error: null, details: null };
-  } catch (error) {
-    console.error('Unexpected error:', error);
-    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
-  }
-};
-
-export const deleteVerification = async (
-  client: SupabaseClient<Database>,
-  challengeId: string,
-  verificationId: string,
-) => {
-  try {
-    const { data, error } = await client.from('challengeVerify').delete().match({ challengeId, id: verificationId });
-
-    if (error) {
-      console.error('Database query error:', error);
-      return { data: null, error: 'Database query failed', details: error.message };
-    }
-
-    return { data, error: null, details: null };
   } catch (error) {
     console.error('Unexpected error:', error);
     return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
