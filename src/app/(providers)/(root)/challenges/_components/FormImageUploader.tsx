@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { ChangeEvent, forwardRef, Ref, useState } from 'react';
 
+//TODO Drag and Drop 시 gif파일 안되게 수정해야함
 const FormImageUploader = forwardRef<HTMLInputElement, {}>((_, ref: Ref<HTMLInputElement>) => {
   const [file, setFile] = useState<File>();
   const [isDrag, setIsDrag] = useState<boolean>(false);
