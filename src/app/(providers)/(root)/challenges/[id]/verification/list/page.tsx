@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { createClient } from '@/supabase/server';
 import { verificationsType } from '@/types/challenge';
 import { fetchDataByInfinityQuery, fetchVerificationTotalData } from '@/utils/dataFetching';

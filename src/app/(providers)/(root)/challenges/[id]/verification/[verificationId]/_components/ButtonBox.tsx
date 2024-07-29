@@ -22,6 +22,7 @@ const ButtonBox = ({ challengeId, verificationId }: ButtonBoxType) => {
       alert('모종의 이유로 실패!');
     }
   };
+
   return (
     <div className="flex w-full justify-between gap-x-2 my-2 select-none">
       <button
