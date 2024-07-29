@@ -27,11 +27,12 @@ export const queryOptions = {
 };
 
 export const mutationOptions = {
-  register: {
-    mutationFn: (challengeData: Omit<Tables<'challenges'>, 'id'>) => api.challenge.register(challengeData),
+  registerChallenge: {
+    mutationFn: (challengeData: Omit<Tables<'challenges'>, 'id'>) => api.challenge.registerChallenge(challengeData),
   },
-  verify: {
-    mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => api.challenge.verify(verifyData),
+  registerVerification: {
+    mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) =>
+      api.challenge.registerVerification(verifyData),
   },
   updateVerification: {
     mutationFn: (data: { updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>; cid: string; vid: string }) =>

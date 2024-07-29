@@ -4,10 +4,10 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { mutationOptions, queryOptions } from './queries';
 
 // 챌린지 등록(생성)
-export const useChallengeRegister = () => useMutation(mutationOptions.register);
+export const useChallengeRegister = () => useMutation(mutationOptions.registerChallenge);
 
 // 챌린지 인증 등록(생성)
-export const useChallengeVerify = () => useMutation(mutationOptions.verify);
+export const useChallengeVerify = () => useMutation(mutationOptions.registerVerification);
 
 // 챌린지 인증 조회(읽기)
 export const useGetChallengeVerification = (client: SupabaseClient<Database>, cid: string, vid: string) =>

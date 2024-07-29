@@ -8,7 +8,7 @@ class ChallengeAPI {
     this.baseURL = baseURL;
   }
 
-  register = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
+  registerChallenge = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/register`, challengeData);
       return response.data;
@@ -20,7 +20,7 @@ class ChallengeAPI {
     }
   };
 
-  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
+  registerVerification = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/verification`, verifyData);
       return response.data;
