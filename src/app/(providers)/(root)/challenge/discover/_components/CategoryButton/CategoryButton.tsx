@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 interface ButtonProps {
   label: string;
   value: string;
-  order: string;
+  category: string;
   onClick: (value: string) => void;
 }
 
@@ -16,8 +16,8 @@ const categoryButtonVariants = cva('text-sm px-3 py-1.5 rounded-full', {
   },
 });
 
-const CategoryButton = ({ label, value, order, onClick }: ButtonProps) => {
-  const isSelected = value === order;
+const CategoryButton = ({ label, value, category, onClick }: ButtonProps) => {
+  const isSelected = value === category;
 
   return (
     <button onClick={() => onClick(value)} className={categoryButtonVariants({ isSelected })}>

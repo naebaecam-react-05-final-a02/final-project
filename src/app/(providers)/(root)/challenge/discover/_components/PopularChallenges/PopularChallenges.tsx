@@ -1,12 +1,10 @@
-import api from '@/service/service';
+'use client';
+
 import Link from 'next/link';
 import Categories from '../Categories';
 import ChallengeList from '../ChallengeList';
 
-const PopularChallenges = async () => {
-  const response = await api.challenge.getPopularChallenges();
-  const { data } = await response.data;
-
+const PopularChallenges = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
@@ -16,7 +14,7 @@ const PopularChallenges = async () => {
         </Link>
       </div>
       <Categories />
-      <ChallengeList data={data} />
+      <ChallengeList />
     </div>
   );
 };

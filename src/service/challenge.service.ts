@@ -32,10 +32,11 @@ class ChallengeAPI {
     }
   };
 
-  getPopularChallenges = async () => {
+  getPopularChallenges = async ({ category }: { category: string }) => {
     try {
-      const response = await axios.get(`http://localhost:3000/${this.baseURL}/popular`);
-      return response;
+      const response = await axios.get(`http://localhost:3000/${this.baseURL}/popular?category=${category}`);
+      const data = await response.data;
+      return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || error.message);

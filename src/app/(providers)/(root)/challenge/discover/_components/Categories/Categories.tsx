@@ -1,25 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useChallengeCategoryStore } from '@/stores/stores';
+import { CATEGORIES } from '../../_constants/constants';
 import CategoryButton from '../CategoryButton';
 
 const Categories = () => {
-  const [order, setOrder] = useState('all');
+  const category = useChallengeCategoryStore((state) => state.category);
+  const setCategory = useChallengeCategoryStore((state) => state.setCategory);
 
-  const buttons = [
-    { label: '전체', value: 'all' },
-    { label: '운동', value: 'exercise' },
-    { label: '수면', value: 'sleep' },
-  ];
   const handleClickButton = (value: string) => {
-    setOrder(value);
+    setCategory(value);
   };
 
   return (
-    <ul className="flex gap-4">
-      {buttons.map((button, i) => (
+    <ul className="flex justify-between">
+      {CATEGORIES.map((button, i) => (
         <li key={i}>
-          <CategoryButton {...button} order={order} onClick={handleClickButton} />
+          <CategoryButton {...button} category={category} onClick={handleClickButton} />
         </li>
       ))}
     </ul>
