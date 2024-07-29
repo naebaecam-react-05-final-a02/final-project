@@ -38,3 +38,29 @@ export const fetchVerificationTotalData = async (client: SupabaseClient<Database
 
   return data;
 };
+
+export const getVerification = async (
+  client: SupabaseClient<Database>,
+  challengeId: string,
+  verificationId: string,
+) => {
+  try {
+    const { data: verification, error } = await client
+      .from('challengeVerify')
+      .select('*,users (id, nickname, email,profileURL)')
+      .match({ challengeId, id: verificationId });
+
+    if (error) {
+      throw new Error('getVerification Error');
+    }
+
+    if (!verification || !verification.length) {
+      throw new Error('No data');
+    }
+
+    return verification[0] as verificationsType;
+  } catch (error) {
+    console.error('Error');
+    throw error;
+  }
+};

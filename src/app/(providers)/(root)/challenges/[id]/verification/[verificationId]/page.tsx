@@ -1,33 +1,23 @@
-'use client';
-
-import { queryClient } from '@/providers/QueryProvider';
-import { verificationsType } from '@/types/challenge';
-import { usePathname } from 'next/navigation';
+import { createClient } from '@/supabase/server';
+import { getVerification } from '@/utils/dataFetching';
 import VerificationCard from '../list/_components/VerificationCard';
 
-type queryDataType = {
-  pages: verificationsType[][];
+type VerificationDetailPageType = {
+  params: {
+    id: string;
+    verificationId: string;
+  };
 };
 
-//TODO caching 데이터 없어지면 에러뜸, SSR로 변경 후 다시 받아와야할듯?
-const VerificationDetailPage = () => {
-  const path = usePathname();
-  const pathArr = path.split('/');
-  const pathData = {
-    challengeId: Number(pathArr[2]),
-    verificationId: Number(pathArr.at(-1)),
-  };
-  const queryData = queryClient.getQueryData<queryDataType>(['verifications']);
-  const verification = queryData?.pages
-    .flat()
-    .find((data) => data.challengeId == pathData.challengeId && data.id == pathData.verificationId);
-
-  console.log(verification);
+const VerificationDetailPage = async ({ params }: VerificationDetailPageType) => {
+  const { id, verificationId } = params;
+  const supabase = createClient();
+  const verification = await getVerification(supabase, id, verificationId);
 
   return (
     <main>
-      <VerificationCard verification={verification!} type="detail" />
-      <div className="flex w-full justify-between gap-x-2 my-2">
+      <VerificationCard verification={verification} type="detail" />
+      <div className="flex w-full justify-between gap-x-2 my-2 select-none">
         <button
           className="w-full bg-blue-300 hover:bg-blue-400 hover:shadow-lg 
         active:shadow-[inset_0_4px_8px_blue]

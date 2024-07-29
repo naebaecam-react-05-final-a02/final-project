@@ -12,7 +12,10 @@ const VerificationCard = ({ verification, type = 'list' }: VerificationCardType)
   const nickname = verification.users.nickname ? verification.users.nickname : `헬린이_${userNumber}`;
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-gray-100 group-active:shadow-[inset_0_2px_8px_gray] rounded-lg">
+    <div
+      className="max-w-md mx-auto p-4 bg-gray-100 group-active:shadow-[inset_0_2px_8px_gray] rounded-lg
+    select-none"
+    >
       <div className="flex justify-between items-center w-full mb-4">
         <div className="flex gap-x-4 items-center">
           <div className="rounded-full bg-gray-200 w-12 h-12">{/* 나중에 프로필 사진 */}</div>
