@@ -5,6 +5,7 @@ import { initialFormState } from '@/data/authInitialState';
 import { useCheckDuplicate, useSignUp } from '@/hooks/auth/useUsers';
 import { FormState } from '@/types/auth';
 
+import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import 'swiper/css';
@@ -69,38 +70,41 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-between items-end w-full">
-      {currentStep === 'essentialInfo' && (
-        <EssentialInfoForm
-          formState={formState}
-          setFormState={setFormState}
-          checkDuplicate={async (field, value) => await checkDuplicate({ field, value })}
-        />
-      )}
-      {currentStep === 'nicknameInfo' && (
-        <NicknameForm
-          formState={formState}
-          setFormState={setFormState}
-          checkDuplicate={async (field, value) => await checkDuplicate({ field, value })}
-        />
-      )}
-      {currentStep === 'physicalInfo' && <PhysicalInfoForm formState={formState} setFormState={setFormState} />}
+    <div className="flex flex-col h-screen justify-between items-end w-full pb-20">
+      <div className="w-full">
+        {currentStep === 'essentialInfo' ? <Header title="회원가입" /> : <Header showLogo showBackButton={false} />}
+        {currentStep === 'essentialInfo' && (
+          <EssentialInfoForm
+            formState={formState}
+            setFormState={setFormState}
+            checkDuplicate={async (field, value) => await checkDuplicate({ field, value })}
+          />
+        )}
+        {currentStep === 'nicknameInfo' && (
+          <NicknameForm
+            formState={formState}
+            setFormState={setFormState}
+            checkDuplicate={async (field, value) => await checkDuplicate({ field, value })}
+          />
+        )}
+        {currentStep === 'physicalInfo' && <PhysicalInfoForm formState={formState} setFormState={setFormState} />}
 
-      {(currentStep === 'success1' || currentStep === 'success2') && (
-        <WelcomePreview currentStep={currentStep} setCurrentStep={(step) => setCurrentStep(step)} />
-      )}
-      {signUpError && <div className="text-red-500">{(signUpError as Error).message}</div>}
-      {currentStep !== 'essentialInfo' && (
-        <div className="flex gap-4 mb-8 mt-12">
-          {['nicknameInfo', 'physicalInfo', 'success1', 'success2'].map((stepName) => (
-            <div
-              key={stepName}
-              className={`w-3 h-3 rounded-full ${currentStep === stepName ? 'bg-blue-500' : 'bg-gray-300'}`}
-            />
-          ))}
-        </div>
-      )}
-      <div className="w-full px-4 mb-10">
+        {(currentStep === 'success1' || currentStep === 'success2') && (
+          <WelcomePreview currentStep={currentStep} setCurrentStep={(step) => setCurrentStep(step)} />
+        )}
+        {signUpError && <div className="text-red-500">{(signUpError as Error).message}</div>}
+      </div>
+      <div className="flex flex-col items-center w-full px-4">
+        {currentStep !== 'essentialInfo' && (
+          <div className="flex gap-2 mb-8 mt-12">
+            {['nicknameInfo', 'physicalInfo', 'success1', 'success2'].map((stepName) => (
+              <div
+                key={stepName}
+                className={`w-2 h-2 rounded-full ${currentStep === stepName ? '!w-8 bg-primary-100 ' : 'bg-white/50'}`}
+              />
+            ))}
+          </div>
+        )}
         <Button onClick={handleNext} className="bg-green-500 text-white px-4 py-2 rounded w-full">
           {currentStep === 'success1' || currentStep === 'success2' ? '메인으로' : '다음'}
         </Button>

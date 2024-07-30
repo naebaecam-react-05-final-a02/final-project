@@ -79,13 +79,13 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
   };
 
   return (
-    <form
-      className="flex flex-col gap-4 items-center justify-center w-full max-w-[390px] sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px]"
-      onSubmit={handleSubmit}
-    >
+    <form className="flex flex-col gap-4 items-center justify-center w-full " onSubmit={handleSubmit}>
       <div className="flex flex-col w-full justify-between content-between">
         <div className="flex flex-col items-center w-full px-4">
           <div className="w-full">
+            <h3 className="text-18 font-semibold leading-140 tracking-tighter mt-8 mb-6">
+              사용하실 닉네임을 알려주세요!
+            </h3>
             <div className="flex w-full items-end">
               <Input
                 label="닉네임"

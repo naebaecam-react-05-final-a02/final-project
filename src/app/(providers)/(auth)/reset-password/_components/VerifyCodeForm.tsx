@@ -1,6 +1,9 @@
 'use client';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import { useVerifyResetCode } from '@/hooks/auth/useUsers';
+
 import { useState } from 'react';
 
 interface VerifyCodeFormProps {
@@ -32,23 +35,21 @@ const VerifyCodeForm = ({ email, onSuccess, setError }: VerifyCodeFormProps) => 
   return (
     <form onSubmit={handleVerifyCode}>
       <div className="mb-4">
-        <label htmlFor="verify-code" className="block font-semibold text-[18px] mb-1.5">
-          인증번호 입력하기
-        </label>
         <div className="flex gap-2">
-          <input
-            type="text"
-            name="verify-code"
-            id="verify-code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="인증 코드"
-            className="flex-grow bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
-            required
-          />
-          <button type="submit" className="bg-[#D9D9D9] px-4 py-2 rounded-md" disabled={isVerifying}>
-            {isVerifying ? '확인 중...' : '확인'}
-          </button>
+          <div className="flex items-end w-full gap-2">
+            <Input
+              label="인증번호 입력"
+              name="verify-code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="인증 코드"
+              required
+            />
+
+            <Button type="submit" className="w-16 h-10 text-nowrap px-2 py-3.5" disabled={isVerifying}>
+              {isVerifying ? '요청 중...' : '인증'}
+            </Button>
+          </div>
         </div>
       </div>
     </form>

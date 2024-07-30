@@ -20,7 +20,7 @@ const WelcomePreview = ({ currentStep, setCurrentStep }: WelcomePreviewProps) =>
 
   return (
     <>
-      <Swiper className="w-screen" onSlideChange={handleSlideChange}>
+      <Swiper className="w-screen" allowSlidePrev={true} onSlideChange={handleSlideChange}>
         <SwiperSlide>
           <div className="flex flex-col justify-center items-center gap-4">
             <WelcomeMessage nickname={user?.nickname ?? '테스트'} />
