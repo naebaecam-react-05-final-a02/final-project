@@ -109,7 +109,7 @@ const VerificationDetail = ({ challengeId, verificationId, user }: VerificationD
       upload(
         { storage: 'challengeVerify', form },
         {
-          onSuccess: async (response) => {
+          onSuccess: (response) => {
             const updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
               impression,
               imageURL: response.imageURL,
