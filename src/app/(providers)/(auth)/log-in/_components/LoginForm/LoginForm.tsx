@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { validatePassword } from '../../../_utils/passwordValidation';
+import { validatePassword } from '../../../_utils/validatePassword';
 
 export interface LogInFormData {
   email: string;
@@ -98,8 +98,8 @@ const LogInForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-center gap-4">
-      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className="mb-[70px]" />
+    <div className="flex flex-col w-full items-center gap-4 max-w-[390px]">
+      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mb-[50px]" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
         <Input
@@ -138,12 +138,12 @@ const LogInForm = () => {
         </div>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
 
-        <Button className="mt-12 mb-[77px]" disabled={isPending}>
+        <Button className="mt-12 mb-[35px]" disabled={isPending}>
           {isPending ? '로그인 중...' : '로그인'}
         </Button>
       </form>
-      <div className="flex flex-col gap-2 mb-16">
-        <div className="text-white text-[14px] font-['Pretendard'] leading-6">SNS로 간편 로그인하기</div>
+      <div className="flex flex-col gap-2 mb-10">
+        <div className="text-white text-center text-[14px] leading-6">SNS로 간편 로그인하기</div>
         <div className="flex items-center justify-center gap-6">
           <button
             type="button"

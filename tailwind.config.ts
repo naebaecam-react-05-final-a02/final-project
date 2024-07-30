@@ -89,7 +89,6 @@ const config: Config = {
         '.border-gradient': {
           'border-image':
             'linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(18, 242, 135, 1) 50%, rgba(0, 0, 0, 0.3) 100%) 1',
-
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },

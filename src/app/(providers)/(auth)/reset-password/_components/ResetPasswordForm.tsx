@@ -3,7 +3,7 @@
 import { useResetPassword } from '@/hooks/auth/useUsers';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { validatePassword } from '../../_utils/passwordValidation';
+import { validatePassword } from '../../_utils/validatePassword';
 
 interface ResetPasswordFormProps {
   email: string;
