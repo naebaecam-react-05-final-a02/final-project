@@ -25,3 +25,16 @@
 .swiper-pagination-bullet-active {
   @apply bg-blue-500;
 }
+
+input.exerciseInput::-webkit-outer-spin-button,
+input.exerciseInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  text-align: center;
+}
+
+/* Firefox */
+input.exerciseInput[type='number'] {
+  text-align: center;
+  -moz-appearance: textfield;
+}
