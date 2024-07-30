@@ -72,7 +72,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
         </div>
       )}
       {verifications && verifications.length > 0 && (
-        <>
+        <div>
           <h4 className="text-right text-xs font-bold mb-5">오늘 벌써 총 {counts.totalUsers}명이 인증했어요!</h4>
           <ul className="flex flex-col gap-y-4">
             {verifications?.map((verification) => (
@@ -88,7 +88,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
             ))}
             {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
           </ul>
-        </>
+        </div>
       )}
 
       {!isFetching && hasNextPage && <div ref={obsRef} className="h-20 w-full" />}
