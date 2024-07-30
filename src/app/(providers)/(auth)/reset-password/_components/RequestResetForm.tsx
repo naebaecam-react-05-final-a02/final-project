@@ -43,12 +43,11 @@ const RequestResetForm = ({ onSuccess, setError }: RequestResetFormProps) => {
               label="이메일"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               placeholder="이메일 입력"
               required
             />
-
-            <Button type="submit" className="w-16 h-10 text-nowrap px-2 py-3.5" disabled={isRequesting}>
+            <Button type="submit" className="!w-16 h-10 text-nowrap px-2 py-3.5" disabled={isRequesting}>
               {isRequesting ? '요청 중...' : '인증'}
             </Button>
           </div>

@@ -1,4 +1,5 @@
 'use client';
+import Card from '@/components/Card';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -22,6 +23,14 @@ const ResetPasswordProcess = () => {
       {step === 'reset' && <ResetPasswordForm email={email} setError={setError} />}
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
+      <Card className="custom-card">
+        <h2 className="text-lg font-bold">웨이트</h2>
+        <span className="text-sm text-gray-400">Lv. 23</span>
+        <div className="flex items-center justify-between w-full">
+          <span className="text-base">힙업 스트레칭</span>
+        </div>
+        {/* 추가 내용 */}
+      </Card>
 
       <div className="relative mb-40 mt-6">
         <Link
