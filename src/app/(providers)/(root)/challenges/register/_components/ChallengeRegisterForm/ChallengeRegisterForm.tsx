@@ -6,10 +6,11 @@ import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
-import FormImageUploader from '../../_components/FormImageUploader';
-import FormInput from '../../_components/FormInput';
-import FormTextArea from '../../_components/FormTextArea';
-import FormCalendar from './FormCalendar';
+import FormImageUploader from '../../../_components/FormImageUploader';
+import FormInput from '../../../_components/FormInput';
+import FormTextArea from '../../../_components/FormTextArea';
+import FormCalendar from '../FormCalendar';
+import FormCategory from '../FormCategory';
 
 interface FormFields {
   title: string;
@@ -19,6 +20,16 @@ interface FormFields {
   verify: string;
   category: string;
 }
+
+const categoryItems = [
+  { label: 'All', value: 'all' },
+  { label: 'Exercise', value: 'exercise' },
+  { label: 'Diet', value: 'diet' },
+  { label: 'Eco', value: 'eco' },
+  { label: 'LifeStyle', value: 'lifestyle' },
+  { label: 'Feeling', value: 'feeling' },
+  { label: 'Habit', value: 'habit' },
+];
 
 const ChallengeRegisterForm = () => {
   const router = useRouter();
@@ -113,39 +124,8 @@ const ChallengeRegisterForm = () => {
       <FormInput label="인증 방법" name="verify" placeholder="누워서 셀카를 올려주세용" />
 
       {/* 카테고리 */}
-      <div className="select-none flex flex-col gap-y-2 ">
-        <label className="text-xs font-bold" htmlFor="category">
-          카테고리
-        </label>
-        <select
-          className="bg-[#f6f6f6] px-[10px] font-bold
-      outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
-          name="category"
-          id="category"
-        >
-          <option className="font-bold" value="all">
-            All
-          </option>
-          <option className="font-bold" value="exercise">
-            Exercise
-          </option>
-          <option className="font-bold" value="diet">
-            Diet
-          </option>
-          <option className="font-bold" value="eco">
-            Eco
-          </option>
-          <option className="font-bold" value="lifestyle">
-            Lifestyle
-          </option>
-          <option className="font-bold" value="feeling">
-            Feeling
-          </option>
-          <option className="font-bold" value="habit">
-            Habit
-          </option>
-        </select>
-      </div>
+      <FormCategory label="카테고리" name="category" items={categoryItems} />
+
       <button type="submit" className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
         입력 안해?
       </button>
