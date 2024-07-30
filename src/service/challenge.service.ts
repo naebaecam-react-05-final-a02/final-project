@@ -20,6 +20,18 @@ class ChallengeAPI {
     }
   };
 
+  updateChallenge = async ({ updateData, cid }: { updateData: Omit<Tables<'challenges'>, 'id'>; cid: number }) => {
+    try {
+      const response = await axios.patch(`${this.baseURL}/register?cid=${cid}`, updateData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   deleteChallenge = async (cid: number) => {
     try {
       const response = await axios.delete(`${this.baseURL}/register?cid=${cid}`);
