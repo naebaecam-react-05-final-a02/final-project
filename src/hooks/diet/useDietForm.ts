@@ -18,7 +18,17 @@ const useDietForm = () => {
   const addNewChip = () => {
     // 이전에 활성화됐던 칩 검사
     if (!validateFood(foodChips[activeChipIdx])) return;
+    setFoodChips([{ ...initialFoodState, id: crypto.randomUUID() }, ...foodChips]);
+    setActiveChipIdx(0);
     setFoodForms(initialFoodState);
+  };
+
+  const deleteChip = (deleteFoodId: string) => {
+    if (foodChips.length === 1) return;
+    const deletedFoods = foodChips.filter((food) => food.id !== deleteFoodId);
+    setFoodChips(deletedFoods);
+    setActiveChipIdx(0);
+    setFoodForms(deletedFoods[0]);
   };
 
   const changeChip = (chipIdx: number) => {
@@ -29,19 +39,29 @@ const useDietForm = () => {
   };
 
   const resetForm = () => {
-    setFoodForms(initialFoodState);
     setFoodChips([{ ...initialFoodState, id: crypto.randomUUID() }]);
     setActiveChipIdx(0);
+    setFoodForms(initialFoodState);
   };
 
-  const validateFood = (food: FoodType) => {
+  const validateFood = (food: FoodType = foodChips[activeChipIdx]) => {
     const { foodName, kcal, carbohydrate, protein, fat } = food;
     if (!foodName) return alert('음식 이름을 입력해주세요');
     if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) return alert('영양 성분을 올바르게 입력해주세요');
     return true;
   };
 
-  return { foodForm, foodChips, activeChipIdx, handleChange, addNewChip, changeChip, resetForm };
+  return {
+    foodForm,
+    foodChips,
+    activeChipIdx,
+    handleChange,
+    addNewChip,
+    deleteChip,
+    changeChip,
+    resetForm,
+    validateFood,
+  };
 };
 
 export default useDietForm;

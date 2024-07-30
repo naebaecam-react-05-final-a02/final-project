@@ -1,3 +1,4 @@
+import { foodTypes } from '@/data/foodTypes';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -8,7 +9,6 @@ interface EmojiSelectorProps {
 
 const EmojiSelector = ({ foodType, handleEmojiChange }: EmojiSelectorProps) => {
   const [modal, setModal] = useState(false);
-  const foodTypes = ['curry', 'bread', 'chicken'];
 
   return (
     <>
@@ -16,18 +16,21 @@ const EmojiSelector = ({ foodType, handleEmojiChange }: EmojiSelectorProps) => {
         <Image width={20} height={20} src={`/foods/${foodType}.png`} alt={foodType} onClick={() => setModal(!modal)} />
       </div>
       <div
-        className={`z-50 absolute top-full left-0 w-full flex flex-wrap justify-center gap-5 bg-[#00000090] p-3 rounded-xl ${
+        className={`z-50 absolute top-full left-0 w-full flex flex-wrap justify-center gap-3 bg-[#00000090] p-3 rounded-xl ${
           modal ? 'block' : 'hidden'
         }`}
       >
         {foodTypes.map((foodType) => (
           <Image
             key={foodType}
-            width={30}
-            height={30}
+            width={25}
+            height={25}
             src={`/foods/${foodType}.png`}
             alt={foodType}
-            onClick={() => handleEmojiChange(foodType)}
+            onClick={() => {
+              handleEmojiChange(foodType);
+              setModal(false);
+            }}
           />
         ))}
       </div>

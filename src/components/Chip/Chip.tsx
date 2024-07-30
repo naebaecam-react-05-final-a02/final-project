@@ -5,14 +5,14 @@ import CloseIcon from '/public/icons/x-close.svg';
 
 interface ChipProps {
   food: FoodType;
-  isActive: boolean;
-  handleDelete: () => void;
+  isActive?: boolean;
+  handleDelete?: () => void;
 }
 
 const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentProps<'button'>) => {
   return (
     <button
-      className={`flex gap-2 items-center flex-none p-1 pr-3 bg-white bg-opacity-10 rounded-full border ${
+      className={`flex gap-3 items-center flex-none p-1 pr-3 bg-white bg-opacity-10 rounded-full border ${
         isActive ? 'border-[#12F287]' : 'border-transparent'
       }`}
       onClick={onClick}
@@ -24,7 +24,14 @@ const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentPr
         <span className="text-sm">{food.foodName || '-'}</span>
         <span className="text-[10px] opacity-30">{food.kcal} Kcal</span>
       </div>
-      <CloseIcon onClick={handleDelete} />
+      {handleDelete && (
+        <CloseIcon
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete();
+          }}
+        />
+      )}
     </button>
   );
 };

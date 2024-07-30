@@ -18,7 +18,7 @@ const PostDietPage = () => {
         >
           <LeftIcon />
         </button>
-        <h1 className="text-center text-sm font-medium">식단 추가하기</h1>
+        <h1 className="text-center text-sm font-medium font-semibold">식단 추가하기</h1>
         <div className="w-10"></div>
       </header>
       <DietForm />

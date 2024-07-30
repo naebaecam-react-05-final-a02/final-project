@@ -1,14 +1,14 @@
 'use client';
+import Chip from '@/components/Chip';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSaveDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
 import { DietTimeType } from '@/types/diet';
 import { FormEvent, useState } from 'react';
-import AddButton from '../AddButton';
-import Chip from '../Chip';
-import EmojiSelector from '../EmojiSelector';
-import RadioGroup from '../RadioGroup';
-import TextInput from '../TextInput';
+import AddButton from './AddButton';
+import EmojiSelector from './EmojiSelector';
+import RadioGroup from './RadioGroup';
+import TextInput from './TextInput';
 
 const DietForm = () => {
   const {
@@ -16,7 +16,9 @@ const DietForm = () => {
     foodChips,
     activeChipIdx,
     handleChange: handleFormChange,
+    validateFood,
     addNewChip,
+    deleteChip,
     changeChip,
     resetForm,
   } = useDietForm();
@@ -27,8 +29,9 @@ const DietForm = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validateFood()) return;
     saveDiet(
-      { date: new Date(), dietType, foods: foodChips },
+      { date: new Date(date), dietType, foods: foodChips },
       {
         onSuccess: (response) => {
           alert(response.message);
@@ -50,14 +53,14 @@ const DietForm = () => {
       )}
       <div className="grid grid-cols-[48px_1fr] gap-3">
         <AddButton onClick={addNewChip} />
-        <div className="flex gap-3 overflow-x-scroll scale">
+        <div className="chips flex gap-3 overflow-x-scroll scale">
           {foodChips.map((food, idx) => (
             <Chip
               key={food.id}
               food={food}
               isActive={activeChipIdx === idx}
               // TODO: 칩 삭제 기능
-              handleDelete={() => alert('삭제! (기능은 아직...)')}
+              handleDelete={() => deleteChip(food.id)}
               onClick={() => changeChip(idx)}
             />
           ))}

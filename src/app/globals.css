@@ -8,6 +8,14 @@
   .swiper-slide {
     @apply text-center text-lg bg-white flex justify-center items-center;
   }
+
+  .chips::-webkit-scrollbar {
+    @apply w-[3px] h-[3px];
+  }
+
+  .chips::-webkit-scrollbar-thumb {
+    @apply bg-gray-500;
+  }
 }
 
 /* Swiper 관련 스타일 */

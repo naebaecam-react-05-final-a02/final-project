@@ -14,36 +14,24 @@ const Week = ({ selectedDate, changeDate }: WeekProps) => {
   const day = today.getDay();
 
   return (
-    <table className="w-full table-fixed">
-      <thead>
-        <tr>
-          {weekIterateArray.map((i) => {
-            const dayName = dayNames[(day + i + 7) % 7];
-            return <th key={dayName}>{dayName}</th>;
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {weekIterateArray.map((gap) => (
-            <DateCell
-              key={`date-${date + gap}`}
-              isToday={gap === 0}
-              onClick={() => changeDate(selectedDate.getDate(), gap)}
-            >
-              {getCalculatedDate(selectedDate, gap)}
-            </DateCell>
-          ))}
-        </tr>
-      </tbody>
-    </table>
+    <div className="w-full grid grid-cols-7 justify-items-center">
+      {weekIterateArray.map((gap) => {
+        const calcDate = new Date(selectedDate);
+        calcDate.setDate(selectedDate.getDate() + gap);
+        return (
+          <div
+            key={`date-${date + gap}`}
+            className={`w-full flex flex-col justify-between items-center ${
+              gap === 0 && 'bg-[#FFFFFF0D] rounded-full'
+            }`}
+          >
+            <div className="w-full text-center pt-4 text-[#FFFFFF4D] text-xs">{dayNames[calcDate.getDay()]}</div>
+            <DateCell onClick={() => changeDate(selectedDate.getDate(), gap)}>{calcDate.getDate()}</DateCell>
+          </div>
+        );
+      })}
+    </div>
   );
-};
-
-const getCalculatedDate = (selectedDate: Date, gap: number) => {
-  const calDate = new Date(selectedDate);
-  calDate.setDate(selectedDate.getDate() + gap);
-  return calDate.getDate();
 };
 
 export default Week;

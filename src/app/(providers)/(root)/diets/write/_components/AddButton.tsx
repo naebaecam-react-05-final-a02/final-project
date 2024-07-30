@@ -8,7 +8,7 @@ const AddButton = ({ onClick }: ComponentProps<'button'>) => {
       className="flex justify-center items-center w-12 h-12 rounded-full text-white  border border-dashed border-white border-opacity-50 hover:brightness-90"
       onClick={onClick}
     >
-      <PlusIcon />
+      <PlusIcon className="w-[18px] h-[18px]" />
     </button>
   );
 };

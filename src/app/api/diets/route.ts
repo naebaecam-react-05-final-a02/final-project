@@ -1,3 +1,4 @@
+import { dietTypeCode } from '@/data/dietTypeCode';
 import { createClient } from '@/supabase/server';
 import { getDateISO, getNextDateISO } from '@/utils/dateFormatter';
 import { NextRequest, NextResponse } from 'next/server';
@@ -24,7 +25,8 @@ export const GET = async (request: NextRequest) => {
       .select('*')
       .eq('userId', user.id)
       .gte('date', startDate)
-      .lt('date', endDate);
+      .lt('date', endDate)
+      .order('dietType');
 
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
@@ -56,5 +58,3 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
   }
 };
-
-const dietTypeCode: { [key: string]: number } = { 아침: 0, 점심: 1, 저녁: 2 };

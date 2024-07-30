@@ -3,7 +3,7 @@ import { DietsLogType } from '@/types/diet';
 const DietsLog = ({ diets }: { diets: DietsLogType }) => {
   const totalNutrients = diets.reduce(
     (total, diet) => {
-      diet.foodInfo.forEach((food) => {
+      diet.foods.forEach((food) => {
         total.kcal += Number(food?.kcal || 0);
         total.carbohydrate += Number(food?.carbohydrate || 0);
         total.protein += Number(food?.protein || 0);
