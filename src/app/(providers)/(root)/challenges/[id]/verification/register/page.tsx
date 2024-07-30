@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { useChallengeVerify } from '@/hooks/challenge/useChallenge';
+import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ const ChallengeVerificationRegisterPage = ({ params }: { params: { id: string } 
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
-  const { mutate: verify, isPending } = useChallengeVerify();
+  const { mutate: verify, isPending } = useChallengeVerificationRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

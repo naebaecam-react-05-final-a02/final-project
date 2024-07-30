@@ -1,19 +1,20 @@
 'use client';
 
+import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
-import { fetchDataByInfinityQuery } from '@/utils/dataFetching';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import VerificationCard from './VerificationCard';
-import VerificationCardSkeleton from './VerificationCardSkeleton';
+import VerificationCard from '../VerificationCard';
+import VerificationCardSkeleton from '../VerificationCardSkeleton';
 
 const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   const params = useParams();
   const path = usePathname();
   const redirect = `${path.replace('/list', '/register')}`;
+
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
@@ -58,30 +59,39 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
 
   return (
     <>
-      {verifications && !verifications.length && (
-        <div>
-          <p>헉..! 아직 아무도 인증하지 않았네요!</p>
-          <p>먼저 나서서 인증.. 해야겠지?</p>
+      {!verifications ||
+        (!verifications.length && (
+          <div>
+            <div>
+              <p>헉..! 아직 아무도 인증하지 않았네요!</p>
+              <p>먼저 나서서 인증.. 해야겠지?</p>
+            </div>
 
-          <Link href={redirect}>
-            <button className="  select-none px-3 py-2 bg-blue-200 rounded border-blue-300 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]">
-              인증하러가기
-            </button>
-          </Link>
-        </div>
-      )}
+            <Link href={redirect}>
+              <button className="  select-none px-3 py-2 bg-blue-200 rounded border-blue-300 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]">
+                인증하러가기
+              </button>
+            </Link>
+          </div>
+        ))}
       {verifications && verifications.length > 0 && (
-        <>
+        <div>
           <h4 className="text-right text-xs font-bold mb-5">오늘 벌써 총 {counts.totalUsers}명이 인증했어요!</h4>
           <ul className="flex flex-col gap-y-4">
-            {verifications?.map((verification, i) => (
-              <li key={verification.id}>
-                <VerificationCard verification={verification} />
+            {verifications?.map((verification) => (
+              <li
+                className="rounded-lg shadow-md group
+              hover:shadow-lg "
+                key={verification.id}
+              >
+                <Link href={`${path.replace('/list', `/${verification.id}`)}`}>
+                  <VerificationCard verification={verification} />
+                </Link>
               </li>
             ))}
             {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
           </ul>
-        </>
+        </div>
       )}
 
       {!isFetching && hasNextPage && <div ref={obsRef} className="h-20 w-full" />}

@@ -6,9 +6,10 @@ type FormInputType = {
   label: string;
   name: string;
   placeholder: string;
+  defaultValue?: string;
 };
 
-const FormInput = ({ label, name, placeholder }: FormInputType) => {
+const FormInput = ({ label, name, placeholder, defaultValue }: FormInputType) => {
   const id = useId();
   return (
     <div className="flex flex-col gap-y-2 w-full select-none">
@@ -21,6 +22,7 @@ const FormInput = ({ label, name, placeholder }: FormInputType) => {
         name={name}
         type="text"
         placeholder={placeholder}
+        defaultValue={defaultValue}
       />
     </div>
   );

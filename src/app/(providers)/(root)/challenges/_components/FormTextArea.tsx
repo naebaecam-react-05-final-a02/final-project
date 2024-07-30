@@ -7,9 +7,10 @@ type FormTextAreaType = {
   label: string;
   name: string;
   placeholder: string;
+  defaultValue?: string;
 };
 
-const FormTextArea = ({ maxLength, label, name, placeholder }: FormTextAreaType) => {
+const FormTextArea = ({ maxLength, label, name, placeholder, defaultValue }: FormTextAreaType) => {
   const id = useId();
   const [textAreaLength, setTextAreaLength] = useState<number>(0);
 
@@ -38,6 +39,7 @@ const FormTextArea = ({ maxLength, label, name, placeholder }: FormTextAreaType)
         id={id}
         name={name}
         placeholder={placeholder}
+        defaultValue={defaultValue ?? ''}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import { Tables } from '@/types/supabase';
 import ExerciseTodoItem from './ExerciseTodoItem';
 
+//TODO 투두 달력으로 선택할수있어야함?
 const ExerciseTodoList = async ({ exercises }: { exercises: Tables<'exercises'>[] }) => {
   return (
     <div className="size-full min-h-[140px] bg-[#292436]">

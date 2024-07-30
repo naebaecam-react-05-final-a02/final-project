@@ -2,10 +2,15 @@
 
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
-const FormCalendar = () => {
+type FormCalendarType = {
+  s?: string;
+  e?: string;
+};
+
+const FormCalendar = ({ s, e }: FormCalendarType) => {
   const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
-  const [start, setStart] = useState<string>(today);
-  const [end, setEnd] = useState<string>(today);
+  const [start, setStart] = useState<string>(s ?? today);
+  const [end, setEnd] = useState<string>(e ?? today);
 
   const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newStartDate = e.target.value;
@@ -25,7 +30,7 @@ const FormCalendar = () => {
           className="flex-1 bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
           name="startDate"
           type="date"
-          min={start}
+          min={today}
           value={start}
           onChange={handleStartDateChange}
         />
