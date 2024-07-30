@@ -1,10 +1,10 @@
 import Mobile from '@/layouts/Mobile';
-import PopularChallenges from './_components/PopularChallenges/PopularChallenges';
+import ComingChallenges from './_components/ComingChallenges/ComingChallenges';
 
 const DiscoverPage = async () => {
   return (
     <Mobile>
-      <PopularChallenges />
+      <ComingChallenges />
     </Mobile>
   );
 };

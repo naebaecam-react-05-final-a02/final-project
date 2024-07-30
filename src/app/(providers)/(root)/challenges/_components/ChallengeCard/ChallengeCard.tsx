@@ -12,12 +12,12 @@ const ChallengeCard = ({ challenge }: ChallengeCard) => {
 
   return (
     <article>
-      <div className="relative w-full aspect-square rounded-xl overflow-hidden">
+      <div className="relative w-full aspect-square overflow-hidden">
         <Image src={challenge.imageURL} alt={challenge.title} fill style={{ objectFit: 'cover' }} />
       </div>
       <h3 className="mt-2 text-lg font-semibold">{challenge.title}</h3>
 
-      <span className="text-sm text-gray-500">{restDate === 1 ? '내일부터 시작' : `${restDate}일 뒤에 시작`}</span>
+      <span className="text-sm text-gray-500">{restDate === 0 ? '내일부터 시작' : `${restDate}일 뒤에 시작`}</span>
     </article>
   );
 };
