@@ -7,12 +7,6 @@ type ContextType = {
   };
 };
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export async function POST(req: NextRequest, { params }: ContextType) {
   const supabase = createClient();
   const storage = params.storageId;

@@ -1,10 +1,10 @@
 declare module '*.svg' {
-  import { FC, SVGProps } from 'react';
-  const content: FC<SVGProps<SVGElement>>;
-  export default content;
+  import React from 'react';
+  const SVGComponent: React.FC<React.SVGProps<SVGSVGElement> & { active?: boolean }>;
+  export default SVGComponent;
 }
 
 declare module '*.svg?url' {
-  const content: any;
+  const content: string;
   export default content;
 }
