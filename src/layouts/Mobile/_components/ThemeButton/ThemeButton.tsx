@@ -1,4 +1,4 @@
-import { useThemeStore } from '@/stores/themeStore';
+import { useThemeStore } from '@/stores/useThemeStore';
 import { cva } from 'class-variance-authority';
 
 const themeButtonVariants = cva(' w-40 h-10 rounded-full border-black border-2 absolute right-10', {

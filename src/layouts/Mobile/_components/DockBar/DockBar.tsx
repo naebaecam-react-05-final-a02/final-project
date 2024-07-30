@@ -1,9 +1,9 @@
 'use client';
 
-import { useThemeStore } from '@/stores/themeStore';
+import { useThemeStore } from '@/stores/useThemeStore';
 import { cva } from 'class-variance-authority';
 
-const DockVariants = cva('h-10 w-full relative flex justify-center', {
+const DockVariants = cva('h-10 w-full absolute bottom-0 flex justify-center', {
   variants: {
     darkMode: {
       false: 'bg-white',

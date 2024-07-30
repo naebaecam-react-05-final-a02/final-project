@@ -1,10 +1,10 @@
 'use client';
 
-import { useThemeStore } from '@/stores/themeStore';
+import { useThemeStore } from '@/stores/useThemeStore';
 import { cva } from 'class-variance-authority';
 import Image from 'next/image';
 
-const headerVariants = cva('', {
+const headerVariants = cva('absolute top-0', {
   variants: {
     darkMode: {
       false: 'bg-white',
