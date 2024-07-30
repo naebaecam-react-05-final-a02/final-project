@@ -48,6 +48,7 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
                 // textAnchor="end" // 기울기
               />
               <YAxis
+                filter="url(#glow)"
                 tickLine={false}
                 stroke="#ffffff"
                 opacity={0.5}
