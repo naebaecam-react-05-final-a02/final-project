@@ -37,7 +37,7 @@ const AllChallengeList = () => {
 
   return (
     <>
-      <ul className="min-h-[480px] h-full grid grid-cols-2 gap-2 overflow-scroll">
+      <ul className="min-h-[480px] h-full grid grid-cols-2 gap-x-2 gap-y-6 overflow-scroll">
         {!challenges || isPending ? (
           <SkeletonCardList length={6} />
         ) : (
@@ -51,9 +51,14 @@ const AllChallengeList = () => {
             )),
           )
         )}
-        <div className="h-12"></div>
-        <div ref={ref}></div>
-        <div className="h-12"></div>
+        {isFetching && <SkeletonCardList length={6} />}
+        {hasNextPage && (
+          <>
+            <div className="h-24"></div>
+            <div ref={ref}></div>
+            <div className="h-12"></div>
+          </>
+        )}
       </ul>
     </>
   );

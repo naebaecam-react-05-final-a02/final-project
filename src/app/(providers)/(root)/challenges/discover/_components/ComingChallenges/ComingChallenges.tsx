@@ -10,7 +10,7 @@ const ComingChallenges = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h2 className="font-bold text-3xl">곧 시작하는 챌린지</h2>
-        <Link href="/challenges/discover/all">
+        <Link href="/challenges/all">
           <div>전체보기</div>
         </Link>
       </div>
