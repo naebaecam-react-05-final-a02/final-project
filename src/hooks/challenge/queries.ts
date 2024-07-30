@@ -9,3 +9,15 @@ export const mutationOptions = {
     mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id'>) => api.challenge.verify(verifyData),
   },
 };
+
+export const challengesQueryKeys = {
+  all: ['challenges'] as const,
+  popular: ({ category }: { category: string }) => [...challengesQueryKeys.all, 'popular', category] as const,
+};
+
+export const queryOptions = {
+  popular: ({ category }: { category: string }) => ({
+    queryKey: challengesQueryKeys.popular({ category }),
+    queryFn: () => fetch(`/api/challenges/popular?category=${category}`).then((res) => res.json()),
+  }),
+};

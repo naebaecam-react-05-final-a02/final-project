@@ -1,4 +1,4 @@
-import ChallengeReviewForm from '@/app/(providers)/(root)/challenges/_components/ChallengeReviewForm';
+import ChallengeReviewForm from '@/app/(providers)/(root)/challenge/_components/ChallengeReviewForm';
 
 const ChallengeReviewPage = () => {
   return (

@@ -1,26 +1,27 @@
 'use client';
 
+import { useGetPopularChallenges } from '@/hooks/challenge/useChallenge';
 import { useChallengeCategoryStore } from '@/stores/stores';
-import { useQuery } from '@tanstack/react-query';
+import { Tables } from '@/types/supabase';
 import Link from 'next/link';
 import ChallengeCard from '../ChallengeCard';
+import SkeletonCardList from '../Skeleton/Card.skeleton';
+
+type TChallenge = Tables<'challenges'>;
 
 const ChallengeList = () => {
   const category = useChallengeCategoryStore((state) => state.category);
-  const { data: challenges, isPending } = useQuery({
-    queryKey: ['challenges', category],
-    queryFn: () => fetch(`/api/challenge/popular?category=${category}`).then((res) => res.json()),
-  });
-  console.log(challenges);
-  if (isPending) return <div>Loading</div>;
+
+  const { data: challenges, isPending } = useGetPopularChallenges({ category });
+
   return (
-    <ul className="grid grid-cols-2 gap-2">
+    <ul className="min-h-[480px] grid grid-cols-2 gap-2">
       {isPending ? (
-        <p>Loading...</p>
+        <SkeletonCardList length={4} />
       ) : (
-        challenges.data.map((challenge: any) => (
+        challenges.data.map((challenge: TChallenge) => (
           <li key={challenge.id}>
-            <Link href={`/challenge/detail/${challenge.id}`}>
+            <Link href={`/challenges/detail/${challenge.id}`}>
               <ChallengeCard challenge={challenge} />
             </Link>
           </li>
