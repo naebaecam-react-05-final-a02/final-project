@@ -76,6 +76,7 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
               </defs>
 
               <Line
+                filter="url(#glow)"
                 connectNulls // 안끊기게?
                 dataKey="weight"
                 stroke="url(#gradient)"
