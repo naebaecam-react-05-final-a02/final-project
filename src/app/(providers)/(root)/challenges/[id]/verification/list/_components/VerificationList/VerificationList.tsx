@@ -59,18 +59,21 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
 
   return (
     <>
-      {verifications && !verifications.length && (
-        <div>
-          <p>헉..! 아직 아무도 인증하지 않았네요!</p>
-          <p>먼저 나서서 인증.. 해야겠지?</p>
+      {!verifications ||
+        (!verifications.length && (
+          <div>
+            <div>
+              <p>헉..! 아직 아무도 인증하지 않았네요!</p>
+              <p>먼저 나서서 인증.. 해야겠지?</p>
+            </div>
 
-          <Link href={redirect}>
-            <button className="  select-none px-3 py-2 bg-blue-200 rounded border-blue-300 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]">
-              인증하러가기
-            </button>
-          </Link>
-        </div>
-      )}
+            <Link href={redirect}>
+              <button className="  select-none px-3 py-2 bg-blue-200 rounded border-blue-300 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]">
+                인증하러가기
+              </button>
+            </Link>
+          </div>
+        ))}
       {verifications && verifications.length > 0 && (
         <div>
           <h4 className="text-right text-xs font-bold mb-5">오늘 벌써 총 {counts.totalUsers}명이 인증했어요!</h4>
