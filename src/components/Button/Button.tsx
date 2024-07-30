@@ -1,27 +1,23 @@
-import React, { ComponentProps } from 'react';
+import { ComponentProps } from 'react';
 
 interface ButtonProps extends ComponentProps<'button'> {
   className?: string;
-  style?: React.CSSProperties;
 }
 
-const Button = ({ children, className = '', style = {}, ...props }: ButtonProps) => {
+const Button = ({ children, className = '', ...props }: ButtonProps) => {
   return (
     <button
-      className={`w-full h-[50px] flex px-6 py-[13px] rounded-lg justify-center items-center relative overflow-hidden ${className}`}
-      style={{
-        background: `
-          linear-gradient(180deg, rgba(18, 242, 135, 0.9) 0%, rgba(18, 242, 135, 1) 100%)
-        `,
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        ...style,
-      }}
+      className={`
+        w-full h-[50px] flex px-6 py-[13px] rounded-lg justify-center items-center 
+        relative overflow-hidden transition-colors duration-200 ease-in-out
+        bg-button-gradient hover:bg-button-hover-gradient
+        shadow-[0_1px_3px_rgba(0,0,0,0.1)]
+        ${className}
+      `}
       {...props}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent"></div>
-      <div className="text-white text-[15px] font-semibold font-['Pretendard'] leading-[21px] relative z-10">
-        {children}
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-blackT-30 to-transparent"></div>
+      <div className="text-white text-15 font-semibold font-sans leading-[21px] relative z-10">{children}</div>
     </button>
   );
 };

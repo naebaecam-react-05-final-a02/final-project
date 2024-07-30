@@ -80,6 +80,8 @@ const config: Config = {
         'radial-gradient':
           'radial-gradient(50% 50% at 49.54% 100%, rgba(18, 242, 135, 0.3) 0%, rgba(18, 242, 135, 0) 100%)',
         'input-gradient': 'linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%)',
+        'button-gradient': 'linear-gradient(180deg, rgba(18, 242, 135, 0.9) 0%, rgba(18, 242, 135, 1) 100%)',
+        'button-hover-gradient': 'linear-gradient(180deg, rgba(15, 205, 115, 0.9) 0%, rgba(15, 205, 115, 1) 100%)',
       },
     },
   },
