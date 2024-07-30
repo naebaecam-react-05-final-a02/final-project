@@ -6,17 +6,19 @@ import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
-import FormImageUploader from '../../_components/FormImageUploader';
-import FormInput from '../../_components/FormInput';
-import FormTextArea from '../../_components/FormTextArea';
-import FormCalendar from './FormCalendar';
+import FormImageUploader from '../../../_components/FormImageUploader';
+import FormInput from '../../../_components/FormInput';
+import FormTextArea from '../../../_components/FormTextArea';
+import FormCalendar from '../FormCalendar';
+import FormCategory from '../FormCategory';
 
-interface FormFields {
+export interface FormFields {
   title: string;
   content: string;
   startDate: string;
   endDate: string;
   verify: string;
+  category: string;
 }
 
 const ChallengeRegisterForm = () => {
@@ -38,7 +40,7 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'verify'];
+    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'verify', 'category'];
     const formFields: Partial<FormFields> = {};
 
     for (const field of fields) {
@@ -50,7 +52,7 @@ const ChallengeRegisterForm = () => {
       formFields[field] = value.trim();
     }
 
-    const { title, content, startDate, endDate, verify } = formFields as FormFields;
+    const { title, content, startDate, endDate, verify, category } = formFields as FormFields;
 
     const form = new FormData();
     form.append('file', file);
@@ -71,6 +73,7 @@ const ChallengeRegisterForm = () => {
             verify,
             tags: null,
             rating: 0,
+            category,
           };
 
           challengeRegister(registerData, {
@@ -109,6 +112,9 @@ const ChallengeRegisterForm = () => {
 
       {/* 인증 방법 */}
       <FormInput label="인증 방법" name="verify" placeholder="누워서 셀카를 올려주세용" />
+
+      {/* 카테고리 */}
+      <FormCategory label="카테고리" name="category" />
 
       <button type="submit" className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
         입력 안해?
