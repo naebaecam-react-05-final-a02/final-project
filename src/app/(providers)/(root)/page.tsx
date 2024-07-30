@@ -37,11 +37,14 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
             <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
               <div className="absolute -left-[95px] -bottom-[11px] -rotate-[15deg] bg-[#37cc85] w-[100px] h-2" />
               <div className="absolute -left-2 rounded-full bg-[#5effb2] p-px size-4 z-10 flex justify-center items-center">
-                <div className="size-full rounded-full bg-[#37cc85] border-[1px] border-white/60"></div>
+                <div
+                  className="size-full rounded-full bg-[#37cc85] border-[1px] border-white/60"
+                  style={{ filter: 'url(#glow)' }}
+                />
               </div>
               <GradeProgress />
               <div className="absolute -right-2 rounded-full bg-white/10 p-px size-4 z-10 flex justify-center items-center">
-                <div className="size-full rounded-full bg-[#292929] border-[1px] border-white/20"></div>
+                <div className="size-full rounded-full bg-[#292929] border-[1px] border-white/20" />
               </div>
               <div className="absolute -right-[95px] -top-[11px] -rotate-[15deg] bg-white/5 w-[100px] h-2" />
             </div>
