@@ -12,7 +12,7 @@ import FormTextArea from '../../../_components/FormTextArea';
 import FormCalendar from '../FormCalendar';
 import FormCategory from '../FormCategory';
 
-interface FormFields {
+export interface FormFields {
   title: string;
   content: string;
   startDate: string;
@@ -20,16 +20,6 @@ interface FormFields {
   verify: string;
   category: string;
 }
-
-const categoryItems = [
-  { label: 'All', value: 'all' },
-  { label: 'Exercise', value: 'exercise' },
-  { label: 'Diet', value: 'diet' },
-  { label: 'Eco', value: 'eco' },
-  { label: 'LifeStyle', value: 'lifestyle' },
-  { label: 'Feeling', value: 'feeling' },
-  { label: 'Habit', value: 'habit' },
-];
 
 const ChallengeRegisterForm = () => {
   const router = useRouter();
@@ -124,7 +114,7 @@ const ChallengeRegisterForm = () => {
       <FormInput label="인증 방법" name="verify" placeholder="누워서 셀카를 올려주세용" />
 
       {/* 카테고리 */}
-      <FormCategory label="카테고리" name="category" items={categoryItems} />
+      <FormCategory label="카테고리" name="category" />
 
       <button type="submit" className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
         입력 안해?
