@@ -1,7 +1,6 @@
 'use client';
 
 import { useGetUser } from '@/hooks/auth/useUsers';
-import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
@@ -82,53 +81,51 @@ const MyPage = () => {
   if (isPending || !data) return <div>Loading...</div>;
 
   return (
-    <Mobile>
-      <div className="px-14">
-        <div className="flex flex-col justify-center items-center">
-          <label htmlFor="avatar">
-            <Image
-              className="cursor-pointer rounded-full"
-              src={avatarPreview || data?.profileURL || '/user/default-avatar.png'}
-              alt="avatar"
-              width={100}
-              height={100}
-            />
-          </label>
-          <input
-            ref={imgRef}
-            onChange={handleAvatarChange}
-            accept="image/*"
-            type="file"
-            id="avatar"
-            name="avatar"
-            hidden
+    <div className="px-14">
+      <div className="flex flex-col justify-center items-center">
+        <label htmlFor="avatar">
+          <Image
+            className="cursor-pointer rounded-full"
+            src={avatarPreview || data?.profileURL || '/user/default-avatar.png'}
+            alt="avatar"
+            width={100}
+            height={100}
           />
-          <button onClick={handleDeleteAvatar}>프로필 이미지 삭제</button>
-        </div>
-        <div className="flex flex-col gap-4">
-          <TextInput label={'닉네임'} value={inputs.nickname} name="nickname" onChange={onChange} type="text" />
-          <TextInput
-            label={'이메일'}
-            value={inputs.email}
-            name="email"
-            onChange={onChange}
-            type="email"
-            disabled={true}
-          />
-          <TextInput label={'키'} value={inputs.height} name="height" onChange={onChange} type="number" />
-          <TextInput label={'체중'} value={inputs.weight} name="weight" onChange={onChange} type="number" />
-          <div className="flex gap-8 mt-4">
-            <button className="bg-gray-200 w-full h-10 flex justify-center items-center">취소</button>
-            <button
-              className="bg-gray-600 text-white w-full h-10 flex justify-center items-center"
-              onClick={handleUpdateProfile}
-            >
-              수정하기
-            </button>
-          </div>
+        </label>
+        <input
+          ref={imgRef}
+          onChange={handleAvatarChange}
+          accept="image/*"
+          type="file"
+          id="avatar"
+          name="avatar"
+          hidden
+        />
+        <button onClick={handleDeleteAvatar}>프로필 이미지 삭제</button>
+      </div>
+      <div className="flex flex-col gap-4">
+        <TextInput label={'닉네임'} value={inputs.nickname} name="nickname" onChange={onChange} type="text" />
+        <TextInput
+          label={'이메일'}
+          value={inputs.email}
+          name="email"
+          onChange={onChange}
+          type="email"
+          disabled={true}
+        />
+        <TextInput label={'키'} value={inputs.height} name="height" onChange={onChange} type="number" />
+        <TextInput label={'체중'} value={inputs.weight} name="weight" onChange={onChange} type="number" />
+        <div className="flex gap-8 mt-4">
+          <button className="bg-gray-200 w-full h-10 flex justify-center items-center">취소</button>
+          <button
+            className="bg-gray-600 text-white w-full h-10 flex justify-center items-center"
+            onClick={handleUpdateProfile}
+          >
+            수정하기
+          </button>
         </div>
       </div>
-    </Mobile>
+    </div>
   );
 };
 

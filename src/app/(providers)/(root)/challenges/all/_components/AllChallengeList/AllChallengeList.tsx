@@ -36,8 +36,8 @@ const AllChallengeList = () => {
   });
 
   return (
-    <>
-      <ul className="min-h-[480px] h-full grid grid-cols-2 gap-x-2 gap-y-6 overflow-scroll">
+    <div className="w-full h-full">
+      <ul className="h-full box-border grid grid-cols-2 gap-x-2 gap-y-6 overflow-scroll scroll">
         {!challenges || isPending ? (
           <SkeletonCardList length={6} />
         ) : (
@@ -56,11 +56,11 @@ const AllChallengeList = () => {
           <>
             <div className="h-24"></div>
             <div ref={ref}></div>
-            <div className="h-12"></div>
+            <div className="h-36"></div>
           </>
         )}
       </ul>
-    </>
+    </div>
   );
 };
 
