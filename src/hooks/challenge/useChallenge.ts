@@ -6,6 +6,9 @@ import { mutationOptions, queryOptions } from './queries';
 // 챌린지 등록(생성)
 export const useChallengeRegister = () => useMutation(mutationOptions.registerChallenge);
 
+// 챌린지 삭제
+export const useChallengeDelete = () => useMutation(mutationOptions.deleteChallenge);
+
 // 챌린지 인증 등록(생성)
 export const useChallengeVerificationRegister = () => useMutation(mutationOptions.registerVerification);
 

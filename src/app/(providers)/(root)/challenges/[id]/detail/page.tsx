@@ -1,32 +1,41 @@
 'use client';
-import React from 'react';
-import Image from 'next/image';
-import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
+import { useGetUser } from '@/hooks/auth/useUsers';
+import { useChallengeDelete, useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import { useGetReviews } from '@/hooks/review/useReview';
-import { Tables } from '@/types/supabase';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
+  const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
   const { data: reviews } = useGetReviews(id);
+  const { mutate: challengeDelete } = useChallengeDelete();
+  const router = useRouter();
   console.log('@@', reviews);
   console.log('!!!!!', challenge);
-
+  console.log('USER___', user);
   //TODO: 로딩
   if (!challenge) {
     return <div>없따!</div>;
   }
 
+  const handleDelete = () => {
+    console.log('DELETE BUTTON CLICK___');
+    challengeDelete(challenge.id, {
+      onSuccess: () => {
+        alert('챌린지가 삭제되었습니다.');
+        router.replace('/challenges/discover');
+      },
+    });
+  };
+
   return (
     <div className="h-screen">
       <main className="bg-amber-300 pb-7">
-        <Image
-          src={challenge.imageURL}
-          alt="썸네일 이미지"
-          width={100}
-          height={100}
-          className="w-full h-[200px] object-cover mb-5"
-        />
+        <div className="relative w-full aspect-video">
+          <Image src={challenge.imageURL} alt="썸네일 이미지" fill className="object-cover mb-5" />
+        </div>
         <section className="flex flex-col gap-9 px-6">
           <div className="mb-9">
             <div className="flex flex-row justify-between items-center ">
@@ -62,6 +71,23 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
           <button className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
             챌린지 신청하기
           </button>
+          {user?.id === challenge.createdBy && (
+            <div className="w-full flex gap-x-2">
+              <button
+                className="flex-1 py-2 rounded-md 
+            bg-blue-300 hover:bg-blue-400 hover:shadow-lg active:shadow-[inset_0_2px_8px_blue]"
+              >
+                수정
+              </button>
+              <button
+                className="flex-1 py-2 rounded-md 
+            bg-red-300 hover:bg-red-400 hover:shadow-lg active:shadow-[inset_0_2px_8px_red]"
+                onClick={() => handleDelete()}
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </div>

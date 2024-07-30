@@ -30,6 +30,9 @@ export const mutationOptions = {
   registerChallenge: {
     mutationFn: (challengeData: Omit<Tables<'challenges'>, 'id'>) => api.challenge.registerChallenge(challengeData),
   },
+  deleteChallenge: {
+    mutationFn: (cid: number) => api.challenge.deleteChallenge(cid),
+  },
   registerVerification: {
     mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) =>
       api.challenge.registerVerification(verifyData),

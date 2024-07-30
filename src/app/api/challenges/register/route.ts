@@ -18,3 +18,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Challenge Register Failed' }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const supabase = createClient();
+  const { searchParams } = new URL(req.url);
+  const challengeId = searchParams.get('cid');
+  try {
+    const { data, error } = await supabase.from('challenges').delete().eq('id', challengeId);
+
+    if (error) {
+      console.error('Supabase delete error:', error);
+      return NextResponse.json({ error: 'Failed To Delete Challenge', details: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: 'Challenge Delete Successfully', data }, { status: 201 });
+  } catch (error) {
+    console.error('Unexpected delete error:', error);
+    return NextResponse.json({ error: 'Challenge Delete Failed' }, { status: 500 });
+  }
+}
