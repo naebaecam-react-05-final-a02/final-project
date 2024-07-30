@@ -35,6 +35,7 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
           <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
             <LineChart data={weights} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
               <XAxis
+                filter="url(#glow)"
                 tickLine={false}
                 axisLine={false}
                 dataKey="date"
