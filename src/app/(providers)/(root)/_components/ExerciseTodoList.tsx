@@ -42,7 +42,7 @@ const ExerciseTodoList = () => {
     );
   }
 
-  if (!exercises.data || exercises.data.length === 0) {
+  if (!exercises.data || !exercises.data.length) {
     return (
       <>
         <DashBoardHeader date={date} setState={setDate} />

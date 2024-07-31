@@ -99,9 +99,11 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
         {/* 체중 변화 그래프 */}
         <div className="bg-[#292436] h-[250px] flex flex-col items-center justify-center select-none">
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <WeightChart query={query} />
-          </HydrationBoundary>
+          <Card className="size-full">
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              <WeightChart query={query} />
+            </HydrationBoundary>
+          </Card>
         </div>
       </main>
     </div>
