@@ -9,6 +9,14 @@
     @apply text-center text-lg bg-white flex justify-center items-center;
   }
 
+  .scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll {
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
   .chips::-webkit-scrollbar {
     @apply w-[3px] h-[3px];
   }
@@ -23,6 +31,18 @@
   @apply bg-blue-500;
 }
 
+input.exerciseInput::-webkit-outer-spin-button,
+input.exerciseInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  text-align: center;
+}
+
+/* Firefox */
+input.exerciseInput[type='number'] {
+  text-align: center;
+  -moz-appearance: textfield;
+}
 body {
   @apply font-sans leading-140 tracking-tighter;
 }

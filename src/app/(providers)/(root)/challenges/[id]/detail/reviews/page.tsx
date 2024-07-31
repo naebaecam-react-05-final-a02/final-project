@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/app/(providers)/(root)/challenges/detail/[id]/reviews/page.tsx
+import ChallengeReviewForm from '@/app/(providers)/(root)/challenge/_components/ChallengeReviewForm';
+========
 import ChallengeReviewForm from '../_components/ChallengeReviewForm';
+>>>>>>>> dev:src/app/(providers)/(root)/challenges/[id]/detail/reviews/page.tsx
 
 const ChallengeReviewPage = () => {
   return (

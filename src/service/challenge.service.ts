@@ -88,6 +88,35 @@ class ChallengeAPI {
     }
   };
 
+  getPopularChallenges = async ({ category }: { category: string }) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${this.baseURL}/coming?category=${category}`,
+      );
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+  getPaginationChallenges = async ({ category, page, limit }: { category: string; page: number; limit: number }) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/challenges/all?category=${category}&page=${page}&limit=${limit}`,
+      );
+      console.log(response);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
   getChallengeDetail = async (id: number) => {
     try {
       const response = await axios.get(`${this.baseURL}/detail?id=${id}`);
@@ -107,22 +136,6 @@ class ChallengeAPI {
     });
     console.log(response);
     return response;
-  };
-
-  getPopularChallenges = async () => {
-    try {
-      console.log(1);
-      const response = await axios.get(`${this.baseURL}/popular`);
-      console.log('response___', response);
-      return response.data;
-    } catch (error) {
-      console.log(2);
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      console.log(3);
-      throw error;
-    }
   };
 }
 
