@@ -13,7 +13,7 @@ const headerVariants = cva('absolute top-0', {
   },
 });
 
-const Header = () => {
+const FrameHeader = () => {
   const darkMode = useThemeStore((state) => state.darkMode);
   const header = darkMode ? '/frames/dark.svg' : '/frames/light.svg';
   return (
@@ -23,4 +23,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default FrameHeader;

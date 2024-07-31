@@ -21,7 +21,7 @@ const DockBarVariants = cva('w-40 h-1 rounded-full absolute bottom-2', {
   },
 });
 
-const DockBar = () => {
+const FrameDockBar = () => {
   const darkMode = useThemeStore((state) => state.darkMode);
   return (
     <div className={DockVariants({ darkMode })}>
@@ -30,4 +30,4 @@ const DockBar = () => {
   );
 };
 
-export default DockBar;
+export default FrameDockBar;

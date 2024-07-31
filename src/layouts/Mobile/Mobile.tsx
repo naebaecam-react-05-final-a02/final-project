@@ -1,12 +1,12 @@
 'use client';
 
-import NavBar from '@/components/common/NavBar';
+import NavBar from '@/components/NavBar';
 import UserProfile from '@/components/UserProfile';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { cva } from 'class-variance-authority';
 import { PropsWithChildren } from 'react';
-import DockBar from './_components/DockBar';
-import Header from './_components/Header/Header';
+import FrameDockBar from './_components/DockBar/DockBar';
+import FrameHeader from './_components/Header/Header';
 import ThemeButton from './_components/ThemeButton';
 
 interface MobileLayoutProps {}
@@ -32,9 +32,9 @@ const Mobile = ({ children }: PropsWithChildren<MobileLayoutProps>) => {
     <div className="h-screen w-full flex justify-center items-center">
       <ThemeButton />
       <div className={MobileFrameVariants({ darkMode })}>
-        <Header />
+        <FrameHeader />
         <section className="h-full relative">
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full overflow-scroll scroll">
             <header className=" w-full h-14 border-b border-b-gray-500 mb-4">
               <UserProfile />
             </header>
@@ -43,7 +43,7 @@ const Mobile = ({ children }: PropsWithChildren<MobileLayoutProps>) => {
           </div>
           <NavBar />
         </section>
-        <DockBar />
+        <FrameDockBar />
       </div>
     </div>
   );
