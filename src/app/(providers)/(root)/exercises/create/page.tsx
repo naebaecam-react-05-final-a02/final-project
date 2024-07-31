@@ -5,7 +5,7 @@ import CardioForm from '../_components/CardioForm';
 import Tab from '../_components/Tab';
 import WeightForm from '../_components/WeightForm';
 
-const ExerciseRecordPage = () => {
+const ExerciseCreatePage = () => {
   const exerciseType = useExerciseTabStore((state) => state.exerciseType);
   return (
     <div>
@@ -15,4 +15,4 @@ const ExerciseRecordPage = () => {
   );
 };
 
-export default ExerciseRecordPage;
+export default ExerciseCreatePage;
