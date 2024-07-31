@@ -7,10 +7,7 @@ const CardioForm = () => {
   const setCardioList = useCardioInputStore((state) => state.setCardioInputs);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
-    console.log(name, value);
     const list = cardioList.map((item, i) => {
-      console.log(i, index);
-      console.log(i === index);
       if (i === index) {
         return { ...item, [name]: Number(value) };
       }

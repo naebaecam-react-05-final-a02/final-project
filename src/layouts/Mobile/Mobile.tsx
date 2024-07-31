@@ -8,6 +8,7 @@ import { PropsWithChildren } from 'react';
 import FrameDockBar from './_components/DockBar/DockBar';
 import FrameHeader from './_components/Header/Header';
 import ThemeButton from './_components/ThemeButton';
+import BackBoard from './BackBoard/BackBoard';
 
 interface MobileLayoutProps {}
 
@@ -16,8 +17,8 @@ const MobileFrameVariants = cva(
   {
     variants: {
       darkMode: {
-        true: 'bg-black text-white',
-        false: 'bg-white text-black',
+        true: ' text-white',
+        false: ' text-black',
       },
     },
     defaultVariants: {
@@ -42,6 +43,7 @@ const Mobile = ({ children }: PropsWithChildren<MobileLayoutProps>) => {
             {children}
           </div>
           <NavBar />
+          <BackBoard />
         </section>
         <FrameDockBar />
       </div>
