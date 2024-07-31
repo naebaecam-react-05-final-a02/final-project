@@ -1,18 +1,28 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer utilities {
-  .welcomeSlider {
-    @apply w-full h-[400px];
-  }
-
   .swiper-slide {
     @apply text-center text-lg bg-white flex justify-center items-center;
+  }
+
+  .chips::-webkit-scrollbar {
+    @apply w-[3px] h-[3px];
+  }
+
+  .chips::-webkit-scrollbar-thumb {
+    @apply bg-gray-500;
   }
 }
 
 /* Swiper 관련 스타일 */
 .swiper-pagination-bullet-active {
   @apply bg-blue-500;
+}
+
+body {
+  @apply font-sans leading-140 tracking-tighter;
 }
