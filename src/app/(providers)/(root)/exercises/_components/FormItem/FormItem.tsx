@@ -1,4 +1,6 @@
 import { useCardioInputStore, useWeightInputStore } from '@/stores/useExerciseStore';
+import DeleteButton from './DeleteButton';
+import Input from './Input';
 
 interface FormItemProps {
   index: number;
@@ -20,28 +22,17 @@ const FormItem = ({ onChange, type, index, firstProp, secondProp }: FormItemProp
   };
   return (
     <div className="grid grid-cols-4 justify-items-center">
-      <div className="flex justify-center items-center w-12 h-10 border-2 border-black">{index + 1}</div>
-      <input
-        onChange={(e) => onChange(e, index)}
-        className="flex justify-center items-center w-12 h-10 border-2 border-black exerciseInput"
-        name={type === 'cardio' ? 'hours' : 'weight'}
-        type="number"
-        value={firstProp}
-      />
-      <input
-        onChange={(e) => onChange(e, index)}
-        className="flex justify-center items-center w-12 h-10 border-2 border-black exerciseInput"
-        name={type === 'cardio' ? 'minutes' : 'reps'}
-        type="number"
-        value={secondProp}
-      />
-      <button
-        type="button"
-        className="flex justify-center items-center w-12 h-10 border-2 border-black"
-        onClick={deleteInput}
+      <div
+        className="flex justify-center items-center w-12 h-10 rounded-xl border-2 border-[#504f55] exerciseInput input-bg
+      text-semibold"
       >
-        삭제
-      </button>
+        {index + 1}
+      </div>
+      <Input onChange={(e) => onChange(e, index)} name={type === 'cardio' ? 'hours' : 'weight'} value={firstProp} />
+
+      <Input onChange={(e) => onChange(e, index)} name={type === 'cardio' ? 'minutes' : 'reps'} value={secondProp} />
+
+      <DeleteButton onClick={deleteInput} />
     </div>
   );
 };
