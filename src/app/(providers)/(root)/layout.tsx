@@ -1,4 +1,4 @@
-import NavBar from '@/components/common/NavBar';
+import NavBar from '@/components/NavBar';
 import UserProfile from '@/components/UserProfile';
 import React from 'react';
 

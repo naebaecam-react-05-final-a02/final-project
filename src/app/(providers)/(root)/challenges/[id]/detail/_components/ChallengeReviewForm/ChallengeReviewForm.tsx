@@ -20,6 +20,7 @@ const ChallengeReviewForm = () => {
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [starRating, setStarRating] = useState(0);
   const { mutate: register, isPending } = useRegisterReview();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -51,11 +52,12 @@ const ChallengeReviewForm = () => {
     formData.append('title', title);
     formData.append('content', content);
     formData.append('challengeId', challengeId);
+    formData.append('rating', starRating.toString());
     files.forEach((file) => formData.append('reviewImages', file));
     console.log('Submitting form data:', { title, content, files });
     register(formData, {
       onSuccess: () => {
-        console.log('@@ 등록되었습니다!');
+        alert('@@ 등록되었습니다!');
         //router push 추가
       },
     });
@@ -67,7 +69,7 @@ const ChallengeReviewForm = () => {
       <input type="text" placeholder="제목을 입력하시오" value={title} onChange={(e) => setTitle(e.target.value)} />
       <div>
         별점
-        <StarRating />
+        <StarRating onRatingChange={setStarRating} />
       </div>
       <label>이미지 업로드</label>
       <input type="file" onChange={handleFileChange} ref={fileInputRef} />

@@ -1,5 +1,3 @@
-// utils/passwordValidation.ts
-
 export const validatePassword = (password: string): string | null => {
   if (password.length < 6) {
     return '비밀번호는 최소 6자리 이상이어야 합니다.';
