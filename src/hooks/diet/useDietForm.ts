@@ -1,13 +1,17 @@
 import { initialFoodState } from '@/data/foodInitialState';
-import { FoodType } from '@/types/diet';
+import { DietTableType, FoodType } from '@/types/diet';
 import { useState } from 'react';
 
-const useDietForm = () => {
-  const [foodChips, setFoodChips] = useState<(FoodType & { id: string })[]>([
-    { ...initialFoodState, id: crypto.randomUUID() },
-  ]);
+interface DietFormProps {
+  initialValue: DietTableType | null;
+}
+
+const useDietForm = ({ initialValue }: DietFormProps) => {
+  const [foodChips, setFoodChips] = useState<(FoodType & { id: string })[]>(
+    initialValue ? initialValue.foods : [{ ...initialFoodState, id: crypto.randomUUID() }],
+  );
   const [activeChipIdx, setActiveChipIdx] = useState<number>(0);
-  const [foodForm, setFoodForms] = useState<FoodType>(initialFoodState);
+  const [foodForm, setFoodForms] = useState<FoodType>(foodChips[0]);
 
   const handleChange = (field: keyof FoodType, value: string | number) => {
     const updatedFoods = foodChips.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: value } : food));

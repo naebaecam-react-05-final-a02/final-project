@@ -3,7 +3,10 @@ import Chip from '@/components/Chip';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSaveDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
+import useDateStore from '@/stores/date.store';
+import useDietStore from '@/stores/diet.store';
 import { DietTimeType } from '@/types/diet';
+import { getFormattedDate } from '@/utils/dateFormatter';
 import { FormEvent, useState } from 'react';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
@@ -11,6 +14,8 @@ import RadioGroup from './RadioGroup';
 import TextInput from './TextInput';
 
 const DietForm = () => {
+  const initialValue = useDietStore((state) => state.diet);
+
   const {
     foodForm,
     foodChips,
@@ -21,9 +26,15 @@ const DietForm = () => {
     deleteChip,
     changeChip,
     resetForm,
-  } = useDietForm();
-  const [date, setDate] = useState(''); // TODO: 식단 추가하기 버튼 눌렀을 때 설정됐던 날짜로 초기값 설정
-  const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(['아침', '점심', '저녁']);
+  } = useDietForm({ initialValue });
+
+  // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
+  const selectedDate = useDateStore((state) => state.date);
+  const [date, setDate] = useState(getFormattedDate(selectedDate));
+  const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(
+    ['아침', '점심', '저녁'],
+    initialValue?.dietType,
+  );
 
   const { mutate: saveDiet, isPending } = useSaveDiet();
 
@@ -59,7 +70,6 @@ const DietForm = () => {
               key={food.id}
               food={food}
               isActive={activeChipIdx === idx}
-              // TODO: 칩 삭제 기능
               handleDelete={() => deleteChip(food.id)}
               onClick={() => changeChip(idx)}
             />

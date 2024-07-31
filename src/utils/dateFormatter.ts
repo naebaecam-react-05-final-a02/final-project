@@ -40,6 +40,14 @@ export const getDateISO = (date: Date | string = new Date()) => {
   return formatISO(new Date(date));
 };
 
-export const getNextDateISO = (date: Date | string = new Date()) => {
-  return formatISO(addDays(new Date(date), 1));
+export const getFormattedDate = (date: Date | string = new Date()) => {
+  return format(date, 'yyyy-MM-dd');
+};
+
+export const getNextDate = (date: Date | string = new Date(), gap: number = 1) => {
+  return addDays(new Date(date), gap);
+};
+
+export const getNextDateISO = (date: Date | string = new Date(), gap: number = 1) => {
+  return formatISO(getNextDate(date, gap));
 };

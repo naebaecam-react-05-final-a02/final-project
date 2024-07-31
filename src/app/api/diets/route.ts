@@ -1,6 +1,6 @@
 import { dietTypeCode } from '@/data/dietTypeCode';
 import { createClient } from '@/supabase/server';
-import { getDateISO, getNextDateISO } from '@/utils/dateFormatter';
+import { getNextDateISO } from '@/utils/dateFormatter';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
@@ -16,23 +16,20 @@ export const GET = async (request: NextRequest) => {
     } = await supabase.auth.getUser();
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    // get by user and date
-    const startDate = getDateISO(date);
-    const endDate = getNextDateISO(date);
-
     const { data, error } = await supabase
       .from('diets')
       .select('*')
       .eq('userId', user.id)
-      .gte('date', startDate)
-      .lt('date', endDate)
+      .gte('date', date)
+      .lt('date', getNextDateISO(date))
       .order('dietType');
 
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
     return NextResponse.json(data);
   } catch (e) {
-    return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
+    console.log(e);
+    return NextResponse.json({ message: '다이어트 조회에 실패했습니다' }, { status: 400 });
   }
 };
 

@@ -1,18 +1,22 @@
 import Chip from '@/components/Chip';
 import { dietCode } from '@/data/dietTypeCode';
 import { useGetDiets } from '@/hooks/diet/useDiets';
+import useDietStore from '@/stores/diet.store';
+import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
+import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import EditIcon from '/public/icons/edit.svg';
 
 interface DietListProps {
-  date: string;
+  selectedDate: Date;
 }
 
-const DietList = ({ date }: DietListProps) => {
+const DietList = ({ selectedDate }: DietListProps) => {
   const router = useRouter();
 
-  const { data: diets, isPending, isError } = useGetDiets(date);
+  const setDiet = useDietStore((state) => state.setDiet);
+  const { data: diets, isPending, isError } = useGetDiets(getFormattedDate(selectedDate));
 
   if (isPending) return <div className="text-center">데이터를 불러오고 있습니다...</div>;
   if (isError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
@@ -20,12 +24,22 @@ const DietList = ({ date }: DietListProps) => {
   const totalCalories = getDietsCalories(diets);
   const calories = diets.map((diet) => getFoodsCalories(diet.foods));
 
+  const handleAddButtonClick = () => {
+    setDiet(null);
+    router.push('/diets/write');
+  };
+
+  const handleEditButtonClick = (diet: DietTableType) => {
+    setDiet(diet);
+    router.push('/diets/write?mode=edit');
+  };
+
   return (
     <>
       {diets?.length === 0 ? (
         <div className="flex flex-col items-center gap-1">
           <span>식단 기록이 없습니다</span>
-          <button className="text-sm" onClick={() => router.push('/diets/write')}>
+          <button className="text-sm" onClick={handleAddButtonClick}>
             추가하러 가기
           </button>
         </div>
@@ -59,10 +73,8 @@ const DietList = ({ date }: DietListProps) => {
               >
                 <div className="flex justify-between px-4 py-[14px]">
                   <div className="w-5"></div>
-                  <h3 className="text-center text-[17px] font-bold text-[#FFFFFF80] font-semibold">
-                    {dietCode[diet.dietType]}
-                  </h3>
-                  <button>
+                  <h3 className="text-center text-[17px] text-[#FFFFFF80] font-semibold">{dietCode[diet.dietType]}</h3>
+                  <button onClick={() => handleEditButtonClick(diet)}>
                     <EditIcon />
                   </button>
                 </div>

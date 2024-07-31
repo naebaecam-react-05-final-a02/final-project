@@ -1,6 +1,6 @@
 'use client';
+import useDateStore from '@/stores/date.store';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import Week from './_components/Calendar/Week';
 import DietList from './_components/DietList';
 import DownIcon from '/public/icons/chevron-down.svg';
@@ -8,16 +8,7 @@ import LeftIcon from '/public/icons/chevron-left.svg';
 import PlusIcon from '/public/icons/plus.svg';
 
 const DietManagePage = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-
-  const date = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
-
-  const changeDate = (date: number, gap: number = 0) => {
-    const newDate = new Date();
-    newDate.setDate(date + gap);
-    setSelectedDate(newDate);
-  };
-
+  const selectedDate = useDateStore((store) => store.date);
   const router = useRouter();
 
   return (
@@ -33,7 +24,7 @@ const DietManagePage = () => {
         </button>
         <div className="flex gap-1">
           <h1 className="text-center text-sm font-medium">
-            {selectedDate.getFullYear()}월 {selectedDate.getMonth() + 1}월
+            {selectedDate.getFullYear()}년 {selectedDate.getMonth() + 1}월
           </h1>
           <button
             onClick={() => {
@@ -52,8 +43,8 @@ const DietManagePage = () => {
           <PlusIcon className="w-6 h-6" />
         </button>
       </header>
-      <Week selectedDate={selectedDate} changeDate={changeDate} />
-      <DietList date={date} />
+      <Week />
+      <DietList selectedDate={selectedDate} />
     </div>
   );
 };
