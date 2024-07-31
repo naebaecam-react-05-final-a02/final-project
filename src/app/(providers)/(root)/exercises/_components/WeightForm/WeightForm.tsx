@@ -7,10 +7,7 @@ const WeightForm = () => {
   const setWeightList = useWeightInputStore((state) => state.setWeightInputs);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
-    console.log(name, value);
     const list = weightList.map((item, i) => {
-      console.log(i, index);
-      console.log(i === index);
       if (i === index) {
         return { ...item, [name]: Number(value) };
       }
