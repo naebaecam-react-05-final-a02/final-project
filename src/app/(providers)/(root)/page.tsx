@@ -1,3 +1,4 @@
+import Card from '@/components/Card';
 import { getDiets, getExercises, getWeights } from '@/hooks/dashboard/useDashBoard';
 import { createClient } from '@/supabase/server';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
@@ -82,9 +83,11 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
         {/* 운동 투두 기록 */}
         <div className="bg-[#292436] flex items-center justify-center">
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <ExerciseTodoList />
-          </HydrationBoundary>
+          <Card className="size-full min-h-[140px] bg-[#292436] select-none">
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              <ExerciseTodoList />
+            </HydrationBoundary>
+          </Card>
         </div>
 
         {/* 식단 기록 */}
