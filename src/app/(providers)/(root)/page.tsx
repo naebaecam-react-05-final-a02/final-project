@@ -67,9 +67,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         </div>
 
         {/* 식단 기록 */}
-        <div className=" border-gray-500 border  flex items-center justify-center">
-          {diets && <DietsLog diets={diets} />}
-        </div>
+        <div className="bg-[#292436] flex items-center justify-center">{diets && <DietsLog diets={diets} />}</div>
 
         {/* 체중 변화 그래프 */}
         <div className="bg-[#292436] h-[250px] flex flex-col items-center justify-center select-none">

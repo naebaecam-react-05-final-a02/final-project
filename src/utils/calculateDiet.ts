@@ -29,3 +29,9 @@ export const getFoodsCalories = (foods: FoodType[]) => {
   );
   return calories;
 };
+
+export const getFoods = (diets: DietTableType[]) => {
+  return diets.reduce((acc, cur) => {
+    return [...acc, ...cur.foods];
+  }, [] as FoodType[]);
+};
