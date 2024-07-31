@@ -1,23 +1,40 @@
+'use client';
 import Card from '@/components/Card';
 import Chip from '@/components/Chip';
 import { DietsLogType } from '@/types/diet';
 import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
+import { addDays, format, subDays } from 'date-fns';
+import { useState } from 'react';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
 import { IoCreateOutline } from 'react-icons/io5';
 
 const DietsLog = ({ diets }: { diets: DietsLogType }) => {
+  const [date, setDate] = useState<Date>(new Date());
+
+  // const {data: todaysDiets} = useQuery({queryKey:["diets",{date:format(date,"yyyy-MM-dd")}],queryFn:()=>{}})
+
   const calories = getDietsCalories(diets);
   const foods = getFoods(diets);
+
+  const handleNextDay = () => {
+    setDate((prev) => addDays(prev, 1));
+  };
+
+  const handlePrevDay = () => {
+    setDate((prev) => subDays(prev, 1));
+  };
 
   return (
     <Card className="bg-white size-full relative px-[-20px] text-sm flex flex-col items-center select-none">
       <div className="relative flex text-white items-center justify-between w-full">
-        <div className="text-xs flex items-center gap-x-2">
-          <div className="text-base cursor-pointer">
+        <div className="text-xs flex items-center gap-x-1">
+          <div className="text-base cursor-pointer" onClick={handlePrevDay}>
             <IoMdArrowDropleft />
           </div>
-          <div className="cursor-pointer">7/25</div>
-          <div className="text-base cursor-pointer">
+
+          <div className="cursor-pointer w-6 text-center">{format(date, 'M/d')}</div>
+
+          <div className="text-base cursor-pointer" onClick={handleNextDay}>
             <IoMdArrowDropright />
           </div>
         </div>
