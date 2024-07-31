@@ -1,16 +1,18 @@
 import { Tables } from './supabase';
 
-export type DietTableType = Tables<'diets'>;
+export type DietTableType = Omit<Tables<'diets'>, 'foods'> & { foods: FoodType[] };
 
 export type DietType = {
+  date: Date;
   dietType: DietTimeType;
-  images: File[];
   foods: FoodType[];
 };
 
 export type DietTimeType = '아침' | '점심' | '저녁';
 
 export type FoodType = {
+  id: string;
+  foodType: string;
   foodName: string;
   kcal: number;
   carbohydrate: number;
@@ -18,4 +20,4 @@ export type FoodType = {
   fat: number;
 };
 
-export type DietsLogType = Omit<Tables<'diets'>, 'foodInfo'> & { foodInfo: FoodType[] }[];
+export type DietsLogType = DietTableType[];

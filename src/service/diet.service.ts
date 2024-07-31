@@ -1,4 +1,4 @@
-import { DietTableType, FoodType } from '@/types/diet';
+import { DietTableType, DietType } from '@/types/diet';
 import axios from 'axios';
 
 class DietAPI {
@@ -20,20 +20,9 @@ class DietAPI {
     }
   };
 
-  postDiet = async (
-    imageFiles: File[],
-    dietType: string,
-    foodForms: FoodType[],
-  ): Promise<{ message: { message: string } }> => {
+  postDiet = async ({ date, dietType, foods }: DietType): Promise<{ message: string }> => {
     try {
-      const formData = new FormData();
-      imageFiles.forEach((file: File) => {
-        formData.append('imageFiles', file);
-      });
-      formData.append('dietType', dietType);
-      formData.append('foodInfo', JSON.stringify(foodForms));
-
-      const response = await axios.post(`${this.baseUrl}`, formData);
+      const response = await axios.post(`${this.baseUrl}`, { date, dietType, foods });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
