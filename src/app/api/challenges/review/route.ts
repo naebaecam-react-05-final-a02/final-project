@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
           challengeId,
           reviewImages: imageUrls,
         },
-        { onConflict: 'useId', ignoreDuplicates: false },
+        { onConflict: 'challengeId', ignoreDuplicates: false },
       )
       .select();
 
