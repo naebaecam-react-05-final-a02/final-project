@@ -26,7 +26,7 @@ const DietsLog = () => {
 
   return (
     <Card className="bg-white size-full relative px-[-20px] text-sm flex flex-col items-center select-none">
-      <DashBoardHeader date={date} setState={setDate} />
+      <DashBoardHeader date={date} setState={setDate} url={'/diets/write'} title={'식단'} />
 
       <div className="w-full">
         <div className="flex justify-between items-center h-[44px] relative">

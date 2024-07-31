@@ -1,6 +1,7 @@
 'use client';
 
 import { addDays, format, subDays } from 'date-fns';
+import Link from 'next/link';
 import { Dispatch, SetStateAction } from 'react';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
 import { IoCreateOutline } from 'react-icons/io5';
@@ -8,9 +9,11 @@ import { IoCreateOutline } from 'react-icons/io5';
 type DashBoardHeaderType = {
   date: Date;
   setState: Dispatch<SetStateAction<Date>>;
+  url: string;
+  title: string;
 };
 
-const DashBoardHeader = ({ date, setState }: DashBoardHeaderType) => {
+const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) => {
   const handleNextDay = () => {
     setState((prev) => addDays(prev, 1));
   };
@@ -33,10 +36,12 @@ const DashBoardHeader = ({ date, setState }: DashBoardHeaderType) => {
         </div>
       </div>
 
-      <div className="absolute opacity-50 text-base left-1/2 transform -translate-x-1/2">투두</div>
+      <div className="absolute opacity-50 text-base left-1/2 transform -translate-x-1/2">{title}</div>
 
       <div className="cursor-pointer text-xl">
-        <IoCreateOutline />
+        <Link href={url}>
+          <IoCreateOutline />
+        </Link>
       </div>
     </div>
   );

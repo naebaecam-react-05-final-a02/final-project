@@ -8,6 +8,7 @@ import { useState } from 'react';
 import DashBoardHeader from './DashBoardHeader';
 import ExerciseTodoItem from './ExerciseTodoItem';
 
+//TODO: 투두 작성하는곳 url 링크에 넣어야함
 const ExerciseTodoList = () => {
   const supabase = createClient();
   const [date, setDate] = useState<Date>(new Date());
@@ -21,7 +22,7 @@ const ExerciseTodoList = () => {
   if (!exercises || isFetching) {
     return (
       <>
-        <DashBoardHeader date={date} setState={setDate} />
+        <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">{`${format(date, 'M')}월 ${format(
           date,
           'd',
@@ -33,7 +34,7 @@ const ExerciseTodoList = () => {
   if (exercises.error) {
     return (
       <>
-        <DashBoardHeader date={date} setState={setDate} />
+        <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">
           <div>{`${format(date, 'M')}월 ${format(date, 'd')}일 데이터를 가져오지 못했습니다...`}</div>
           <div className="text-xs text-red-300">{exercises.details}</div>
@@ -45,7 +46,7 @@ const ExerciseTodoList = () => {
   if (!exercises.data || !exercises.data.length) {
     return (
       <>
-        <DashBoardHeader date={date} setState={setDate} />
+        <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">{`${format(date, 'M')}월 ${format(
           date,
           'd',
@@ -56,7 +57,7 @@ const ExerciseTodoList = () => {
 
   return (
     <>
-      <DashBoardHeader date={date} setState={setDate} />
+      <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
       <ul className="size-full p-4 grid gap-y-5">
         {exercises.data.map((exercise, i) => (
           <li key={i}>
