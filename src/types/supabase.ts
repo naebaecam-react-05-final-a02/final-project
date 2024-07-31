@@ -232,48 +232,27 @@ export type Database = {
       exercises: {
         Row: {
           date: string
-          distance: number | null
-          duration: number | null
-          exeriseType: string
+          exerciseType: string
           id: number
           name: string | null
           record: Json[] | null
-          repPerSets: number | null
-          reps: number | null
-          resistance: number | null
-          sets: number | null
           userId: string
-          weight: number | null
         }
         Insert: {
           date: string
-          distance?: number | null
-          duration?: number | null
-          exeriseType: string
+          exerciseType: string
           id?: number
           name?: string | null
           record?: Json[] | null
-          repPerSets?: number | null
-          reps?: number | null
-          resistance?: number | null
-          sets?: number | null
           userId: string
-          weight?: number | null
         }
         Update: {
           date?: string
-          distance?: number | null
-          duration?: number | null
-          exeriseType?: string
+          exerciseType?: string
           id?: number
           name?: string | null
           record?: Json[] | null
-          repPerSets?: number | null
-          reps?: number | null
-          resistance?: number | null
-          sets?: number | null
           userId?: string
-          weight?: number | null
         }
         Relationships: [
           {
