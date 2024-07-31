@@ -1,4 +1,7 @@
-import useDashBoard from '@/hooks/dashboard/useDashBoard';
+import { getDiets, getExercises, getWeights } from '@/hooks/dashboard/useDashBoard';
+import { createClient } from '@/supabase/server';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import Link from 'next/link';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
@@ -8,7 +11,23 @@ import WeightChart from './_components/WeightChart';
 
 //TODO 각 컴포넌트 안에서 데이터 없을때 표시해야함
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
-  const { weights, diets, exercises } = await useDashBoard(query);
+  const supabase = createClient();
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: ['weights'],
+      queryFn: async () => getWeights(supabase, query),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ['diets', { date: format(new Date(), 'yyyy-MM-dd') }],
+      queryFn: async () => getDiets(supabase, new Date()),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ['exercises', { date: format(new Date(), 'yyyy-MM-dd') }],
+      queryFn: async () => getExercises(supabase, new Date()),
+    }),
+  ]);
 
   return (
     <div className="min-h-screen">
@@ -62,16 +81,24 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         </div>
 
         {/* 운동 투두 기록 */}
-        <div className="bg-gray-300 border-gray-500 border  flex items-center justify-center">
-          {exercises && <ExerciseTodoList exercises={exercises} />}
+        <div className="bg-[#292436] flex items-center justify-center">
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <ExerciseTodoList />
+          </HydrationBoundary>
         </div>
 
         {/* 식단 기록 */}
-        <div className="bg-[#292436] flex items-center justify-center">{diets && <DietsLog diets={diets} />}</div>
+        <div className="bg-[#292436] flex items-center justify-center">
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <DietsLog />
+          </HydrationBoundary>
+        </div>
 
         {/* 체중 변화 그래프 */}
         <div className="bg-[#292436] h-[250px] flex flex-col items-center justify-center select-none">
-          {weights && <WeightChart weights={weights} />}
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <WeightChart query={query} />
+          </HydrationBoundary>
         </div>
       </main>
     </div>

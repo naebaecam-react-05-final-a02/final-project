@@ -1,40 +1,46 @@
 'use client';
 
 import Card from '@/components/Card';
-import { Tables } from '@/types/supabase';
+import { useGetUser } from '@/hooks/auth/useUsers';
+import { getWeights } from '@/hooks/dashboard/useDashBoard';
+import { createClient } from '@/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
 import { Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
-const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const avgWeight = (weights.reduce((acc, cur) => acc + cur.weight, 0) / weights.length).toFixed(2);
-  const weightsArray = [...weights.map((d) => d.weight)];
+type WeightChartType = {
+  query: string;
+};
+
+const WeightChart = ({ query }: WeightChartType) => {
+  const supabase = createClient();
+  const { data: user } = useGetUser();
+  const { data: weights = { data: null }, isFetching } = useQuery({
+    queryKey: ['weights'],
+    queryFn: () => getWeights(supabase, query),
+    enabled: !!user,
+  });
+
+  const weightsArray = [...weights?.data!.map((d) => d.weight)];
   const minWeight = Math.min(...weightsArray);
   const maxWeight = Math.max(...weightsArray);
-  // const yAxisMin = Math.floor(minWeight / 5) * 5;
-  // const yAxisMax = Math.ceil(maxWeight / 5) * 5;
   const ticks = Array.from({ length: maxWeight - minWeight + 3 }, (_, i) => minWeight - 1 + i);
 
   // console.log(minWeight, maxWeight, ticks);
 
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
-
   return (
     <div className="size-full">
-      {isLoading && (
+      {isFetching && (
         <div className="w-full  flex flex-col justify-center items-center animate-pulse">
           <div className="w-full h-6 bg-gray-200 rounded mb-4"></div>
           <div className="w-[95%] h-36 bg-gray-200 rounded"></div>
         </div>
       )}
-      {!isLoading && (
+      {!isFetching && (
         <Card className="h-full">
           {/* <DateRange /> */}
           <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
-            <LineChart data={weights} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
+            <LineChart data={weights?.data!} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
               <XAxis
                 filter="url(#glow)"
                 tickLine={false}
@@ -82,10 +88,10 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
                 dataKey="weight"
                 stroke="url(#gradient)"
                 dot={({ cx, cy, index }) => {
-                  if (index === weights.length - 1) {
+                  if (index === weights?.data!.length - 1) {
                     return (
                       <circle
-                        key={weights[index].id}
+                        key={weights?.data![index].id}
                         cx={cx}
                         cy={cy}
                         r={4}
@@ -97,7 +103,15 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
                     );
                   }
                   return (
-                    <circle key={weights[index].id} cx={cx} cy={cy} r={4} fill="gray" stroke="white" strokeWidth={1} />
+                    <circle
+                      key={weights?.data![index].id}
+                      cx={cx}
+                      cy={cy}
+                      r={4}
+                      fill="gray"
+                      stroke="white"
+                      strokeWidth={1}
+                    />
                   );
                 }}
                 activeDot={{ r: 16 }}

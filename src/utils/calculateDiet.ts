@@ -1,6 +1,9 @@
 import { DietTableType, FoodType } from '@/types/diet';
 
-export const getDietsCalories = (diets: DietTableType[]) => {
+export const getDietsCalories = (diets: DietTableType[] | undefined | null) => {
+  if (typeof diets === 'undefined' || !diets) {
+    return { kcal: 0, carbohydrate: 0, protein: 0, fat: 0 };
+  }
   const calories = diets.reduce(
     (acc, diet) => {
       const { kcal, carbohydrate, protein, fat } = getFoodsCalories(diet.foods);
@@ -30,7 +33,10 @@ export const getFoodsCalories = (foods: FoodType[]) => {
   return calories;
 };
 
-export const getFoods = (diets: DietTableType[]) => {
+export const getFoods = (diets: DietTableType[] | undefined | null) => {
+  if (typeof diets === 'undefined' || !diets) {
+    return null;
+  }
   return diets.reduce((acc, cur) => {
     return [...acc, ...cur.foods];
   }, [] as FoodType[]);

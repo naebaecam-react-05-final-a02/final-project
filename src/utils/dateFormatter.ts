@@ -28,12 +28,12 @@ export function getRangeOption(range: string | null) {
   return RANGE_OPTIONS[range as keyof typeof RANGE_OPTIONS];
 }
 
-export const getStartOfDayISO = () => {
-  return formatISO(startOfDay(new Date()));
+export const getStartOfDayISO = (date?: Date) => {
+  return formatISO(startOfDay(date ?? new Date()));
 };
 
-export const getEndOfDayISO = () => {
-  return formatISO(endOfDay(new Date()));
+export const getEndOfDayISO = (date?: Date) => {
+  return formatISO(endOfDay(date ?? new Date()));
 };
 
 export const getDateISO = (date: Date | string = new Date()) => {

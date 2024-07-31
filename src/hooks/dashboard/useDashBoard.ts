@@ -1,53 +1,116 @@
-import { createClient } from '@/supabase/server';
-import { DietsLogType } from '@/types/diet';
-import { Tables } from '@/types/supabase';
+import { DietTableType } from '@/types/diet';
+import { Database, Tables } from '@/types/supabase';
 import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
+import { SupabaseClient } from '@supabase/supabase-js';
 
-//TODO 에러처리 해야댐
-const useDashBoard = async (query: string) => {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export const getDiets = async (client: SupabaseClient<Database>, date: Date) => {
+  try {
+    const {
+      data: { user },
+    } = await client.auth.getUser();
 
-  const getWeightQuery = getRangeOption(query)?.startDate ?? RANGE_OPTIONS.last_7_days.startDate;
-  const getWeights = async (query: string) => {
-    const response = await supabase.from('weights').select('*').eq('userId', user?.id).gte('date', query).order('date');
-    return response.data as Tables<'weights'>[];
-  };
+    if (!user) {
+      return {
+        data: null,
+        error: 'User not found',
+        details: 'User not found',
+      };
+    }
 
-  const getDiets = async () => {
-    const response = await supabase
+    const { data: diets, error } = await client
       .from('diets')
       .select('*')
-      .eq('userId', user?.id)
-      .gte('date', getStartOfDayISO())
-      .lte('date', getEndOfDayISO())
+      .eq('userId', user.id)
+      .gte('date', getStartOfDayISO(date))
+      .lte('date', getEndOfDayISO(date))
       .order('date');
 
-    return response.data as DietsLogType;
-  };
+    if (error) {
+      console.error('Diets Database query error:', error);
+      return {
+        data: null,
+        error: 'Diets Database query failed',
+        details: error.message,
+      };
+    }
 
-  const getExercise = async () => {
-    const response = await supabase
+    return { data: diets as DietTableType[], error: null, details: null };
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
+  }
+};
+
+export const getWeights = async (client: SupabaseClient<Database>, query: string) => {
+  try {
+    const {
+      data: { user },
+    } = await client.auth.getUser();
+
+    if (!user) {
+      return {
+        data: null,
+        error: 'User not found',
+        details: 'User not found',
+      };
+    }
+
+    const getWeightQuery = getRangeOption(query)?.startDate ?? RANGE_OPTIONS.last_7_days.startDate;
+    const { data: weights, error } = await client
+      .from('weights')
+      .select('*')
+      .eq('userId', user?.id)
+      .gte('date', getWeightQuery)
+      .order('date');
+
+    if (error) {
+      console.error('Weights Database query error:', error);
+      return {
+        data: null,
+        error: 'Weights Database query failed',
+        details: error.message,
+      };
+    }
+
+    return { data: weights as Tables<'weights'>[], error: null, details: null };
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
+  }
+};
+
+export const getExercises = async (client: SupabaseClient<Database>, date: Date) => {
+  try {
+    const {
+      data: { user },
+    } = await client.auth.getUser();
+    if (!user) {
+      return {
+        data: null,
+        error: 'User not found',
+        details: 'User not found',
+      };
+    }
+
+    const { data: exercises, error } = await client
       .from('exercises')
       .select('*')
       .eq('userId', user?.id)
-      .gte('date', getStartOfDayISO())
-      .lte('date', getEndOfDayISO())
+      .gte('date', getStartOfDayISO(date))
+      .lte('date', getEndOfDayISO(date))
       .order('date');
 
-    return response.data as Tables<'exercises'>[];
-  };
-
-  const [weights, diets, exercises] = await Promise.all([getWeights(getWeightQuery), getDiets(), getExercise()]);
-
-  return {
-    user,
-    weights,
-    diets,
-    exercises,
-  };
+    if (error) {
+      console.error('Exercises Database query error:', error);
+      return {
+        data: null,
+        error: 'Exercises Database query failed',
+        details: error.message,
+      };
+    }
+    return { data: exercises as Tables<'exercises'>[], error: null, details: null };
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
+  }
 };
-
-export default useDashBoard;

@@ -1,20 +1,29 @@
 'use client';
 import Card from '@/components/Card';
 import Chip from '@/components/Chip';
-import { DietsLogType } from '@/types/diet';
+import { useGetUser } from '@/hooks/auth/useUsers';
+import { getDiets } from '@/hooks/dashboard/useDashBoard';
+import { createClient } from '@/supabase/client';
 import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
+import { useQuery } from '@tanstack/react-query';
 import { addDays, format, subDays } from 'date-fns';
 import { useState } from 'react';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
 import { IoCreateOutline } from 'react-icons/io5';
 
-const DietsLog = ({ diets }: { diets: DietsLogType }) => {
+const DietsLog = () => {
+  const supabase = createClient();
+  const { data: user } = useGetUser();
   const [date, setDate] = useState<Date>(new Date());
 
-  // const {data: todaysDiets} = useQuery({queryKey:["diets",{date:format(date,"yyyy-MM-dd")}],queryFn:()=>{}})
+  const { data: diets } = useQuery({
+    queryKey: ['diets', { date: format(date, 'yyyy-MM-dd') }],
+    queryFn: async () => getDiets(supabase, date),
+    enabled: !!user,
+  });
 
-  const calories = getDietsCalories(diets);
-  const foods = getFoods(diets);
+  const calories = getDietsCalories(diets?.data);
+  const foods = getFoods(diets?.data);
 
   const handleNextDay = () => {
     setDate((prev) => addDays(prev, 1));
@@ -45,6 +54,7 @@ const DietsLog = ({ diets }: { diets: DietsLogType }) => {
           <IoCreateOutline />
         </div>
       </div>
+
       <div className="w-full">
         <div className="flex justify-between items-center h-[44px] relative">
           <div className="border-l-4 border-[#03C717]/80 w-1/2 absolute top-0 -left-4 bottom-0 right-0 bg-gradient-to-r from-[#12f287]/10  to-white/0" />
@@ -79,7 +89,8 @@ const DietsLog = ({ diets }: { diets: DietsLogType }) => {
           </div>
         </div>
       </div>
-      {foods.length > 0 && (
+
+      {foods && foods.length > 0 && (
         <div className="w-full py-4 flex gap-x-4 overflow-x-scroll border-t border-white/10">
           {foods.map((food) => (
             <Chip key={food.id} food={food} />
