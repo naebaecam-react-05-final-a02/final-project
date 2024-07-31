@@ -7,9 +7,9 @@ import Link from 'next/link';
 import DashBoardLevel from './_components/DashBoardLevel';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
-import TodoProgress from './_components/TodoProgress';
 import WeightChart from './_components/WeightChart';
 
+//TODO 참여한 챌린지 및 챌린지 클릭 시 상세 페이지루다가
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
   const supabase = createClient();
   const queryClient = new QueryClient();
@@ -48,9 +48,13 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
             <DashBoardLevel />
           </Card>
 
-          <Card className="bg-[#292436] w-full  flex flex-col items-center justify-center">
-            <h4>투두 진행 상황</h4>
-            <TodoProgress />
+          <Card className="bg-[#292436] w-full  flex flex-col items-start ">
+            <h5 className="text-white/50 text-sm">챌린지</h5>
+            <div className="h-5 text-sm text-white grid gap-y-4">
+              <div>체중 5키로</div>
+              <div>3대 500치기</div>
+              <div>3대 500치기</div>
+            </div>
           </Card>
         </div>
 
