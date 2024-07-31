@@ -1,7 +1,7 @@
 import { useCardioInputStore } from '@/stores/useExerciseStore';
-import AddSetButton from '../AddSetButton/AddSetButton';
+import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
-import InputLabel from '../InputLabel/InputLabel';
+import InputLabel from '../InputLabel';
 
 const CardioForm = () => {
   const cardioList = useCardioInputStore((state) => state.cardioInputs);

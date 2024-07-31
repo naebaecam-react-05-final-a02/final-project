@@ -1,7 +1,7 @@
 import { useWeightInputStore } from '@/stores/useExerciseStore';
-import AddSetButton from '../AddSetButton/AddSetButton';
+import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
-import InputLabel from '../InputLabel/InputLabel';
+import InputLabel from '../InputLabel';
 
 const WeightForm = () => {
   const weightList = useWeightInputStore((state) => state.weightInputs);
