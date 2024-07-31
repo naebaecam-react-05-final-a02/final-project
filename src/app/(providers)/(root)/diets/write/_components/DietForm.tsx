@@ -1,31 +1,41 @@
 'use client';
+import Chip from '@/components/Chip';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSaveDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
 import { DietTimeType } from '@/types/diet';
-import { FormEvent, useRef } from 'react';
-import FoodFormInput from './FoodFormInput';
-import ImageInputGroup from './ImageInputGroup';
+import { FormEvent, useState } from 'react';
+import AddButton from './AddButton';
+import EmojiSelector from './EmojiSelector';
 import RadioGroup from './RadioGroup';
-
-const MAX_IMAGE = 3;
-const MAX_FOOD = 5;
+import TextInput from './TextInput';
 
 const DietForm = () => {
-  const { foodForms, handleChange: handleFormChange, handleAddFoodForm, handleDeleteFoodForm } = useDietForm();
+  const {
+    foodForm,
+    foodChips,
+    activeChipIdx,
+    handleChange: handleFormChange,
+    validateFood,
+    addNewChip,
+    deleteChip,
+    changeChip,
+    resetForm,
+  } = useDietForm();
+  const [date, setDate] = useState(''); // TODO: 식단 추가하기 버튼 눌렀을 때 설정됐던 날짜로 초기값 설정
   const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(['아침', '점심', '저녁']);
-  const imageFilesRef = useRef<File[]>([]);
 
   const { mutate: saveDiet, isPending } = useSaveDiet();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const imageFiles = imageFilesRef.current;
+    if (!validateFood()) return;
     saveDiet(
-      { imageFiles, dietType, foodForms },
+      { date: new Date(date), dietType, foods: foodChips },
       {
         onSuccess: (response) => {
           alert(response.message);
+          resetForm();
         },
         onError: (error) => {
           console.error('Save-diet error:', error);
@@ -41,76 +51,88 @@ const DietForm = () => {
           등록 중...
         </div>
       )}
-      <form className="flex flex-col justify-center items-center gap-3" onSubmit={handleSubmit}>
-        <ImageInputGroup max={MAX_IMAGE} imageFilesRef={imageFilesRef} />
-        <div className="w-full px-5">
-          <h2 className="font-bold">언제 드셨나요?</h2>
-          <RadioGroup
-            name="dietType"
-            values={['아침', '점심', '저녁']}
-            selectedValue={dietType}
-            handleChange={handleRadioChange}
+      <div className="grid grid-cols-[48px_1fr] gap-3">
+        <AddButton onClick={addNewChip} />
+        <div className="chips flex gap-3 overflow-x-scroll scale">
+          {foodChips.map((food, idx) => (
+            <Chip
+              key={food.id}
+              food={food}
+              isActive={activeChipIdx === idx}
+              // TODO: 칩 삭제 기능
+              handleDelete={() => deleteChip(food.id)}
+              onClick={() => changeChip(idx)}
+            />
+          ))}
+        </div>
+      </div>
+      <form className="flex flex-col justify-center items-center gap-4" onSubmit={handleSubmit}>
+        <div className="w-full">
+          <h2 className="opacity-70 text-sm">날짜 선택</h2>
+          <div className="grid grid-cols-2 items-center gap-2">
+            <TextInput type="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} />
+            <RadioGroup
+              name="dietType"
+              values={['아침', '점심', '저녁']}
+              selectedValue={dietType}
+              handleChange={handleRadioChange}
+            />
+          </div>
+        </div>
+        <div className="w-full">
+          <h2 className="opacity-70 text-sm">음식 이름</h2>
+          <TextInput
+            value={foodForm['foodName']}
+            placeholder="음식 이름을 입력해주세요."
+            onChange={(e) => handleFormChange('foodName', e.target.value)}
+          >
+            {
+              <EmojiSelector
+                foodType={foodForm['foodType']}
+                handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
+              />
+            }
+          </TextInput>
+        </div>
+        <div className="w-full">
+          <h2 className="opacity-70 text-sm">칼로리</h2>
+          <TextInput
+            type="number"
+            unit="kcal"
+            value={foodForm['kcal']}
+            onChange={(e) => handleFormChange('kcal', Number.parseInt(e.target.value))}
           />
         </div>
-        {foodForms.map((foodForm, idx) => (
-          <div key={`food-form-${idx}`} className="flex flex-col gap-5 p-5 border border-gray-300">
-            {foodForms.length > 1 && (
-              <button type="button" className="w-fit ml-auto" onClick={() => handleDeleteFoodForm(idx)}>
-                X
-              </button>
-            )}
-            <FoodFormInput
-              title="무엇을 드셨나요?"
-              name="foodName"
-              value={foodForm['foodName']}
-              onChange={(e) => handleFormChange(idx, 'foodName', e.target.value)}
-            />
-            <FoodFormInput
+        <div className="grid grid-cols-3 gap-2">
+          <div className="w-full">
+            <h2 className="opacity-70 text-sm">탄수화물</h2>
+            <TextInput
               type="number"
-              title="칼로리를 입력해주세요"
-              name="kcal"
-              unit="kcal"
-              value={foodForm['kcal']}
-              onChange={(e) => handleFormChange(idx, 'kcal', e.target.value)}
+              unit="g"
+              value={foodForm['carbohydrate']}
+              onChange={(e) => handleFormChange('carbohydrate', Number.parseInt(e.target.value))}
             />
-            <div className="flex flex-wrap gap-3">
-              <FoodFormInput
-                type="number"
-                title="탄수화물"
-                name="carbohydrate"
-                unit="g"
-                value={foodForm['carbohydrate']}
-                onChange={(e) => handleFormChange(idx, 'carbohydrate', e.target.value)}
-              />
-              <FoodFormInput
-                type="number"
-                title="단백질"
-                name="protein"
-                unit="g"
-                value={foodForm['protein']}
-                onChange={(e) => handleFormChange(idx, 'protein', e.target.value)}
-              />
-              <FoodFormInput
-                type="number"
-                title="지방"
-                name="fat"
-                unit="g"
-                value={foodForm['fat']}
-                onChange={(e) => handleFormChange(idx, 'fat', e.target.value)}
-              />
-            </div>
-            {idx + 1 === foodForms.length && idx + 1 !== MAX_FOOD && (
-              <button
-                type="button"
-                className="bg-[#949494] text-white p-2 hover:brightness-90"
-                onClick={() => handleAddFoodForm(idx)}
-              >
-                +
-              </button>
-            )}
           </div>
-        ))}
-        <button type="submit" className="w-full bg-[#3ECF8E] text-white p-2 hover:brightness-90">
+          <div className="w-full">
+            <h2 className="opacity-70 text-sm">단백질</h2>
+            <TextInput
+              type="number"
+              unit="g"
+              value={foodForm['protein']}
+              onChange={(e) => handleFormChange('protein', Number.parseInt(e.target.value))}
+            />
+          </div>
+          <div className="w-full">
+            <h2 className="opacity-70 text-sm">지방</h2>
+            <TextInput
+              type="number"
+              unit="g"
+              value={foodForm['fat']}
+              onChange={(e) => handleFormChange('fat', Number.parseInt(e.target.value))}
+            />
+          </div>
+        </div>
+        <button type="submit" className="w-full bg-[#12F28780] text-white px-6 py-3 rounded-lg">
           입력 완료
         </button>
       </form>

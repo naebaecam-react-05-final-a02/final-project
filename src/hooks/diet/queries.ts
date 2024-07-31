@@ -1,5 +1,5 @@
 import api from '@/service/service';
-import { FoodType } from '@/types/diet';
+import { DietType } from '@/types/diet';
 
 export const dietsQueryKeys = {
   all: ['diet'] as const,
@@ -7,10 +7,9 @@ export const dietsQueryKeys = {
 
 export const queryOptions = {
   getDiets: (date: string) => ({
-    queryKey: dietsQueryKeys.all,
+    queryKey: [dietsQueryKeys.all, date], // TODO: refactoring 필요
     queryFn: async () => {
       const diets = await api.diet.getDietsByDate(date);
-      console.log(diets);
       if (!diets) throw new Error('Diet not found');
       return diets;
     },
@@ -19,7 +18,6 @@ export const queryOptions = {
 
 export const mutationOptions = {
   saveDiet: {
-    mutationFn: (data: { imageFiles: File[]; dietType: string; foodForms: FoodType[] }) =>
-      api.diet.postDiet(data.imageFiles, data.dietType, data.foodForms),
+    mutationFn: ({ date, dietType, foods }: DietType) => api.diet.postDiet({ date, dietType, foods }),
   },
 };
