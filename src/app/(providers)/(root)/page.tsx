@@ -28,25 +28,30 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         {/* 등급/투두 진행 상황 */}
         <div className="grid grid-cols-[160px_1fr] gap-x-1 select-none bg-[#1e1e1e]">
           <div
-            className="border-[1px] border-white/15 bg-white/5 to-97% w-full aspect-square rounded-[20px] flex flex-col gap-y-4 items-center justify-center overflow-hidden
+            className="border-[1px] border-white/15 bg-white/5 to-97% w-full aspect-square rounded-[20px] flex flex-col gap-y-4 items-center justify-between overflow-hidden
           relative text-white"
           >
             <div className="w-8 h-full absolute bg-gradient-to-r from-[#12121266] to-[#12121201] left-0"></div>
             <div className="w-8 h-full absolute bg-gradient-to-l from-[#12121266] to-[#12121201] right-0"></div>
-            <h3>등급</h3>
-            <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
-              <div className="absolute -left-[95px] -bottom-[11px] -rotate-[15deg] bg-[#37cc85] w-[100px] h-2" />
-              <div className="absolute -left-2 rounded-full bg-[#5effb2] p-px size-4 z-10 flex justify-center items-center">
-                <div
-                  className="size-full rounded-full bg-[#37cc85] border-[1px] border-white/60"
-                  style={{ filter: 'url(#glow)' }}
-                />
+            <div className="absolute left-4 top-4">
+              <h5 className="text-white/50 text-sm">헬린이</h5>
+              <h6 className="text-[28px]">Lv.23</h6>
+            </div>
+            <div className="absolute bottom-9">
+              <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
+                <div className="absolute -left-[95px] -bottom-[11px] -rotate-[15deg] bg-[#37cc85] w-[100px] h-2" />
+                <div className="absolute -left-2 rounded-full bg-[#5effb2] p-px size-4 z-10 flex justify-center items-center">
+                  <div
+                    className="size-full rounded-full bg-[#37cc85] border-[1px] border-white/60"
+                    style={{ filter: 'url(#glow)' }}
+                  />
+                </div>
+                <GradeProgress />
+                <div className="absolute -right-2 rounded-full bg-white/10 p-px size-4 z-10 flex justify-center items-center">
+                  <div className="size-full rounded-full bg-[#292929] border-[1px] border-white/20" />
+                </div>
+                <div className="absolute -right-[95px] -top-[11px] -rotate-[15deg] bg-white/5 w-[100px] h-2" />
               </div>
-              <GradeProgress />
-              <div className="absolute -right-2 rounded-full bg-white/10 p-px size-4 z-10 flex justify-center items-center">
-                <div className="size-full rounded-full bg-[#292929] border-[1px] border-white/20" />
-              </div>
-              <div className="absolute -right-[95px] -top-[11px] -rotate-[15deg] bg-white/5 w-[100px] h-2" />
             </div>
           </div>
 
