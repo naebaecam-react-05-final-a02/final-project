@@ -1,11 +1,14 @@
+export const dynamic = 'force-dynamic';
+import {
+  fetchDataByInfinityQuery,
+  fetchVerificationTotalData,
+} from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import { createClient } from '@/supabase/server';
 import { verificationsType } from '@/types/challenge';
-import { fetchDataByInfinityQuery, fetchVerificationTotalData } from '@/utils/dataFetching';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import VerificationList from './_components/VerificationList';
 
 //TODO hooks 작업?
-//TODO dashboard랑 합친 다음에 오늘 데이터 뽑아오도록 변경해야함(getStartDayISO)
 const ChallengeVerificationListPage = async ({ params }: { params: { id: string } }) => {
   const queryClient = new QueryClient();
   const supabase = createClient();
@@ -18,6 +21,7 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
       return nextPage;
     },
     initialPageParam: 0,
+    staleTime: Infinity,
   });
 
   const counts = await fetchVerificationTotalData(supabase, params.id);

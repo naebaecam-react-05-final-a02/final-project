@@ -1,9 +1,11 @@
 'use client';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import { useResetPassword } from '@/hooks/auth/useUsers';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { validatePassword } from '../../_utils/passwordValidation';
+import { validatePassword } from '../../_utils/validatePassword';
 
 interface ResetPasswordFormProps {
   email: string;
@@ -66,40 +68,29 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md">
       <div className="mb-4">
-        <label htmlFor="new-password" className="block font-semibold text-[18px] mb-1.5">
-          새 비밀번호
-        </label>
-        <input
-          type="password"
-          id="new-password"
+        <Input
+          label="새 비밀번호"
+          name="password"
           value={newPassword}
           onChange={handleNewPasswordChange}
-          className="w-full bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
+          error={passwordError}
           required
         />
-        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
       </div>
       <div className="mb-4">
-        <label htmlFor="confirm-password" className="block font-semibold text-[18px] mb-1.5">
-          새 비밀번호 확인
-        </label>
-        <input
-          type="password"
-          id="confirm-password"
+        <Input
+          label="새 비밀번호 확인"
+          name="confirm-password"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
-          className="w-full bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
+          error={confirmPasswordError}
           required
         />
-        {confirmPasswordError && <p className="text-red-500 text-sm mt-1">{confirmPasswordError}</p>}
       </div>
-      <button
-        type="submit"
-        className="bg-[#D9D9D9] px-4 py-2 rounded-md w-full"
-        disabled={isResetting || !!passwordError || !!confirmPasswordError}
-      >
+
+      <Button type="submit" disabled={isResetting || !!passwordError || !!confirmPasswordError}>
         {isResetting ? '변경 중...' : '비밀번호 변경'}
-      </button>
+      </Button>
     </form>
   );
 };

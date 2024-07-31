@@ -1,13 +1,12 @@
-import { DateType } from '@/types/date';
 import DateCell from './DateCell';
 
 interface MonthProps {
-  selectedDate: DateType;
+  selectedDate: Date;
   changeDate: (newDate: number) => void;
 }
 const Month = ({ selectedDate, changeDate }: MonthProps) => {
-  const firstDay = new Date(Date.UTC(selectedDate.year, selectedDate.month - 1, 1)).getDay();
-  const lastDate = new Date(Date.UTC(selectedDate.year, selectedDate.month, 0)).getDate();
+  const firstDay = getFirstDate(selectedDate).getDay();
+  const lastDate = getLastDate(selectedDate).getDate();
 
   const weeks = [];
   let dates = [];
@@ -16,10 +15,10 @@ const Month = ({ selectedDate, changeDate }: MonthProps) => {
     dates.push(<td key={`empty-${i}`}></td>);
   }
 
-  for (let day = 1; day <= lastDate; day++) {
+  for (let date = 1; date <= lastDate; date++) {
     dates.push(
-      <DateCell isToday={selectedDate.date === day} onClick={() => changeDate(day)}>
-        {day}
+      <DateCell isToday={selectedDate.getDate() === date} onClick={() => changeDate(date)}>
+        {date}
       </DateCell>,
     );
     if (dates.length === 7) {
@@ -47,6 +46,18 @@ const Month = ({ selectedDate, changeDate }: MonthProps) => {
       <tbody>{weeks}</tbody>
     </table>
   );
+};
+
+const getFirstDate = (date: Date) => {
+  const firstDate = new Date(date);
+  firstDate.setDate(1);
+  return firstDate;
+};
+
+const getLastDate = (date: Date) => {
+  const lastDate = new Date(date);
+  lastDate.setDate(0);
+  return lastDate;
 };
 
 export default Month;

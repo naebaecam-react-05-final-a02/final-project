@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   if (typeof data.email !== 'string' || typeof data.password !== 'string' || typeof data.keepLoggedIn !== 'boolean') {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
-  console.log(data);
+
   const { email, password, keepLoggedIn } = data;
 
   const supabase = createClient();
@@ -20,7 +20,15 @@ export async function POST(request: NextRequest) {
     password,
   });
   if (signInError) {
-    return NextResponse.json({ error: signInError.message }, { status: 400 });
+    console.error('Detailed sign-in error:', signInError);
+    return NextResponse.json(
+      {
+        error: signInError.message,
+        errorCode: signInError.status,
+        details: signInError,
+      },
+      { status: signInError.status || 400 },
+    );
   }
   if (!user) {
     return NextResponse.json({ message: 'Sign in process initiated, but no data returned' }, { status: 200 });

@@ -1,14 +1,14 @@
 import { ComponentProps, PropsWithChildren } from 'react';
 
 interface DayProps {
-  isToday: boolean;
+  isToday?: boolean;
 }
 
 const DateCell = ({ isToday, children: date, ...props }: ComponentProps<'td'> & PropsWithChildren<DayProps>) => {
   return (
-    <td className={`text-center ${isToday ? 'bg-[#3ecf8e66]' : 'bg-white'} hover:brightness-90`} {...props}>
+    <div className={`w-full py-4 text-center ${isToday && 'bg-[#FFFFFF4D] rounded-b-full'}`} {...props}>
       {date}
-    </td>
+    </div>
   );
 };
 

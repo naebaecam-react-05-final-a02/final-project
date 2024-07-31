@@ -8,7 +8,7 @@ class ChallengeAPI {
     this.baseURL = baseURL;
   }
 
-  register = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
+  registerChallenge = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/register`, challengeData);
       return response.data;
@@ -20,9 +20,65 @@ class ChallengeAPI {
     }
   };
 
-  verify = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
+  updateChallenge = async ({ updateData, cid }: { updateData: Omit<Tables<'challenges'>, 'id'>; cid: number }) => {
     try {
-      const response = await axios.post(`${this.baseURL}/verify`, verifyData);
+      const response = await axios.patch(`${this.baseURL}/register?cid=${cid}`, updateData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  deleteChallenge = async (cid: number) => {
+    try {
+      const response = await axios.delete(`${this.baseURL}/register?cid=${cid}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  registerVerification = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
+    try {
+      const response = await axios.post(`${this.baseURL}/verification`, verifyData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  updateVerification = async ({
+    updateData,
+    cid,
+    vid,
+  }: {
+    updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>;
+    cid: string;
+    vid: string;
+  }) => {
+    try {
+      const response = await axios.patch(`${this.baseURL}/verification?cid=${cid}&vid=${vid}`, updateData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  deleteVerification = async ({ cid, vid }: { cid: string; vid: string }) => {
+    try {
+      const response = await axios.delete(`${this.baseURL}/verification?cid=${cid}&vid=${vid}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

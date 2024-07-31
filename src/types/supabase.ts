@@ -59,6 +59,7 @@ export type Database = {
       }
       challenges: {
         Row: {
+          category: string
           content: string
           createdBy: string
           endDate: string
@@ -72,6 +73,7 @@ export type Database = {
           verify: string
         }
         Insert: {
+          category?: string
           content: string
           createdBy: string
           endDate: string
@@ -85,6 +87,7 @@ export type Database = {
           verify: string
         }
         Update: {
+          category?: string
           content?: string
           createdBy?: string
           endDate?: string
@@ -151,32 +154,74 @@ export type Database = {
       }
       diets: {
         Row: {
+          createdAt: string
           date: string
-          dietType: string
-          foodInfo: Json[]
+          dietType: number
+          foods: Json[]
           id: number
-          images: string[] | null
           userId: string
         }
         Insert: {
-          date?: string
-          dietType: string
-          foodInfo?: Json[]
+          createdAt?: string
+          date: string
+          dietType: number
+          foods: Json[]
           id?: number
-          images?: string[] | null
           userId: string
         }
         Update: {
+          createdAt?: string
           date?: string
-          dietType?: string
-          foodInfo?: Json[]
+          dietType?: number
+          foods?: Json[]
           id?: number
-          images?: string[] | null
           userId?: string
         }
         Relationships: [
           {
             foreignKeyName: "diet_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exerciseRoutines: {
+        Row: {
+          created_at: string
+          days: number[] | null
+          endDate: string | null
+          exerciseId: number | null
+          id: number
+          userId: string | null
+        }
+        Insert: {
+          created_at?: string
+          days?: number[] | null
+          endDate?: string | null
+          exerciseId?: number | null
+          id?: number
+          userId?: string | null
+        }
+        Update: {
+          created_at?: string
+          days?: number[] | null
+          endDate?: string | null
+          exerciseId?: number | null
+          id?: number
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exerciseRoutines_exerciseId_fkey"
+            columns: ["exerciseId"]
+            isOneToOne: false
+            referencedRelation: "exercises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exerciseRoutines_userId_fkey"
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
@@ -191,6 +236,8 @@ export type Database = {
           duration: number | null
           exeriseType: string
           id: number
+          name: string | null
+          record: Json[] | null
           repPerSets: number | null
           reps: number | null
           resistance: number | null
@@ -199,11 +246,13 @@ export type Database = {
           weight: number | null
         }
         Insert: {
-          date?: string
+          date: string
           distance?: number | null
           duration?: number | null
           exeriseType: string
           id?: number
+          name?: string | null
+          record?: Json[] | null
           repPerSets?: number | null
           reps?: number | null
           resistance?: number | null
@@ -217,6 +266,8 @@ export type Database = {
           duration?: number | null
           exeriseType?: string
           id?: number
+          name?: string | null
+          record?: Json[] | null
           repPerSets?: number | null
           reps?: number | null
           resistance?: number | null

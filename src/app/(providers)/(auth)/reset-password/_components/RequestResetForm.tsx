@@ -1,5 +1,7 @@
 'use client';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import { useRequestPasswordReset } from '@/hooks/auth/useUsers';
 import { useState } from 'react';
 import VerifyCodeForm from './VerifyCodeForm';
@@ -33,26 +35,21 @@ const RequestResetForm = ({ onSuccess, setError }: RequestResetFormProps) => {
   };
 
   return (
-    <div>
+    <div className="w-full h-full">
       <form onSubmit={handleSubmit} className="w-full max-w-md mb-4">
-        <div className="mb-4">
-          <label htmlFor="email" className="block font-semibold text-[18px] mb-1.5">
-            이메일
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="email"
+        <div className="w-full mb-4">
+          <div className="flex items-end w-full gap-2">
+            <Input
+              label="이메일"
               name="email"
-              id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               placeholder="이메일 입력"
-              className="flex-grow bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
               required
             />
-            <button type="submit" className="bg-[#D9D9D9] px-4 py-2 rounded-md" disabled={isRequesting}>
+            <Button type="submit" className="!w-16 h-10 text-nowrap px-2 py-3.5" disabled={isRequesting}>
               {isRequesting ? '요청 중...' : '인증'}
-            </button>
+            </Button>
           </div>
         </div>
       </form>
