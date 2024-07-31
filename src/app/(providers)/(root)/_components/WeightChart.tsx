@@ -95,8 +95,8 @@ const WeightChart = ({ query }: WeightChartType) => {
             <stop offset="100%" stopColor="#ffffff" stopOpacity={1} />
           </linearGradient>
 
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+          <filter id="glow" x="-50%" y="-50%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="4.5" result="coloredBlur" />
             <feMerge>
               <feMergeNode in="coloredBlur" />
               <feMergeNode in="SourceGraphic" />

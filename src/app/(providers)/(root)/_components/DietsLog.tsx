@@ -1,5 +1,4 @@
 'use client';
-import Card from '@/components/Card';
 import Chip from '@/components/Chip';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { getDiets } from '@/hooks/dashboard/useDashBoard';
@@ -25,7 +24,7 @@ const DietsLog = () => {
   const foods = getFoods(diets?.data);
 
   return (
-    <Card className="bg-white size-full relative px-[-20px] text-sm flex flex-col items-center select-none">
+    <>
       <DashBoardHeader date={date} setState={setDate} url={'/diets/write'} title={'식단'} />
 
       <div className="w-full">
@@ -70,7 +69,7 @@ const DietsLog = () => {
           ))}
         </div>
       )}
-    </Card>
+    </>
   );
 };
 
