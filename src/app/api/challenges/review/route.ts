@@ -9,6 +9,7 @@ export async function POST(request: NextRequest) {
     const content = formData.get('content') as string;
     const title = formData.get('title') as string;
     const challengeId = formData.get('challengeId') as string;
+    const rating = Number(formData.get('rating')); // 별점 추가
     const files = formData.getAll('reviewImages') as File[];
 
     const {
@@ -47,14 +48,17 @@ export async function POST(request: NextRequest) {
     // 리뷰 정보와 이미지 URL을 데이터베이스에 저장
     const { data, error } = await supabase
       .from('challengeReviews')
-      .insert({
-        content,
-        title,
-        userId,
-        rating: 5,
-        challengeId,
-        reviewImages: imageUrls,
-      })
+      .upsert(
+        {
+          content,
+          title,
+          userId,
+          rating,
+          challengeId,
+          reviewImages: imageUrls,
+        },
+        { onConflict: 'useId', ignoreDuplicates: false },
+      )
       .select();
 
     if (error) {
