@@ -1,4 +1,5 @@
 'use client';
+import Header from '@/components/Header';
 import Link from 'next/link';
 import { useState } from 'react';
 import RequestResetForm from './RequestResetForm';
@@ -15,13 +16,14 @@ const ResetPasswordProcess = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col w-full h-screen px-4 justify-between items-center">
+      <Header showLogo className="mb-10" />
       {step === 'request' && <RequestResetForm onSuccess={handleRequestSuccess} setError={setError} />}
       {step === 'reset' && <ResetPasswordForm email={email} setError={setError} />}
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
 
-      <div className="relative mb-4 mt-6">
+      <div className="relative mb-40 mt-6">
         <Link
           className="bg-green-600 w-full rounded-md py-3 px-6 transition-all duration-300 ease-in-out hover:translate-y-1 shadow-md border-b-4 border-black border-opacity-85 relative z-10 inline-block text-white font-semibold"
           href="/"

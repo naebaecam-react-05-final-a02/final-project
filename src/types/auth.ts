@@ -39,16 +39,26 @@ export interface FormState {
 export interface EssentialInfoFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-  checkDuplicate: (field: 'email' | 'nickname', value: string) => Promise<boolean>;
-  onNext: () => void;
+  checkDuplicate: (field: 'email', value: string) => Promise<boolean>;
 }
 
-//선택 입력 사항 폼 props
-export interface AdditionalInfoFormProps {
+// 닉네임 입력 사항 폼 props
+export interface NicknameFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-  onSubmit: (formData: FormData) => Promise<void>;
-  onPrevious: () => void;
+  checkDuplicate: (field: 'nickname', value: string) => Promise<boolean>;
+}
+
+// 피지컬 입력 사항 폼 props
+export interface PhysicalInfoFormProps {
+  formState: FormState;
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>;
+}
+
+// 프리뷰 props
+export interface WelcomePreviewProps {
+  currentStep: string;
+  setCurrentStep: (step: 'success1' | 'success2') => void;
 }
 
 // 회원가입 필요한 사용자 정보
