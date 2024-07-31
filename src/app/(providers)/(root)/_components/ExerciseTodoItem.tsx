@@ -3,15 +3,18 @@
 import { Tables } from '@/types/supabase';
 import { useId, useState } from 'react';
 
+//TODO type에 따라 무,유산소 나뉘고 name이 운동이름인지? 알아낸다음 작업해야함..
 const ExerciseTodoItem = ({ exercise }: { exercise: Tables<'exercises'> }) => {
   const id = useId();
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
+  console.log('EXERCISE', exercise);
+
   let str = '';
-  if (exercise.sets) str += `${exercise.sets}세트 `;
-  if (exercise.weight) str += `${exercise.weight}kg `;
-  if (exercise.reps) str += `${exercise.reps}회 `;
-  if (exercise.duration) str += `${exercise.duration}분`;
+  // if (exercise.sets) str += `${exercise.sets}세트 `;
+  // if (exercise.weight) str += `${exercise.weight}kg `;
+  // if (exercise.reps) str += `${exercise.reps}회 `;
+  // if (exercise.duration) str += `${exercise.duration}분`;
 
   return (
     <div className="select-none bg-gradient-to-r from-[#292436] via-[#2e6e56] p-[2px] pt-0">
