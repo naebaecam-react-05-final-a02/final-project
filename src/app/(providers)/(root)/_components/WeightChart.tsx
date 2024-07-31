@@ -1,5 +1,6 @@
 'use client';
 
+import Card from '@/components/Card';
 import { Tables } from '@/types/supabase';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -30,7 +31,7 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
         </div>
       )}
       {!isLoading && (
-        <>
+        <Card className="h-full">
           {/* <DateRange /> */}
           <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
             <LineChart data={weights} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
@@ -117,7 +118,7 @@ const WeightChart = ({ weights }: { weights: Tables<'weights'>[] }) => {
               />
             </LineChart>
           </ResponsiveContainer>
-        </>
+        </Card>
       )}
     </div>
   );
