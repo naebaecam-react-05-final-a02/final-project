@@ -8,4 +8,11 @@ export interface WeightInput {
   reps: number;
 }
 
-export type Value = 'weight' | 'cardio';
+export interface ExerciseRecord {
+  date: string;
+  name: string;
+  record: CardioInput[] | WeightInput[];
+  exerciseType: ExerciseType;
+}
+
+export type ExerciseType = 'weight' | 'cardio';
