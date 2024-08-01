@@ -10,7 +10,6 @@ import ExerciseTodoList from './_components/ExerciseTodoList';
 import DashBoardJoinedChallenges from './_components/JoinedChallenges';
 import WeightChart from './_components/WeightChart';
 
-//TODO 참여한 챌린지 및 챌린지 클릭 시 상세 페이지루다가
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
   const supabase = createClient();
   const queryClient = new QueryClient();
