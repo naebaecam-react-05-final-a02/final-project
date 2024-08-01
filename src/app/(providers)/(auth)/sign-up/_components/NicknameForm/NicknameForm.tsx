@@ -44,8 +44,8 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
         ...prev,
         nickname: {
           ...prev.nickname,
-          error: result ? null : '이미 사용 중인 닉네임입니다.',
-          successMessage: result ? '사용 가능한 닉네임입니다.' : null,
+          error: result ? null : '이미 사용 중입니다!',
+          successMessage: result ? '사용가능한 닉네임 입니다!' : null,
           isVerified: result,
         },
       }));
@@ -106,10 +106,10 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
                 {isCheckingDuplicate ? '확인 중' : '확인'}
               </button>
             </div>
+            {formState.nickname.successMessage && (
+              <p className="text-primary-100 text-[12px] ml-1 mt-1">{formState.nickname.successMessage}</p>
+            )}
           </div>
-          {formState.nickname.successMessage && (
-            <p className="text-green-500 text-sm mt-1">{formState.nickname.successMessage}</p>
-          )}
         </div>
         <div className="flex justify-between mt-4"></div>
       </div>

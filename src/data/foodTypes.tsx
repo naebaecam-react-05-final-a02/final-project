@@ -83,3 +83,21 @@ export const foodTypes = [
   'whiskey',
   'wine',
 ];
+
+<Input
+  label="드랍다운"
+  icon={<Star />}
+  isDropdown
+  dropdownOptions={[
+    {
+      value: '테스트 1',
+      icon: <Star />,
+      onClick: () => console.log('테스트 1 clicked'),
+    },
+    {
+      value: '테스트 2',
+      icon: <Star />,
+      onClick: () => console.log('테스트 2 clicked'),
+    },
+  ]}
+/>;
