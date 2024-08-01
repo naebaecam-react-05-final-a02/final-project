@@ -1,7 +1,9 @@
-import React from 'react';
+'use client';
+
+import Slider from './_components/Slider';
 
 const ChallengePage = () => {
-  return <div>ChallengePage</div>;
+  return <Slider />;
 };
 
 export default ChallengePage;
