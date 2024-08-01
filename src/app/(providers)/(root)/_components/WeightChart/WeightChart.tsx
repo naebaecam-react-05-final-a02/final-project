@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { getWeights } from '@/hooks/dashboard/useDashBoard';
+import api from '@/service/service';
 import { createClient } from '@/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -18,7 +18,7 @@ const WeightChart = ({ query }: WeightChartType) => {
   const { data: user } = useGetUser();
   const { data: weights } = useQuery({
     queryKey: ['weights'],
-    queryFn: () => getWeights(supabase, query),
+    queryFn: () => api.dashboard.getWeights(supabase, query),
     enabled: !!user,
   });
 

@@ -1,7 +1,7 @@
 'use client';
 import Chip from '@/components/Chip';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { getDiets } from '@/hooks/dashboard/useDashBoard';
+import api from '@/service/service';
 import { createClient } from '@/supabase/client';
 import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
 import { useQuery } from '@tanstack/react-query';
@@ -16,7 +16,7 @@ const DietsLog = () => {
 
   const { data: diets } = useQuery({
     queryKey: ['diets', { date: format(date, 'yyyy-MM-dd') }],
-    queryFn: () => getDiets(supabase, date),
+    queryFn: () => api.dashboard.getDiets(supabase, date),
     enabled: !!user,
   });
 

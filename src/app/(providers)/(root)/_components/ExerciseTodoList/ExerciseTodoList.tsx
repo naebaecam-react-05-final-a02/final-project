@@ -1,6 +1,6 @@
 'use client';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { getExercises } from '@/hooks/dashboard/useDashBoard';
+import api from '@/service/service';
 import { createClient } from '@/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -15,7 +15,7 @@ const ExerciseTodoList = () => {
   const { data: user } = useGetUser();
   const { data: exercises, isFetching } = useQuery({
     queryKey: ['exercises', { date: format(date, 'yyyy-MM-dd') }],
-    queryFn: () => getExercises(supabase, date),
+    queryFn: () => api.dashboard.getExercises(supabase, date),
     enabled: !!user,
   });
 

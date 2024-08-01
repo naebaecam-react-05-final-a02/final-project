@@ -1,5 +1,5 @@
 import Card from '@/components/Card';
-import { getDiets, getExercises, getJoinedChallenges, getWeights } from '@/hooks/dashboard/useDashBoard';
+import api from '@/service/service';
 import { createClient } from '@/supabase/server';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -18,19 +18,19 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: ['weights'],
-      queryFn: () => getWeights(supabase, query),
+      queryFn: () => api.dashboard.getWeights(supabase, query),
     }),
     queryClient.prefetchQuery({
       queryKey: ['diets', { date: format(new Date(), 'yyyy-MM-dd') }],
-      queryFn: () => getDiets(supabase, new Date()),
+      queryFn: () => api.dashboard.getDiets(supabase, new Date()),
     }),
     queryClient.prefetchQuery({
       queryKey: ['exercises', { date: format(new Date(), 'yyyy-MM-dd') }],
-      queryFn: () => getExercises(supabase, new Date()),
+      queryFn: () => api.dashboard.getExercises(supabase, new Date()),
     }),
   ]);
 
-  const joinedChallenges = await getJoinedChallenges(supabase);
+  const joinedChallenges = await api.dashboard.getJoinedChallenges(supabase);
 
   return (
     <div className="w-full min-h-screen ">
