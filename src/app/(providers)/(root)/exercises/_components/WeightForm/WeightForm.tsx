@@ -1,13 +1,19 @@
 import { useWeightInputStore } from '@/stores/useExerciseStore';
+import { WeightInput } from '@/types/exercises';
+import { useEffect } from 'react';
 import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
 import InputLabel from '../InputLabel';
 
-const WeightForm = () => {
+type WeightFormProps = {
+  onChange: (data: WeightInput[]) => void;
+};
+const WeightForm = ({ onChange }: WeightFormProps) => {
   const weightList = useWeightInputStore((state) => state.weightInputs);
-
   const setWeightList = useWeightInputStore((state) => state.setWeightInputs);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const addWeight = useWeightInputStore((state) => state.addInput);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
     const list = weightList.map((item, i) => {
       if (i === index) {
@@ -17,8 +23,13 @@ const WeightForm = () => {
     });
 
     setWeightList(list);
+    if (weightList.length === 0) {
+      console.error('무게 리스트가 비어 있습니다.');
+    } else {
+      console.log('@@호출');
+      onChange(list);
+    }
   };
-  const addWeight = useWeightInputStore((state) => state.addInput);
 
   return (
     <div>
@@ -32,7 +43,7 @@ const WeightForm = () => {
         {weightList.map((item, index) => (
           <FormItem
             type={'weight'}
-            onChange={onChange}
+            onChange={handleChange}
             key={index}
             index={index}
             firstProp={item.weight}
