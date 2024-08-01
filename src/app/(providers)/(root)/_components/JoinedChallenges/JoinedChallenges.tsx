@@ -6,7 +6,7 @@ type DashBoardJoinedChallengesType = {
   joinedChallenges: joinedChallengesDataType;
 };
 
-const DashBoardJoinedChallengesLayout = ({ children }: { children: React.ReactNode }) => {
+const JoinedChallengesLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <h5 className="text-white/50 text-sm">챌린지</h5>
@@ -15,28 +15,28 @@ const DashBoardJoinedChallengesLayout = ({ children }: { children: React.ReactNo
   );
 };
 
-const DashBoardJoinedChallenges = ({ joinedChallenges }: DashBoardJoinedChallengesType) => {
+const JoinedChallenges = ({ joinedChallenges }: DashBoardJoinedChallengesType) => {
   if (joinedChallenges.error) {
     return (
-      <DashBoardJoinedChallengesLayout>
+      <JoinedChallengesLayout>
         <div className="text-red-300">
           <p className="text-sm">오류가 발생했습니다: {joinedChallenges.error}</p>
           {joinedChallenges.details && <p>상세 정보: {joinedChallenges.details}</p>}
         </div>
-      </DashBoardJoinedChallengesLayout>
+      </JoinedChallengesLayout>
     );
   }
 
   if (joinedChallenges.data === null || joinedChallenges.data.length === 0) {
     return (
-      <DashBoardJoinedChallengesLayout>
+      <JoinedChallengesLayout>
         <p className="text-white/50 text-sm">참여 중인 챌린지가 없습니다.</p>
-      </DashBoardJoinedChallengesLayout>
+      </JoinedChallengesLayout>
     );
   }
 
   return (
-    <DashBoardJoinedChallengesLayout>
+    <JoinedChallengesLayout>
       <ul className="w-full text-sm text-white grid gap-y-4">
         {joinedChallenges.data.slice(0, 3).map(({ id, challenges, challengeId }) => (
           <Link
@@ -48,8 +48,8 @@ const DashBoardJoinedChallenges = ({ joinedChallenges }: DashBoardJoinedChalleng
           </Link>
         ))}
       </ul>
-    </DashBoardJoinedChallengesLayout>
+    </JoinedChallengesLayout>
   );
 };
 
-export default DashBoardJoinedChallenges;
+export default JoinedChallenges;

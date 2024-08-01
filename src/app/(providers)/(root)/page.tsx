@@ -4,10 +4,10 @@ import { createClient } from '@/supabase/server';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Link from 'next/link';
-import DashBoardJoinedChallenges from './_components/DashBoardJoinedChallenges';
 import DashBoardLevel from './_components/DashBoardLevel';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
+import DashBoardJoinedChallenges from './_components/JoinedChallenges';
 import WeightChart from './_components/WeightChart';
 
 //TODO 참여한 챌린지 및 챌린지 클릭 시 상세 페이지루다가
