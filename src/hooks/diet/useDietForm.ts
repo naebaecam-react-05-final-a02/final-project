@@ -28,7 +28,10 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
   };
 
   const deleteChip = (deleteFoodId: string) => {
-    if (foodChips.length === 1) return;
+    if (foodChips.length === 1) {
+      setFoodChips([initialFoodState]);
+      setFoodForms(foodChips[0]);
+    }
     const deletedFoods = foodChips.filter((food) => food.id !== deleteFoodId);
     setFoodChips(deletedFoods);
     setActiveChipIdx(0);

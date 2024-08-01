@@ -43,6 +43,18 @@ class DietAPI {
       throw error;
     }
   };
+
+  deleteDiet = async ({ id }: Pick<DietTableType, 'id'>): Promise<{ message: string }> => {
+    try {
+      const response = await axios.delete(`${this.baseUrl}?id=${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
 }
 
 export default DietAPI;
