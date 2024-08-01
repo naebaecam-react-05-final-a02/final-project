@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
+import { ExerciseRecord } from '@/types/exercises';
+interface ExerciseData {
+  date: string;
+  userId: string;
+  exerciseType: string;
+  name: string;
+  id: string;
+  record: any[];
+}
 
 export async function POST(request: NextRequest) {
   const supabase = createClient();
 
   try {
-    const { date, exerciseType, name, record } = await request.json();
+    const { date, exerciseType, name, record, isBookMark } = await request.json();
 
-    // 사용자 인증 정보 가져오기
     const {
       data: { user },
       error: authError,
@@ -40,10 +48,20 @@ export async function POST(request: NextRequest) {
           record,
         },
       ])
-      .select();
+      .select()
+      .single<ExerciseData>();
 
     if (error) {
       throw error;
+    }
+
+    if (isBookMark) {
+      const { id } = data;
+      console.log('@@ID', id);
+      const { error } = await supabase.from('exercisesBookmarks').insert({ userId, exerciseId: id });
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 400 });
+      }
     }
 
     return NextResponse.json({ message: '운동 기록이 성공적으로 등록되었지 뭐람?', data }, { status: 200 });
