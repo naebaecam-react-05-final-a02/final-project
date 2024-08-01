@@ -13,13 +13,13 @@ const ExerciseTodoList = () => {
   const supabase = createClient();
   const [date, setDate] = useState<Date>(new Date());
   const { data: user } = useGetUser();
-  const { data: exercises, isFetching } = useQuery({
+  const { data: exercises } = useQuery({
     queryKey: ['exercises', { date: format(date, 'yyyy-MM-dd') }],
     queryFn: () => api.dashboard.getExercises(supabase, date),
     enabled: !!user,
   });
 
-  if (!exercises || isFetching) {
+  if (!exercises) {
     return (
       <>
         <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
@@ -61,7 +61,7 @@ const ExerciseTodoList = () => {
       <ul className="size-full grid gap-y-5">
         {exercises.data.slice(0, 5).map((exercise, i) => (
           <li key={i}>
-            <ExerciseTodoItem exercise={exercise} />
+            <ExerciseTodoItem exercise={exercise} date={date} />
           </li>
         ))}
       </ul>
