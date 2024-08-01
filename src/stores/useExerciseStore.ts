@@ -1,9 +1,9 @@
-import { CardioInput, Value, WeightInput } from '@/types/exercises';
+import { CardioInput, ExerciseType, WeightInput } from '@/types/exercises';
 import { create } from 'zustand';
 
 interface ExerciseTabStoreTypes {
-  exerciseType: Value;
-  setExerciseType: (value: Value) => void;
+  exerciseType: ExerciseType;
+  setExerciseType: (value: ExerciseType) => void;
 }
 
 export const useExerciseTabStore = create<ExerciseTabStoreTypes>((set) => ({
