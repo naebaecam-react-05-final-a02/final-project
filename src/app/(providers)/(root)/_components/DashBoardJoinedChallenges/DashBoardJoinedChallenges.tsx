@@ -1,5 +1,3 @@
-'use client';
-
 import { joinedChallengesDataType } from '@/types/challenge';
 import Link from 'next/link';
 import React from 'react';
