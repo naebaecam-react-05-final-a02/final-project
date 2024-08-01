@@ -43,6 +43,7 @@ const WeightChart = ({ query }: WeightChartType) => {
       <div className="size-full flex items-center justify-center flex-col">
         <div className="text-white">체중 데이터를 가져오지 못했습니다.</div>
         <div className="text-xs text-red-300">{weights.error}</div>
+        {weights.details && <p className="text-xs text-red-300">상세 정보: {weights.details}</p>}
       </div>
     );
   }

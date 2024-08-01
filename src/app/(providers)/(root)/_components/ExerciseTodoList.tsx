@@ -37,7 +37,7 @@ const ExerciseTodoList = () => {
         <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">
           <div>{`${format(date, 'M')}월 ${format(date, 'd')}일 데이터를 가져오지 못했습니다...`}</div>
-          <div className="text-xs text-red-300">{exercises.details}</div>
+          {exercises.details && <p className="text-xs text-red-300">상세 정보:{exercises.details}</p>}
         </div>
       </>
     );

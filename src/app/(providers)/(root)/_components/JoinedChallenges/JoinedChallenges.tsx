@@ -19,8 +19,8 @@ const JoinedChallenges = ({ joinedChallenges }: DashBoardJoinedChallengesType) =
   if (joinedChallenges.error) {
     return (
       <JoinedChallengesLayout>
-        <div className="text-red-300">
-          <p className="text-sm">오류가 발생했습니다: {joinedChallenges.error}</p>
+        <div className="text-red-300 text-sm">
+          <p className="text-base">{joinedChallenges.error}</p>
           {joinedChallenges.details && <p>상세 정보: {joinedChallenges.details}</p>}
         </div>
       </JoinedChallengesLayout>
