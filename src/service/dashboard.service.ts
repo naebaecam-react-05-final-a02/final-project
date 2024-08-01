@@ -1,4 +1,5 @@
 import { DietTableType } from '@/types/diet';
+import { ExerciseTodoItemType } from '@/types/exercises';
 import { Database, Tables } from '@/types/supabase';
 import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -116,7 +117,7 @@ class DashBoardAPI {
         };
       }
 
-      return { data: exercises as Tables<'exercises'>[], error: null, details: null };
+      return { data: exercises as any as ExerciseTodoItemType[], error: null, details: null };
     } catch (error) {
       console.error('Unexpected error:', error);
       return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };

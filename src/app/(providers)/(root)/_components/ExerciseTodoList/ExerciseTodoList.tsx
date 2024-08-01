@@ -58,8 +58,8 @@ const ExerciseTodoList = () => {
   return (
     <>
       <DashBoardHeader date={date} setState={setDate} url={'/'} title={'투두'} />
-      <ul className="size-full p-4 grid gap-y-5">
-        {exercises.data.map((exercise, i) => (
+      <ul className="size-full grid gap-y-5">
+        {exercises.data.slice(0, 5).map((exercise, i) => (
           <li key={i}>
             <ExerciseTodoItem exercise={exercise} />
           </li>
