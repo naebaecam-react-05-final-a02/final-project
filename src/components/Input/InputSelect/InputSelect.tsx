@@ -108,7 +108,7 @@ const InputSelect = ({
                 className={`relative w-full rounded-md bg-transparent p-[6px]
           hover:bg-primary-10 hover:text-primary-100 cursor-pointer transition
           ${icon ? 'pl-9' : ''} 
-          ${textAlign === 'left' ? 'text-left' : 'text-right'}
+          ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
           ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
                 onClick={() => {
                   handleOptionSelect(option.value);

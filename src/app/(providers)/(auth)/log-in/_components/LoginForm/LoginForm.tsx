@@ -9,7 +9,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FaBeer, FaStarHalf } from 'react-icons/fa';
 import { validatePassword } from '../../../_utils/validatePassword';
 
 export interface LogInFormData {
@@ -103,7 +102,7 @@ const LogInForm = () => {
       <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mb-[50px]" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
-        {/* <Input
+        <Input
           label="이메일"
           placeholder="이메일을 입력해 주세요."
           value={formData.email}
@@ -120,26 +119,8 @@ const LogInForm = () => {
           name="password"
           type="password"
           error={errors.password}
-        /> */}
-        <Input icon={<FaBeer />} label="뭔데" />
-        <Input
-          label="드랍다운"
-          icon={<FaStarHalf />}
-          isDropdown
-          dropdownOptions={[
-            {
-              value: '테스트 1',
-              icon: <FaStarHalf />,
-              onClick: () => console.log('테스트 1 clicked'),
-            },
-            {
-              value: '테스트 2',
-              icon: <FaStarHalf />,
-              onClick: () => console.log('테스트 2 clicked'),
-            },
-            // ... 기타 옵션
-          ]}
         />
+
         <div className="flex w-full justify-between gap-2 mt-4">
           <div>
             <Checkbox
@@ -156,7 +137,6 @@ const LogInForm = () => {
           </Link>
         </div>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
-
         <Button className="mt-12 mb-[35px]" disabled={isPending}>
           {isPending ? '로그인 중...' : '로그인'}
         </Button>
