@@ -7,7 +7,7 @@ import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import DashBoardHeader from './DashBoardHeader';
+import DashBoardHeader from '../DashBoardHeader';
 
 const DietsLog = () => {
   const supabase = createClient();

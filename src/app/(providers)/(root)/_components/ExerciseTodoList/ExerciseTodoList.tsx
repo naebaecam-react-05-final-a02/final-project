@@ -5,8 +5,8 @@ import { createClient } from '@/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import DashBoardHeader from './DashBoardHeader';
-import ExerciseTodoItem from './ExerciseTodoItem';
+import DashBoardHeader from '../DashBoardHeader';
+import ExerciseTodoItem from '../ExerciseTodoItem';
 
 //TODO: 투두 작성하는곳 url 링크에 넣어야함
 const ExerciseTodoList = () => {

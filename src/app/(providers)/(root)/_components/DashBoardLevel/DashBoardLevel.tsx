@@ -1,4 +1,4 @@
-import GradeProgress from '../GradeProgress';
+import LevelProgress from '../LevelProgress';
 
 const DashBoardLevel = () => {
   return (
@@ -18,7 +18,7 @@ const DashBoardLevel = () => {
               style={{ filter: 'url(#glow)' }}
             />
           </div>
-          <GradeProgress />
+          <LevelProgress />
           <div className="absolute -right-2 rounded-full bg-white/10 p-px size-4 z-10 flex justify-center items-center">
             <div className="size-full rounded-full bg-[#292929] border-[1px] border-white/20" />
           </div>

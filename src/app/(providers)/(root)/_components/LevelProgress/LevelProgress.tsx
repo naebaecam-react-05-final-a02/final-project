@@ -4,7 +4,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 const data = [{ name: 'Progress', value: 50 }];
 
-const GradeProgress = () => {
+const LevelProgress = () => {
   return (
     <ResponsiveContainer width="100%" height={10}>
       <BarChart layout="vertical" data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
@@ -36,4 +36,4 @@ const GradeProgress = () => {
   );
 };
 
-export default GradeProgress;
+export default LevelProgress;
