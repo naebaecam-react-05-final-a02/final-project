@@ -14,7 +14,7 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
   const supabase = createClient();
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ['verifications'],
+    queryKey: ['verifications', { cid: params.id }],
     queryFn: () => fetchDataByInfinityQuery(supabase, params.id),
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       const nextPage = lastPage.length ? allPage.length : undefined;

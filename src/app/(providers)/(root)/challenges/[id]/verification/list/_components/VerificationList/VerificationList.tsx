@@ -24,7 +24,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['verifications'],
+    queryKey: ['verifications', { cid: params.id }],
     queryFn: ({ pageParam }) => fetchDataByInfinityQuery(supabase, params.id as string, pageParam),
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       // console.log('LASTPAGE', lastPage);
