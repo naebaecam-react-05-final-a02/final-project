@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      challengeParticipants: {
+        Row: {
+          challengeId: number
+          id: number
+          userId: string
+        }
+        Insert: {
+          challengeId: number
+          id?: number
+          userId?: string
+        }
+        Update: {
+          challengeId?: number
+          id?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challengeParticipants_challengeId_fkey1"
+            columns: ["challengeId"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challengeParticipants_userId_fkey1"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challengeReviews: {
         Row: {
           challengeId: number
@@ -232,7 +265,7 @@ export type Database = {
       exercises: {
         Row: {
           date: string
-          exeriseType: string
+          exerciseType: string
           id: number
           name: string | null
           record: Json[] | null
@@ -240,7 +273,7 @@ export type Database = {
         }
         Insert: {
           date: string
-          exeriseType: string
+          exerciseType: string
           id?: number
           name?: string | null
           record?: Json[] | null
@@ -248,7 +281,7 @@ export type Database = {
         }
         Update: {
           date?: string
-          exeriseType?: string
+          exerciseType?: string
           id?: number
           name?: string | null
           record?: Json[] | null

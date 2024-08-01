@@ -3,6 +3,7 @@ import { Database, Tables } from '@/types/supabase';
 import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
 import { SupabaseClient } from '@supabase/supabase-js';
 
+// 식단 데이터
 export const getDiets = async (client: SupabaseClient<Database>, date: Date) => {
   try {
     const {
@@ -41,6 +42,7 @@ export const getDiets = async (client: SupabaseClient<Database>, date: Date) => 
   }
 };
 
+// 체중 데이터
 export const getWeights = async (client: SupabaseClient<Database>, query: string) => {
   try {
     const {
@@ -79,11 +81,13 @@ export const getWeights = async (client: SupabaseClient<Database>, query: string
   }
 };
 
+// 운동 투두 데이터
 export const getExercises = async (client: SupabaseClient<Database>, date: Date) => {
   try {
     const {
       data: { user },
     } = await client.auth.getUser();
+
     if (!user) {
       return {
         data: null,
@@ -108,7 +112,44 @@ export const getExercises = async (client: SupabaseClient<Database>, date: Date)
         details: error.message,
       };
     }
+
     return { data: exercises as Tables<'exercises'>[], error: null, details: null };
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
+  }
+};
+
+// 참여중인 챌린지 데이터
+export const getJoinedChallenges = async (client: SupabaseClient<Database>) => {
+  try {
+    const {
+      data: { user },
+    } = await client.auth.getUser();
+
+    if (!user) {
+      return {
+        data: null,
+        error: 'User not found',
+        details: 'User not found',
+      };
+    }
+
+    const { data: challenges, error } = await client
+      .from('challengeParticipants')
+      .select('*,challenges(title, isProgress)')
+      .eq('userId', user?.id);
+
+    if (error) {
+      console.error('Challenge Participants Database query error:', error);
+      return {
+        data: null,
+        error: 'Challenge Participants Database query failed',
+        details: error.message,
+      };
+    }
+
+    return { data: challenges, error: null, details: null };
   } catch (error) {
     console.error('Unexpected error:', error);
     return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };

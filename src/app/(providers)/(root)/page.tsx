@@ -1,9 +1,10 @@
 import Card from '@/components/Card';
-import { getDiets, getExercises, getWeights } from '@/hooks/dashboard/useDashBoard';
+import { getDiets, getExercises, getJoinedChallenges, getWeights } from '@/hooks/dashboard/useDashBoard';
 import { createClient } from '@/supabase/server';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Link from 'next/link';
+import DashBoardJoinedChallenges from './_components/DashBoardJoinedChallenges';
 import DashBoardLevel from './_components/DashBoardLevel';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
@@ -29,6 +30,8 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
     }),
   ]);
 
+  const joinedChallenges = await getJoinedChallenges(supabase);
+
   return (
     <div className="w-full min-h-screen ">
       <Link
@@ -49,12 +52,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
           </Card>
 
           <Card className="bg-[#292436] w-full  flex flex-col items-start ">
-            <h5 className="text-white/50 text-sm">챌린지</h5>
-            <div className="h-5 text-sm text-white grid gap-y-4">
-              <div>체중 5키로</div>
-              <div>3대 500치기</div>
-              <div>3대 500치기</div>
-            </div>
+            <DashBoardJoinedChallenges joinedChallenges={joinedChallenges} />
           </Card>
         </div>
 
