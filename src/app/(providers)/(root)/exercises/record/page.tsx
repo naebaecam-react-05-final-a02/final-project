@@ -1,10 +1,10 @@
 'use client';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
+import Star from '@/icons/Star';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
-import Star from '@/icons/Star';
 
 const ExerciseRecordPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -123,7 +123,7 @@ const ExerciseRecordPage = () => {
   }, [record.record]);
 
   return (
-    <div className="min-h-screen bg-slate-500 flex flex-col gap-5 p-5">
+    <div className="min-h-screen flex flex-col gap-5 p-5">
       <h3 className="text-white">운동 이름</h3>
       <Input
         label="운동 이름"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useChallengeCategoryStore } from '@/stores/stores';
+
 import { CATEGORIES } from '../../_constants/constants';
 import CategoryButton from '../CategoryButton';
 

@@ -13,7 +13,7 @@ import BackBoard from './BackBoard/BackBoard';
 interface MobileLayoutProps {}
 
 const MobileFrameVariants = cva(
-  'w-[390px] h-[844px] border-8 border-black rounded-[44px] relative overflow-hidden pt-11 pb-10',
+  'w-[390px] h-[844px] border-8 border-black rounded-[44px] relative overflow-hidden pt-10 pb-10',
   {
     variants: {
       darkMode: {
@@ -22,7 +22,7 @@ const MobileFrameVariants = cva(
       },
     },
     defaultVariants: {
-      darkMode: false,
+      darkMode: true,
     },
   },
 );
@@ -36,10 +36,9 @@ const Mobile = ({ children }: PropsWithChildren<MobileLayoutProps>) => {
         <FrameHeader />
         <section className="h-full relative">
           <div className="relative w-full h-full overflow-scroll scroll pb-24">
-            <header className=" w-full h-14 border-b border-b-gray-500 mb-4 px-4">
+            <header className=" w-full h-14 mb-4 px-4">
               <UserProfile />
             </header>
-
             {children}
           </div>
           <NavBar />

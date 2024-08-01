@@ -18,7 +18,6 @@ const ChallengeList = () => {
     queryKey: ['test'],
     queryFn: () => api.challenge.getPaginationChallenges({ category, page: 1, limit: 10 }),
   });
-  console.log(test);
 
   const { data: challenges, isPending } = useGetPopularChallenges({ category });
 
