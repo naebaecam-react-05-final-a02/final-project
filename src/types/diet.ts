@@ -3,6 +3,7 @@ import { Tables } from './supabase';
 export type DietTableType = Omit<Tables<'diets'>, 'foods'> & { foods: FoodType[] };
 
 export type DietType = {
+  id?: number;
   date: Date;
   dietType: DietTimeType;
   foods: FoodType[];
