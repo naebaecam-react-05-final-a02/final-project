@@ -1,7 +1,9 @@
 import { useWeightInputStore } from '@/stores/useExerciseStore';
 import { WeightInput } from '@/types/exercises';
 import { useEffect } from 'react';
+import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
+import InputLabel from '../InputLabel';
 
 type WeightFormProps = {
   onChange: (data: WeightInput[]) => void;
@@ -31,12 +33,12 @@ const WeightForm = ({ onChange }: WeightFormProps) => {
 
   return (
     <div>
-      <form>
-        <div className="grid grid-cols-4 justify-items-center">
-          <p>세트</p>
-          <p>무게</p>
-          <p>횟수</p>
-          <p></p>
+      <form className="flex flex-col gap-4">
+        <div className="grid grid-cols-4 justify-items-center h-12">
+          <InputLabel>세트</InputLabel>
+          <InputLabel>무게</InputLabel>
+          <InputLabel>횟수</InputLabel>
+          <InputLabel></InputLabel>
         </div>
         {weightList.map((item, index) => (
           <FormItem
@@ -48,9 +50,7 @@ const WeightForm = ({ onChange }: WeightFormProps) => {
             secondProp={item.reps}
           />
         ))}
-        <button className="w-full h-8 bg-gray-400 text-white" onClick={addWeight} type="button">
-          세트 추가하기
-        </button>
+        <AddSetButton onClick={addWeight}>세트 추가하기</AddSetButton>
       </form>
     </div>
   );

@@ -1,7 +1,9 @@
 import { useCardioInputStore } from '@/stores/useExerciseStore';
 import { CardioInput } from '@/types/exercises';
 import { useEffect } from 'react';
+import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
+import InputLabel from '../InputLabel';
 
 type CardioFormProps = {
   onChange: (data: CardioInput[]) => void;
@@ -15,10 +17,7 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
-    console.log(name, value);
     const list = cardioList.map((item, i) => {
-      console.log(i, index);
-      console.log(i === index);
       if (i === index) {
         return { ...item, [name]: Number(value) };
       }
@@ -35,12 +34,12 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
 
   return (
     <div>
-      <form>
-        <div className="grid grid-cols-4 justify-items-center">
-          <p>세트</p>
-          <p>시간</p>
-          <p>분</p>
-          <p></p>
+      <form className="flex flex-col gap-4">
+        <div className="grid grid-cols-4 justify-items-center h-12">
+          <InputLabel>세트</InputLabel>
+          <InputLabel>시간</InputLabel>
+          <InputLabel>분</InputLabel>
+          <InputLabel></InputLabel>
         </div>
         {cardioList.map((item, index) => (
           <FormItem
@@ -52,9 +51,7 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
             secondProp={item.minutes}
           />
         ))}
-        <button className="w-full h-8 bg-gray-400 text-white" onClick={addCardio} type="button">
-          세트 추가하기
-        </button>
+        <AddSetButton onClick={addCardio}>세트 추가하기</AddSetButton>
       </form>
     </div>
   );

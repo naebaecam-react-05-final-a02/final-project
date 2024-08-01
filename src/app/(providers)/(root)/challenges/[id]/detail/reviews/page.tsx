@@ -1,4 +1,4 @@
-import ChallengeReviewForm from '../_components/ChallengeReviewForm/ChallengeReviewForm';
+import ChallengeReviewForm from '../_components/ChallengeReviewForm';
 
 const ChallengeReviewPage = () => {
   return (

@@ -31,6 +31,30 @@ class DietAPI {
       throw error;
     }
   };
+
+  putDiet = async ({ id, date, dietType, foods }: DietType): Promise<{ message: string }> => {
+    try {
+      const response = await axios.put(`${this.baseUrl}`, { id, date, dietType, foods });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  deleteDiet = async ({ id }: Pick<DietTableType, 'id'>): Promise<{ message: string }> => {
+    try {
+      const response = await axios.delete(`${this.baseUrl}?id=${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
 }
 
 export default DietAPI;
