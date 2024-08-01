@@ -17,15 +17,15 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: ['weights'],
-      queryFn: async () => getWeights(supabase, query),
+      queryFn: () => getWeights(supabase, query),
     }),
     queryClient.prefetchQuery({
       queryKey: ['diets', { date: format(new Date(), 'yyyy-MM-dd') }],
-      queryFn: async () => getDiets(supabase, new Date()),
+      queryFn: () => getDiets(supabase, new Date()),
     }),
     queryClient.prefetchQuery({
       queryKey: ['exercises', { date: format(new Date(), 'yyyy-MM-dd') }],
-      queryFn: async () => getExercises(supabase, new Date()),
+      queryFn: () => getExercises(supabase, new Date()),
     }),
   ]);
 

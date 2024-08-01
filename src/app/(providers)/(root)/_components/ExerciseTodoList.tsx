@@ -15,7 +15,7 @@ const ExerciseTodoList = () => {
   const { data: user } = useGetUser();
   const { data: exercises, isFetching } = useQuery({
     queryKey: ['exercises', { date: format(date, 'yyyy-MM-dd') }],
-    queryFn: async () => getExercises(supabase, date),
+    queryFn: () => getExercises(supabase, date),
     enabled: !!user,
   });
 

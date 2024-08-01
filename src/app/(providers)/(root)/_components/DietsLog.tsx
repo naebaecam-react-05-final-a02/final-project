@@ -16,7 +16,7 @@ const DietsLog = () => {
 
   const { data: diets } = useQuery({
     queryKey: ['diets', { date: format(date, 'yyyy-MM-dd') }],
-    queryFn: async () => getDiets(supabase, date),
+    queryFn: () => getDiets(supabase, date),
     enabled: !!user,
   });
 
