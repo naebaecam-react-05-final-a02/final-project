@@ -55,3 +55,31 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
   }
 };
+
+export const PUT = async (request: NextRequest) => {
+  try {
+    const { id, date, dietType, foods } = await request.json();
+    console.log(id);
+    console.log(date);
+    console.log(dietTypeCode[dietType]);
+    console.log(foods);
+
+    const supabase = createClient();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { error } = await supabase
+      .from('diets')
+      .update({ date, dietType: dietTypeCode[dietType], foods })
+      .eq('id', id);
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+    return NextResponse.json({ message: '다이어트가 성공적으로 수정되었습니다' }, { status: 200 });
+  } catch (e) {
+    return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
+  }
+};

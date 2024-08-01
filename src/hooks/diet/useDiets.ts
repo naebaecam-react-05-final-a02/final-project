@@ -4,4 +4,4 @@ import { mutationOptions, queryOptions } from './queries';
 export const useGetDiets = (date: string) => {
   return useQuery(queryOptions.getDiets(date));
 };
-export const useSaveDiet = () => useMutation(mutationOptions.saveDiet);
+export const useSubmitDiet = () => useMutation(mutationOptions.submitDiet);

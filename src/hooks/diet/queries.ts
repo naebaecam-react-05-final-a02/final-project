@@ -17,7 +17,13 @@ export const queryOptions = {
 };
 
 export const mutationOptions = {
-  saveDiet: {
-    mutationFn: ({ date, dietType, foods }: DietType) => api.diet.postDiet({ date, dietType, foods }),
+  submitDiet: {
+    mutationFn: ({ id, date, dietType, foods }: DietType) => {
+      if (id) {
+        return api.diet.putDiet({ id, date, dietType, foods });
+      } else {
+        return api.diet.postDiet({ date, dietType, foods });
+      }
+    },
   },
 };

@@ -1,12 +1,13 @@
 'use client';
 import Chip from '@/components/Chip';
 import useDietForm from '@/hooks/diet/useDietForm';
-import { useSaveDiet } from '@/hooks/diet/useDiets';
+import { useSubmitDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { DietTimeType } from '@/types/diet';
 import { getFormattedDate } from '@/utils/dateFormatter';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
@@ -28,6 +29,8 @@ const DietForm = () => {
     resetForm,
   } = useDietForm({ initialValue });
 
+  const router = useRouter();
+
   // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
   const selectedDate = useDateStore((state) => state.date);
   const [date, setDate] = useState(getFormattedDate(selectedDate));
@@ -36,17 +39,19 @@ const DietForm = () => {
     initialValue?.dietType,
   );
 
-  const { mutate: saveDiet, isPending } = useSaveDiet();
+  const { mutate: submitDiet, isPending } = useSubmitDiet();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateFood()) return;
-    saveDiet(
-      { date: new Date(date), dietType, foods: foodChips },
+
+    submitDiet(
+      { id: initialValue?.id, date: new Date(date), dietType, foods: foodChips },
       {
         onSuccess: (response) => {
           alert(response.message);
           resetForm();
+          router.push('/diets');
         },
         onError: (error) => {
           console.error('Save-diet error:', error);
