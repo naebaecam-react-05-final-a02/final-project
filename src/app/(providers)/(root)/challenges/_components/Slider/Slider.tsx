@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import PrevButton from './PrevButton';
+import SlideItem from './SlideItem';
 
 const Slider = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -24,29 +25,33 @@ const Slider = () => {
   }, [swiperRef.current?.swiper.activeIndex]);
 
   return (
-    <>
-      <Swiper
-        // install Swiper modules
-        ref={swiperRef}
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={50}
-        slidesPerView={3}
-        navigation
-        pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
-      >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <PrevButton>다음</PrevButton>
-      </Swiper>
-    </>
+    <div className="overflow-hidden flex justify-center">
+      <div className="w-[810px]">
+        <Swiper
+          // install Swiper modules
+          ref={swiperRef}
+          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          spaceBetween={0}
+          slidesPerView={3}
+          navigation
+          scrollbar={{ draggable: true, hide: true, enabled: false }}
+          onSwiper={(swiper) => console.log(swiper)}
+          onSlideChange={() => console.log('slide change')}
+        >
+          {Array.from({ length: 10 }, (_, i) => {
+            return (
+              <li className="flex items-center" key={i}>
+                <SwiperSlide>
+                  <SlideItem index={i - 1} activeIndex={activeIndex} />
+                </SwiperSlide>
+              </li>
+            );
+          })}
+
+          <PrevButton>다음</PrevButton>
+        </Swiper>
+      </div>
+    </div>
   );
 };
 

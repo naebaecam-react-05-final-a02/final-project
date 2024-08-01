@@ -35,8 +35,8 @@ const Mobile = ({ children }: PropsWithChildren<MobileLayoutProps>) => {
       <div className={MobileFrameVariants({ darkMode })}>
         <FrameHeader />
         <section className="h-full relative">
-          <div className="relative w-full h-full overflow-scroll scroll px-4 pb-24">
-            <header className=" w-full h-14 border-b border-b-gray-500 mb-4">
+          <div className="relative w-full h-full overflow-scroll scroll pb-24">
+            <header className=" w-full h-14 border-b border-b-gray-500 mb-4 px-4">
               <UserProfile />
             </header>
 
