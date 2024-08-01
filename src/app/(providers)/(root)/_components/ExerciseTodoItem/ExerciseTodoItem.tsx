@@ -5,7 +5,6 @@ import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
 import { ExerciseTodoItemType } from '@/types/exercises';
 import { calculateTodoData } from '@/utils/calculateTodo';
-import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useMutation } from '@tanstack/react-query';
 import { format } from 'date-fns';
 
@@ -22,53 +21,48 @@ type ExerciseData = {
 const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
   const formattingString = calculateTodoData(exercise);
 
-  const { mutate: isCompleted } = useMutation<PostgrestSingleResponse<null>, Error, ExerciseTodoItemType, ExerciseData>(
-    {
-      mutationFn: async (exercise: ExerciseTodoItemType) => {
-        const supabase = createClient();
-        const response = await supabase
-          .from('exercises')
-          .update({ isCompleted: true })
-          .match({ id: exercise.id, userId: exercise.userId });
+  const { mutate: isCompleted } = useMutation({
+    mutationFn: async (exercise: ExerciseTodoItemType) => {
+      const supabase = createClient();
+      const response = await supabase
+        .from('exercises')
+        .update({ isCompleted: true })
+        .match({ id: exercise.id, userId: exercise.userId });
 
-        return response;
-      },
-      onMutate: async () => {
-        const formattingDate = format(date, 'yyyy-MM-dd');
-        await queryClient.cancelQueries({ queryKey: ['exercises', { date: formattingDate }] });
-        const prev = queryClient.getQueryData<ExerciseData>(['exercises', { date: formattingDate }]);
-
-        queryClient.setQueryData(['exercises', { date: formattingDate }], (old: ExerciseData) => {
-          return {
-            ...old,
-            data: old.data.map((o) => {
-              if (o.id === exercise.id && o.userId === exercise.userId) return { ...o, isCompleted: true };
-              return o;
-            }),
-          };
-        });
-
-        return prev;
-      },
-      onError: (error, context) => {
-        const formattingDate = format(date, 'yyyy-MM-dd');
-        console.error('Checked Exercise Todo is Error', error);
-        queryClient.setQueryData(['exercises', { date: formattingDate }], context);
-      },
-      onSettled: () => {
-        const formattingDate = format(date, 'yyyy-MM-dd');
-        queryClient.invalidateQueries({ queryKey: ['exercises', { date: formattingDate }] });
-      },
+      return response;
     },
-  );
+    onMutate: async () => {
+      const formattingDate = format(date, 'yyyy-MM-dd');
+      await queryClient.cancelQueries({ queryKey: ['exercises', { date: formattingDate }] });
+      const prev: ExerciseData = queryClient.getQueryData(['exercises', { date: formattingDate }]) as ExerciseData;
 
-  const { mutate: isNoneCompleted } = useMutation<
-    PostgrestSingleResponse<null>,
-    Error,
-    ExerciseTodoItemType,
-    ExerciseData
-  >({
-    mutationFn: async () => {
+      queryClient.setQueryData(['exercises', { date: formattingDate }], (old: ExerciseData) => {
+        return {
+          ...old,
+          data: old.data.map((o) => {
+            if (o.id === exercise.id && o.userId === exercise.userId) return { ...o, isCompleted: true };
+            return o;
+          }),
+        };
+      });
+
+      return { prev };
+    },
+    onError: (error, _hero, context?: { prev: ExerciseData }) => {
+      const formattingDate = format(date, 'yyyy-MM-dd');
+      console.error('Checked Exercise Todo is Error', error);
+      if (context?.prev) {
+        queryClient.setQueryData(['exercises', { date: formattingDate }], context?.prev);
+      }
+    },
+    onSettled: () => {
+      const formattingDate = format(date, 'yyyy-MM-dd');
+      queryClient.invalidateQueries({ queryKey: ['exercises', { date: formattingDate }] });
+    },
+  });
+
+  const { mutate: isNoneCompleted } = useMutation({
+    mutationFn: async (exercise: ExerciseTodoItemType) => {
       const supabase = createClient();
       const response = await supabase
         .from('exercises')
@@ -80,7 +74,7 @@ const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
     onMutate: async () => {
       const formattingDate = format(date, 'yyyy-MM-dd');
       await queryClient.cancelQueries({ queryKey: ['exercises', { date: formattingDate }] });
-      const prev = queryClient.getQueryData<ExerciseData>(['exercises', { date: formattingDate }]);
+      const prev: ExerciseData = queryClient.getQueryData(['exercises', { date: formattingDate }]) as ExerciseData;
 
       queryClient.setQueryData(['exercises', { date: formattingDate }], (old: ExerciseData) => {
         return {
@@ -92,12 +86,14 @@ const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
         };
       });
 
-      return prev;
+      return { prev };
     },
-    onError: (error, context) => {
+    onError: (error, _hero, context?: { prev: ExerciseData }) => {
       const formattingDate = format(date, 'yyyy-MM-dd');
       console.error('Checked Exercise Todo is Error', error);
-      queryClient.setQueryData(['exercises', { date: formattingDate }], context);
+      if (context?.prev) {
+        queryClient.setQueryData(['exercises', { date: formattingDate }], context?.prev);
+      }
     },
     onSettled: () => {
       const formattingDate = format(date, 'yyyy-MM-dd');
