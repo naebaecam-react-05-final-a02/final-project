@@ -4,8 +4,9 @@ export const calculateTodoData = (exercise: ExerciseTodoItemType) => {
   if (exercise.exerciseType === 'cardio') {
     const data = exercise.record.reduce(
       (acc, cur) => {
-        acc.hours += cur.hours;
-        acc.minutes += cur.minutes;
+        acc.hours += cur.hours ?? 0;
+        acc.minutes += cur.minutes ?? 0;
+
         return acc;
       },
       { hours: 0, minutes: 0 },

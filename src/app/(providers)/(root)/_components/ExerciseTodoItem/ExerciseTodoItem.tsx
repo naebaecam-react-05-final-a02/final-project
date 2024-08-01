@@ -13,7 +13,7 @@ const ExerciseTodoItem = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
     <div className="select-none border-gradient flex items-center size-full h-[52px] gap-x-3 px-3">
       <Checkbox checked={isChecked} label="" onChange={() => setIsChecked((prev) => !prev)} />
 
-      <div className="flex-1">
+      <div className="flex flex-col gap-y-1">
         <div className="text-white text-sm">{exercise.name}</div>
         <div className="text-white/50 text-xs">{formattingString}</div>
       </div>

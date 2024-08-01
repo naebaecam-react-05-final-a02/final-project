@@ -267,6 +267,7 @@ export type Database = {
           date: string
           exerciseType: string
           id: number
+          isCompleted: boolean | null
           name: string
           record: Json[]
           userId: string
@@ -275,6 +276,7 @@ export type Database = {
           date: string
           exerciseType: string
           id?: number
+          isCompleted?: boolean | null
           name: string
           record: Json[]
           userId: string
@@ -283,6 +285,7 @@ export type Database = {
           date?: string
           exerciseType?: string
           id?: number
+          isCompleted?: boolean | null
           name?: string
           record?: Json[]
           userId?: string
