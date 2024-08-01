@@ -1,10 +1,11 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import DietForm from './_components/DietForm';
 import LeftIcon from '/public/icons/chevron-left.svg';
 
 const PostDietPage = () => {
   const router = useRouter();
+  const isEditMode = useSearchParams().get('mode') === 'edit';
 
   return (
     // TODO: svg bg 뒤에 있는 것들은 나중에 빼야할 듯
@@ -18,7 +19,7 @@ const PostDietPage = () => {
         >
           <LeftIcon />
         </button>
-        <h1 className="text-center text-sm font-medium font-semibold">식단 추가하기</h1>
+        <h1 className="text-center text-sm font-semibold">식단 {isEditMode ? '수정' : '추가'}하기</h1>
         <div className="w-10"></div>
       </header>
       <DietForm />

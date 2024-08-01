@@ -1,31 +1,66 @@
 import Chip from '@/components/Chip';
 import { dietCode } from '@/data/dietTypeCode';
-import { useGetDiets } from '@/hooks/diet/useDiets';
+import { dietsQueryKeys } from '@/hooks/diet/queries';
+import { useDeleteDiets, useGetDiets } from '@/hooks/diet/useDiets';
+import { queryClient } from '@/providers/QueryProvider';
+import useDietStore from '@/stores/diet.store';
+import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
+import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
+import DeleteIcon from '/public/icons/delete.svg';
 import EditIcon from '/public/icons/edit.svg';
 
 interface DietListProps {
-  date: string;
+  selectedDate: Date;
 }
 
-const DietList = ({ date }: DietListProps) => {
+const DietList = ({ selectedDate }: DietListProps) => {
   const router = useRouter();
 
-  const { data: diets, isPending, isError } = useGetDiets(date);
+  const setDiet = useDietStore((state) => state.setDiet);
+  const { data: diets, isPending: isFetching, isError: isFetchError } = useGetDiets(getFormattedDate(selectedDate));
+  const { mutate: deleteDiet, error, isPending: isDeleting } = useDeleteDiets();
 
-  if (isPending) return <div className="text-center">데이터를 불러오고 있습니다...</div>;
-  if (isError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
+  if (isFetching) return <div className="text-center">데이터를 불러오고 있습니다...</div>;
+  if (isDeleting) return <div className="text-center">데이터를 삭제하고 있습니다...</div>;
+  if (isFetchError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
 
   const totalCalories = getDietsCalories(diets);
   const calories = diets.map((diet) => getFoodsCalories(diet.foods));
+
+  const handleAddButtonClick = () => {
+    setDiet(null);
+    router.push('/diets/write');
+  };
+
+  const handleEditButtonClick = (diet: DietTableType) => {
+    setDiet(diet);
+    router.push('/diets/write?mode=edit');
+  };
+
+  const handleDeleteButtonClick = (dietId: number) => {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+    setDiet(null);
+    deleteDiet(
+      { id: dietId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: dietsQueryKeys.detail(getFormattedDate(selectedDate)) });
+        },
+        onError: (e) => {
+          alert(e);
+        },
+      },
+    );
+  };
 
   return (
     <>
       {diets?.length === 0 ? (
         <div className="flex flex-col items-center gap-1">
           <span>식단 기록이 없습니다</span>
-          <button className="text-sm" onClick={() => router.push('/diets/write')}>
+          <button className="text-sm" onClick={handleAddButtonClick}>
             추가하러 가기
           </button>
         </div>
@@ -58,13 +93,15 @@ const DietList = ({ date }: DietListProps) => {
                 className="flex flex-col gap-1 bg-[#FFFFFF0D] border border-[#FFFFFF33] shadow-[4px_4px_8px_0px_rgba(0,0,0,0.25)] rounded-[20px]"
               >
                 <div className="flex justify-between px-4 py-[14px]">
-                  <div className="w-5"></div>
-                  <h3 className="text-center text-[17px] font-bold text-[#FFFFFF80] font-semibold">
-                    {dietCode[diet.dietType]}
-                  </h3>
-                  <button>
-                    <EditIcon />
-                  </button>
+                  <h3 className="text-center text-[17px] text-[#FFFFFF80] font-semibold">{dietCode[diet.dietType]}</h3>
+                  <div className="flex gap-4">
+                    <button onClick={() => handleEditButtonClick(diet)}>
+                      <EditIcon />
+                    </button>
+                    <button onClick={() => handleDeleteButtonClick(diet.id)}>
+                      <DeleteIcon />
+                    </button>
+                  </div>
                 </div>
                 <div className="flex justify-between items-center text-sm h-11 p-3 border-l-[3px] border-[#03C717] bg-gradient-to-r from-[rgba(18,242,135,0.10)] to-transparent to-[47.31%]">
                   <span className="text-[#12F287]">칼로리</span>
