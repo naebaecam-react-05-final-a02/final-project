@@ -2,6 +2,7 @@ import ReviewAPI from '@/service/review.service';
 import AuthAPI from './auth.service';
 import ChallengeAPI from './challenge.service';
 import DietAPI from './diet.service';
+import ExerciseAPI from './exercise.service';
 import ImageAPI from './image.service';
 import UsersAPI from './users.service';
 
@@ -12,7 +13,7 @@ class API {
   image: ImageAPI;
   diet: DietAPI;
   users: UsersAPI;
-
+  exercise: ExerciseAPI;
   constructor() {
     this.auth = new AuthAPI();
     this.challenge = new ChallengeAPI();
@@ -20,6 +21,7 @@ class API {
     this.image = new ImageAPI();
     this.diet = new DietAPI();
     this.users = new UsersAPI();
+    this.exercise = new ExerciseAPI();
   }
 }
 
