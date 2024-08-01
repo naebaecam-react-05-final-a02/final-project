@@ -1,11 +1,19 @@
 import { useCardioInputStore } from '@/stores/useExerciseStore';
+import { CardioInput } from '@/types/exercises';
+import { useEffect } from 'react';
 import FormItem from '../FormItem';
 
-const CardioForm = () => {
+type CardioFormProps = {
+  onChange: (data: CardioInput[]) => void;
+};
+
+const CardioForm = ({ onChange }: CardioFormProps) => {
   const cardioList = useCardioInputStore((state) => state.cardioInputs);
   console.log(cardioList);
   const setCardioList = useCardioInputStore((state) => state.setCardioInputs);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const addCardio = useCardioInputStore((state) => state.addInput);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
     console.log(name, value);
     const list = cardioList.map((item, i) => {
@@ -16,10 +24,14 @@ const CardioForm = () => {
       }
       return item;
     });
-
+    console.log('@@');
     setCardioList(list);
+    if (cardioList.length === 0) {
+      console.error('유산소 리스트가 비어 있습니다.');
+    } else {
+      onChange(list);
+    }
   };
-  const addCardio = useCardioInputStore((state) => state.addInput);
 
   return (
     <div>
@@ -33,7 +45,7 @@ const CardioForm = () => {
         {cardioList.map((item, index) => (
           <FormItem
             type={'cardio'}
-            onChange={onChange}
+            onChange={handleChange}
             key={index}
             index={index}
             firstProp={item.hours}
