@@ -3,13 +3,10 @@
 import Checkbox from '@/components/Checkbox';
 import { ExerciseTodoItemType } from '@/types/exercises';
 import { calculateTodoData } from '@/utils/calculateTodo';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 
-//TODO type에 따라 무,유산소 나뉘고 name이 운동이름인지? 알아낸다음 작업해야함..
 const ExerciseTodoItem = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
-  const id = useId();
   const [isChecked, setIsChecked] = useState<boolean>(false);
-
   const formattingString = calculateTodoData(exercise);
 
   return (
