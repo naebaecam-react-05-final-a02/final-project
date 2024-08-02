@@ -2,13 +2,15 @@
 
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { useChallengeDelete } from '@/hooks/challenge/useChallenge';
+import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
+import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
+import { FormEvent, useRef } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../../_components/FormImageUploader';
 import FormTextArea from '../../../../_components/FormTextArea';
+import { FormFields } from '../../../../register/_components/ChallengeRegisterForm/ChallengeRegisterForm';
 import FormCalendar from '../../../../register/_components/FormCalendar';
 import FormCategory from '../../../../register/_components/FormCategory';
 
@@ -20,9 +22,11 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  const { mutate: imageUpload } = useImageUpload();
   const { mutate: challengeDelete } = useChallengeDelete();
+  const { mutate: challengeUpdate } = useChallengeUpdate();
 
-  console.log('challenge___', challenge);
+  // console.log('challenge___', challenge);
 
   const handleDelete = () => {
     challengeDelete(challenge.id, {
@@ -32,8 +36,90 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
     });
   };
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const file = inputRef?.current?.files?.[0] || null;
+
+    if (!file && !challenge.imageURL) {
+      console.error('Challenge Register Image Error : 사진을 올려주세요.');
+      return;
+    }
+
+    const formData = new FormData(e.currentTarget);
+    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'category'];
+    const formFields: Partial<FormFields> = {};
+
+    for (const field of fields) {
+      const value = formData.get(field);
+      if (typeof value !== 'string' || value.trim() === '') {
+        console.error(`Challenge Register ${field} Error : ${field}을(를) 입력 해주세요.`);
+        return;
+      }
+      formFields[field] = value.trim();
+    }
+
+    const { title, content, startDate, endDate, category } = formFields as FormFields;
+
+    if (file) {
+      const form = new FormData();
+      form.append('file', file);
+      imageUpload(
+        { storage: 'challengeRegister', form },
+        {
+          onSuccess: (response) => {
+            const updateData: Omit<Tables<'challenges'>, 'id'> = {
+              title,
+              content,
+              startDate,
+              endDate,
+              isProgress: challenge.isProgress,
+              createdBy: challenge.createdBy,
+              imageURL: response.imageURL,
+              verify: null,
+              tags: null,
+              rating: 0,
+              category,
+            };
+            challengeUpdate(
+              { updateData, cid: challenge.id },
+              {
+                onSuccess: () => {
+                  alert('수정이 완료되었습니다.');
+                  router.replace(`/challenges/discover`);
+                },
+              },
+            );
+          },
+        },
+      );
+    } else if (challenge.imageURL) {
+      const updateData: Omit<Tables<'challenges'>, 'id'> = {
+        title,
+        content,
+        startDate,
+        endDate,
+        isProgress: challenge.isProgress,
+        createdBy: challenge.createdBy,
+        imageURL: challenge.imageURL,
+        verify: null,
+        tags: null,
+        rating: 0,
+        category,
+      };
+      challengeUpdate(
+        { updateData, cid: challenge.id },
+        {
+          onSuccess: () => {
+            alert('수정이 완료되었습니다.');
+            router.replace(`/challenges/discover`);
+          },
+        },
+      );
+    }
+  };
+
   return (
-    <form className="flex flex-col gap-y-4 w-full px-4">
+    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
       <div className="select-none">
         <Input
           label="챌린지 이름"
