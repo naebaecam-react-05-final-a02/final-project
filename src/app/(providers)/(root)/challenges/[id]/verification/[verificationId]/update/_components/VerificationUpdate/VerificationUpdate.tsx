@@ -24,6 +24,7 @@ type VerificationUpdateProps = {
   me: User;
 };
 
+//TODO 데이터 삭제 후 바로 안넘어가고 밑에 데이터 없을때 한번 보여주고 지나감.. Y!
 const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
