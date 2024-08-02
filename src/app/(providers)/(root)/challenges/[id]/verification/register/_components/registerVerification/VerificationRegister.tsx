@@ -97,21 +97,34 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
                     src={user.profileURL ?? '/default-profile.png'}
                     fill
                     alt={`${user.id}'s profile`}
-                    className="object-cover"
+                    className="object-cover rounded-full"
                   />
                 </li>
               ))}
             </ul>
           </div>
         </div>
+        <div className="w-full flex flex-col gap-y-2">
+          <div className="flex gap-x-px text-base  pl-1">
+            <div className=" text-primary-100">{user?.nickname ?? '헬린이'}</div>
+            <div className="text-white">님! 오늘 챌린지는 어땠나요?</div>
+          </div>
+          <FormTextArea
+            label="느낀점"
+            maxLength={100}
+            name="impression"
+            placeholder="오늘의 챌린지 후기를 알려주세요."
+          />
+        </div>
 
-        <FormTextArea label="느낀점" maxLength={100} name="impression" placeholder="오늘의 챌린지 후기를 알려주세요." />
-
-        <div className="grid gap-y-4 w-full">
-          <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" />
-          <div className="text-white/50 flex gap-x-1">
-            <AiOutlineExclamationCircle />
-            <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>
+        <div className="flex flex-col gap-y-4 w-full">
+          <div className="text-base text-white ">챌린지 인증 사진을 업로드 해주세요!</div>
+          <div className="grid gap-y-4 w-full">
+            <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" />
+            <div className="text-white/50 flex gap-x-1">
+              <AiOutlineExclamationCircle />
+              <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>
+            </div>
           </div>
         </div>
       </div>
