@@ -1,5 +1,5 @@
 import SearchSVG from '@/assets/nav/search.svg';
-import IconButton from '../ButtonIcon';
+import IconButton from '../IconButton/IconButton';
 
 const SearchButton = () => {
   return (

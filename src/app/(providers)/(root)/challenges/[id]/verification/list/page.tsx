@@ -4,7 +4,7 @@ import {
   fetchVerificationTotalData,
 } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import Button from '@/components/Button';
-import PrevButtonAndTitleHeader from '@/components/PrevButtonAndTitleHeader/PrevButtonAndTitleHeader';
+import TitleHeader from '@/components/PrevButtonAndTitleHeader/PrevButtonAndTitleHeader';
 import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { verificationsType } from '@/types/challenge';
@@ -34,7 +34,7 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
     <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Mobile
-          headerLayout={<PrevButtonAndTitleHeader>챌린지 인증 목록</PrevButtonAndTitleHeader>}
+          headerLayout={<TitleHeader>챌린지 인증 목록</TitleHeader>}
           footerLayout={
             <div className="p-[10px]">
               <Link href={`/challenges/${params.id}/verification/register`}>

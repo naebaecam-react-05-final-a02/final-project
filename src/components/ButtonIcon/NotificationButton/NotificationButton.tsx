@@ -1,5 +1,5 @@
 import NotificationSVG from '@/assets/nav/notification.svg';
-import IconButton from '../ButtonIcon';
+import IconButton from '../IconButton/IconButton';
 
 const NotificationButton = () => {
   return (

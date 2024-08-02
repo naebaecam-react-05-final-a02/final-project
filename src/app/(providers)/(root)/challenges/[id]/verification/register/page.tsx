@@ -58,7 +58,7 @@ const ChallengeVerificationRegisterPage = ({ params }: { params: { id: string } 
           verify(verifyData, {
             onSuccess: () => {
               console.log('Challenge Verify Successfully');
-              router.push('/');
+              router.replace(`/challenges/${challengeId}/verification/list`);
             },
             onError: (error) => console.error('Chaalenge Verify Failed', error),
           });
@@ -88,7 +88,9 @@ const ChallengeVerificationRegisterPage = ({ params }: { params: { id: string } 
         placeholder="정말 조았습니다요"
       />
 
-      <button className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">제출하기</button>
+      <button disabled={uploading} className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
+        {uploading ? '잠시만 기다려주세요...' : '제출하기'}
+      </button>
     </form>
   );
 };
