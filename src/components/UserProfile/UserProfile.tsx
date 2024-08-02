@@ -15,7 +15,7 @@ const UserProfile = () => {
     <div className="flex justify-between">
       {/* 다른 사용자 정보 표시 */}
       <div className="flex items-center gap-2 h-14 ">
-        <div className="relative w-9 h-9 border-white border rounded-full">
+        <div className="relative w-9 h-9 border-white border rounded-full overflow-hidden">
           <Image
             src={user?.profileURL ?? '/default-profile.png'}
             alt={'username'}
@@ -23,7 +23,7 @@ const UserProfile = () => {
             style={{ objectFit: 'cover' }}
           />
         </div>
-        <div className="text-sm">{user?.nickname}</div>
+        <div className="text-sm text-white">{user?.nickname}</div>
       </div>
       <div className="flex items-center gap-4">
         <IconButton onClick={() => {}}>
