@@ -11,6 +11,7 @@ export interface WeightInput {
 export interface ExerciseRecord {
   date: string;
   name: string;
+  memo: string;
   record: CardioInput[] | WeightInput[];
   exerciseType: ExerciseType;
 }

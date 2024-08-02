@@ -103,7 +103,7 @@ export type Database = {
           startDate: string
           tags: string | null
           title: string
-          verify: string
+          verify: string | null
         }
         Insert: {
           category?: string
@@ -117,7 +117,7 @@ export type Database = {
           startDate: string
           tags?: string | null
           title: string
-          verify: string
+          verify?: string | null
         }
         Update: {
           category?: string
@@ -131,7 +131,7 @@ export type Database = {
           startDate?: string
           tags?: string | null
           title?: string
-          verify?: string
+          verify?: string | null
         }
         Relationships: [
           {
@@ -268,7 +268,8 @@ export type Database = {
           exerciseType: string
           id: number
           isCompleted: boolean | null
-          name: string
+          memo: string
+          name: string | null
           record: Json[]
           userId: string
         }
@@ -277,7 +278,8 @@ export type Database = {
           exerciseType: string
           id?: number
           isCompleted?: boolean | null
-          name: string
+          memo: string
+          name?: string | null
           record: Json[]
           userId: string
         }
@@ -286,7 +288,8 @@ export type Database = {
           exerciseType?: string
           id?: number
           isCompleted?: boolean | null
-          name?: string
+          memo?: string
+          name?: string | null
           record?: Json[]
           userId?: string
         }
