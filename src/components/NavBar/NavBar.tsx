@@ -14,12 +14,12 @@ const NavBar = () => {
   const navItems = [
     { icon: DashBoardIcon, text: '대시보드', href: '/' },
     { icon: CommunityIcon, text: '커뮤니티', href: '#' },
-    { icon: ChallengeIcon, text: '챌린지', href: '/challenges/discover' },
+    { icon: ChallengeIcon, text: '챌린지', href: '/challenges' },
     { icon: MyPageIcon, text: '마이페이지', href: '/mypage' },
   ];
 
   return (
-    <div className="flex flex-col w-full bg-[#111111] rounded-t-2xl mt-2 absolute bottom-0">
+    <div className="flex flex-col w-full bg-black/70 rounded-t-2xl">
       <div className="grid grid-cols-4 gap-1 px-2 pt-2">
         {navItems.map((item) => (
           <Link href={item.href} key={item.href} className="flex justify-center">

@@ -12,28 +12,30 @@ const UserProfile = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="flex justify-between">
-      {/* 다른 사용자 정보 표시 */}
-      <div className="flex items-center gap-2 h-14 ">
-        <div className="relative w-9 h-9 border-white border rounded-full overflow-hidden">
-          <Image
-            src={user?.profileURL ?? '/default-profile.png'}
-            alt={'username'}
-            fill
-            style={{ objectFit: 'cover' }}
-          />
+    <header className=" w-full h-14 mb-4 px-4">
+      <div className="flex justify-between">
+        {/* 다른 사용자 정보 표시 */}
+        <div className="flex items-center gap-2 h-14 ">
+          <div className="relative w-9 h-9 border-white border rounded-full">
+            <Image
+              src={user?.profileURL ?? '/default-profile.png'}
+              alt={'username'}
+              fill
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+          <div className="text-sm">{user?.nickname}</div>
         </div>
-        <div className="text-sm text-white">{user?.nickname}</div>
+        <div className="flex items-center gap-4">
+          <IconButton onClick={() => {}}>
+            <SearchIcon />
+          </IconButton>
+          <IconButton onClick={() => {}}>
+            <NotificationIcon />
+          </IconButton>
+        </div>
       </div>
-      <div className="flex items-center gap-4">
-        <IconButton onClick={() => {}}>
-          <SearchIcon />
-        </IconButton>
-        <IconButton onClick={() => {}}>
-          <NotificationIcon />
-        </IconButton>
-      </div>
-    </div>
+    </header>
   );
 };
 
