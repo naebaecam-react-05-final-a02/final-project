@@ -1,12 +1,23 @@
 'use client';
 
 import ArrowDropDown from '@/icons/ArrowDropDown';
-import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
+import React, { ComponentProps, ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { BaseInputProps } from '../Input';
 
-export type InputSelectProps = Omit<BaseInputProps & ComponentProps<'button'>, 'onChange'> & {
-  dropdownOptions: string[];
-  onChange?: (event: { target: { value: string } }) => void;
+type DropdownOption = {
+  id: string | number;
+  value: string;
+  icon?: ReactNode;
+  onClick?: (e: React.MouseEvent) => void;
+};
+
+export type InputSelectProps = Omit<BaseInputProps & ComponentProps<'input'>, 'onChange'> & {
+  dropdownOptions: DropdownOption[] | undefined;
+
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  textAlign?: 'left' | 'right';
+  listIcon?: ReactNode;
+  placeholder?: string;
 };
 
 const InputSelect = ({
@@ -14,13 +25,16 @@ const InputSelect = ({
   id,
   error,
   icon,
+  listIcon,
   dropdownOptions,
   onChange,
   className = '',
+  textAlign = 'left',
+  placeholder = '운동 이름을 입력해주세요.',
   ...props
 }: InputSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
+  const [inputValue, setInputValue] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputUid = useId();
   const inputId = id || inputUid;
@@ -38,17 +52,23 @@ const InputSelect = ({
     };
   }, []);
 
-  const handleOptionSelect = (option: string) => {
-    setSelectedOption(option);
+  const handleOptionSelect = (value: string, id: string | number) => {
+    setInputValue(value);
     setIsOpen(false);
     if (onChange) {
       const event = {
-        target: { value: option },
-      } as React.ChangeEvent<HTMLSelectElement>;
+        target: { value, id },
+      } as React.ChangeEvent<HTMLInputElement> & { target: { id: string | number } };
       onChange(event);
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    if (onChange) {
+      onChange(e);
+    }
+  };
   return (
     <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
       {label && (
@@ -56,40 +76,59 @@ const InputSelect = ({
           <span>{label}</span>
         </label>
       )}
-      <div className="relative flex items-center" ref={dropdownRef}>
-        {icon && <div className="absolute left-3.5 z-10 text-white/40 text-xl">{icon}</div>}
-        <button
-          type="button"
-          id={inputId}
-          className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
-            bg-input-gradient backdrop-blur-[10px] focus:outline-none transition 
-            focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'} ${className}
-            ${icon ? 'pl-11' : 'pl-3'} 
-            pr-10 py-3.5 text-right`}
-          onClick={() => setIsOpen(!isOpen)}
-          {...props}
-        >
-          {selectedOption}
-          <div
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 
-                        flex flex-col justify-center items-center 
-                        p-[2px] gap-[10px] rounded-[4px] 
-                        bg-[rgba(255,255,255,0.05)]"
+      <div className="relative" ref={dropdownRef}>
+        <div className="relative flex items-center">
+          <input
+            type="text"
+            id={inputId}
+            className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition 
+              border-b-2 ${error ? 'border-error-gradient' : 'border-gradient'} 
+              ${className}
+              ${icon ? 'pl-11' : 'pl-3'} 
+              pr-10 py-3 ${textAlign === 'left' ? 'text-left' : 'text-right'}`}
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            {...props}
+          />
+          {icon && <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-xl">{icon}</div>}
+          <button
+            type="button"
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 
+              flex flex-col justify-center items-center 
+              p-[2px] gap-[10px] rounded-[4px] 
+              transition-all duration-300 ease-in-out
+              ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}
+            onClick={() => setIsOpen(!isOpen)}
           >
-            <ArrowDropDown />
-          </div>
-        </button>
+            <ArrowDropDown isActive={isOpen} />
+          </button>
+        </div>
         {isOpen && (
-          <ul className="absolute top-full left-0 w-full mt-1 bg-input-gradient backdrop-blur-[10px] rounded-lg shadow-lg z-20">
-            {dropdownOptions.map((option, index) => (
-              <li
-                key={index}
-                className="px-3 py-3 hover:bg-white/20 cursor-pointer text-right pr-[38px] border-gradient border-b border-white/10 last:border-b-0"
-                onClick={() => handleOptionSelect(option)}
-              >
-                {option}
-              </li>
-            ))}
+          <ul className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden">
+            {dropdownOptions &&
+              dropdownOptions.map((option) => (
+                <li
+                  key={option.id}
+                  className={`relative w-full rounded-md bg-transparent p-[6px]
+          hover:bg-primary-10 hover:text-primary-100 cursor-pointer transition
+          ${icon ? 'pl-9' : ''} 
+          ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
+          ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
+                  onClick={() => {
+                    handleOptionSelect(option.value, option.id);
+                    if (option.onClick) {
+                      option.onClick();
+                    }
+                  }}
+                >
+                  {option.icon && (
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 text-xl">{option.icon}</div>
+                  )}
+                  {option.value}
+                </li>
+              ))}
           </ul>
         )}
       </div>

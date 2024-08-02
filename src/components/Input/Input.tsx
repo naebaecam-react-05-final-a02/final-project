@@ -1,3 +1,4 @@
+//Input.tsx
 import { ReactNode } from 'react';
 import InputSelect from './InputSelect';
 import { InputSelectProps } from './InputSelect/InputSelect';
@@ -9,15 +10,20 @@ export type BaseInputProps = {
   icon?: ReactNode;
   unit?: string;
   className?: string;
+  placeholder?: string;
 };
 
-type InputProps = (InputTextProps & { isDropdown?: false }) | (InputSelectProps & { isDropdown: true });
+type InputProps =
+  | (Omit<InputTextProps, 'isDropdown'> & { isDropdown?: false })
+  | (Omit<InputSelectProps, 'isDropdown'> & { isDropdown: true });
 
 const Input = (props: InputProps) => {
-  if (props.isDropdown) {
-    return <InputSelect {...(props as InputSelectProps)} />;
+  const { isDropdown, ...restProps } = props;
+
+  if (isDropdown) {
+    return <InputSelect {...(restProps as InputSelectProps)} />;
   }
-  return <InputText {...(props as InputTextProps)} />;
+  return <InputText {...(restProps as InputTextProps)} />;
 };
 
 export default Input;
