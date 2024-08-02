@@ -1,11 +1,13 @@
 'use client';
 
+import Button from '@/components/Button';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../_components/FormImageUploader';
 import FormTextArea from '../../../_components/FormTextArea';
 
@@ -69,26 +71,30 @@ const ChallengeVerificationRegisterPage = ({ params }: { params: { id: string } 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-y-6 w-full">
+    <form onSubmit={handleSubmit} className="flex flex-col justify-between size-full p-4 relative">
       {uploading && <div>이미지 업로딩..</div>}
       {isPending && <div>로우딩딩딩..</div>}
       {/* 챌린지 이름인가? */}
-      <div className="w-full h-14 bg-[#5c5c5c] text-white text-sm flex items-center px-6 rounded-md">
-        매일 유산소 챌린지
+      <div className="grid place-items-center gap-y-6">
+        <div className="w-full h-24 bg-white/5  text-white flex flex-col items-start justify-center gap-y-4 px-4 rounded-md">
+          <h6 className="text-base font-semibold">챌린지 이름이름</h6>
+          <div className="flex text-sm gap-x-px">
+            오늘 벌써 총<p className="text-primary-100">214명</p>이 인증했어요!
+          </div>
+        </div>
+
+        <FormTextArea label="느낀점" maxLength={100} name="impression" placeholder="오늘의 챌린지 후기를 알려주세요." />
+
+        <div className="grid gap-y-4 w-full">
+          <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" />
+          <div className="text-white/50 flex gap-x-1">
+            <AiOutlineExclamationCircle />
+            <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>
+          </div>
+        </div>
       </div>
 
-      {/* 인증 사진 */}
-      <FormImageUploader ref={inputRef} />
-
-      {/* 오늘의 소감 */}
-      <FormTextArea
-        label="오늘 챌린지는 어떠셨나요"
-        maxLength={100}
-        name="impression"
-        placeholder="정말 조았습니다요"
-      />
-
-      <button className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">제출하기</button>
+      <Button className="select-none ">제출하기</Button>
     </form>
   );
 };
