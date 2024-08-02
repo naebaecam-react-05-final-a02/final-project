@@ -1,4 +1,4 @@
-import { RecordData } from '@/types/exercises';
+import { ExerciseRecord, RecordData } from '@/types/exercises';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
@@ -42,6 +42,19 @@ class ExerciseAPI {
   toggleBookmark = async (exerciseId: number): Promise<{ isBookmarked: boolean }> => {
     try {
       const response = await axios.patch(`${this.baseUrl}/bookmarks/toggle`, { exerciseId });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+  getExerciseRecord = async (id: string): Promise<ExerciseRecord> => {
+    try {
+      console.log('@@1==', 1);
+      const response = await axios.get(`${this.baseUrl}/edit?id=${id}`);
+      console.log('@@Res==', response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
