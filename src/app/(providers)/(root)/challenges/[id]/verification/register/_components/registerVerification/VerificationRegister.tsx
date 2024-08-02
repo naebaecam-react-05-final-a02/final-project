@@ -7,11 +7,18 @@ import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 
-const VerificationRegister = ({ params }: { params: { id: string } }) => {
+type VerificationRegisterProps = {
+  params: { id: string };
+  userInfo: { id: string; profileURL: string | null }[] | null;
+  challengeTitle: string;
+};
+
+const VerificationRegister = ({ params, userInfo, challengeTitle }: VerificationRegisterProps) => {
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
@@ -73,12 +80,28 @@ const VerificationRegister = ({ params }: { params: { id: string } }) => {
     <form onSubmit={handleSubmit} className="flex flex-col justify-between size-full p-4 relative">
       {uploading && <div>이미지 업로딩..</div>}
       {isPending && <div>로우딩딩딩..</div>}
-      {/* 챌린지 이름인가? */}
       <div className="grid place-items-center gap-y-6">
         <div className="w-full h-24 bg-white/5  text-white flex flex-col items-start justify-center gap-y-4 px-4 rounded-md">
-          <h6 className="text-base font-semibold">챌린지 이름이름</h6>
-          <div className="flex text-sm gap-x-px">
-            오늘 벌써 총<p className="text-primary-100">214명</p>이 인증했어요!
+          <h6 className="text-base font-semibold">{challengeTitle}</h6>
+          <div className="flex text-sm gap-x-2">
+            {userInfo?.length! > 0 && (
+              <div className="flex">
+                오늘 벌써 총<p className="text-primary-100">{`${userInfo?.length ?? 0}명`}</p>이 인증했어요!
+              </div>
+            )}
+            {!userInfo?.length && <div>아직 아무도 인증하지 않았네요!</div>}
+            <ul className="flex">
+              {userInfo?.slice(0, 3).map((user) => (
+                <li className="rounded-full size-5 bg-gray-300 border border-gray-400 -mr-2 relative" key={user.id}>
+                  <Image
+                    src={user.profileURL ?? '/default-profile.png'}
+                    fill
+                    alt={`${user.id}'s profile`}
+                    className="object-cover"
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
