@@ -2,6 +2,7 @@
 
 import Input from '@/components/Input';
 import { useDeleteAccount, useSignOut } from '@/hooks/auth/useUsers';
+import Star from '@/icons/Star';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FaBeer } from 'react-icons/fa';
@@ -30,8 +31,24 @@ const AuthTestForm = () => {
   return (
     <div className="w-full bg-black/70 min-h-screen !bg-[url('/background.png') p-8 rounded-lg shadow-xl">
       <Input icon={<FaBeer />} label="뭔데" />
-      <Input label="드랍다운" isDropdown dropdownOptions={['테스트 1', '테스트 2', '테스트 3']} />
-
+      <Input
+        label="드랍다운"
+        icon={<Star width={24} height={24} />}
+        type={'select'}
+        dropdownOptions={[
+          {
+            value: '테스트 1',
+            icon: <Star width={24} height={24} />,
+            onClick: () => console.log('테스트 1 clicked'),
+          },
+          {
+            value: '테스트 2',
+            icon: <Star width={24} height={24} />,
+            onClick: () => console.log('테스트 2 clicked'),
+          },
+        ]}
+      />
+      ;
       <Input label="뭔데" />
       <h1 className="text-2xl font-bold mb-6 text-center">메뉴 선택</h1>
       <div className="relative mb-4">

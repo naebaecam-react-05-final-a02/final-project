@@ -4,6 +4,7 @@ import Checkbox from '@/components/Checkbox';
 import Input from '@/components/Input';
 import { useSignIn, useSocialSignIn } from '@/hooks/auth/useUsers';
 import ChevronRight from '@/icons/ChevronRight';
+import Star from '@/icons/Star';
 import { Provider } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -119,6 +120,28 @@ const LogInForm = () => {
           name="password"
           type="password"
           error={errors.password}
+        />
+        <div className="flex w-full gap-2">
+          <Input label="그램" placeholder="0" unit="g" />
+          <Input label="칼로리" placeholder="0" unit="kcal" />
+        </div>
+        <Input
+          label="드랍다운"
+          icon={<Star width={24} height={24} />}
+          type={'select'}
+          inputType="select"
+          dropdownOptions={[
+            {
+              value: '테스트 1',
+              icon: <Star width={24} height={24} />,
+              onClick: () => console.log('테스트 1 clicked'),
+            },
+            {
+              value: '테스트 2',
+              icon: <Star width={24} height={24} />,
+              onClick: () => console.log('테스트 2 clicked'),
+            },
+          ]}
         />
 
         <div className="flex w-full justify-between gap-2 mt-4">
