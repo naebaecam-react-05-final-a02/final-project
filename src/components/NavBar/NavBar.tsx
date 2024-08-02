@@ -19,7 +19,7 @@ const NavBar = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full bg-black/70 rounded-t-2xl">
+    <div className=" flex flex-col w-full bg-black/70 rounded-t-2xl">
       <div className="grid grid-cols-4 gap-1 px-2 pt-2">
         {navItems.map((item) => (
           <Link href={item.href} key={item.href} className="flex justify-center">

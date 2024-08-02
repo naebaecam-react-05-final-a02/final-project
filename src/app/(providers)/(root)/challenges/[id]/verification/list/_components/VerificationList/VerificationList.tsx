@@ -37,6 +37,8 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     staleTime: Infinity,
   });
 
+  console.log(verifications);
+
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries, observer) => {
