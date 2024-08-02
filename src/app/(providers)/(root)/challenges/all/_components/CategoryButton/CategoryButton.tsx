@@ -7,11 +7,11 @@ interface ButtonProps {
   onClick: (value: string) => void;
 }
 
-const categoryButtonVariants = cva('text-sm px-3 py-1.5 rounded-full', {
+const categoryButtonVariants = cva('text-sm w-11 h-7  border rounded-lg', {
   variants: {
     isSelected: {
-      true: 'bg-gray-800 text-white font-normal',
-      false: 'bg-white text-black font-semibold',
+      true: 'border-primary-100 text-primary-100',
+      false: 'border-white/50 text-white/50',
     },
   },
 });

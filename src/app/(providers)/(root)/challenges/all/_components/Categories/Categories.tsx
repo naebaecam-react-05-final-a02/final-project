@@ -14,7 +14,7 @@ const Categories = () => {
   };
 
   return (
-    <ul className="flex justify-between">
+    <ul className="flex gap-2">
       {CATEGORIES.map((button, i) => (
         <li key={i}>
           <CategoryButton {...button} category={category} onClick={handleClickButton} />

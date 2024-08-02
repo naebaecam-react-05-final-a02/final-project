@@ -1,8 +1,8 @@
 import ArrowRight from '@/assets/arrow-right.svg';
 import Link from 'next/link';
-import ArticleTitle from '../../ArticleTitle/ArticleTitle';
-import Bullet from '../../Bullet';
-import DDayLabel from '../../DDayLabel';
+import ArticleTitle from '../ArticleTitle/ArticleTitle';
+import Bullet from '../Bullet';
+import DDayLabel from '../DDayLabel';
 
 const ChallengeItem = () => {
   return (
