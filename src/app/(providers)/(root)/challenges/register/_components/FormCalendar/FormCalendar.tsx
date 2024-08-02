@@ -20,24 +20,33 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
     }
   };
   return (
-    <div className="flex flex-col gap-y-2 w-full select-none">
-      <label className="text-xs font-bold" htmlFor="startDate">
-        챌린지 기간
+    <div className="flex flex-col gap-y-1 w-full select-none">
+      <label className="text-white/70 pl-1 text-[12px]" htmlFor="startDate">
+        날짜 선택
       </label>
-      <div className="flex gap-x-1">
+      <div className="flex gap-x-2 h-12 w-full">
         <input
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => e.preventDefault()}
-          className="flex-1 bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
+          className="
+          bg-transparent rounded-lg  text-white/40
+          p-3 bg-input-gradient
+          placeholder:text-sm focus:outline-none outline-none
+          w-40
+          focus:border-b-[2px] focus:border-gradient text-sm"
           name="startDate"
           type="date"
           min={today}
           value={start}
           onChange={handleStartDateChange}
         />
-        <span>~</span>
+        <span className="text-white/70 flex items-center">~</span>
         <input
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => e.preventDefault()}
-          className="flex-1 bg-[#f6f6f6] p-[10px] placeholder:text-xs outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
+          className="bg-transparent rounded-lg  text-white/40
+          p-3 bg-input-gradient
+          placeholder:text-sm focus:outline-none outline-none
+          w-40
+          focus:border-b-[2px] focus:border-gradient text-sm"
           name="endDate"
           type="date"
           min={start}

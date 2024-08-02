@@ -21,21 +21,25 @@ const FormTextArea = ({ maxLength, label, name, placeholder, defaultValue }: For
     setTextAreaLength(e.target.value.length);
   };
 
+  //TODO 스크롤바 개몬생김
   return (
     <div className="flex flex-col gap-y-2 w-full select-none">
-      <div className="text-xs flex justify-between">
-        <label className="text-xs font-bold" htmlFor={name}>
+      <div className="text-xs flex justify-between text-white/70">
+        <label className="pl-1" htmlFor={name}>
           {label}
         </label>
-        <p className="text-xs text-gray-300">
+        <p>
           <span>{`${textAreaLength}/${maxLength}`}</span>
         </p>
       </div>
       <textarea
         maxLength={maxLength}
         onChange={handleChangeTextArea}
-        className="bg-[#f6f6f6] resize-none w-full p-[10px] placeholder:text-xs outline-none min-h-24
-    focus:outline-none border-b-2 border-b-[#7b7b7b] text-xs"
+        className="bg-transparent rounded-lg text-white placeholder-white/40 
+        resize-none w-full p-3 placeholder:text-sm outline-none min-h-32
+        bg-input-gradient backdrop-blur-[10px] transition
+        focus:border-b-[2px] focus:border-gradient
+    focus:outline-none text-sm "
         id={id}
         name={name}
         placeholder={placeholder}

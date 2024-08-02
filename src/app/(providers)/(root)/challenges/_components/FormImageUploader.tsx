@@ -42,44 +42,43 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(({
     setIsDrag(false);
   };
   return (
-    <div className="w-full select-none">
-      <div className="relative border-4 border-blue-400 border-dashed w-full aspect-video">
-        {isDrag && <div className="absolute inset-0 z-10 bg-sky-500/20 pointer-events-none" />}
-        <label
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          className="size-full flex items-center justify-center  cursor-pointer"
-          htmlFor="file"
-        >
-          {!file && (
-            <div className="absolute flex flex-col items-center gap-y-4">
-              <div className="relative size-20">
-                <Image src={'/drag.png'} fill className="object-cover" alt="test" />
-              </div>
-              <p className="text-sm font-bold text-gray-300">클릭 혹은 파일을 드래그 해주세요!!</p>
-            </div>
-          )}
-          <div className="relative size-full">
+    <div className="flex flex-col gap-y-2 select-none">
+      <p className="text-white/70 text-sm">이미지 추가하기</p>
+      <div className="flex gap-x-2">
+        {(file || src) && (
+          <div className="relative size-14 rounded-lg">
             {file ? (
-              <Image src={URL.createObjectURL(file)} alt="ChallengeImg" fill className="object-cover" />
+              <Image src={URL.createObjectURL(file)} alt="ChallengeImg" fill className="object-cover rounded-lg" />
             ) : (
-              src && <Image src={src} alt="ChallengeImg" fill className="object-cover" />
+              src && <Image src={src} alt="ChallengeImg" fill className="object-cover rounded-lg" />
             )}
-            {/* {file && (
-              <Image src={URL.createObjectURL(file) } alt="ChallengeImg" fill className="object-cover" />
-            )} */}
           </div>
-          <input
-            ref={ref}
-            id="file"
-            type="file"
-            className="hidden"
-            accept=".jpg, .jpeg, .png"
-            onChange={(e) => handleFileChange(e)}
-          />
-        </label>
+        )}
+
+        <div className="size-14 select-none text-white">
+          <div className="relative border-2 border-white/50 border-dashed w-full aspect-square rounded-lg">
+            {isDrag && <div className="absolute inset-0 z-10 bg-sky-500/20 pointer-events-none" />}
+            <label
+              // onDragEnter={handleDrag}
+              // onDragLeave={handleDrag}
+              // onDragOver={handleDragOver}
+              // onDrop={handleDrop}
+              className="size-full flex items-center justify-center  cursor-pointer"
+              htmlFor="file"
+            >
+              <div className="absolute text-5xl font-thin -top-[2px]">+</div>
+              <div className="relative size-full"></div>
+              <input
+                ref={ref}
+                id="file"
+                type="file"
+                className="hidden"
+                accept=".jpg, .jpeg, .png"
+                onChange={(e) => handleFileChange(e)}
+              />
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   );
