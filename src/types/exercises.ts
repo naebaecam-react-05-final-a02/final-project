@@ -10,9 +10,21 @@ export interface WeightInput {
   reps: number;
 }
 
+export type weight = {
+  sets: number;
+  weight: number;
+  reps: number;
+};
+
+export type cardio = {
+  sets: number;
+  minutes: number;
+  distance: number;
+};
+
 export type ExerciseTodoItemType =
-  | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'weight'; record: WeightInput[] })
-  | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'cardio'; record: CardioInput[] });
+  | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'weight'; record: weight[] })
+  | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'cardio'; record: cardio[] });
 
 export interface ExerciseRecord {
   date: string;
