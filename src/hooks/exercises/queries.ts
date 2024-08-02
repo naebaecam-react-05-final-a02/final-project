@@ -4,6 +4,7 @@ import { RecordData } from '@/types/exercises';
 export const ExercisesQueryKeys = {
   all: ['exercises'] as const,
   bookmark: () => [...ExercisesQueryKeys.all, 'bookmark'] as const,
+  toggleBookmark: () => [...ExercisesQueryKeys.all, 'toggleBookmark'] as const,
 };
 export const queryOptions = {
   getExercisesBookmarks: () => ({
@@ -22,5 +23,8 @@ export const queryOptions = {
 export const mutationOptions = {
   register: {
     mutationFn: (exerciseData: RecordData) => api.exercise.register(exerciseData),
+  },
+  toggleBookmark: {
+    mutationFn: (exerciseId: number) => api.exercise.toggleBookmark(exerciseId),
   },
 };
