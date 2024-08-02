@@ -71,7 +71,7 @@ const InputSelect = ({
   return (
     <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
       {label && (
-        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px]">
+        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px] z-20">
           <span>{label}</span>
         </label>
       )}
@@ -104,34 +104,31 @@ const InputSelect = ({
             <ArrowDropDown isActive={isOpen} />
           </button>
         </div>
-        {isOpen && (
+        {isOpen && dropdownOptions && dropdownOptions.length > 0 && (
           <>
             <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
             <ul className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden">
-              {dropdownOptions &&
-                dropdownOptions.map((option) => (
-                  <li
-                    key={option.id}
-                    className={`relative w-full rounded-md bg-transparent p-[6px]
+              {dropdownOptions.map((option) => (
+                <li
+                  key={option.id}
+                  className={`relative w-full rounded-md bg-transparent p-[6px]
                   hover:bg-primary-10 hover:text-primary-100 cursor-pointer transition
                   ${icon ? 'pl-9' : ''} 
                   ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
                   ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
-                    onClick={() => {
-                      handleOptionSelect(option.value, option.id);
-                      if (option.onClick) {
-                        option.onClick();
-                      }
-                    }}
-                  >
-                    {option.icon && (
-                      <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 text-xl">
-                        {option.icon}
-                      </div>
-                    )}
-                    {option.value}
-                  </li>
-                ))}
+                  onClick={() => {
+                    handleOptionSelect(option.value, option.id);
+                    if (option.onClick) {
+                      option.onClick();
+                    }
+                  }}
+                >
+                  {option.icon && (
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 text-xl">{option.icon}</div>
+                  )}
+                  {option.value}
+                </li>
+              ))}
             </ul>
           </>
         )}

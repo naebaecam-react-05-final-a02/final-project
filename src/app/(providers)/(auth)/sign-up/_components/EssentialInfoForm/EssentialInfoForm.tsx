@@ -130,25 +130,29 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
               <p className="text-green-500 text-sm mt-1">{formState.email.successMessage}</p>
             )}
           </div>
-
           <div className="flex flex-col items-center w-full px-4">
             <div className="w-full">
               <Input
                 label="비밀번호"
                 placeholder="비밀번호를 입력해 주세요."
                 name="password"
-                inputType="password"
+                type="password"
                 value={formState.password.value}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={formState.password.error}
                 required
               />
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center w-full px-4">
+            <div className="w-full">
               <Input
                 label="비밀번호 확인"
                 placeholder="비밀번호를 다시 입력해 주세요."
                 name="confirmPassword"
-                inputType="password"
+                type="password"
                 value={formState.confirmPassword.value}
                 onChange={handleChange}
                 onBlur={handleBlur}

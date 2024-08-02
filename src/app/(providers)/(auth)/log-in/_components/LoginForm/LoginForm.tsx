@@ -4,7 +4,6 @@ import Checkbox from '@/components/Checkbox';
 import Input from '@/components/Input';
 import { useSignIn, useSocialSignIn } from '@/hooks/auth/useUsers';
 import ChevronRight from '@/icons/ChevronRight';
-import Star from '@/icons/Star';
 import { Provider } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -99,8 +98,8 @@ const LogInForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-center gap-4 max-w-[390px]">
-      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mb-[50px]" />
+    <div className="flex flex-col w-full items-center max-w-[390px]">
+      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mt-[110px] mb-[70px]" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
         <Input
@@ -120,28 +119,6 @@ const LogInForm = () => {
           name="password"
           type="password"
           error={errors.password}
-        />
-        <div className="flex w-full gap-2">
-          <Input label="그램" placeholder="0" unit="g" />
-          <Input label="칼로리" placeholder="0" unit="kcal" />
-        </div>
-        <Input
-          label="드랍다운"
-          icon={<Star width={24} height={24} />}
-          type={'select'}
-          inputType="select"
-          dropdownOptions={[
-            {
-              value: '테스트 1',
-              icon: <Star width={24} height={24} />,
-              onClick: () => console.log('테스트 1 clicked'),
-            },
-            {
-              value: '테스트 2',
-              icon: <Star width={24} height={24} />,
-              onClick: () => console.log('테스트 2 clicked'),
-            },
-          ]}
         />
 
         <div className="flex w-full justify-between gap-2 mt-4">
@@ -164,7 +141,7 @@ const LogInForm = () => {
           {isPending ? '로그인 중...' : '로그인'}
         </Button>
       </form>
-      <div className="flex flex-col gap-2 mb-10">
+      <div className="flex flex-col gap-2 mb-12">
         <div className="text-white text-center text-[14px] leading-6">SNS로 간편 로그인하기</div>
         <div className="flex items-center justify-center gap-6">
           <button
@@ -185,7 +162,7 @@ const LogInForm = () => {
           </button>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mb-10">
         <p className="text-white/50">아직 회원이 아니신가요?</p>
         <Link href="/sign-up" className="text-[#12F287] border-b-2 border-[#12F287]">
           회원가입
