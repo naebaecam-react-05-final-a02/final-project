@@ -7,11 +7,11 @@ interface TabButtonProps {
   value: 'cardio' | 'weight';
 }
 
-const tabButtonVariants = cva('h-9 w-full border-b-2', {
+const tabButtonVariants = cva('h-9 w-full ', {
   variants: {
     active: {
-      true: ' border-[#12F287] text-[#12F287]',
-      false: 'border-primary text-primary',
+      true: ' border-[#12F287] text-[#12F287] border-b-2 font-semibold',
+      false: 'border-white/40 border-b text-white/40',
     },
   },
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetPopularChallenges } from '@/hooks/challenges/useChallenge';
+import { useGetPopularChallenges } from '@/hooks/challenge/useChallenge';
 import api from '@/service/service';
 import { useChallengeCategoryStore } from '@/stores/stores';
 import { Tables } from '@/types/supabase';
