@@ -9,3 +9,6 @@ export const useGetExerciseBookmarks = () => useQuery(queryOptions.getExercisesB
 
 // 운동 북마크 토글
 export const useToggleBookmark = () => useMutation(mutationOptions.toggleBookmark);
+
+// 운동 기록 항목
+export const useGetExerciseRecord = (id: string) => useQuery(queryOptions.getExerciseRecord(id));

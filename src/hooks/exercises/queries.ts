@@ -18,6 +18,17 @@ export const queryOptions = {
       return data;
     },
   }),
+  getExerciseRecord: (id: string) => ({
+    queryKey: ExercisesQueryKeys.all,
+    queryFn: async () => {
+      const data = await api.exercise.getExerciseRecord(id);
+
+      if (!data) {
+        throw new Error('data not found');
+      }
+      return data;
+    },
+  }),
 };
 
 export const mutationOptions = {
