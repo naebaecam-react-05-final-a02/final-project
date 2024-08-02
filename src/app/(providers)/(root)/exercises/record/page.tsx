@@ -3,7 +3,7 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
-import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
+import { useGetExerciseRecord, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
@@ -25,7 +25,7 @@ const ExerciseRecordPage = () => {
   const [isBookMark, setIsBookMark] = useState(false);
 
   const { mutate: register } = useRegisterExercise();
-  const { data: bookmarkData } = useGetExerciseBookmarks();
+  const { data: bookmarkData } = useGetExerciseRecord();
   const { mutate: toggleBookmark } = useToggleBookmark();
 
   const [isFirstChange, setIsFirstChange] = useState(false);
