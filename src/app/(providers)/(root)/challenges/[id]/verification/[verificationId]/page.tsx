@@ -15,16 +15,12 @@ const VerificationDetailPage = async ({ params }: VerificationDetailPageType) =>
   const supabase = createClient();
   const queryClient = new QueryClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   await queryClient.prefetchQuery(queryOptions.getVerification(supabase, challengeId, verificationId));
 
   return (
     <main>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <VerificationDetail challengeId={challengeId} verificationId={verificationId} user={user!} />
+        <VerificationDetail challengeId={challengeId} verificationId={verificationId} />
       </HydrationBoundary>
     </main>
   );
