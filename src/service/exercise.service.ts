@@ -38,6 +38,18 @@ class ExerciseAPI {
       throw error;
     }
   };
+
+  toggleBookmark = async (exerciseId: number): Promise<{ isBookmarked: boolean }> => {
+    try {
+      const response = await axios.patch(`${this.baseUrl}/bookmarks/toggle`, { exerciseId });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
 }
 
 export default ExerciseAPI;
