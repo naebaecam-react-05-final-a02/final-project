@@ -1,24 +1,24 @@
 'use client';
+import Button from '@/components/Button';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import { useGetReviews } from '@/hooks/review/useReview';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import Link from 'next/link';
 
 const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const id = parseInt(params.id, 10);
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
   const { data: reviews } = useGetReviews(id);
-  const router = useRouter();
 
   //TODO: 로딩
   if (!challenge) {
     return <div>없따!</div>;
   }
+
+  console.log('USER___', user);
+  console.log('challenge', challenge);
 
   return (
     <div className="h-screen">
@@ -66,6 +66,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
             <button className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
               챌린지 신청하기
             </button>
+            {user?.id === challenge.createdBy && (
+              <Link href={`/challenges/${challenge.id}/update`}>
+                <Button>수정 및 삭제</Button>
+              </Link>
+            )}
           </section>
         </div>
       </main>

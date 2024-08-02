@@ -1,18 +1,21 @@
 'use client';
 
+import Button from '@/components/Button';
 import { useGetChallengeVerification } from '@/hooks/challenge/useChallenge';
 import { createClient } from '@/supabase/client';
+import { User } from '@supabase/supabase-js';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import VerificationCardSkeleton from '../../../list/_components/VerificationCardSkeleton/VerificationCardSkeleton';
 
-type VerificationDetailType = {
+type VerificationDetailProps = {
   challengeId: string;
   verificationId: string;
+  user: User;
 };
 
-const VerificationDetail = ({ challengeId, verificationId }: VerificationDetailType) => {
+const VerificationDetail = ({ challengeId, verificationId, user }: VerificationDetailProps) => {
   const supabase = createClient();
   const { data: verification, isFetching } = useGetChallengeVerification(supabase, challengeId, verificationId);
 
@@ -66,6 +69,11 @@ const VerificationDetail = ({ challengeId, verificationId }: VerificationDetailT
           <p className={`w-full whitespace-pre-line break-words`}>{verification.data.impression}</p>
         </div>
       </div>
+      {user.id === verification.data.userId && (
+        <Link href={`/challenges/${challengeId}/verification/${verificationId}/update`}>
+          <Button>수정 및 삭제</Button>
+        </Link>
+      )}
     </div>
   );
 };
