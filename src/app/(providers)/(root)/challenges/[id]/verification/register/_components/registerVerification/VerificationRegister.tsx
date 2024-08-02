@@ -18,6 +18,7 @@ type VerificationRegisterProps = {
   challengeTitle: string;
 };
 
+//TODO 유저 데이터 가져오기전까지 헬린이로 표시되는거 주의
 const VerificationRegister = ({ params, userInfo, challengeTitle }: VerificationRegisterProps) => {
   const router = useRouter();
   const { data: user } = useGetUser();
@@ -101,6 +102,14 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
                   />
                 </li>
               ))}
+              {userInfo?.length! > 3 && (
+                <li
+                  className="rounded-full size-5 bg-gray-300 border border-gray-400 -mr-2 relative font-bold text-xs text-black flex items-center
+                justify-center"
+                >
+                  {`+${userInfo?.length! - 3 > 10 ? '9' : userInfo?.length! - 3}`}
+                </li>
+              )}
             </ul>
           </div>
         </div>
