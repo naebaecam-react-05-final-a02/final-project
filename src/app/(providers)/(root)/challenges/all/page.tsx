@@ -1,17 +1,13 @@
-import Categories from '../_components/Categories';
-import AllChallengeList from './_components/AllChallengeList';
+import ChallengeList from '../_components/ChallengeList';
+import OrderTab from './_components/OrderTab/OrderTab';
 
 const AllChallengesPage = () => {
   return (
-    <div className="px-4 h-full">
-      <div className="flex flex-col gap-4 w-full h-full">
-        <div className="flex justify-start items-center">
-          <h2 className="font-bold text-3xl">챌린지</h2>
-        </div>
-        <Categories />
-        <AllChallengeList />
-      </div>
-    </div>
+    <section className="px-4 flex flex-col gap-2">
+      <OrderTab />
+      <p className="text-white/50 text-[12px]">총 999개의 챌린지가 있습니다.</p>
+      <ChallengeList />
+    </section>
   );
 };
 

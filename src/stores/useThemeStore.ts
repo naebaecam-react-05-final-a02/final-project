@@ -5,6 +5,6 @@ interface themeStoreTypes {
   toggleMode: () => void;
 }
 export const useThemeStore = create<themeStoreTypes>((set) => ({
-  darkMode: false,
+  darkMode: true,
   toggleMode: () => set((prev) => ({ darkMode: !prev.darkMode })),
 }));
