@@ -91,3 +91,7 @@ body {
   background: grey;
   margin-bottom: 30px;
 }
+
+html {
+  zoom: 100% !important;
+}
