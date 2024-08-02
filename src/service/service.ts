@@ -1,6 +1,7 @@
 import ReviewAPI from '@/service/review.service';
 import AuthAPI from './auth.service';
 import ChallengeAPI from './challenge.service';
+import DashBoardAPI from './dashboard.service';
 import DietAPI from './diet.service';
 import ImageAPI from './image.service';
 import UsersAPI from './users.service';
@@ -12,6 +13,7 @@ class API {
   image: ImageAPI;
   diet: DietAPI;
   users: UsersAPI;
+  dashboard: DashBoardAPI;
 
   constructor() {
     this.auth = new AuthAPI();
@@ -20,6 +22,7 @@ class API {
     this.image = new ImageAPI();
     this.diet = new DietAPI();
     this.users = new UsersAPI();
+    this.dashboard = new DashBoardAPI();
   }
 }
 
