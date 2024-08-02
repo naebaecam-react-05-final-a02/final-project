@@ -7,13 +7,12 @@ import { cva } from 'class-variance-authority';
 import { PropsWithChildren } from 'react';
 import FrameDockBar from './_components/DockBar/DockBar';
 import FrameHeader from './_components/Header/Header';
-import ThemeButton from './_components/ThemeButton';
 import BackBoard from './BackBoard/BackBoard';
 
 interface MobileLayoutProps {}
 
 const MobileFrameVariants = cva(
-  'w-[390px] h-[844px] border-8 border-black rounded-[44px] relative overflow-hidden pt-11 pb-10',
+  'w-[406px] h-[860px] border-8 border-black rounded-[44px] relative overflow-hidden pt-10 pb-10',
   {
     variants: {
       darkMode: {
@@ -22,7 +21,7 @@ const MobileFrameVariants = cva(
       },
     },
     defaultVariants: {
-      darkMode: false,
+      darkMode: true,
     },
   },
 );
@@ -31,21 +30,15 @@ const Mobile = ({ children }: PropsWithChildren<MobileLayoutProps>) => {
   const darkMode = useThemeStore((state) => state.darkMode);
   return (
     <div className="h-screen w-full flex justify-center items-center">
-      <ThemeButton />
       <div className={MobileFrameVariants({ darkMode })}>
         <FrameHeader />
-        <section className="h-full relative">
-          <div className="relative w-full h-full overflow-scroll scroll pb-24">
-            <header className=" w-full h-14 border-b border-b-gray-500 mb-4 px-4">
-              <UserProfile />
-            </header>
-
-            {children}
-          </div>
+        <section className="h-full relative flex flex-col">
+          <UserProfile />
+          <div className="relative w-full h-full overflow-scroll scroll pb-4">{children}</div>
           <NavBar />
-          <BackBoard />
         </section>
         <FrameDockBar />
+        <BackBoard />
       </div>
     </div>
   );

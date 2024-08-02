@@ -1,24 +1,11 @@
 'use client';
 
-import { useThemeStore } from '@/stores/useThemeStore';
-import { cva } from 'class-variance-authority';
 import Image from 'next/image';
 
-const headerVariants = cva('absolute top-0', {
-  variants: {
-    darkMode: {
-      false: 'bg-white',
-      true: 'bg-black',
-    },
-  },
-});
-
 const FrameHeader = () => {
-  const darkMode = useThemeStore((state) => state.darkMode);
-  const header = darkMode ? '/frames/dark.svg' : '/frames/light.svg';
   return (
-    <div className={headerVariants({ darkMode })}>
-      <Image src={header} width={390} height={44} alt={'header'} />
+    <div className="absolute top-0 w-[390px] h-[44px] bg-gradient-to-b from-black/100 to-black/0">
+      <Image src={'/frames/dark.svg'} width={390} height={44} alt={'header'} />
     </div>
   );
 };

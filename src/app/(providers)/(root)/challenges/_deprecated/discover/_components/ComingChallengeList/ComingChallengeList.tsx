@@ -6,8 +6,8 @@ import { useChallengeCategoryStore } from '@/stores/stores';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import ChallengeCard from '../../../_components/ChallengeCard';
-import SkeletonCardList from '../../../_components/Skeleton/Card.skeleton';
+import SkeletonCardList from '../../../../_components/Skeleton/Card.skeleton';
+import ChallengeCard from '../ChallengeCard';
 
 type TChallenge = Tables<'challenges'>;
 
@@ -18,7 +18,6 @@ const ChallengeList = () => {
     queryKey: ['test'],
     queryFn: () => api.challenge.getPaginationChallenges({ category, page: 1, limit: 10 }),
   });
-  console.log(test);
 
   const { data: challenges, isPending } = useGetPopularChallenges({ category });
 

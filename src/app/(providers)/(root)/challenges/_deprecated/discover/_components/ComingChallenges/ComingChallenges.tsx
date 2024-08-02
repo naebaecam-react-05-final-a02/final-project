@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import Categories from '../../../_components/Categories';
+import Categories from '../Categories';
 import ComingChallengeList from '../ComingChallengeList';
 
 const ComingChallenges = () => {
