@@ -5,7 +5,7 @@ const OrderTab = () => {
   return (
     <section className="flex justify-between">
       <Categories />
-      <FilterIcon />
+      <FilterIcon onClick={()=>{}}/>
     </section>
   );
 };
