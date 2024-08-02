@@ -19,7 +19,6 @@ export interface FormFields {
   content: string;
   startDate: string;
   endDate: string;
-  verify: string;
   category: string;
 }
 
@@ -30,7 +29,7 @@ const ChallengeRegisterForm = () => {
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //TODO Rating, Tags 생각
+  //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -42,7 +41,7 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'verify', 'category'];
+    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'category'];
     const formFields: Partial<FormFields> = {};
 
     for (const field of fields) {
@@ -54,7 +53,7 @@ const ChallengeRegisterForm = () => {
       formFields[field] = value.trim();
     }
 
-    const { title, content, startDate, endDate, verify, category } = formFields as FormFields;
+    const { title, content, startDate, endDate, category } = formFields as FormFields;
 
     const form = new FormData();
     form.append('file', file);
@@ -72,7 +71,7 @@ const ChallengeRegisterForm = () => {
             isProgress: today == startDate,
             createdBy: user?.id!,
             imageURL: response.imageURL,
-            verify,
+            verify: null,
             tags: null,
             rating: 0,
             category,
@@ -91,6 +90,7 @@ const ChallengeRegisterForm = () => {
     );
   };
 
+  //TODO 카테고리, 캘린더 ui 수정 필요
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
       {uploading && <div>이미지 업로딩..</div>}

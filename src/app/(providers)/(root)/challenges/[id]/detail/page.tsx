@@ -1,4 +1,5 @@
 'use client';
+import Input from '@/components/Input';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeDelete, useChallengeUpdate, useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
@@ -8,7 +9,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 import FormImageUploader from '../../_components/FormImageUploader';
-import FormInput from '../../_components/FormInput';
 import FormTextArea from '../../_components/FormTextArea';
 import { FormFields } from '../../register/_components/ChallengeRegisterForm/ChallengeRegisterForm';
 import FormCalendar from '../../register/_components/FormCalendar';
@@ -25,9 +25,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { mutate: challengeUpdate } = useChallengeUpdate();
   const { mutate: challengeDelete } = useChallengeDelete();
   const router = useRouter();
-  console.log('@@', reviews);
-  console.log('!!!!!', challenge);
-  console.log('USER___', user);
+
   //TODO: 로딩
   if (!challenge) {
     return <div>없따!</div>;
@@ -53,7 +51,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'verify', 'category'];
+    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'category'];
     const formFields: Partial<FormFields> = {};
 
     for (const field of fields) {
@@ -65,7 +63,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
       formFields[field] = value.trim();
     }
 
-    const { title, content, startDate, endDate, verify, category } = formFields as FormFields;
+    const { title, content, startDate, endDate, category } = formFields as FormFields;
 
     if (file) {
       const form = new FormData();
@@ -82,7 +80,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               isProgress: challenge.isProgress,
               createdBy: challenge.createdBy,
               imageURL: response.imageURL,
-              verify,
+              verify: null,
               tags: null,
               rating: 0,
               category,
@@ -108,7 +106,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
         isProgress: challenge.isProgress,
         createdBy: challenge.createdBy,
         imageURL: challenge.imageURL,
-        verify,
+        verify: null,
         tags: null,
         rating: 0,
         category,
@@ -137,7 +135,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
             <div className="mb-9">
               {isUpdate && (
                 <div className="flex flex-col gap-y-2">
-                  <FormInput label="수정할 제목" name="title" placeholder="dd" defaultValue={challenge.title} />
+                  <Input label="수정할 제목" name="title" placeholder="dd" defaultValue={challenge.title} />
                   <FormCalendar s={challenge.startDate} e={challenge.endDate} />
                   <FormTextArea
                     label="수정할 내용"
@@ -160,13 +158,13 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                 </>
               )}
             </div>
-            <div>
+            {/* <div>
               <div className="mb-4">참여 인증 방법</div>
               {isUpdate && (
                 <FormInput label="수정할 인증 방법" name="verify" defaultValue={challenge.verify} placeholder="얍얍" />
               )}
               {!isUpdate && <p>{challenge.verify}</p>}
-            </div>
+            </div> */}
             <div>
               <div>카테고리</div>
               {isUpdate && <FormCategory label="수정할 카테고리" name="category" defaultValue={challenge.category} />}
