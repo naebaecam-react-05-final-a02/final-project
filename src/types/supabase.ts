@@ -97,7 +97,7 @@ export type Database = {
           startDate: string;
           tags: string | null;
           title: string;
-          verify: string;
+          verify: string | null;
         };
         Insert: {
           category?: string;
@@ -111,7 +111,7 @@ export type Database = {
           startDate: string;
           tags?: string | null;
           title: string;
-          verify: string;
+          verify?: string | null;
         };
         Update: {
           category?: string;
@@ -125,7 +125,7 @@ export type Database = {
           startDate?: string;
           tags?: string | null;
           title?: string;
-          verify?: string;
+          verify?: string | null;
         };
         Relationships: [
           {
@@ -262,7 +262,8 @@ export type Database = {
           exerciseType: string;
           id: number;
           isCompleted: boolean | null;
-          name: string;
+          memo: string;
+          name: string | null;
           record: Json[];
           userId: string;
         };
@@ -271,7 +272,8 @@ export type Database = {
           exerciseType: string;
           id?: number;
           isCompleted?: boolean | null;
-          name: string;
+          memo: string;
+          name?: string | null;
           record: Json[];
           userId: string;
         };
@@ -280,13 +282,21 @@ export type Database = {
           exerciseType?: string;
           id?: number;
           isCompleted?: boolean | null;
-          name?: string;
+          memo?: string;
+          name?: string | null;
           record?: Json[];
           userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'exercises_userId_fkey';
+            foreignKeyName: 'exercisesBookmarks_exerciseId_fkey';
+            columns: ['exerciseId'];
+            isOneToOne: false;
+            referencedRelation: 'exercises';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'exercisesBookmarks_userId_fkey';
             columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
@@ -296,19 +306,16 @@ export type Database = {
       };
       exercisesBookmarks: {
         Row: {
-          created_at: string;
           exerciseId: number | null;
           id: number;
           userId: string | null;
         };
         Insert: {
-          created_at?: string;
           exerciseId?: number | null;
           id?: number;
           userId?: string | null;
         };
         Update: {
-          created_at?: string;
           exerciseId?: number | null;
           id?: number;
           userId?: string | null;

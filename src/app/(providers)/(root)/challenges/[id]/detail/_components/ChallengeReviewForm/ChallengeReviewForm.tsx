@@ -1,5 +1,6 @@
 'use client';
 
+import Input from '@/components/Input';
 import { useRegisterReview } from '@/hooks/review/useReview';
 import { useParams } from 'next/navigation';
 import React, { useRef, useState } from 'react';
@@ -65,14 +66,19 @@ const ChallengeReviewForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <label>제목</label>
-      <input type="text" placeholder="제목을 입력하시오" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Input
+        type="text"
+        placeholder="제목을 입력하시오"
+        value={title}
+        label="제목"
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <div>
         별점
         <StarRating onRatingChange={setStarRating} />
       </div>
       <label>이미지 업로드</label>
-      <input type="file" onChange={handleFileChange} ref={fileInputRef} />
+      <Input type="file" onChange={handleFileChange} ref={fileInputRef} />
       <div className="image-previews h-40 w-full overflow-y-auto flex flex-row gap-3">
         {previewUrls.map((url, index) => (
           <div key={index} className="relative">

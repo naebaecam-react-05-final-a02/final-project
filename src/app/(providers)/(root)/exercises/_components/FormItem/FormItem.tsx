@@ -24,7 +24,7 @@ const FormItem = ({ onChange, type, index, firstProp, secondProp }: FormItemProp
     <div className="grid grid-cols-4 justify-items-center">
       <div
         className="flex justify-center items-center w-12 h-10 rounded-xl border-2 border-[#504f55] exerciseInput input-bg
-      text-semibold"
+      text-semibold text-white text-opacity-50"
       >
         {index + 1}
       </div>

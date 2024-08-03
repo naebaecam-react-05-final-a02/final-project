@@ -3,17 +3,25 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
-import { useGetExerciseRecord, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
+import {
+  useGetExerciseBookmarks,
+  useGetExerciseRecord,
+  useRegisterExercise,
+  useToggleBookmark,
+} from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useRef, useState } from 'react';
-import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
+import React, { useEffect, useState } from 'react';
+import ExerciseRecordForm from '../../../../record/_components/exerciseRecordForm/ExerciseRecordForm';
 
-const ExerciseRecordPage = () => {
+type EditRecordFormProps = {
+  exerciseId: string;
+};
+
+const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentExerciseId, setCurrentExerciseId] = useState<number | null>(null);
   const [bookmarkedExercises, setBookmarkedExercises] = useState<number[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState('');
   const [customWorkout, setCustomWorkout] = useState('');
@@ -21,18 +29,30 @@ const ExerciseRecordPage = () => {
   const [memo, setMemo] = useState('');
   const [name, setName] = useState('');
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
-  const [record, setRecord] = useState<ExerciseRecord>(exerciseInitialState);
+
   const [isBookMark, setIsBookMark] = useState(false);
 
   const { mutate: register } = useRegisterExercise();
-  const { data: bookmarkData } = useGetExerciseRecord();
   const { mutate: toggleBookmark } = useToggleBookmark();
-
+  const { data: bookmarkData } = useGetExerciseBookmarks();
+  const { data: exerciseData, isLoading } = useGetExerciseRecord(exerciseId);
   const [isFirstChange, setIsFirstChange] = useState(false);
-  console.log('@@bookmarkData', bookmarkData);
+  const [record, setRecord] = useState<ExerciseRecord>(exerciseInitialState);
   useEffect(() => {
-    console.log('@@RECORD.', record.record);
-  }, [record.record]);
+    if (!isLoading && exerciseData) {
+      const formattedRecord = {
+        date: exerciseData.date,
+        name: exerciseData.name,
+        memo: exerciseData.memo,
+        record: exerciseData.record as CardioInput[] | WeightInput[],
+        exerciseType: exerciseData.exerciseType as ExerciseType,
+      };
+      setRecord(formattedRecord);
+    }
+  }, [exerciseData]);
+  useEffect(() => {
+    if (record && record.record) console.log('@@RECORD.', record.record);
+  }, [record]);
 
   useEffect(() => {
     if (bookmarkData) {
@@ -119,12 +139,12 @@ const ExerciseRecordPage = () => {
     try {
       register(exerciseData, {
         onSuccess: () => {
-          alert('성공했다!!!!!!!!!!!');
+          alert('수정 성공했다!!!!!!!!!!!');
           //TODO: 추후 수정 반영
           location.reload();
         },
         onError: (error: any) => {
-          console.error('등록중 에러발생쓰', error);
+          console.error('수정중 에러발생쓰', error);
         },
       });
     } catch (error) {
@@ -192,7 +212,7 @@ const ExerciseRecordPage = () => {
       <Input
         label="운동 이름"
         placeholder="운동 이름을 입력해 주세요."
-        value={record.name}
+        value={record?.name}
         onChange={handleNameChange}
         isDropdown
         dropdownOptions={bookmarkListOptions}
@@ -227,20 +247,20 @@ const ExerciseRecordPage = () => {
         <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
       )}
       <h3 className="text-white">날짜 선택</h3>
-      <Input type="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
+      <Input type="date" value={record?.date} onChange={handleDateChange} className="p-2 rounded" />
       <Input
         placeholder="주의사항, 다짐 등을 작성해 주세요"
-        value={record.memo}
+        value={record?.memo}
         onChange={handleMemoChange}
         className="p-4 rounded-lg"
         icon={<Star width={24} height={24} />}
       />
       <ExerciseRecordForm onChange={handleChange} />
       <Button type="submit" onClick={handleSubmit}>
-        등록하기
+        수정하기
       </Button>
     </div>
   );
 };
 
-export default ExerciseRecordPage;
+export default EditRecordForm;

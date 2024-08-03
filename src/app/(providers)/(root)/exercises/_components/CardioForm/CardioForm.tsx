@@ -35,11 +35,11 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
   return (
     <div>
       <form className="flex flex-col gap-4">
-        <div className="grid grid-cols-4 justify-items-center h-12">
+        <div className="grid grid-cols-4 justify-items-center h-12 ">
           <InputLabel>세트</InputLabel>
-          <InputLabel>시간</InputLabel>
           <InputLabel>분</InputLabel>
-          <InputLabel></InputLabel>
+          <InputLabel>M</InputLabel>
+          <InputLabel>-</InputLabel>
         </div>
         {cardioList.map((item, index) => (
           <FormItem
@@ -51,7 +51,7 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
             secondProp={item.minutes}
           />
         ))}
-        <AddSetButton onClick={addCardio}>세트 추가하기</AddSetButton>
+        <AddSetButton onClick={addCardio}>세트 추가하기 +</AddSetButton>
       </form>
     </div>
   );

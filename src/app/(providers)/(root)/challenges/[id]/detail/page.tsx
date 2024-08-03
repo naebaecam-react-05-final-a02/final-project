@@ -127,7 +127,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="h-screen">
-      <main className="bg-amber-300 pb-7">
+      <main className="pb-7 text-white">
         <form onSubmit={handleSubmit}>
           <div className="relative w-full aspect-video">
             {isUpdate && <FormImageUploader ref={inputRef} src={challenge.imageURL} />}

@@ -36,9 +36,9 @@ const WeightForm = ({ onChange }: WeightFormProps) => {
       <form className="flex flex-col gap-4">
         <div className="grid grid-cols-4 justify-items-center h-12">
           <InputLabel>세트</InputLabel>
-          <InputLabel>무게</InputLabel>
-          <InputLabel>횟수</InputLabel>
-          <InputLabel></InputLabel>
+          <InputLabel>kg</InputLabel>
+          <InputLabel>회</InputLabel>
+          <InputLabel>-</InputLabel>
         </div>
         {weightList.map((item, index) => (
           <FormItem
@@ -50,7 +50,7 @@ const WeightForm = ({ onChange }: WeightFormProps) => {
             secondProp={item.reps}
           />
         ))}
-        <AddSetButton onClick={addWeight}>세트 추가하기</AddSetButton>
+        <AddSetButton onClick={addWeight}>세트 추가하기 +</AddSetButton>
       </form>
     </div>
   );
