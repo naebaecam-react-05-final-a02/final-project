@@ -1,11 +1,13 @@
 import api from '@/service/service';
-import { RecordData } from '@/types/exercises';
+import { ExerciseTodoItemType, RecordData } from '@/types/exercises';
 
 export const ExercisesQueryKeys = {
   all: ['exercises'] as const,
   bookmark: () => [...ExercisesQueryKeys.all, 'bookmark'] as const,
   toggleBookmark: () => [...ExercisesQueryKeys.all, 'toggleBookmark'] as const,
+  detail: (date: string) => [...ExercisesQueryKeys.all, date] as const,
 };
+
 export const queryOptions = {
   getExercisesBookmarks: () => ({
     queryKey: ExercisesQueryKeys.bookmark(),
@@ -29,6 +31,14 @@ export const queryOptions = {
       return data;
     },
   }),
+  getExercises: (date: string) => ({
+    queryKey: ExercisesQueryKeys.detail(date),
+    queryFn: async () => {
+      const exercises = await api.exercise.getExercisesByDate(date);
+      if (!exercises) throw new Error('Exercise not found');
+      return exercises;
+    },
+  }),
 };
 
 export const mutationOptions = {
@@ -37,5 +47,8 @@ export const mutationOptions = {
   },
   toggleBookmark: {
     mutationFn: (exerciseId: number) => api.exercise.toggleBookmark(exerciseId),
+  },
+  deleteDiet: {
+    mutationFn: ({ id }: Pick<ExerciseTodoItemType, 'id'>) => api.exercise.deleteExercise({ id }),
   },
 };

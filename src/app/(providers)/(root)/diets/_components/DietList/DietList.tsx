@@ -8,8 +8,8 @@ import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
-import DeleteIcon from '/public/icons/delete.svg';
 import EditIcon from '/public/icons/edit.svg';
+import DeleteIcon from '/public/icons/x.svg';
 
 interface DietListProps {
   selectedDate: Date;

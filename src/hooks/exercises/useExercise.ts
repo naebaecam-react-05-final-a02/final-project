@@ -12,3 +12,9 @@ export const useToggleBookmark = () => useMutation(mutationOptions.toggleBookmar
 
 // 운동 기록 항목
 export const useGetExerciseRecord = (id: string) => useQuery(queryOptions.getExerciseRecord(id));
+
+export const useGetExercises = (date: string) => {
+  return useQuery(queryOptions.getExercises(date));
+};
+
+export const useDeleteExercises = () => useMutation(mutationOptions.deleteDiet);

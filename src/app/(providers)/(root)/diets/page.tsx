@@ -1,8 +1,8 @@
 'use client';
+import Week from '@/components/Calendar/Week';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { useRouter } from 'next/navigation';
-import Week from './_components/Calendar/Week';
 import DietList from './_components/DietList';
 import DownIcon from '/public/icons/chevron-down.svg';
 import LeftIcon from '/public/icons/chevron-left.svg';
