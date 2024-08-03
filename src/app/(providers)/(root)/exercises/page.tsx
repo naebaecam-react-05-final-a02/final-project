@@ -51,7 +51,7 @@ const ExercisePage = () => {
           </button>
         </header>
         <Week />
-        <ExerciseList selectedDate={selectedDate} />
+        <ExerciseList />
       </div>
     </Mobile>
   );

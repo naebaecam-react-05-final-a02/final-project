@@ -48,6 +48,10 @@ export const mutationOptions = {
   toggleBookmark: {
     mutationFn: (exerciseId: number) => api.exercise.toggleBookmark(exerciseId),
   },
+  toggleComplete: {
+    mutationFn: ({ exerciseId, isCompleted }: { exerciseId: number; isCompleted: boolean }) =>
+      api.exercise.toggleComplete({ exerciseId, isCompleted }),
+  },
   deleteDiet: {
     mutationFn: ({ id }: Pick<ExerciseTodoItemType, 'id'>) => api.exercise.deleteExercise({ id }),
   },

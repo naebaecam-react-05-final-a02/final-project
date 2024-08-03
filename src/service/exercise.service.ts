@@ -51,6 +51,24 @@ class ExerciseAPI {
     }
   };
 
+  toggleComplete = async ({
+    exerciseId,
+    isCompleted,
+  }: {
+    exerciseId: number;
+    isCompleted: boolean;
+  }): Promise<Pick<ExerciseTodoItemType, 'isCompleted'>> => {
+    try {
+      const response = await axios.patch(`${this.baseUrl}/complete/toggle`, { exerciseId, isCompleted });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   getExerciseRecord = async (id: string): Promise<ExerciseRecord> => {
     try {
       console.log('@@1==', 1);

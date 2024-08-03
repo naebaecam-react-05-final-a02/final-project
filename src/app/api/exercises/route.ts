@@ -13,7 +13,6 @@ export const GET = async (request: NextRequest) => {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
-    console.log(authError);
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { data, error } = await supabase
@@ -21,7 +20,8 @@ export const GET = async (request: NextRequest) => {
       .select('*')
       .eq('userId', user.id)
       .gte('date', date)
-      .lt('date', getNextDateISO(date));
+      .lt('date', getNextDateISO(date))
+      .order('id');
 
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
