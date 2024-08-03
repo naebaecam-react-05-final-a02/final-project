@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import StarIcon from '../../../../../../../../icons/star.svg';
 
-const StarRating = ({ onRatingChange }) => {
+interface StarRatingProps {
+  onRatingChange: (rating: number) => void;
+}
+
+const StarRating = ({ onRatingChange }: StarRatingProps) => {
   const starArray = [1, 2, 3, 4, 5];
   const [starHover, setStarHover] = useState(0);
   const [starRating, setStarRating] = useState(0);
 
-  const handleStarRating = (idx) => {
+  const handleStarRating = (idx: number) => {
     setStarRating(idx);
     onRatingChange(idx);
   };
