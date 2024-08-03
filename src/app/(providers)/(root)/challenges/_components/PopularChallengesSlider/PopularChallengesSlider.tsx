@@ -1,3 +1,5 @@
+'use client';
+
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
