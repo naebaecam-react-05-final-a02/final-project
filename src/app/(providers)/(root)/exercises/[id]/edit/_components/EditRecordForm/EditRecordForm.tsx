@@ -10,6 +10,7 @@ import {
   useToggleBookmark,
 } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
+import { useCardioInputStore, useExerciseTabStore, useWeightInputStore } from '@/stores/useExerciseStore';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
@@ -38,6 +39,10 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const { data: exerciseData, isLoading } = useGetExerciseRecord(exerciseId);
   const [isFirstChange, setIsFirstChange] = useState(false);
   const [record, setRecord] = useState<ExerciseRecord>(exerciseInitialState);
+  const setExerciseType = useExerciseTabStore((state) => state.setExerciseType);
+  const setCardioList = useCardioInputStore((state) => state.setCardioInputs);
+  const setWeightList = useWeightInputStore((state) => state.setWeightInputs);
+
   useEffect(() => {
     if (!isLoading && exerciseData) {
       const formattedRecord = {
@@ -48,6 +53,12 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         exerciseType: exerciseData.exerciseType as ExerciseType,
       };
       setRecord(formattedRecord);
+      setExerciseType(exerciseData.exerciseType);
+      if (exerciseData.exerciseType === 'weight') {
+        setWeightList(exerciseData.record as WeightInput[]);
+      } else {
+        setCardioList(exerciseData.record as CardioInput[]);
+      }
     }
   }, [exerciseData]);
   useEffect(() => {
@@ -247,7 +258,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
       )}
       <h3 className="text-white">날짜 선택</h3>
-      <Input type="date" value={record?.date} onChange={handleDateChange} className="p-2 rounded" />
+      <Input type="date" value={record?.date.split('T')[0]} onChange={handleDateChange} className="p-2 rounded" />
       <Input
         placeholder="주의사항, 다짐 등을 작성해 주세요"
         value={record?.memo}

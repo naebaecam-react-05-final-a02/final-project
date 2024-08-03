@@ -46,7 +46,7 @@ const Exercise = ({
 
   const handleEditButtonClick = (exercise: ExerciseTodoItemType) => {
     setExercise(exercise);
-    router.push('/exercises/record?mode=edit'); // TODO: 수정 url
+    router.push(`/exercises/${exercise.id}/edit`); // TODO: 수정 url
   };
 
   const handleDeleteButtonClick = (exerciseId: number) => {
