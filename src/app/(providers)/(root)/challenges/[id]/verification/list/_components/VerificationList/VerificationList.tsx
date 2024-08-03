@@ -7,8 +7,10 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import VerificationCard from '../VerificationCard';
+import Masonry from 'react-masonry-css';
+import LocalBanner from '../LocalBanner';
 import VerificationCardSkeleton from '../VerificationCardSkeleton';
+import VerificationItem from '../VerificationItem';
 
 const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   const params = useParams();
@@ -36,6 +38,8 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     select: (data) => data.pages.flatMap((p) => p),
     staleTime: Infinity,
   });
+
+  console.log(verifications);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -75,22 +79,19 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
           </div>
         ))}
       {verifications && verifications.length > 0 && (
-        <div>
-          <h4 className="text-right text-xs font-bold mb-5">오늘 벌써 총 {counts.totalUsers}명이 인증했어요!</h4>
-          <ul className="flex flex-col gap-y-4">
-            {verifications?.map((verification) => (
-              <li
-                className="rounded-lg shadow-md group
-              hover:shadow-lg "
-                key={verification.id}
-              >
-                <Link href={`${path.replace('/list', `/${verification.id}`)}`}>
-                  <VerificationCard verification={verification} />
-                </Link>
-              </li>
-            ))}
-            {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
+        <div className="flex flex-col gap-4 px-4">
+          <LocalBanner users={counts.totalUsers} />
+
+          <ul>
+            <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
+              {verifications?.map((verification, i) => (
+                <li className="list-none" key={i}>
+                  <VerificationItem verification={verification} />
+                </li>
+              ))}
+            </Masonry>
           </ul>
+          {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
         </div>
       )}
 

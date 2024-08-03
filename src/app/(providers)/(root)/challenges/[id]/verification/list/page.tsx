@@ -3,9 +3,13 @@ import {
   fetchDataByInfinityQuery,
   fetchVerificationTotalData,
 } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
+import Button from '@/components/Button';
+import TitleHeader from '@/components/PrevButtonAndTitleHeader/PrevButtonAndTitleHeader';
+import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { verificationsType } from '@/types/challenge';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 import VerificationList from './_components/VerificationList';
 
 //TODO hooks 작업?
@@ -29,7 +33,18 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
   return (
     <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <VerificationList counts={counts} />
+        <Mobile
+          headerLayout={<TitleHeader>챌린지 인증 목록</TitleHeader>}
+          footerLayout={
+            <div className="p-[10px]">
+              <Link href={`/challenges/${params.id}/verification/register`}>
+                <Button>인증하기</Button>
+              </Link>
+            </div>
+          }
+        >
+          <VerificationList counts={counts} />
+        </Mobile>
       </HydrationBoundary>
     </div>
   );
