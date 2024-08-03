@@ -5,13 +5,15 @@ const validateNicknameInfo = (formState: FormState): { isValid: boolean; errors:
   let isValid = true;
   const errors: Partial<FormState> = {};
 
-  if (nickname.value.length < 2) {
-    errors.nickname = { ...nickname, error: '닉네임은 2자 이상이어야 합니다.' };
+  // 닉네임 길이 검사 (2-10글자)
+  if (nickname.value.length < 2 || nickname.value.length > 10) {
+    errors.nickname = { ...nickname, error: '닉네임 형식이 올바르지 않습니다!' };
     isValid = false;
   }
 
-  if (!nickname.isVerified) {
-    errors.nickname = { ...nickname, error: '닉네임 중복 확인이 필요합니다.' };
+  // 특수 문자 및 띄어쓰기 검사
+  if (!/^[a-zA-Z0-9가-힣]+$/.test(nickname.value)) {
+    errors.nickname = { ...nickname, error: '닉네임 형식이 올바르지 않습니다!' };
     isValid = false;
   }
 

@@ -13,7 +13,7 @@ type ExerciseRecordFormProps = {
 
 const ExerciseRecordForm = ({ onChange }: ExerciseRecordFormProps) => {
   const exerciseType = useExerciseTabStore((state) => state.exerciseType);
-  console.log('@@exerciseType', exerciseType);
+
   const handleFormChange = (data: CardioInput[] | WeightInput[]) => {
     console.log('@@Data', data);
     if (data.length === 0) {

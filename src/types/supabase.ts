@@ -97,7 +97,7 @@ export type Database = {
           startDate: string;
           tags: string | null;
           title: string;
-          verify: string;
+          verify: string | null;
         };
         Insert: {
           category?: string;
@@ -111,7 +111,7 @@ export type Database = {
           startDate: string;
           tags?: string | null;
           title: string;
-          verify: string;
+          verify?: string | null;
         };
         Update: {
           category?: string;
@@ -125,7 +125,7 @@ export type Database = {
           startDate?: string;
           tags?: string | null;
           title?: string;
-          verify?: string;
+          verify?: string | null;
         };
         Relationships: [
           {
@@ -296,19 +296,16 @@ export type Database = {
       };
       exercisesBookmarks: {
         Row: {
-          created_at: string;
           exerciseId: number | null;
           id: number;
           userId: string | null;
         };
         Insert: {
-          created_at?: string;
           exerciseId?: number | null;
           id?: number;
           userId?: string | null;
         };
         Update: {
-          created_at?: string;
           exerciseId?: number | null;
           id?: number;
           userId?: string | null;

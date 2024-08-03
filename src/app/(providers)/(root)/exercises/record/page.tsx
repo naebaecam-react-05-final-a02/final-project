@@ -1,32 +1,50 @@
 'use client';
+import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
+import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
+import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
 
 const ExerciseRecordPage = () => {
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentExerciseId, setCurrentExerciseId] = useState<number | null>(null);
+  const [bookmarkedExercises, setBookmarkedExercises] = useState<number[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState('');
   const [customWorkout, setCustomWorkout] = useState('');
   const [date, setDate] = useState('');
   const [memo, setMemo] = useState('');
-  const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([
-    '스쿼트',
-    '벤치 프레스',
-    '데드리프트',
-    '덤벨 컬',
-    '푸시업',
-  ]);
+  const [name, setName] = useState('');
+  const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
   const [record, setRecord] = useState<ExerciseRecord>(exerciseInitialState);
-
   const [isBookMark, setIsBookMark] = useState(false);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    setCustomWorkout(event.target.value);
-  };
+  const { mutate: register } = useRegisterExercise();
+  const { data: bookmarkData } = useGetExerciseBookmarks();
+  const { mutate: toggleBookmark } = useToggleBookmark();
+
+  const [isFirstChange, setIsFirstChange] = useState(false);
+  console.log('@@bookmarkData', bookmarkData);
+  useEffect(() => {
+    console.log('@@RECORD.', record.record);
+  }, [record.record]);
+
+  useEffect(() => {
+    if (bookmarkData) {
+      setBookmarkedExercises(bookmarkData.map((item) => item.exercises.id));
+    }
+  }, [bookmarkData]);
+
+  useEffect(() => {
+    if (isBookMark) {
+      console.log('@@isBookMark', isBookMark);
+    }
+  }, [isBookMark]);
 
   const filteredWorkouts = favoriteWorkouts.filter((workout) =>
     workout.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -45,10 +63,23 @@ const ExerciseRecordPage = () => {
     }));
   };
 
-  const handleMemoChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord((prev) => ({
       ...prev,
       name: event.target.value,
+    }));
+    setCustomWorkout(event.target.value);
+    console.log('@@isFirstChange', isFirstChange);
+    if (isFirstChange) {
+      setIsBookMark(false);
+      setIsFirstChange(false);
+    }
+  };
+
+  const handleMemoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRecord((prev) => ({
+      ...prev,
+      memo: event.target.value,
     }));
   };
 
@@ -66,40 +97,36 @@ const ExerciseRecordPage = () => {
       return;
     }
 
-    const requestBody = {
+    const exerciseData = {
       date: record.date,
       exerciseType: record.exerciseType,
       // name: workoutToSave,
       record: record.record,
+      memo: record.memo,
       name: record.name,
       isBookMark: isBookMark,
     };
-
+    // 상태 초기화
+    setSearchTerm('');
+    setSelectedWorkout('');
+    setCustomWorkout('');
+    setDate('');
+    setName('');
+    setMemo('');
+    console.log('@@RECORD', record);
+    setRecord(exerciseInitialState);
+    setIsBookMark(false);
     try {
-      const response = await fetch('/api/exercises/record', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      register(exerciseData, {
+        onSuccess: () => {
+          alert('성공했다!!!!!!!!!!!');
+          //TODO: 추후 수정 반영
+          location.reload();
         },
-        body: JSON.stringify(requestBody),
+        onError: (error: any) => {
+          console.error('등록중 에러발생쓰', error);
+        },
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'errorrrr');
-      }
-
-      const result = await response.json();
-      console.log('서버 응답:', result);
-
-      // 상태 초기화
-      setSearchTerm('');
-      setSelectedWorkout('');
-      setCustomWorkout('');
-      setDate('');
-      setMemo('');
-      setRecord(exerciseInitialState);
-      setIsBookMark(false);
     } catch (error) {
       console.error('데이터 전송 중 오류 발생:', error);
     }
@@ -114,13 +141,50 @@ const ExerciseRecordPage = () => {
     console.log('@@Record', record.record);
   };
 
-  const handleToggleBookmark = () => {
-    setIsBookMark((prev) => !prev);
+  const handleToggleBookmark = (exerciseId?: number) => {
+    if (exerciseId) {
+      toggleBookmark(exerciseId, {
+        onSuccess: () => {
+          setBookmarkedExercises((prev) => {
+            if (prev.includes(exerciseId)) {
+              return prev.filter((id) => id !== exerciseId);
+            } else {
+              return [...prev, exerciseId];
+            }
+          });
+          queryClient.invalidateQueries(ExercisesQueryKeys.bookmark() as any);
+        },
+        onError: (error) => {
+          console.error('북마크 토글 실패:', error);
+        },
+      });
+    } else {
+      setIsBookMark((prev) => !prev);
+    }
   };
 
-  useEffect(() => {
-    console.log('@@RECORD.', record.record);
-  }, [record.record]);
+  const bookmarkListOptions = bookmarkData?.map((item) => ({
+    id: item.exercises.id,
+    value: item.exercises.name,
+
+    icon: (
+      <Star
+        width={24}
+        height={24}
+        style={{
+          fill: bookmarkedExercises.includes(item.exercises.id) ? '#12F287' : 'none',
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleToggleBookmark(item.exercises.id);
+        }}
+      />
+    ),
+    onClick: (e: React.MouseEvent) => {
+      setIsBookMark(true);
+      setIsFirstChange(true);
+    },
+  }));
 
   return (
     <div className="min-h-screen flex flex-col gap-5 p-5">
@@ -128,8 +192,10 @@ const ExerciseRecordPage = () => {
       <Input
         label="운동 이름"
         placeholder="운동 이름을 입력해 주세요."
-        value={searchTerm}
-        onChange={handleSearchChange}
+        value={record.name}
+        onChange={handleNameChange}
+        inputType="select"
+        dropdownOptions={bookmarkListOptions}
         icon={
           <Star
             style={{
@@ -137,7 +203,10 @@ const ExerciseRecordPage = () => {
             }}
             width={24}
             height={24}
-            onClick={handleToggleBookmark}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleBookmark();
+            }}
           />
         }
       />
@@ -158,17 +227,18 @@ const ExerciseRecordPage = () => {
         <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
       )}
       <h3 className="text-white">날짜 선택</h3>
-      <input type="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
-      <textarea
+      <Input type="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
+      <Input
         placeholder="주의사항, 다짐 등을 작성해 주세요"
-        value={record.name}
+        value={record.memo}
         onChange={handleMemoChange}
-        className="p-2 rounded"
+        className="p-4 rounded-lg"
+        icon={<Star width={24} height={24} />}
       />
       <ExerciseRecordForm onChange={handleChange} />
-      <button type="submit" onClick={handleSubmit} className="bg-blue-500 text-white p-2 rounded mt-2">
+      <Button type="submit" onClick={handleSubmit}>
         등록하기
-      </button>
+      </Button>
     </div>
   );
 };
