@@ -27,6 +27,9 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
 
     if (name === 'email') {
       debouncedCheckEmail(value);
+    } else if (name === 'password' && value.length === 1) {
+      // 비밀번호 필드에 처음 입력할 때 이메일 중복 확인
+      checkEmailAgain();
     }
   };
 
@@ -39,7 +42,6 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
           email: {
             ...prev.email,
             error: isAvailable ? null : '이미 사용 중인 이메일입니다.',
-            successMessage: isAvailable ? '사용 가능한 이메일입니다.' : null,
             isVerified: isAvailable,
           },
         }));
@@ -57,6 +59,34 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
       }
     }
   }, 500);
+  // 디바운싱에서 가끔 중복 처리 안되는 경우가 있어서 비밀번호 첫 입력할 때 한번 더 확인
+  const checkEmailAgain = async () => {
+    const emailValue = formState.email.value;
+    if (emailValue && !formState.email.error) {
+      try {
+        const isAvailable = await checkDuplicate('email', emailValue);
+        setFormState((prev) => ({
+          ...prev,
+          email: {
+            ...prev.email,
+            error: isAvailable ? null : '이미 사용 중인 이메일입니다.',
+            isVerified: isAvailable,
+          },
+        }));
+      } catch (error) {
+        console.error('이메일 중복 확인 중 오류 발생:', error);
+        setFormState((prev) => ({
+          ...prev,
+          email: {
+            ...prev.email,
+            error: '이메일 중복 확인 중 오류가 발생했습니다.',
+            successMessage: null,
+            isVerified: false,
+          },
+        }));
+      }
+    }
+  };
 
   const validatePasswordFields = (name: string, value: string) => {
     setFormState((prev) => {
@@ -100,7 +130,6 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
               <p className="text-green-500 text-sm mt-1">{formState.email.successMessage}</p>
             )}
           </div>
-
           <div className="flex flex-col items-center w-full px-4">
             <div className="w-full">
               <Input
@@ -114,6 +143,11 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                 error={formState.password.error}
                 required
               />
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center w-full px-4">
+            <div className="w-full">
               <Input
                 label="비밀번호 확인"
                 placeholder="비밀번호를 다시 입력해 주세요."
