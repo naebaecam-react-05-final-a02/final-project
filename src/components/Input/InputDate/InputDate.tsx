@@ -8,18 +8,42 @@ import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
 import { BaseInputProps } from '../Input';
 import InputCalendar from './InputCalendar';
 
-export type InputDateProps = Omit<BaseInputProps & ComponentProps<'input'>, 'inputType' | 'onChange'> & {
+export type InputDateProps = Omit<BaseInputProps & ComponentProps<'input'>, 'inputType' | 'onChange' | 'value'> & {
   onChange?: (date: Date) => void;
-  value?: string | number | Date | null;
+  value?: Date | null;
+  position?: 'right' | 'left';
+  showMonth?: boolean;
+  minDate?: Date | string;
+  maxDate?: Date | string;
 };
 
-const InputDate = ({ label, id, error, onChange, className = '', value, ...props }: InputDateProps) => {
+const InputDate = ({
+  label,
+  id,
+  error,
+  onChange,
+  className = '',
+  value,
+  position = 'right',
+  showMonth = true,
+  minDate,
+  maxDate,
+  ...props
+}: InputDateProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
   const dateInputRef = useRef<HTMLDivElement>(null);
   const inputUid = useId();
   const inputId = id || inputUid;
   dayjs.locale('ko');
+
+  const min = minDate ? (typeof minDate === 'string' ? new Date(minDate) : minDate) : undefined;
+  const max = maxDate ? (typeof maxDate === 'string' ? new Date(maxDate) : maxDate) : undefined;
+
+  console.log(min, max);
+  const formatDate = (date: Date) => {
+    return showMonth ? dayjs(date).format('YYYY. MM. DD (ddd)') : dayjs(date).format('MM. DD (ddd)');
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,14 +59,19 @@ const InputDate = ({ label, id, error, onChange, className = '', value, ...props
   }, []);
 
   const handleDateSelect = (date: Date) => {
+    if ((min && date < min) || (max && date > max)) {
+      console.log('호출');
+      return;
+    }
     setSelectedDate(date);
+    setIsOpen(false);
     if (onChange) {
       onChange(date);
     }
   };
 
   return (
-    <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
+    <div className="flex flex-col w-full gap-y-1.5">
       {label && (
         <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
@@ -53,17 +82,15 @@ const InputDate = ({ label, id, error, onChange, className = '', value, ...props
           <input
             type="text"
             id={inputId}
-            className={`w-full bg-transparent rounded-lg text-right text-[14px] font-medium 
+            className={`w-full bg-transparent rounded-lg text-right text-[15px] font-medium
               bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-[14px] pl-11
-              border-b-2 
+              border-b-2
               ${isOpen ? 'z-20' : ''}
               ${isOpen ? 'text-white' : 'text-whiteT-50 '}
               ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
               `}
-            value={
-              selectedDate ? dayjs(selectedDate).format('YYYY. MM. DD (ddd)') : dayjs().format('YYYY. MM. DD (ddd)')
-            }
+            value={selectedDate ? formatDate(selectedDate) : formatDate(new Date())}
             readOnly
             {...props}
           />
@@ -85,7 +112,11 @@ const InputDate = ({ label, id, error, onChange, className = '', value, ...props
         {isOpen && (
           <>
             <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
-            <div className="absolute left-0 w-full mt-1 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden">
+            <div
+              className={`absolute w-[320px] mt-1 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden ${
+                position === 'left' ? 'left-0' : 'right-0'
+              }`}
+            >
               <InputCalendar onSelectDate={handleDateSelect} selectedDate={selectedDate || new Date()} />
             </div>
           </>

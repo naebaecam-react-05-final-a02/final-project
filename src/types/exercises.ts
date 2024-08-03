@@ -27,7 +27,7 @@ export type ExerciseTodoItemType =
   | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'cardio'; record: cardio[] });
 
 export interface ExerciseRecord {
-  date: string;
+  date: Date;
   name: string;
   memo: string;
   record: CardioInput[] | WeightInput[];
