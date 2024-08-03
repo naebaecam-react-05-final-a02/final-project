@@ -5,6 +5,7 @@ import { exerciseInitialState } from '@/data/exerciseInitialState';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
+import Mobile from '@/layouts/Mobile';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
@@ -187,59 +188,61 @@ const ExerciseRecordPage = () => {
   }));
 
   return (
-    <div className="min-h-screen flex flex-col gap-5 p-5">
-      <h3 className="text-white">운동 이름</h3>
-      <Input
-        label="운동 이름"
-        placeholder="운동 이름을 입력해 주세요."
-        value={record.name}
-        onChange={handleNameChange}
-        inputType="select"
-        dropdownOptions={bookmarkListOptions}
-        icon={
-          <Star
-            style={{
-              fill: isBookMark ? '#12F287' : 'none',
-            }}
-            width={24}
-            height={24}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleToggleBookmark();
-            }}
-          />
-        }
-      />
-      {searchTerm && filteredWorkouts.length > 0 && (
-        <ul className="bg-white rounded p-2">
-          {filteredWorkouts.map((workout, index) => (
-            <li
-              key={index}
-              onClick={() => handleWorkoutSelect(workout)}
-              className="cursor-pointer p-1 hover:bg-gray-200"
-            >
-              {workout}
-            </li>
-          ))}
-        </ul>
-      )}
-      {(selectedWorkout || customWorkout) && (
-        <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
-      )}
-      <h3 className="text-white">날짜 선택</h3>
-      <Input type="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
-      <Input
-        placeholder="주의사항, 다짐 등을 작성해 주세요"
-        value={record.memo}
-        onChange={handleMemoChange}
-        className="p-4 rounded-lg"
-        icon={<Star width={24} height={24} />}
-      />
-      <ExerciseRecordForm onChange={handleChange} />
-      <Button type="submit" onClick={handleSubmit}>
-        등록하기
-      </Button>
-    </div>
+    <Mobile>
+      <div className="min-h-screen flex flex-col gap-5 p-5">
+        <h3 className="text-white">운동 이름</h3>
+        <Input
+          label="운동 이름"
+          placeholder="운동 이름을 입력해 주세요."
+          value={record.name}
+          onChange={handleNameChange}
+          inputType="select"
+          dropdownOptions={bookmarkListOptions}
+          icon={
+            <Star
+              style={{
+                fill: isBookMark ? '#12F287' : 'none',
+              }}
+              width={24}
+              height={24}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleBookmark();
+              }}
+            />
+          }
+        />
+        {searchTerm && filteredWorkouts.length > 0 && (
+          <ul className="bg-white rounded p-2">
+            {filteredWorkouts.map((workout, index) => (
+              <li
+                key={index}
+                onClick={() => handleWorkoutSelect(workout)}
+                className="cursor-pointer p-1 hover:bg-gray-200"
+              >
+                {workout}
+              </li>
+            ))}
+          </ul>
+        )}
+        {(selectedWorkout || customWorkout) && (
+          <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
+        )}
+        <h3 className="text-white">날짜 선택</h3>
+        <Input type="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
+        <Input
+          placeholder="주의사항, 다짐 등을 작성해 주세요"
+          value={record.memo}
+          onChange={handleMemoChange}
+          className="p-4 rounded-lg"
+          icon={<Star width={24} height={24} />}
+        />
+        <ExerciseRecordForm onChange={handleChange} />
+        <Button type="submit" onClick={handleSubmit}>
+          등록하기
+        </Button>
+      </div>
+    </Mobile>
   );
 };
 

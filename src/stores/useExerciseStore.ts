@@ -21,11 +21,11 @@ interface CardioInputStoreTypes {
 export const useCardioInputStore = create<CardioInputStoreTypes>((set) => ({
   cardioInputs: [
     {
-      hours: 0,
       minutes: 0,
+      distance: 0,
     },
   ],
-  addInput: () => set((state) => ({ cardioInputs: [...state.cardioInputs, { hours: 0, minutes: 0 }] })),
+  addInput: () => set((state) => ({ cardioInputs: [...state.cardioInputs, { minutes: 0, distance: 0 }] })),
   setCardioInputs: (value) => set(() => ({ cardioInputs: value })),
   deleteInput: (index) =>
     set((state) => {
