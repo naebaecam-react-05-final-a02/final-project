@@ -6,6 +6,7 @@ interface ExerciseData {
   userId: string;
   exerciseType: string;
   name: string;
+  memo: string;
   id: string;
   record: any[];
 }
@@ -14,7 +15,7 @@ export async function POST(request: NextRequest) {
   const supabase = createClient();
 
   try {
-    const { date, exerciseType, name, record, isBookMark } = await request.json();
+    const { date, exerciseType, name, memo, record, isBookMark } = await request.json();
 
     const {
       data: { user },
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
           userId,
           exerciseType,
           name,
+          memo,
           record,
         },
       ])

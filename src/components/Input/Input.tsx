@@ -1,7 +1,11 @@
+//Input.tsx
 import { ReactNode } from 'react';
+import InputDate from './InputDate';
+import { InputDateProps } from './InputDate/InputDate';
 import InputSelect from './InputSelect';
 import { InputSelectProps } from './InputSelect/InputSelect';
-import InputText, { InputTextProps } from './InputText/InputText';
+import InputText from './InputText';
+import { InputTextProps } from './InputText/InputText';
 
 export type BaseInputProps = {
   label?: string;
@@ -9,15 +13,38 @@ export type BaseInputProps = {
   icon?: ReactNode;
   unit?: string;
   className?: string;
+  placeholder?: string;
 };
 
-type InputProps = (InputTextProps & { isDropdown?: false }) | (InputSelectProps & { isDropdown: true });
+type InputTextTypeProps =
+  | (Omit<InputTextProps<'input'>, 'inputType'> & { inputType?: 'text' })
+  | (Omit<InputTextProps<'textarea'>, 'inputType'> & { inputType: 'textarea' });
+
+type InputProps =
+  | InputTextTypeProps
+  | (Omit<InputSelectProps, 'dropdownOptions'> & {
+      inputType: 'select';
+      dropdownOptions: InputSelectProps['dropdownOptions'];
+    })
+  | (InputDateProps & { inputType: 'date' });
 
 const Input = (props: InputProps) => {
-  if (props.isDropdown) {
-    return <InputSelect {...(props as InputSelectProps)} />;
+  const { inputType, ...restProps } = props;
+
+  if (inputType === 'select') {
+    return <InputSelect {...(restProps as InputSelectProps)} />;
   }
-  return <InputText {...(props as InputTextProps)} />;
+
+  if (inputType === 'date') {
+    return <InputDate {...(restProps as InputDateProps)} />;
+  }
+
+  return (
+    <InputText
+      inputType={inputType === 'textarea' ? 'textarea' : 'input'}
+      {...(restProps as InputTextProps<typeof inputType extends 'textarea' ? 'textarea' : 'input'>)}
+    />
+  );
 };
 
 export default Input;

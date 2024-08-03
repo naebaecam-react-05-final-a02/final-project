@@ -20,9 +20,10 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
         <div className="w-full mb-4">
           <h3 className="text-18 font-semibold leading-140 tracking-tighter mt-8 mb-6">키, 몸무게를 알려주세요!</h3>
           <Input
-            label="키 (cm):"
+            label="키"
             type="number"
             name="height"
+            unit="cm"
             value={formState.height?.value ?? ''}
             onChange={handleChange}
             error={formState.height?.error}
@@ -32,11 +33,11 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
 
         <div className="w-full mb-4">
           <Input
-            label="몸무게 (kg):"
+            label="몸무게"
             type="number"
             id="weight"
             name="weight"
-            className="w-full bg-[#F6F6F6] border-b-2 border-[#7B7B7B] px-2.5 py-2.5 focus:outline-none"
+            unit="kg"
             value={formState.weight?.value ?? ''}
             onChange={handleChange}
             error={formState.weight?.error}

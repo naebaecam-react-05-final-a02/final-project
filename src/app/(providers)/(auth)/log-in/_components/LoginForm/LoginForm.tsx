@@ -98,8 +98,8 @@ const LogInForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-center gap-4 max-w-[390px]">
-      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mb-[50px]" />
+    <div className="flex flex-col w-full items-center max-w-[390px]">
+      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mt-[110px] mb-[70px]" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
         <Input
@@ -137,17 +137,16 @@ const LogInForm = () => {
           </Link>
         </div>
         {errors.form && <div className="text-red-500">{errors.form}</div>}
-
         <Button className="mt-12 mb-[35px]" disabled={isPending}>
           {isPending ? '로그인 중...' : '로그인'}
         </Button>
       </form>
-      <div className="flex flex-col gap-2 mb-10">
+      <div className="flex flex-col gap-2 mb-12">
         <div className="text-white text-center text-[14px] leading-6">SNS로 간편 로그인하기</div>
         <div className="flex items-center justify-center gap-6">
           <button
             type="button"
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full "
             onClick={(e) => handleSocialSignIn(e, 'kakao')}
             aria-label="카카오 로그인"
           >
@@ -155,7 +154,7 @@ const LogInForm = () => {
           </button>
           <button
             type="button"
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full "
             onClick={(e) => handleSocialSignIn(e, 'google')}
             aria-label="구글 로그인"
           >
@@ -163,7 +162,7 @@ const LogInForm = () => {
           </button>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mb-10">
         <p className="text-white/50">아직 회원이 아니신가요?</p>
         <Link href="/sign-up" className="text-[#12F287] border-b-2 border-[#12F287]">
           회원가입
