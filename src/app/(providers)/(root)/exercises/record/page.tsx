@@ -3,11 +3,11 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
-import { useGetExerciseRecord, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
+import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
 
 const ExerciseRecordPage = () => {
@@ -25,7 +25,7 @@ const ExerciseRecordPage = () => {
   const [isBookMark, setIsBookMark] = useState(false);
 
   const { mutate: register } = useRegisterExercise();
-  const { data: bookmarkData } = useGetExerciseRecord();
+  const { data: bookmarkData } = useGetExerciseBookmarks();
   const { mutate: toggleBookmark } = useToggleBookmark();
 
   const [isFirstChange, setIsFirstChange] = useState(false);
@@ -194,7 +194,7 @@ const ExerciseRecordPage = () => {
         placeholder="운동 이름을 입력해 주세요."
         value={record.name}
         onChange={handleNameChange}
-        isDropdown
+        inputType="select"
         dropdownOptions={bookmarkListOptions}
         icon={
           <Star

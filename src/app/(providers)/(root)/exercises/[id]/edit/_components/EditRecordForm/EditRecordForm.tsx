@@ -214,7 +214,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         placeholder="운동 이름을 입력해 주세요."
         value={record?.name}
         onChange={handleNameChange}
-        isDropdown
+        inputType="select"
         dropdownOptions={bookmarkListOptions}
         icon={
           <Star
