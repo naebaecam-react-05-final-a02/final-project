@@ -1,8 +1,8 @@
 import { Tables } from './supabase';
 
 export interface CardioInput {
-  hours: number;
   minutes: number;
+  distance: number;
 }
 
 export interface WeightInput {

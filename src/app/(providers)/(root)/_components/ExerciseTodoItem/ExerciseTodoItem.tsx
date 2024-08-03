@@ -19,7 +19,7 @@ type ExerciseData = {
   details: null;
 };
 const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
-  const formattingString = calculateTodoData(exercise);
+  const [set, data1, data2] = calculateTodoData(exercise);
 
   const { mutate: isCompleted } = useMutation({
     mutationFn: async (exercise: ExerciseTodoItemType) => {
@@ -112,7 +112,13 @@ const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
 
       <div className="flex flex-col gap-y-1">
         <div className="text-white text-sm">{exercise.name}</div>
-        <div className="text-white/50 text-xs">{formattingString}</div>
+        <div className="flex items-center gap-2 text-white/50 text-xs">
+          <span>{set}</span>
+          <span className="inline-block w-[1px] h-2 bg-whiteT-10"></span>
+          <span>{data1}</span>
+          <span className="inline-block w-[1px] h-2 bg-whiteT-10"></span>
+          <span>{data2}</span>
+        </div>
       </div>
     </div>
   );

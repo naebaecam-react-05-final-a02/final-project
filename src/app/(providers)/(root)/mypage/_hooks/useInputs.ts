@@ -7,7 +7,11 @@ function useInputs<T>(initialForm: T) {
   // change
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((form) => ({ ...form, [name]: value }));
+    if (name === 'height' || name === 'weight') {
+      setForm((form) => ({ ...form, [name]: Number(value) }));
+    } else {
+      setForm((form) => ({ ...form, [name]: value }));
+    }
   }, []);
   const reset = useCallback(() => setForm(initialForm), [initialForm]);
   return [form, onChange, reset, setForm] as const;

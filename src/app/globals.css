@@ -50,6 +50,10 @@
 
     box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.25);
   }
+
+  .my-page-intro-bg {
+    background: linear-gradient(95deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
+  }
 }
 
 /* Swiper 관련 스타일 */
@@ -71,4 +75,33 @@ input.exerciseInput[type='number'] {
 }
 body {
   @apply font-sans leading-140 tracking-tighter;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -8px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 8px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > li {
+  /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 16px;
+}
+
+.prev-button {
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25), -2px -2px 4px 0px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+html {
+  zoom: 100% !important;
 }

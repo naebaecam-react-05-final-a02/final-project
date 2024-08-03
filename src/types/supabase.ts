@@ -262,8 +262,7 @@ export type Database = {
           exerciseType: string;
           id: number;
           isCompleted: boolean | null;
-          memo: string;
-          name: string | null;
+          name: string;
           record: Json[];
           userId: string;
         };
@@ -272,8 +271,7 @@ export type Database = {
           exerciseType: string;
           id?: number;
           isCompleted?: boolean | null;
-          memo: string;
-          name?: string | null;
+          name: string;
           record: Json[];
           userId: string;
         };
@@ -282,21 +280,13 @@ export type Database = {
           exerciseType?: string;
           id?: number;
           isCompleted?: boolean | null;
-          memo?: string;
-          name?: string | null;
+          name?: string;
           record?: Json[];
           userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'exercisesBookmarks_exerciseId_fkey';
-            columns: ['exerciseId'];
-            isOneToOne: false;
-            referencedRelation: 'exercises';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'exercisesBookmarks_userId_fkey';
+            foreignKeyName: 'exercises_userId_fkey';
             columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
