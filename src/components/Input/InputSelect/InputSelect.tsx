@@ -71,7 +71,7 @@ const InputSelect = ({
   return (
     <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
       {label && (
-        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px] z-20">
+        <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
         </label>
       )}
@@ -81,7 +81,7 @@ const InputSelect = ({
             type="text"
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition z-[15]
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition ${isOpen ? 'z-20' : ''}
               border-b-2 ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
               ${icon ? 'pl-11' : 'pl-3'} 
@@ -91,11 +91,19 @@ const InputSelect = ({
             placeholder={placeholder}
             {...props}
           />
-          {icon && <div className="absolute left-4 top-1/2 -translate-y-1/2 z-[16] text-white/40 text-xl">{icon}</div>}
+          {icon && (
+            <div
+              className={`absolute left-4 top-1/2 -translate-y-1/2 z-[16] text-white/40 text-xl ${
+                isOpen ? 'z-20' : ''
+              }`}
+            >
+              {icon}
+            </div>
+          )}
           <button
             type="button"
             className={`absolute right-3 top-1/2 transform -translate-y-1/2 
-              flex flex-col justify-center items-center z-[16]
+              flex flex-col justify-center items-center ${isOpen ? 'z-20' : ''}
               p-[2px] gap-[10px] rounded-[4px] 
               transition-all duration-300 ease-in-out
               ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}

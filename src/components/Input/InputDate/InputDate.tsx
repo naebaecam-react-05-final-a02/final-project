@@ -44,7 +44,7 @@ const InputDate = ({ label, id, error, onChange, className = '', value, ...props
   return (
     <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
       {label && (
-        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px] z-20">
+        <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
         </label>
       )}
@@ -54,8 +54,9 @@ const InputDate = ({ label, id, error, onChange, className = '', value, ...props
             type="text"
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-right text-[14px] font-medium 
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition z-[15] pr-10 py-[14px] pl-11
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-[14px] pl-11
               border-b-2 
+              ${isOpen ? 'z-20' : ''}
               ${isOpen ? 'text-white' : 'text-whiteT-50 '}
               ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
@@ -66,16 +67,16 @@ const InputDate = ({ label, id, error, onChange, className = '', value, ...props
             readOnly
             {...props}
           />
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-[16] text-white/40 text-xl">
+          <div className={`absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-xl ${isOpen ? 'z-20' : ''}`}>
             <Calendar />
           </div>
           <button
             type="button"
             className={`absolute right-3 top-1/2 transform -translate-y-1/2 
-              flex flex-col justify-center items-center z-[16]
+              flex flex-col justify-center items-center 
               p-[2px] gap-[10px] rounded-[4px] 
               transition-all duration-300 ease-in-out
-              ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}
+              ${isOpen ? 'bg-primary-10 rotate-180 z-20' : 'bg-[rgba(255,255,255,0.05)]'}`}
             onClick={() => setIsOpen(!isOpen)}
           >
             <ArrowDropDown isActive={isOpen} />

@@ -5,7 +5,7 @@ import { useId } from 'react';
 
 interface CheckboxProps {
   checked: boolean;
-  label: string;
+  label?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
