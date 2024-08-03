@@ -1,0 +1,39 @@
+import { FoodType } from '@/types/diet';
+import Image from 'next/image';
+import { ComponentProps } from 'react';
+import CloseIcon from '/public/icons/x-close.svg';
+
+interface ChipProps {
+  food: FoodType;
+  isActive?: boolean;
+  handleDelete?: () => void;
+}
+
+const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentProps<'button'>) => {
+  return (
+    <button
+      className={`flex gap-3 items-center flex-none p-1 pr-3 bg-white bg-opacity-10 rounded-full border ${
+        isActive ? 'border-[#12F287]' : 'border-transparent'
+      }`}
+      onClick={onClick}
+    >
+      <div className="p-2">
+        <Image width={24} height={24} src={`/foods/${food.foodType}.png`} alt={food.foodType} />
+      </div>
+      <div className="flex flex-col justify-center items-start">
+        <span className="text-sm">{food.foodName || '-'}</span>
+        <span className="text-[10px] opacity-30">{food.kcal} Kcal</span>
+      </div>
+      {handleDelete && (
+        <CloseIcon
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete();
+          }}
+        />
+      )}
+    </button>
+  );
+};
+
+export default Chip;

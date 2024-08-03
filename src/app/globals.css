@@ -1,6 +1,107 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer utilities {
+  .swiper-slide {
+    @apply text-center text-lg bg-white flex justify-center items-center;
+  }
+
+  .scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll {
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
+  .chips::-webkit-scrollbar {
+    @apply w-[3px] h-[3px];
+  }
+
+  .chips::-webkit-scrollbar-thumb {
+    @apply bg-gray-500;
+  }
+
+  .input-bg {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
+    backdrop-filter: blur(5px);
+  }
+
+  .button-icon {
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25), -2px -2px 4px 0px rgba(18, 242, 135, 0.1);
+    backdrop-filter: blur(5px);
+  }
+  .slide-item {
+    position: relative;
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .my-page-intro-bg {
+    background: linear-gradient(95deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
+  }
+}
+
+/* Swiper 관련 스타일 */
+.swiper-pagination-bullet-active {
+  @apply bg-blue-500;
+}
+
+input.exerciseInput::-webkit-outer-spin-button,
+input.exerciseInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  text-align: center;
+}
+
+/* Firefox */
+input.exerciseInput[type='number'] {
+  text-align: center;
+  -moz-appearance: textfield;
+}
+body {
+  @apply font-sans leading-140 tracking-tighter;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -8px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 8px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > li {
+  /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 16px;
+}
+
+.prev-button {
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25), -2px -2px 4px 0px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+html {
+  zoom: 100% !important;
 }
