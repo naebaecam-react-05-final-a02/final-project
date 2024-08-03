@@ -1,4 +1,5 @@
 import Button from '@/components/Button';
+import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { Tables } from '@/types/supabase';
 import Link from 'next/link';
@@ -41,7 +42,11 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
     userInfo = data;
   }
 
-  return <VerificationRegister params={params} userInfo={userInfo} challengeTitle={response.data.title} />;
+  return (
+    <Mobile>
+      <VerificationRegister params={params} userInfo={userInfo} challengeTitle={response.data.title} />
+    </Mobile>
+  );
 };
 
 export default ChallengeVerificationRegisterPage;

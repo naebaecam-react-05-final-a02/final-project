@@ -138,7 +138,9 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
         </div>
       </div>
 
-      <Button className="select-none ">제출하기</Button>
+      <div className="h-5 mt-10">
+        <Button className="select-none ">제출하기</Button>
+      </div>
     </form>
   );
 };

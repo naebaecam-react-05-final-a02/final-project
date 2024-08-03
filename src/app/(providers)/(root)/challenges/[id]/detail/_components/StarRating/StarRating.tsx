@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import StarIcon from '../../../../../../../../icons/star.svg';
 
 const StarRating = ({ onRatingChange }) => {

@@ -80,7 +80,7 @@ const ChallengeRegisterForm = () => {
           challengeRegister(registerData, {
             onSuccess: () => {
               console.log('Challenge Register Successfully');
-              router.push('/');
+              router.push('/challenges');
             },
             onError: (error) => console.error('Chaalenge Register Failed', error),
           });
