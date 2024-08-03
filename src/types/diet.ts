@@ -12,7 +12,7 @@ export type DietType = {
 export type DietTimeType = '아침' | '점심' | '저녁';
 
 export type FoodType = {
-  id: string;
+  id?: string;
   foodType: string;
   foodName: string;
   kcal: number;

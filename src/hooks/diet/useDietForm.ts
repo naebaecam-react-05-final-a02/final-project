@@ -7,7 +7,7 @@ interface DietFormProps {
 }
 
 const useDietForm = ({ initialValue }: DietFormProps) => {
-  const [foodChips, setFoodChips] = useState<(FoodType & { id: string })[]>(
+  const [foodChips, setFoodChips] = useState<FoodType[]>(
     initialValue ? initialValue.foods : [{ ...initialFoodState, id: crypto.randomUUID() }],
   );
   const [activeChipIdx, setActiveChipIdx] = useState<number>(0);
