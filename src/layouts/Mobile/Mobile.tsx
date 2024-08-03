@@ -18,8 +18,8 @@ const Mobile = ({
   return (
     <div className="w-full h-screen relative text-white">
       <section className="h-full w-full flex flex-col ">
-        <header className=" w-full h-14 mb-4 px-4">{headerLayout}</header>
-        <div className="flex-1 relative w-full h-full overflow-scroll scroll pb-4">{children}</div>
+        <header className=" w-full h-14 px-4">{headerLayout}</header>
+        <div className="flex-1 relative w-full h-full overflow-scroll scroll py-4">{children}</div>
         <footer className="w-full h-[72px]">{footerLayout}</footer>
       </section>
       <BackBoard />
