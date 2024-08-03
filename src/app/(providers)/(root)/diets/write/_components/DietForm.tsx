@@ -75,7 +75,7 @@ const DietForm = () => {
               key={food.id}
               food={food}
               isActive={activeChipIdx === idx}
-              handleDelete={() => deleteChip(food.id)}
+              handleDelete={() => deleteChip(food.id!)}
               onClick={() => changeChip(idx)}
             />
           ))}
