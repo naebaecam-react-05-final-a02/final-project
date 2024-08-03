@@ -22,18 +22,19 @@ const FormCategory = ({ label, name, defaultValue }: FormCategoryType) => {
   const id = useId();
   return (
     <div className="select-none flex flex-col gap-y-2 ">
-      <label className="text-xs font-bold" htmlFor={name}>
+      <label className="text-white/70 pl-1 text-[12px]" htmlFor={name}>
         {label}
       </label>
       <select
         defaultValue={defaultValue}
-        className="bg-[#f6f6f6] px-[10px] font-bold
-      outline-none focus:outline-none border-b-2 border-b-[#7b7b7b] h-8 text-xs"
+        className="bg-transparent rounded-lg bg-input-gradient text-white/40 border-r-8 border-transparent
+        px-[10px]
+      outline-none focus:outline-none  h-10 text-sm"
         name={name}
         id={id}
       >
         {categoryItems.map((item) => (
-          <option key={item.value} className="font-bold" value={item.value}>
+          <option key={item.value} className="font-bold bg-input-gradient text-black" value={item.value}>
             {item.label}
           </option>
         ))}
