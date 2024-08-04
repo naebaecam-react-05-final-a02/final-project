@@ -2,65 +2,27 @@
 
 import Input from '@/components/Input';
 import { EssentialInfoFormProps, FormState } from '@/types/auth';
-import { debounce } from 'lodash';
+import { useCallback, useMemo } from 'react';
 import { validatePassword } from '../../../_utils/validatePassword';
+import { useDebounce } from '../../_hooks/useDebounce';
 
 const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: EssentialInfoFormProps) => {
-  const validationRules = {
-    email: (value: string) => (!value.includes('@') ? '유효한 이메일 주소를 입력해주세요.' : null),
-    password: validatePassword,
-    confirmPassword: (value: string, password: string) => (value !== password ? '비밀번호가 일치하지 않습니다.' : null),
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormState((prev) => ({
-      ...prev,
-      [name]: {
-        ...prev[name as keyof FormState],
-        value,
-        error: null,
-        successMessage: null,
-        isVerified: false,
+  const validationRules = useMemo(
+    () => ({
+      email: (value: string) => {
+        if (value.length < 3) return '이메일은 3자 이상이어야 합니다.';
+        if (!value.includes('@')) return '유효한 이메일 주소를 입력해주세요.';
+        return null;
       },
-    }));
+      password: validatePassword,
+      confirmPassword: (value: string, password: string) =>
+        value !== password ? '비밀번호가 일치하지 않습니다.' : null,
+    }),
+    [],
+  );
 
-    if (name === 'email') {
-      debouncedCheckEmail(value);
-    } else if (name === 'password' && value.length === 1) {
-      // 비밀번호 필드에 처음 입력할 때 이메일 중복 확인
-      checkEmailAgain();
-    }
-  };
-
-  const debouncedCheckEmail = debounce(async (value: string) => {
-    if (validationRules.email(value) === null) {
-      try {
-        const isAvailable = await checkDuplicate('email', value);
-        setFormState((prev) => ({
-          ...prev,
-          email: {
-            ...prev.email,
-            error: isAvailable ? null : '이미 사용 중인 이메일입니다.',
-            isVerified: isAvailable,
-          },
-        }));
-      } catch (error) {
-        console.error('이메일 중복 확인 중 오류 발생:', error);
-        setFormState((prev) => ({
-          ...prev,
-          email: {
-            ...prev.email,
-            error: '이메일 중복 확인 중 오류가 발생했습니다.',
-            successMessage: null,
-            isVerified: false,
-          },
-        }));
-      }
-    }
-  }, 500);
   // 디바운싱에서 가끔 중복 처리 안되는 경우가 있어서 비밀번호 첫 입력할 때 한번 더 확인
-  const checkEmailAgain = async () => {
+  const checkEmailAgain = useCallback(async () => {
     const emailValue = formState.email.value;
     if (emailValue && !formState.email.error) {
       try {
@@ -86,7 +48,50 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
         }));
       }
     }
+  }, [formState.email.value, formState.email.error, checkDuplicate, setFormState]);
+
+  const debouncedCheckEmail = (value: string) => {
+    const emailError = validationRules.email(value);
+    if (emailError) {
+      setFormState((prev) => ({
+        ...prev,
+        email: {
+          ...prev.email,
+          error: emailError,
+          isVerified: false,
+        },
+      }));
+    } else {
+      console.log('호출 2');
+      checkDuplicate('email', value)
+        .then((isAvailable) => {
+          setFormState((prev) => ({
+            ...prev,
+            email: {
+              ...prev.email,
+              error: isAvailable ? null : '이미 사용 중인 이메일입니다.',
+              isVerified: isAvailable,
+            },
+          }));
+        })
+        .catch((error) => {
+          console.error('이메일 중복 확인 중 오류 발생:', error);
+          setFormState((prev) => ({
+            ...prev,
+            email: {
+              ...prev.email,
+              error: '이메일 중복 확인 중 오류가 발생했습니다.',
+              successMessage: null,
+              isVerified: false,
+            },
+          }));
+        });
+    }
   };
+
+  const debouncedCheckEmailWithDelay = useDebounce((value: string) => {
+    debouncedCheckEmail(value);
+  }, 1000);
 
   const validatePasswordFields = (name: string, value: string) => {
     setFormState((prev) => {
@@ -108,6 +113,29 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
     }
   };
 
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormState((prev) => ({
+        ...prev,
+        [name]: {
+          ...prev[name as keyof FormState],
+          value,
+          error: null,
+          successMessage: null,
+          isVerified: false,
+        },
+      }));
+
+      if (name === 'email') {
+        debouncedCheckEmailWithDelay(value);
+      } else if (name === 'password' && value.length === 1) {
+        checkEmailAgain();
+      }
+    },
+    [setFormState, debouncedCheckEmailWithDelay, checkEmailAgain],
+  );
+
   return (
     <form className="flex flex-col gap-4 items-center justify-center w-full mt-10">
       <div className="flex flex-col w-full  justify-between content-between">
@@ -121,6 +149,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                   placeholder="이메일을 입력해 주세요."
                   value={formState.email.value}
                   onChange={handleChange}
+                  autoComplete="email"
                   error={formState.email.error}
                   required
                 />
@@ -141,6 +170,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={formState.password.error}
+                autoComplete="new-password"
                 required
               />
             </div>
@@ -157,6 +187,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={formState.confirmPassword.error}
+                autoComplete="new-password"
                 required
               />
             </div>
