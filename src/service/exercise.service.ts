@@ -1,4 +1,4 @@
-import { ExerciseRecord, RecordData } from '@/types/exercises';
+import { ExerciseRecord, ExerciseTodoItemType, RecordData } from '@/types/exercises';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
@@ -50,6 +50,19 @@ class ExerciseAPI {
       throw error;
     }
   };
+
+  toggleCompleted = async ({ exercise, isCompleted }: { exercise: ExerciseTodoItemType; isCompleted: boolean }) => {
+    try {
+      const response = await axios.patch(`${this.baseUrl}/${exercise.id}/toggle`, { isCompleted });
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   getExerciseRecord = async (id: string): Promise<ExerciseRecord> => {
     try {
       console.log('@@1==', 1);
