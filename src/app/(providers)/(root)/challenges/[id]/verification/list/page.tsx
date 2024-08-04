@@ -13,6 +13,7 @@ import Link from 'next/link';
 import VerificationList from './_components/VerificationList';
 
 //TODO hooks 작업?
+//TODO 인증은 한사람당 하루에 한번?
 const ChallengeVerificationListPage = async ({ params }: { params: { id: string } }) => {
   const queryClient = new QueryClient();
   const supabase = createClient();
