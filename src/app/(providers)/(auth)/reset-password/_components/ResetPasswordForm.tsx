@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { useResetPassword } from '@/hooks/auth/useUsers';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { FormEvent, MouseEvent, useState } from 'react';
 import { validatePassword } from '../../_utils/validatePassword';
 
 interface ResetPasswordFormProps {
@@ -12,7 +12,7 @@ interface ResetPasswordFormProps {
   setError: (error: string | null) => void;
 }
 
-const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
+const ResetPasswordForm = ({ setError }: ResetPasswordFormProps) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       setError('비밀번호가 일치하지 않습니다.');
@@ -45,10 +45,6 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
     }
     if (passwordError) {
       setError(passwordError);
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
       return;
     }
     resetPassword(
@@ -66,32 +62,42 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md">
-      <div className="mb-4">
-        <Input
-          label="새 비밀번호"
-          name="password"
-          value={newPassword}
-          onChange={handleNewPasswordChange}
-          error={passwordError}
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <Input
-          label="새 비밀번호 확인"
-          name="confirm-password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          error={confirmPasswordError}
-          required
-        />
-      </div>
+    <div className="flex flex-col w-full h-screen justify-between">
+      <div>
+        <h2 className="text-18 font-semibold mb-6">새로운 비밀번호를 설정해 주세요!</h2>
+        <form className="flex flex-col gap-4">
+          <Input
+            label="새 비밀번호"
+            type="password"
+            name="password"
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+            error={passwordError}
+            autoComplete="off"
+            required
+          />
 
-      <Button type="submit" disabled={isResetting || !!passwordError || !!confirmPasswordError}>
-        {isResetting ? '변경 중...' : '비밀번호 변경'}
+          <Input
+            label="새 비밀번호 확인"
+            type="password"
+            name="confirm-password"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            error={confirmPasswordError}
+            autoComplete="off"
+            required
+          />
+        </form>
+      </div>
+      <Button
+        onClick={handleSubmit}
+        type="submit"
+        className="mb-10"
+        disabled={isResetting || !!passwordError || !!confirmPasswordError}
+      >
+        {isResetting ? '변경 중...' : '확인'}
       </Button>
-    </form>
+    </div>
   );
 };
 
