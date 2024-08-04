@@ -27,6 +27,17 @@ class ExerciseAPI {
       throw error;
     }
   };
+  update = async ({ exerciseData, exerciseId }: { exerciseData: RecordData; exerciseId: string }) => {
+    try {
+      const response = await axios.put(`${this.baseUrl}`, { exerciseData, exerciseId });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
   getBookmarks = async (): Promise<운동북마크반환데이터> => {
     try {
       const response = await axios.get(`${this.baseUrl}/bookmarks`);

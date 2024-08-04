@@ -45,6 +45,10 @@ export const mutationOptions = {
   register: {
     mutationFn: (exerciseData: RecordData) => api.exercise.register(exerciseData),
   },
+  update: {
+    mutationFn: ({ exerciseData, exerciseId }: { exerciseData: RecordData; exerciseId: string }) =>
+      api.exercise.update({ exerciseData, exerciseId }),
+  },
   toggleBookmark: {
     mutationFn: (exerciseId: number) => api.exercise.toggleBookmark(exerciseId),
   },

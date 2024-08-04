@@ -4,6 +4,9 @@ import { mutationOptions, queryOptions } from './queries';
 // 운동 기록 등록
 export const useRegisterExercise = () => useMutation(mutationOptions.register);
 
+// 운동 기록 수정
+export const useUpdateExercise = () => useMutation(mutationOptions.update);
+
 // 운동 북마크 목록 조회
 export const useGetExerciseBookmarks = () => useQuery(queryOptions.getExercisesBookmarks());
 
