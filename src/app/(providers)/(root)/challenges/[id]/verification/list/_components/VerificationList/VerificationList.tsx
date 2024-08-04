@@ -29,7 +29,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       // console.log('LASTPAGE', lastPage);
       // console.log('ALLPAGE', allPage);
-      const nextPage = lastPage.length === 5 ? allPage.length : undefined;
+      const nextPage = lastPage.length === 10 ? allPage.length : undefined;
       return nextPage;
     },
     initialPageParam: 1,
