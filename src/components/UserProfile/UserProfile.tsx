@@ -12,7 +12,13 @@ const UserProfile = () => {
   return (
     <div className="flex items-center gap-2 h-14 ">
       <div className="relative w-9 h-9 border-white border rounded-full">
-        <Image src={user?.profileURL ?? '/default-profile.png'} alt={'username'} fill style={{ objectFit: 'cover' }} />
+        <Image
+          src={user?.profileURL ?? '/default-profile.png'}
+          alt={'username'}
+          fill
+          sizes="100"
+          className="object-cover rounded-full"
+        />
       </div>
       <div className="text-sm">{user?.nickname}</div>
     </div>

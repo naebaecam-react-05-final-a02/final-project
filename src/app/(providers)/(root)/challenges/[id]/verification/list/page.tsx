@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 import {
   fetchDataByInfinityQuery,
   fetchVerificationTotalData,
@@ -37,11 +37,9 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
         <Mobile
           headerLayout={<TitleHeader>챌린지 인증 목록</TitleHeader>}
           footerLayout={
-            <div className="p-[10px]">
-              <Link href={`/challenges/${params.id}/verification/register`}>
-                <Button>인증하기</Button>
-              </Link>
-            </div>
+            <Link className="p-[10px]" href={`/challenges/${params.id}/verification/register`}>
+              <Button>인증하기</Button>
+            </Link>
           }
         >
           <VerificationList counts={counts} />

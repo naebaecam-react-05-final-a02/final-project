@@ -97,6 +97,7 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
                   <Image
                     src={user.profileURL ?? '/default-profile.png'}
                     fill
+                    sizes="100"
                     alt={`${user.id}'s profile`}
                     className="object-cover rounded-full"
                   />

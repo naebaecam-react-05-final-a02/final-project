@@ -74,7 +74,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
           <ul>
             <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
               {verifications?.map((verification, i) => (
-                <li className="list-none" key={i}>
+                <li className="list-none" key={verification.id}>
                   <VerificationItem verification={verification} />
                 </li>
               ))}
