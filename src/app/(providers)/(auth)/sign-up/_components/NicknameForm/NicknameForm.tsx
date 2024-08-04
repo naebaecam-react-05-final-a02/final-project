@@ -3,6 +3,7 @@
 import Input from '@/components/Input';
 import { FormState, NicknameFormProps } from '@/types/auth';
 import { useState } from 'react';
+import validateNicknameInfo from '../../../_utils/validateNicknameInfo';
 
 const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormProps) => {
   const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
@@ -35,6 +36,16 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
       return;
     }
 
+    // 유효성 검사 수행
+    const { isValid, errors } = validateNicknameInfo(formState);
+    if (!isValid) {
+      setFormState((prev) => ({
+        ...prev,
+        ...errors,
+      }));
+      return;
+    }
+
     setIsCheckingDuplicate(true);
 
     try {
@@ -44,8 +55,8 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
         ...prev,
         nickname: {
           ...prev.nickname,
-          error: result ? null : '이미 사용 중인 닉네임입니다.',
-          successMessage: result ? '사용 가능한 닉네임입니다.' : null,
+          error: result ? null : '이미 사용 중입니다!',
+          successMessage: result ? '사용가능한 닉네임 입니다!' : null,
           isVerified: result,
         },
       }));
@@ -86,30 +97,36 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
             <h3 className="text-18 font-semibold leading-140 tracking-tighter mt-8 mb-6">
               사용하실 닉네임을 알려주세요!
             </h3>
-            <div className="flex w-full items-end">
-              <Input
-                label="닉네임"
-                name="nickname"
-                placeholder="닉네임을 입력해 주세요."
-                value={formState.nickname.value}
-                error={formState.nickname.error}
-                onChange={handleChange}
-                required
-              />
-              <button
-                type="button"
-                onClick={handleCheckDuplicate}
-                disabled={isCheckingDuplicate}
-                className="bg-primary-70 w-20 h-full text-nowrap rounded-md px-2.5 py-3.5 ml-2 hover:brightness-90"
-                aria-label="닉네임 중복 확인"
-              >
-                {isCheckingDuplicate ? '확인 중' : '확인'}
-              </button>
+            <div className="flex flex-col w-full items-start">
+              <div className="flex w-full pb-10">
+                <Input
+                  label="닉네임"
+                  name="nickname"
+                  placeholder="닉네임을 입력해 주세요."
+                  value={formState.nickname.value}
+                  error={formState.nickname.error}
+                  onChange={handleChange}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={handleCheckDuplicate}
+                  disabled={isCheckingDuplicate}
+                  className="bg-primary-70 w-20 h-full text-nowrap rounded-md px-2.5 py-3.5 ml-2 mt-8 hover:brightness-90"
+                  aria-label="닉네임 중복 확인"
+                >
+                  {isCheckingDuplicate ? '확인 중' : '확인'}
+                </button>
+              </div>
+              {formState.nickname.successMessage && (
+                <p className="text-primary-100 text-[12px] ml-1 mt-1">{formState.nickname.successMessage}</p>
+              )}
             </div>
+            <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal leading-[18px]">
+              <li>최대 10자 이내</li>
+              <li>특수문자, 띄어쓰기 사용 불가합니다.</li>
+            </ul>
           </div>
-          {formState.nickname.successMessage && (
-            <p className="text-green-500 text-sm mt-1">{formState.nickname.successMessage}</p>
-          )}
         </div>
         <div className="flex justify-between mt-4"></div>
       </div>

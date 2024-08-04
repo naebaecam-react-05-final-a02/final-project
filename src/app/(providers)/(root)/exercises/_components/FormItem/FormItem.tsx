@@ -28,9 +28,9 @@ const FormItem = ({ onChange, type, index, firstProp, secondProp }: FormItemProp
       >
         {index + 1}
       </div>
-      <Input onChange={(e) => onChange(e, index)} name={type === 'cardio' ? 'hours' : 'weight'} value={firstProp} />
+      <Input onChange={(e) => onChange(e, index)} name={type === 'cardio' ? 'minutes' : 'weight'} value={firstProp} />
 
-      <Input onChange={(e) => onChange(e, index)} name={type === 'cardio' ? 'minutes' : 'reps'} value={secondProp} />
+      <Input onChange={(e) => onChange(e, index)} name={type === 'cardio' ? 'distance' : 'reps'} value={secondProp} />
 
       <DeleteButton onClick={deleteInput} />
     </div>

@@ -1,6 +1,5 @@
 import { useCardioInputStore } from '@/stores/useExerciseStore';
 import { CardioInput } from '@/types/exercises';
-import { useEffect } from 'react';
 import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
 import InputLabel from '../InputLabel';
@@ -47,8 +46,8 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
             onChange={handleChange}
             key={index}
             index={index}
-            firstProp={item.hours}
-            secondProp={item.minutes}
+            firstProp={item.minutes}
+            secondProp={item.distance}
           />
         ))}
         <AddSetButton onClick={addCardio}>세트 추가하기 +</AddSetButton>

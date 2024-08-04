@@ -24,6 +24,7 @@ export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>,
   }
 
   const response = await query;
+  console.log(response);
 
   return response.data as verificationsType[];
 };

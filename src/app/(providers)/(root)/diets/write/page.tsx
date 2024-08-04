@@ -1,14 +1,15 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import DietForm from './_components/DietForm';
 import LeftIcon from '/public/icons/chevron-left.svg';
 
-const PostDietPage = () => {
+const PostDietPage = ({ searchParams }: { searchParams: { mode: string } }) => {
   const router = useRouter();
-  const isEditMode = useSearchParams().get('mode') === 'edit';
+  const isEditMode = searchParams.mode === 'edit';
 
   return (
     // TODO: svg bg 뒤에 있는 것들은 나중에 빼야할 듯
+
     <div className="flex flex-col gap-8 bg-[url('/bg.svg')] text-white leading-normal tracking-[-0.35px]">
       <header className="flex justify-between items-center">
         <button

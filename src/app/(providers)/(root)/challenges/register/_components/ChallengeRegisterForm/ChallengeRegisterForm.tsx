@@ -1,13 +1,15 @@
 'use client';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../_components/FormImageUploader';
-import FormInput from '../../../_components/FormInput';
 import FormTextArea from '../../../_components/FormTextArea';
 import FormCalendar from '../FormCalendar';
 import FormCategory from '../FormCategory';
@@ -17,7 +19,6 @@ export interface FormFields {
   content: string;
   startDate: string;
   endDate: string;
-  verify: string;
   category: string;
 }
 
@@ -28,7 +29,7 @@ const ChallengeRegisterForm = () => {
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //TODO Rating, Tags 생각
+  //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -40,7 +41,7 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'verify', 'category'];
+    const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'category'];
     const formFields: Partial<FormFields> = {};
 
     for (const field of fields) {
@@ -52,7 +53,7 @@ const ChallengeRegisterForm = () => {
       formFields[field] = value.trim();
     }
 
-    const { title, content, startDate, endDate, verify, category } = formFields as FormFields;
+    const { title, content, startDate, endDate, category } = formFields as FormFields;
 
     const form = new FormData();
     form.append('file', file);
@@ -70,7 +71,7 @@ const ChallengeRegisterForm = () => {
             isProgress: today == startDate,
             createdBy: user?.id!,
             imageURL: response.imageURL,
-            verify,
+            verify: null,
             tags: null,
             rating: 0,
             category,
@@ -89,36 +90,37 @@ const ChallengeRegisterForm = () => {
     );
   };
 
+  //TODO 카테고리, 캘린더 ui 수정 필요
   return (
-    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full">
+    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
       {uploading && <div>이미지 업로딩..</div>}
       {isPending && <div>로우딩딩딩..</div>}
-      {/* 사진 */}
-      <FormImageUploader ref={inputRef} />
 
-      {/* 챌린지 이름 */}
-      <FormInput label="챌린지 이름" name="title" placeholder="누워서 숨쉬기?" />
+      <div className="select-none">
+        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." />
+      </div>
 
-      {/* 챌린지 내용 */}
+      {<FormCategory label="카테고리" name="category" />}
+
       <FormTextArea
-        maxLength={300}
-        label="챌린지 내용"
+        maxLength={200}
+        label="챌린지 내용 & 인증 방법"
         name="content"
-        placeholder="에어컨 틀고 이불덮고 누워서 티비보기"
+        placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
       />
 
-      {/* 챌린지 기간 */}
       <FormCalendar />
 
-      {/* 인증 방법 */}
-      <FormInput label="인증 방법" name="verify" placeholder="누워서 셀카를 올려주세용" />
-
-      {/* 카테고리 */}
-      <FormCategory label="카테고리" name="category" />
-
-      <button type="submit" className="select-none w-full rounded-md bg-[#3ecf8e] font-bold py-2">
-        입력 안해?
-      </button>
+      <div className="grid gap-y-4">
+        <FormImageUploader ref={inputRef} />
+        <div className="text-white/50 flex gap-x-1">
+          <AiOutlineExclamationCircle />
+          <p className="text-xs"> 홍보를 위한 썸네일 이미지를 함께 업로드 해주세요!</p>
+        </div>
+      </div>
+      <Button type="submit" className="select-none">
+        챌린지 등록하기
+      </Button>
     </form>
   );
 };
