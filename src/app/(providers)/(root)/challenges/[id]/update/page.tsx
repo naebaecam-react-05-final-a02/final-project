@@ -30,7 +30,7 @@ const ChallengeUpdatePage = async ({ params }: ChallengeUpdatePageProp) => {
 
   if (!me || challenge?.createdBy !== me?.id) {
     // console.log('저놈을 매우 쳐라!');
-    return redirect(`/challenges/discover`);
+    return redirect(`/challenges`);
   }
 
   return (
