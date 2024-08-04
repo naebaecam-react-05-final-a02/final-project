@@ -6,24 +6,20 @@ import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import Mobile from '@/layouts/Mobile';
-import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
+import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
 
 const ExerciseRecordPage = () => {
   const queryClient = useQueryClient();
+  const { record, setRecord, isBookMark, setIsBookMark } = useExerciseStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentExerciseId, setCurrentExerciseId] = useState<number | null>(null);
   const [bookmarkedExercises, setBookmarkedExercises] = useState<number[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState('');
   const [customWorkout, setCustomWorkout] = useState('');
-  const [date, setDate] = useState('');
-  const [memo, setMemo] = useState('');
-  const [name, setName] = useState('');
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
-  const [record, setRecord] = useState<ExerciseRecord>(exerciseInitialState);
-  const [isBookMark, setIsBookMark] = useState(false);
 
   const { mutate: register } = useRegisterExercise();
   const { data: bookmarkData } = useGetExerciseBookmarks();
@@ -58,19 +54,12 @@ const ExerciseRecordPage = () => {
   };
 
   const handleDateChange = (date: Date) => {
-    setRecord((prev) => ({
-      ...prev,
-      date: date,
-    }));
+    setRecord({ date });
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRecord((prev) => ({
-      ...prev,
-      name: event.target.value,
-    }));
+    setRecord({ name: event.target.value });
     setCustomWorkout(event.target.value);
-    console.log('@@isFirstChange', isFirstChange);
     if (isFirstChange) {
       setIsBookMark(false);
       setIsFirstChange(false);
@@ -78,10 +67,7 @@ const ExerciseRecordPage = () => {
   };
 
   const handleMemoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRecord((prev) => ({
-      ...prev,
-      memo: event.target.value,
-    }));
+    setRecord({ memo: event.target.value });
   };
 
   const handleSubmit = async () => {
@@ -111,10 +97,6 @@ const ExerciseRecordPage = () => {
     setSearchTerm('');
     setSelectedWorkout('');
     setCustomWorkout('');
-    setDate('');
-    setName('');
-    setMemo('');
-    console.log('@@RECORD', record);
     setRecord(exerciseInitialState);
     setIsBookMark(false);
     try {
@@ -131,15 +113,6 @@ const ExerciseRecordPage = () => {
     } catch (error) {
       console.error('데이터 전송 중 오류 발생:', error);
     }
-  };
-  const handleChange = (data: CardioInput[] | WeightInput[], type: ExerciseType) => {
-    setRecord((prev) => ({
-      ...prev,
-      record: data,
-      // record: [{ weight: 30, reps: 10 }],
-      exerciseType: type,
-    }));
-    console.log('@@Record', record.record);
   };
 
   const handleToggleBookmark = (exerciseId?: number) => {
@@ -237,7 +210,7 @@ const ExerciseRecordPage = () => {
           className="p-4 rounded-lg"
           icon={<Star width={24} height={24} />}
         />
-        <ExerciseRecordForm onChange={handleChange} />
+        <ExerciseRecordForm />
         <Button type="submit" onClick={handleSubmit}>
           등록하기
         </Button>

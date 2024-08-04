@@ -1,34 +1,29 @@
-import { useCardioInputStore } from '@/stores/useExerciseStore';
-import { CardioInput } from '@/types/exercises';
+import { useExerciseStore } from '@/stores/exercise.store';
+import { CardioInput, ExerciseRecord } from '@/types/exercises';
 import AddSetButton from '../AddSetButton';
 import FormItem from '../FormItem';
 import InputLabel from '../InputLabel';
 
-type CardioFormProps = {
-  onChange: (data: CardioInput[]) => void;
-};
+const CardioForm = () => {
+  const { cardioInputs, setCardioInputs, addInput, setRecord } = useExerciseStore();
 
-const CardioForm = ({ onChange }: CardioFormProps) => {
-  const cardioList = useCardioInputStore((state) => state.cardioInputs);
-  console.log(cardioList);
-  const setCardioList = useCardioInputStore((state) => state.setCardioInputs);
-  const addCardio = useCardioInputStore((state) => state.addInput);
+  const updateCardioRecord = (updatedInputs: CardioInput[]) => {
+    setRecord({
+      exerciseType: 'cardio',
+      record: updatedInputs,
+    } as ExerciseRecord & { exerciseType: 'cardio'; record: CardioInput[] });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
-    const list = cardioList.map((item, i) => {
+    const updatedInputs = cardioInputs.map((item, i) => {
       if (i === index) {
         return { ...item, [name]: Number(value) };
       }
       return item;
     });
-    console.log('@@');
-    setCardioList(list);
-    if (cardioList.length === 0) {
-      console.error('유산소 리스트가 비어 있습니다.');
-    } else {
-      onChange(list);
-    }
+    setCardioInputs(updatedInputs);
+    updateCardioRecord(updatedInputs);
   };
 
   return (
@@ -40,17 +35,17 @@ const CardioForm = ({ onChange }: CardioFormProps) => {
           <InputLabel>M</InputLabel>
           <InputLabel>-</InputLabel>
         </div>
-        {cardioList.map((item, index) => (
+        {cardioInputs.map((item, index) => (
           <FormItem
-            type={'cardio'}
-            onChange={handleChange}
+            type="cardio"
             key={index}
             index={index}
             firstProp={item.minutes}
             secondProp={item.distance}
+            onChange={handleChange}
           />
         ))}
-        <AddSetButton onClick={addCardio}>세트 추가하기 +</AddSetButton>
+        <AddSetButton onClick={addInput}>세트 추가하기 +</AddSetButton>
       </form>
     </div>
   );
