@@ -3,14 +3,17 @@ import Button from '@/components/Button';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import { useGetReviews } from '@/hooks/review/useReview';
+import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
   const { data: reviews } = useGetReviews(id);
+  const router = useRouter();
 
   //TODO: 로딩
   if (!challenge) {
@@ -19,6 +22,22 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
 
   console.log('USER___', user);
   console.log('challenge', challenge);
+
+  const handleJoinChallenge = async () => {
+    const supabase = createClient();
+
+    const { error } = await supabase.from('challengeParticipants').insert({
+      challengeId: id,
+      userId: user?.id,
+    });
+    if (error) {
+      // 에러 처리도 제대루 해야함
+      alert('챌린지 참여 에러');
+    } else {
+      // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
+      router.replace('/challenges');
+    }
+  };
 
   return (
     <div className="h-screen">
@@ -63,9 +82,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                   ))}
               </ul>
             </div>
-            <button className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
-              챌린지 신청하기
-            </button>
+            {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) && (
+              <button onClick={handleJoinChallenge} className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
+                챌린지 신청하기
+              </button>
+            )}
             {user?.id === challenge.createdBy && (
               <Link href={`/challenges/${challenge.id}/update`}>
                 <Button>수정 및 삭제</Button>
