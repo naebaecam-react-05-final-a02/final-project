@@ -2,6 +2,7 @@ import Button from '@/components/Button';
 import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { Tables } from '@/types/supabase';
+import { getStartOfDayISO } from '@/utils/dateFormatter';
 import Link from 'next/link';
 import VerificationRegister from './_components/registerVerification/VerificationRegister';
 
@@ -36,6 +37,8 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
     const { data } = await supabase
       .from('users')
       .select('id,profileURL')
+      .gte('date', getStartOfDayISO())
+      .lte('date', getStartOfDayISO())
       .in('id', userIds)
       .returns<{ id: string; profileURL: string | null }[]>();
 
