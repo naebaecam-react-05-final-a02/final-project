@@ -76,10 +76,10 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     setSearchTerm(workout); // 선택한 운동을 검색창에 표시
   };
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (date: Date) => {
     setRecord((prev) => ({
       ...prev,
-      date: event.target.value,
+      date: date,
     }));
   };
 
@@ -247,7 +247,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
       )}
       <h3 className="text-white">날짜 선택</h3>
-      <Input type="date" value={record?.date} onChange={handleDateChange} className="p-2 rounded" />
+      <Input inputType="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
       <Input
         placeholder="주의사항, 다짐 등을 작성해 주세요"
         value={record?.memo}
