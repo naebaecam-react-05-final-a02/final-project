@@ -97,7 +97,7 @@ const ChallengeRegisterForm = () => {
       {isPending && <div>로우딩딩딩..</div>}
 
       <div className="select-none">
-        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." />
+        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." maxLength={12} />
       </div>
 
       {<FormCategory label="카테고리" name="category" />}
