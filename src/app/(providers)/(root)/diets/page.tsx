@@ -1,8 +1,8 @@
 'use client';
+import Week from '@/components/Calendar/Week';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { useRouter } from 'next/navigation';
-import Week from './_components/Calendar/Week';
 import DietList from './_components/DietList';
 import DownIcon from '/public/icons/chevron-down.svg';
 import LeftIcon from '/public/icons/chevron-left.svg';
@@ -20,7 +20,7 @@ const DietPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 bg-[url('/bg.svg')] text-white">
+    <div className="flex flex-col gap-8">
       <header className="flex justify-between items-center">
         <button
           className="flex w-10 h-10 justify-center items-center rounded-xl backdrop-blur-[5px] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25),-2px_-2px_4px_0px_hsla(0, 0%, 100%, 0.1)]"

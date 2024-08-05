@@ -8,8 +8,8 @@ import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
-import DeleteIcon from '/public/icons/delete.svg';
 import EditIcon from '/public/icons/edit.svg';
+import DeleteIcon from '/public/icons/x.svg';
 
 interface DietListProps {
   selectedDate: Date;
@@ -58,7 +58,7 @@ const DietList = ({ selectedDate }: DietListProps) => {
   return (
     <>
       {diets?.length === 0 ? (
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-3">
           <span>식단 기록이 없습니다</span>
           <button className="text-sm" onClick={handleAddButtonClick}>
             추가하러 가기

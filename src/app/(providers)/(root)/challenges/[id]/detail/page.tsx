@@ -2,12 +2,15 @@
 
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
+
+import Button from '@/components/Button';
 import ChevronLeft from '@/icons/ChevronLeft';
 import DotsVertical from '@/icons/DotsVertical';
+import { createClient } from '@/supabase/client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
-import UserProfile from './_components/UserProfile';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import VerificationRecordList from './_components/VerificationRecordList';
 
 interface Author {
@@ -51,6 +54,22 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
     .getDate()
     .toString()
     .padStart(2, '0')}`;
+
+  const handleJoinChallenge = async () => {
+    const supabase = createClient();
+
+    const { error } = await supabase.from('challengeParticipants').insert({
+      challengeId: id,
+      userId: user?.id,
+    });
+    if (error) {
+      // 에러 처리도 제대루 해야함
+      alert('챌린지 참여 에러');
+    } else {
+      // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
+      router.replace('/challenges');
+    }
+  };
 
   return (
     <div className="text-white">
@@ -96,6 +115,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
             <ChallengeInfoMethod id={id} challenge={challenge} user={user} />
             {/* 챌린지 인증 리스트 */}
             <VerificationRecordList id={id} />
+            {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) && (
+              <button onClick={handleJoinChallenge} className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
+                챌린지 신청하기
+              </button>
+            )}
             <div
               className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl"
               style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.10)' }}
@@ -104,6 +128,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                 인증하기
               </button>
             </div>
+            {user?.id === challenge.createdBy && (
+              <Link href={`/challenges/${challenge.id}/update`}>
+                <Button>수정 및 삭제</Button>
+              </Link>
+            )}
           </section>
         </div>
       </main>
