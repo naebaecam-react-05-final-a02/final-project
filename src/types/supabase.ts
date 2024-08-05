@@ -99,6 +99,7 @@ export type Database = {
           id: number
           imageURL: string
           isProgress: boolean
+          participants: number
           rating: number | null
           startDate: string
           tags: string | null
@@ -113,6 +114,7 @@ export type Database = {
           id?: number
           imageURL: string
           isProgress?: boolean
+          participants?: number
           rating?: number | null
           startDate: string
           tags?: string | null
@@ -127,6 +129,7 @@ export type Database = {
           id?: number
           imageURL?: string
           isProgress?: boolean
+          participants?: number
           rating?: number | null
           startDate?: string
           tags?: string | null
