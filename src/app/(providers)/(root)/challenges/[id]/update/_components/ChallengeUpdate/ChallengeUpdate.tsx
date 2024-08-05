@@ -31,7 +31,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const handleDelete = () => {
     challengeDelete(challenge.id, {
       onSuccess: () => {
-        router.replace('/challenges/discover');
+        router.replace('/challenges');
       },
     });
   };
@@ -85,7 +85,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
               {
                 onSuccess: () => {
                   alert('수정이 완료되었습니다.');
-                  router.replace(`/challenges/discover`);
+                  router.replace(`/challenges`);
                 },
               },
             );
@@ -111,7 +111,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         {
           onSuccess: () => {
             alert('수정이 완료되었습니다.');
-            router.replace(`/challenges/discover`);
+            router.replace(`/challenges`);
           },
         },
       );

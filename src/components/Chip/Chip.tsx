@@ -1,7 +1,7 @@
 import { FoodType } from '@/types/diet';
 import Image from 'next/image';
 import { ComponentProps } from 'react';
-import CloseIcon from '/public/icons/x-close.svg';
+import CloseIcon from '/public/icons/x.svg';
 
 interface ChipProps {
   food: FoodType;

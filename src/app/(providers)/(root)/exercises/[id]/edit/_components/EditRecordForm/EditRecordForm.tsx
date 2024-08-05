@@ -5,14 +5,15 @@ import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import {
   useGetExerciseBookmarks,
   useGetExerciseRecord,
-  useRegisterExercise,
   useToggleBookmark,
+  useUpdateExercise,
 } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import Mobile from '@/layouts/Mobile';
 import { useExerciseStore } from '@/stores/exercise.store';
 import { ExerciseType } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from '../../../../record/_components/exerciseRecordForm/ExerciseRecordForm';
 
@@ -21,11 +22,12 @@ type EditRecordFormProps = {
 };
 
 const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { record, setRecord, isBookMark, setIsBookMark } = useExerciseStore();
   const [bookmarkedExercises, setBookmarkedExercises] = useState<number[]>([]);
 
-  const { mutate: register } = useRegisterExercise();
+  const { mutate: update } = useUpdateExercise(); // TODO: 수정 API로 변경
   const { mutate: toggleBookmark } = useToggleBookmark();
   const { data: bookmarkData } = useGetExerciseBookmarks();
   const { data: exerciseData, isLoading } = useGetExerciseRecord(exerciseId);
@@ -63,6 +65,8 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   };
 
   const handleSubmit = async () => {
+    // 데이터가 없는 경우 빠르게 반환
+
     if (!record.date || record.record.length === 0) {
       alert('운동 이름, 날짜, 세트는 필수 입력 사항입니다.');
       return;
@@ -72,17 +76,19 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
       ...record,
       isBookMark,
     };
-
     try {
-      register(exerciseData, {
-        onSuccess: () => {
-          alert('수정 성공했습니다!');
-          location.reload();
+      update(
+        { exerciseData, exerciseId },
+        {
+          onSuccess: () => {
+            alert('수정 성공했다!!!!!!!!!!!');
+            router.push('/exercises');
+          },
+          onError: (error: any) => {
+            console.error('수정중 에러발생쓰', error);
+          },
         },
-        onError: (error: any) => {
-          console.error('수정 중 에러 발생:', error);
-        },
-      });
+      );
     } catch (error) {
       console.error('데이터 전송 중 오류 발생:', error);
     }
