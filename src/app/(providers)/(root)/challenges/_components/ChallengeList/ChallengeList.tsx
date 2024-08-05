@@ -36,33 +36,36 @@ const ChallengeList = () => {
   });
   console.log(challenges?.pages);
   return (
-    <div className="w-full h-full">
-      <ul className="flex flex-col gap-2 overflow-scroll scroll">
-        {!challenges?.pages || isPending ? (
-          <SkeletonCardList length={6} />
-        ) : challenges?.pages[0]?.error ? (
-          <p>데이터가 없습니다</p>
-        ) : (
-          challenges.pages.map((page) =>
-            page.data.map((challenge: TChallenge) => (
-              <li key={challenge.id}>
-                <Link href={`/challenges/detail/${challenge.id}`}>
-                  <ChallengeItem challenge={challenge} />
-                </Link>
-              </li>
-            )),
-          )
-        )}
-        {isFetching && <SkeletonCardList length={6} />}
-        {hasNextPage && (
-          <>
-            <div className="h-24"></div>
-            <div ref={ref}></div>
-            <div className="h-36"></div>
-          </>
-        )}
-      </ul>
-    </div>
+    <>
+      <p className="text-white/50 text-[12px]">총 {999}개의 챌린지가 있습니다.</p>
+      <div className="w-full h-full">
+        <ul className="flex flex-col gap-2 overflow-scroll scroll">
+          {!challenges?.pages || isPending ? (
+            <SkeletonCardList length={6} />
+          ) : challenges?.pages[0]?.error ? (
+            <p>데이터가 없습니다</p>
+          ) : (
+            challenges.pages.map((page) =>
+              page.data.map((challenge: TChallenge) => (
+                <li key={challenge.id}>
+                  <Link href={`/challenges/${challenge.id}/detail`}>
+                    <ChallengeItem challenge={challenge} />
+                  </Link>
+                </li>
+              )),
+            )
+          )}
+          {isFetching && <SkeletonCardList length={6} />}
+          {hasNextPage && (
+            <>
+              <div className="h-24"></div>
+              <div ref={ref}></div>
+              <div className="h-36"></div>
+            </>
+          )}
+        </ul>
+      </div>
+    </>
   );
 };
 

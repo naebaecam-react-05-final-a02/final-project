@@ -90,9 +90,7 @@ class ChallengeAPI {
 
   getPopularChallenges = async ({ category }: { category: string }) => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${this.baseURL}/coming?category=${category}`,
-      );
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/${this.baseURL}/coming?category=all`);
       const data = await response.data;
       return data;
     } catch (error) {
