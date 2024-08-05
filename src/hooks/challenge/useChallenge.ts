@@ -28,5 +28,4 @@ export const useChallengeVerificationDelete = () => useMutation(mutationOptions.
 //챌린지 항목 조회
 export const useGetChallengeDetail = (id: number) => useQuery(queryOptions.getChallengeDetail(id));
 
-export const useGetPopularChallenges = ({ category }: { category: string }) =>
-  useQuery(queryOptions.popular({ category }));
+export const useGetPopularChallenges = () => useQuery(queryOptions.popular());

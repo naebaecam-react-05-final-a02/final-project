@@ -35,7 +35,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
           focus:border-b-[2px] focus:border-gradient text-sm"
           name="startDate"
           type="date"
-          dayMin={today}
+          // dayMin={today}
           value={start}
           onChange={handleStartDateChange}
         />
@@ -49,7 +49,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
           focus:border-b-[2px] focus:border-gradient text-sm"
           name="endDate"
           type="date"
-          dayMin={start}
+          // dayMin={start}
           value={end}
           onChange={(e) => setEnd(e.target.value)}
         />
