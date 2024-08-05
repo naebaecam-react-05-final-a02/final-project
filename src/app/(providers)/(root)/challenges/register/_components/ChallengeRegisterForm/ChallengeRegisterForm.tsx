@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../_components/FormImageUploader';
-import FormTextArea from '../../../_components/FormTextArea';
 import FormCalendar from '../FormCalendar';
 import FormCategory from '../FormCategory';
 
@@ -98,17 +97,21 @@ const ChallengeRegisterForm = () => {
       {isPending && <div>로우딩딩딩..</div>}
 
       <div className="select-none">
-        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." maxLength={12} />
+        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." />
       </div>
 
       {<FormCategory label="카테고리" name="category" />}
 
-      <FormTextArea
+      <div className="select-none">
+        <Input label="챌린지 내용 & 인증 방법" name="content" placeholder="챌린지 내용과 인증 방법을 작성해주세요." />
+      </div>
+
+      {/* <FormTextArea
         maxLength={200}
         label="챌린지 내용 & 인증 방법"
         name="content"
         placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
-      />
+      /> */}
 
       <FormCalendar />
 

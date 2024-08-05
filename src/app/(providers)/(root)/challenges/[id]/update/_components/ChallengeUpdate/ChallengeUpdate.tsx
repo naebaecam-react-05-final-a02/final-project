@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useRef } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../../_components/FormImageUploader';
-import FormTextArea from '../../../../_components/FormTextArea';
 import { FormFields } from '../../../../register/_components/ChallengeRegisterForm/ChallengeRegisterForm';
 import FormCalendar from '../../../../register/_components/FormCalendar';
 import FormCategory from '../../../../register/_components/FormCategory';
@@ -131,15 +130,24 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         />
       </div>
 
-      {<FormCategory label="카테고리" name="category" defaultValue={challenge.category} />}
+      <FormCategory label="카테고리" name="category" defaultValue={challenge.category} />
 
-      <FormTextArea
+      <div className="select-none">
+        <Input
+          label="챌린지 내용 & 인증 방법"
+          name="content"
+          placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
+          defaultValue={challenge.content}
+        />
+      </div>
+
+      {/* <FormTextArea
         maxLength={200}
         label="챌린지 내용 & 인증 방법"
         name="content"
         placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
         defaultValue={challenge.content}
-      />
+      /> */}
 
       <FormCalendar s={new Date(challenge.startDate)} e={new Date(challenge.endDate)} />
 
