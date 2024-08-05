@@ -20,7 +20,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   if (!challenge) {
-    return <div>없따!</div>;
+    return <div>Loading</div>;
   }
 
   // 날짜 포맷팅
