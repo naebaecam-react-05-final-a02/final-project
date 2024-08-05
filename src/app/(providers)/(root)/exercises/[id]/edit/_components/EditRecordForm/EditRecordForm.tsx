@@ -53,7 +53,9 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   console.log(exerciseData);
 
   const handleDateChange = (date: Date) => {
+    console.log(date);
     setRecord({ date });
+    console.log(record);
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,6 +135,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     ),
   }));
 
+  console.log(record.date);
   return (
     <Mobile>
       <div className="min-h-screen flex flex-col gap-5 p-5">

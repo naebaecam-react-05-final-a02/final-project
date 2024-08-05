@@ -33,7 +33,9 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
   setRecord: (update) =>
     set((state) => {
       const newState = { ...state.record, ...update };
-      // record가 업데이트될 때 cardioInputs나 weightInputs도 함께 업데이트
+      if ('date' in update && update.date != null) {
+        newState.date = new Date(update.date);
+      }
       if ('record' in update) {
         if (newState.exerciseType === 'cardio') {
           return {

@@ -17,6 +17,11 @@ export type InputDateProps = Omit<BaseInputProps & ComponentProps<'input'>, 'inp
   maxDate?: Date | string;
 };
 
+const parseDate = (dateString: string) => {
+  const [datePart] = dateString.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
 const InputDate = ({
   label,
   id,
@@ -31,7 +36,15 @@ const InputDate = ({
   ...props
 }: InputDateProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    if (typeof value === 'string') {
+      return parseDate(value);
+    } else if (value instanceof Date) {
+      return value;
+    } else {
+      return new Date();
+    }
+  });
   const dateInputRef = useRef<HTMLDivElement>(null);
   const inputUid = useId();
   const inputId = id || inputUid;
@@ -40,10 +53,16 @@ const InputDate = ({
   const min = minDate ? (typeof minDate === 'string' ? new Date(minDate) : minDate) : undefined;
   const max = maxDate ? (typeof maxDate === 'string' ? new Date(maxDate) : maxDate) : undefined;
 
-  console.log(min, max);
   const formatDate = (date: Date) => {
     return showMonth ? dayjs(date).format('YYYY. MM. DD (ddd)') : dayjs(date).format('MM. DD (ddd)');
   };
+  useEffect(() => {
+    if (typeof value === 'string') {
+      setSelectedDate(parseDate(value));
+    } else if (value instanceof Date) {
+      setSelectedDate(value);
+    }
+  }, [value]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,7 +79,7 @@ const InputDate = ({
 
   const handleDateSelect = (date: Date) => {
     if ((min && date < min) || (max && date > max)) {
-      console.log('호출');
+      console.log('선택 불가능한 날짜입니다.');
       return;
     }
     setSelectedDate(date);
