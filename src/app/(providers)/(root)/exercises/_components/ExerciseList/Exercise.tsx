@@ -4,7 +4,6 @@ import { useToggleComplete } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
-import useExerciseStore from '@/stores/exercise.store';
 import { ExerciseTodoItemType } from '@/types/exercises';
 import { calculateTodoData } from '@/utils/calculateTodo';
 import { getFormattedDate } from '@/utils/dateFormatter';
@@ -23,7 +22,6 @@ const Exercise = ({
   const router = useRouter();
 
   const formattedDate = getFormattedDate(useDateStore((store) => store.date));
-  const setExercise = useExerciseStore((state) => state.setExercise);
 
   const [set, data1, data2] = calculateTodoData(exercise);
 
@@ -45,13 +43,11 @@ const Exercise = ({
   };
 
   const handleEditButtonClick = (exercise: ExerciseTodoItemType) => {
-    setExercise(exercise);
     router.push(`/exercises/${exercise.id}/edit`); // TODO: 수정 url
   };
 
   const handleDeleteButtonClick = (exerciseId: number) => {
     if (!confirm('정말 삭제하시겠습니까?')) return;
-    setExercise(null);
     deleteExercise(
       { id: exerciseId },
       {

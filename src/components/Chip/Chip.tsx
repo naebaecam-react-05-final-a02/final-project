@@ -18,11 +18,11 @@ const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentPr
       onClick={onClick}
     >
       <div className="p-2">
-        <Image width={24} height={24} src={`/foods/${food.foodType}.png`} alt={food.foodType} />
+        <Image width={24} height={24} className="max-w-fit" src={`/foods/${food.foodType}.png`} alt={food.foodType} />
       </div>
       <div className="flex flex-col justify-center items-start">
-        <span className="text-sm">{food.foodName || '-'}</span>
-        <span className="text-[10px] opacity-30">{food.kcal} Kcal</span>
+        <span className="text-sm whitespace-nowrap">{food.foodName || '-'}</span>
+        <span className="text-[10px] opacity-30 whitespace-nowrap">{food.kcal} Kcal</span>
       </div>
       {handleDelete && (
         <CloseIcon

@@ -15,7 +15,6 @@ class API {
   diet: DietAPI;
   exercise: ExerciseAPI;
   users: UsersAPI;
-  exercise: ExerciseAPI;
 
   dashboard: DashBoardAPI;
 
@@ -27,8 +26,6 @@ class API {
     this.diet = new DietAPI();
     this.exercise = new ExerciseAPI();
     this.users = new UsersAPI();
-
-    this.exercise = new ExerciseAPI();
     this.dashboard = new DashBoardAPI();
   }
 }
