@@ -1,17 +1,17 @@
 'use client';
 
+import Button from '@/components/Button';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
-import Button from '@/components/Button';
 import ChevronLeft from '@/icons/ChevronLeft';
 import DotsVertical from '@/icons/DotsVertical';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import VerificationRecordList from './_components/VerificationRecordList';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
 import UserProfile from './_components/UserProfile';
+import VerificationRecordList from './_components/VerificationRecordList';
 
 const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
@@ -117,9 +117,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                   챌린지 신청하기
                 </Button>
               ) : (
-                <Button className="flex-1" type="button">
-                  챌린지 인증하기
-                </Button>
+                <Link href={`/challenges/${challenge.id}/verification/register`}>
+                  <Button className="flex-1" type="button">
+                    챌린지 인증하기
+                  </Button>
+                </Link>
               )}
               {user?.id === challenge.createdBy && (
                 <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
