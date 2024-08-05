@@ -1,5 +1,5 @@
 import { verificationsType } from '@/types/challenge';
-import { Database } from '@/types/supabase';
+import { Database, Tables } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { getEndOfDayISO, getStartOfDayISO } from '../../../../../../../utils/dateFormatter';
 
@@ -30,9 +30,16 @@ export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>,
 };
 
 export const fetchVerificationTotalData = async (client: SupabaseClient<Database>, id: string) => {
-  const response = await client.from('challengeVerify').select('*').eq('challengeId', id);
+  const response = await client
+    .from('challengeVerify')
+    .select('*,user:users(id)')
+    .eq('challengeId', id)
+    .gte('date', getStartOfDayISO(new Date()))
+    .lte('date', getEndOfDayISO(new Date()))
+    .returns<(Tables<'challengeVerify'> & { user: { id: string } })[]>();
 
   const data = {
+    verifications: response.data,
     totalVerifications: response.data?.length,
     totalUsers: new Set(response.data?.map((d) => d.userId)).size,
   };
