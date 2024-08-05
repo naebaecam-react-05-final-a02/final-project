@@ -45,8 +45,8 @@ const VerificationRecordList = ({ id }: { id: number }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   return (
-    <article className="px-4">
-      <div className="flex flex-row justify-between mb-4">
+    <article>
+      <div className="flex flex-row justify-between mb-4 px-4">
         <Title>🔥 챌린지 인증</Title>
         <button type="button" className="flex flex-row gap-1 items-center text-white/[0.5] text-[12px]">
           <Link href={`/challenges/${id}/verification/list`} className="inline-flex items-center">
@@ -55,11 +55,11 @@ const VerificationRecordList = ({ id }: { id: number }) => {
         </button>
       </div>
       {verificationRecords.length === 0 ? (
-        <p>챌린지 인증이 없습니다.</p>
+        <p className="pl-4 text-center">챌린지 인증이 없습니다.</p>
       ) : (
-        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll">
+        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll pl-4">
           {verificationRecords.map((record) => (
-            <li className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[95%] bg-white bg-opacity-5">
+            <li className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[94%] bg-white bg-opacity-5">
               <div className="h-full">
                 <div className="flex flex-row gap-2 mb-2 justify-between">
                   <Image
