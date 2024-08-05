@@ -10,6 +10,7 @@ import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Memo from '@/icons/Memo';
+import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
@@ -77,6 +78,7 @@ const ExerciseRecordPage = () => {
   const handleSubmit = async () => {
     const workoutToSave = selectedWorkout || customWorkout;
     console.log('선택한 운동 이름:', workoutToSave);
+    console.log(new Date(getFormattedDate(record.date)));
     console.log('선택한 날짜:', record.date);
     console.log('메모:', record.name);
     console.log('기록:', record.record);
@@ -89,7 +91,7 @@ const ExerciseRecordPage = () => {
     }
 
     const exerciseData = {
-      date: record.date,
+      date: new Date(getFormattedDate(record.date)),
       exerciseType: record.exerciseType,
       // name: workoutToSave,
       record: record.record,
@@ -98,16 +100,18 @@ const ExerciseRecordPage = () => {
       isBookMark: isBookMark,
     };
     // 상태 초기화
-    setSearchTerm('');
-    setSelectedWorkout('');
-    setCustomWorkout('');
-    setRecord(exerciseInitialState);
-    setIsBookMark(false);
+
     try {
       register(exerciseData, {
         onSuccess: () => {
+          setRecord(exerciseInitialState);
+          setSearchTerm('');
+          setSelectedWorkout('');
+          setCustomWorkout('');
+          setIsBookMark(false);
           alert('성공했다!!!!!!!!!!!');
           //TODO: 추후 수정 반영
+
           router.push('/exercises');
         },
         onError: (error: any) => {
