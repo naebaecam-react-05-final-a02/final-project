@@ -62,12 +62,10 @@ const LogInForm = () => {
     e.preventDefault();
 
     const emailError = validateEmail(formData.email);
-    const passwordError = validatePassword(formData.password);
 
-    if (emailError || passwordError) {
+    if (emailError) {
       setErrors({
         email: emailError,
-        password: passwordError,
       });
       return;
     }
