@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('challenges')
-      .select('*,participants:challengeParticipants(userId)')
+      .select('*,participants:challengeParticipants(userId),user:users(*)')
       .eq('id', id)
       .single();
 
