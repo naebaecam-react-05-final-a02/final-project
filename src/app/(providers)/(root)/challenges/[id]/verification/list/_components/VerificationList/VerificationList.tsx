@@ -60,7 +60,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   }, [verifications, fetchNextPage, hasNextPage]);
 
   return (
-    <>
+    <div className="px-4">
       {!verifications ||
         (!verifications.length && (
           <div>
@@ -85,7 +85,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
       )}
 
       {!isFetching && hasNextPage && <div ref={obsRef} className="h-20 w-full" />}
-    </>
+    </div>
   );
 };
 
