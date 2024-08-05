@@ -117,24 +117,26 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
             {/* <ChallengeInfoMethod id={id} challenge={challenge} user={author} /> */}
             {/* 챌린지 인증 리스트 */}
             <VerificationRecordList id={id} />
-            {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) && (
-              <button onClick={handleJoinChallenge} className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
-                챌린지 신청하기
-              </button>
-            )}
+
             <div
-              className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl"
+              className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
               style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.10)' }}
             >
-              <button className="rounded-lg bg-[#3ECF8E] py-2 w-full" type="button">
-                인증하기
-              </button>
+              {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) ? (
+                <Button className="flex-1" onClick={handleJoinChallenge} type="button">
+                  챌린지 신청하기
+                </Button>
+              ) : (
+                <Button className="flex-1" type="button">
+                  챌린지 인증하기
+                </Button>
+              )}
+              {user?.id === challenge.createdBy && (
+                <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
+                  <Button>수정 및 삭제</Button>
+                </Link>
+              )}
             </div>
-            {user?.id === challenge.createdBy && (
-              <Link href={`/challenges/${challenge.id}/update`}>
-                <Button>수정 및 삭제</Button>
-              </Link>
-            )}
           </section>
         </div>
       </main>
