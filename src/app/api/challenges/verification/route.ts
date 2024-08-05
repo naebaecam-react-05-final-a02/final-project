@@ -64,3 +64,31 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: 'Challenge Verify Delete Failed' }, { status: 500 });
   }
 }
+
+// 인증 목록 가져오기
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  const supabase = createClient();
+
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  }
+
+  try {
+    const { data, error } = await supabase.from('challengeVerify').select('*').eq('challengeId', id);
+
+    console.log('Fetched ID:', id);
+    console.log('Supabase Error:', error);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data, { status: 200 });
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
+  }
+}
