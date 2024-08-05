@@ -8,7 +8,9 @@ import Star from '@/icons/Star';
 import Mobile from '@/layouts/Mobile';
 import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+
+import Memo from '@/icons/Memo';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
 
@@ -210,7 +212,7 @@ const ExerciseRecordPage = () => {
           value={record.memo}
           onChange={handleMemoChange}
           className="p-4 rounded-lg"
-          icon={<Star width={24} height={24} />}
+          icon={<Memo />}
         />
         <ExerciseRecordForm />
         <Button type="submit" onClick={handleSubmit}>
