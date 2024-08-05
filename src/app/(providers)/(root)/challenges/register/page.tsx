@@ -1,10 +1,13 @@
+import Mobile from '@/layouts/Mobile';
 import ChallengeRegisterForm from './_components/ChallengeRegisterForm';
 
 const ChallengeRegisterPage = () => {
   return (
-    <main className="grid gap-y-11 w-full">
-      <ChallengeRegisterForm />
-    </main>
+    <Mobile>
+      <main className='className="grid gap-y-11 w-full"'>
+        <ChallengeRegisterForm />
+      </main>
+    </Mobile>
   );
 };
 

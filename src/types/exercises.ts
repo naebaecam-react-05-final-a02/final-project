@@ -38,3 +38,9 @@ export interface RecordData extends ExerciseRecord {
 }
 
 export type ExerciseType = 'weight' | 'cardio';
+
+export type useToggleCompletedDataType = {
+  data: ExerciseTodoItemType[];
+  error: null;
+  details: null;
+};

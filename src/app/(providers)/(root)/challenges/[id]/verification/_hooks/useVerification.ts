@@ -3,7 +3,7 @@ import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { getEndOfDayISO, getStartOfDayISO } from '../../../../../../../utils/dateFormatter';
 
-const DATA_PER_PAGE = 5;
+const DATA_PER_PAGE = 10;
 
 export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>, id: string, offset?: number) => {
   const query = client
@@ -20,7 +20,7 @@ export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>,
 
     query.range(from, to);
   } else {
-    query.limit(5);
+    query.limit(10);
   }
 
   const response = await query;

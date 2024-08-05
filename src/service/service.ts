@@ -13,6 +13,7 @@ class API {
   review: ReviewAPI;
   image: ImageAPI;
   diet: DietAPI;
+  exercise: ExerciseAPI;
   users: UsersAPI;
   exercise: ExerciseAPI;
 
@@ -24,6 +25,7 @@ class API {
     this.review = new ReviewAPI();
     this.image = new ImageAPI();
     this.diet = new DietAPI();
+    this.exercise = new ExerciseAPI();
     this.users = new UsersAPI();
 
     this.exercise = new ExerciseAPI();
