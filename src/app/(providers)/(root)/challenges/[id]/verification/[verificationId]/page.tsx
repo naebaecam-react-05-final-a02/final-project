@@ -1,4 +1,5 @@
 import { queryOptions } from '@/hooks/challenge/queries';
+import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
@@ -27,11 +28,13 @@ const VerificationDetailPage = async ({ params }: VerificationDetailPageType) =>
   await queryClient.prefetchQuery(queryOptions.getVerification(supabase, challengeId, verificationId));
 
   return (
-    <main>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <VerificationDetail challengeId={challengeId} verificationId={verificationId} user={user} />
-      </HydrationBoundary>
-    </main>
+    <Mobile>
+      <main>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <VerificationDetail challengeId={challengeId} verificationId={verificationId} user={user} />
+        </HydrationBoundary>
+      </main>
+    </Mobile>
   );
 };
 
