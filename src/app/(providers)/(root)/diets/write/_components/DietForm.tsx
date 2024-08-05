@@ -1,6 +1,7 @@
 'use client';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
+import Loading from '@/components/Loading/Loading';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSubmitDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
@@ -72,11 +73,7 @@ const DietForm = () => {
 
   return (
     <>
-      {isPending && (
-        <div className="flex justify-center items-center w-full h-screen fixed top-0 left-0 bg-[#00000088] text-white text-2xl z-50">
-          등록 중...
-        </div>
-      )}
+      {isPending && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4">
         <AddButton onClick={addNewChip} />
         <div className="chips flex gap-3 overflow-x-scroll scale">
