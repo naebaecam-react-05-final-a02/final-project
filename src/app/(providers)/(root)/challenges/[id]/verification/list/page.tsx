@@ -13,6 +13,7 @@ import Link from 'next/link';
 import VerificationList from './_components/VerificationList';
 
 //TODO hooks 작업?
+//TODO 인증은 한사람당 하루에 한번?
 const ChallengeVerificationListPage = async ({ params }: { params: { id: string } }) => {
   const queryClient = new QueryClient();
   const supabase = createClient();
@@ -36,11 +37,13 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
         <Mobile
           headerLayout={<TitleHeader>챌린지 인증 목록</TitleHeader>}
           footerLayout={
-            <div className="p-[10px]">
-              <Link href={`/challenges/${params.id}/verification/register`}>
-                <Button>인증하기</Button>
-              </Link>
-            </div>
+            <Link
+              className="w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
+              style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
+              href={`/challenges/${params.id}/verification/register`}
+            >
+              <Button>인증하기</Button>
+            </Link>
           }
         >
           <VerificationList counts={counts} />

@@ -1,10 +1,9 @@
 import { ExerciseRecord } from '@/types/exercises';
-import React from 'react';
 
 export const exerciseInitialState: ExerciseRecord = {
-  date: '',
+  date: new Date(),
   name: '',
   memo: '',
-  record: [],
+  record: [{}],
   exerciseType: 'weight',
-};
+} as ExerciseRecord;

@@ -13,8 +13,8 @@ class API {
   review: ReviewAPI;
   image: ImageAPI;
   diet: DietAPI;
-  users: UsersAPI;
   exercise: ExerciseAPI;
+  users: UsersAPI;
 
   dashboard: DashBoardAPI;
 
@@ -24,9 +24,8 @@ class API {
     this.review = new ReviewAPI();
     this.image = new ImageAPI();
     this.diet = new DietAPI();
-    this.users = new UsersAPI();
-
     this.exercise = new ExerciseAPI();
+    this.users = new UsersAPI();
     this.dashboard = new DashBoardAPI();
   }
 }

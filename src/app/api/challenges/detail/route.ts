@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -12,7 +12,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { data, error } = await supabase.from('challenges').select('*').eq('id', id).single();
+    const { data, error } = await supabase
+      .from('challenges')
+      .select('*,participants:challengeParticipants(userId),user:users(*)')
+      .eq('id', id)
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

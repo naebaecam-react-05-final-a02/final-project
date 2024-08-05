@@ -97,8 +97,8 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
             <h3 className="text-18 font-semibold leading-140 tracking-tighter mt-8 mb-6">
               사용하실 닉네임을 알려주세요!
             </h3>
-            <div className="flex flex-col w-full items-start">
-              <div className="flex w-full pb-10">
+            <div className="flex flex-col w-full items-start pb-10">
+              <div className="flex w-full ">
                 <Input
                   label="닉네임"
                   name="nickname"

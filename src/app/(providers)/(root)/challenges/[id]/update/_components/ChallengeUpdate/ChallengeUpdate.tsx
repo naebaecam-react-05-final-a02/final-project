@@ -31,7 +31,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const handleDelete = () => {
     challengeDelete(challenge.id, {
       onSuccess: () => {
-        router.replace('/challenges/discover');
+        router.replace('/challenges');
       },
     });
   };
@@ -79,13 +79,14 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
               tags: null,
               rating: 0,
               category,
+              participants: challenge.participants,
             };
             challengeUpdate(
               { updateData, cid: challenge.id },
               {
                 onSuccess: () => {
                   alert('수정이 완료되었습니다.');
-                  router.replace(`/challenges/discover`);
+                  router.replace(`/challenges`);
                 },
               },
             );
@@ -105,13 +106,14 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         tags: null,
         rating: 0,
         category,
+        participants: challenge.participants,
       };
       challengeUpdate(
         { updateData, cid: challenge.id },
         {
           onSuccess: () => {
             alert('수정이 완료되었습니다.');
-            router.replace(`/challenges/discover`);
+            router.replace(`/challenges`);
           },
         },
       );

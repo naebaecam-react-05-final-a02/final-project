@@ -24,7 +24,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
       <label className="text-white/70 pl-1 text-[12px]" htmlFor="startDate">
         날짜 선택
       </label>
-      <div className="flex gap-x-2 h-12 w-full">
+      <div className="flex gap-x-2 h-12 w-full items-center justify-center">
         <input
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => e.preventDefault()}
           className="
@@ -35,7 +35,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
           focus:border-b-[2px] focus:border-gradient text-sm"
           name="startDate"
           type="date"
-          min={today}
+          dayMin={today}
           value={start}
           onChange={handleStartDateChange}
         />
@@ -49,7 +49,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
           focus:border-b-[2px] focus:border-gradient text-sm"
           name="endDate"
           type="date"
-          min={start}
+          dayMin={start}
           value={end}
           onChange={(e) => setEnd(e.target.value)}
         />

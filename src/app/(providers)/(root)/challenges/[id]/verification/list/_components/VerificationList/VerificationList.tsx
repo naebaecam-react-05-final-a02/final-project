@@ -4,7 +4,6 @@ import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[i
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-css';
@@ -15,7 +14,6 @@ import VerificationItem from '../VerificationItem';
 const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   const params = useParams();
   const path = usePathname();
-  const redirect = `${path.replace('/list', '/register')}`;
 
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
@@ -31,7 +29,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       // console.log('LASTPAGE', lastPage);
       // console.log('ALLPAGE', allPage);
-      const nextPage = lastPage.length === 5 ? allPage.length : undefined;
+      const nextPage = lastPage.length === 10 ? allPage.length : undefined;
       return nextPage;
     },
     initialPageParam: 1,
@@ -39,7 +37,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     staleTime: Infinity,
   });
 
-  console.log(verifications);
+  // console.log(verifications);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -62,20 +60,11 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   }, [verifications, fetchNextPage, hasNextPage]);
 
   return (
-    <>
+    <div className="px-4">
       {!verifications ||
         (!verifications.length && (
           <div>
-            <div>
-              <p>헉..! 아직 아무도 인증하지 않았네요!</p>
-              <p>먼저 나서서 인증.. 해야겠지?</p>
-            </div>
-
-            <Link href={redirect}>
-              <button className="  select-none px-3 py-2 bg-blue-200 rounded border-blue-300 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]">
-                인증하러가기
-              </button>
-            </Link>
+            <LocalBanner users={0} />
           </div>
         ))}
       {verifications && verifications.length > 0 && (
@@ -85,7 +74,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
           <ul>
             <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
               {verifications?.map((verification, i) => (
-                <li className="list-none" key={i}>
+                <li className="list-none" key={verification.id}>
                   <VerificationItem verification={verification} />
                 </li>
               ))}
@@ -96,7 +85,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
       )}
 
       {!isFetching && hasNextPage && <div ref={obsRef} className="h-20 w-full" />}
-    </>
+    </div>
   );
 };
 
