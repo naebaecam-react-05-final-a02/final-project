@@ -8,8 +8,8 @@ import {
   useToggleBookmark,
   useUpdateExercise,
 } from '@/hooks/exercises/useExercise';
+import Memo from '@/icons/Memo';
 import Star from '@/icons/Star';
-import Mobile from '@/layouts/Mobile';
 import { useExerciseStore } from '@/stores/exercise.store';
 import { ExerciseType } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
@@ -137,45 +137,43 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
 
   console.log(record.date);
   return (
-    <Mobile>
-      <div className="min-h-screen flex flex-col gap-5 p-5">
-        <h3 className="text-white">운동 이름</h3>
-        <Input
-          label="운동 이름"
-          placeholder="운동 이름을 입력해 주세요."
-          value={record.name}
-          onChange={handleNameChange}
-          inputType="select"
-          dropdownOptions={bookmarkListOptions}
-          icon={
-            <Star
-              style={{
-                fill: isBookMark ? '#12F287' : 'none',
-              }}
-              width={24}
-              height={24}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleToggleBookmark();
-              }}
-            />
-          }
-        />
-        <h3 className="text-white">날짜 선택</h3>
-        <Input inputType="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
-        <Input
-          placeholder="주의사항, 다짐 등을 작성해 주세요"
-          value={record.memo}
-          onChange={handleMemoChange}
-          className="p-4 rounded-lg"
-          icon={<Star width={24} height={24} />}
-        />
-        <ExerciseRecordForm />
-        <Button type="submit" onClick={handleSubmit}>
-          수정하기
-        </Button>
-      </div>
-    </Mobile>
+    <div className="min-h-screen flex flex-col gap-5 p-5">
+      <h3 className="text-white">운동 이름</h3>
+      <Input
+        label="운동 이름"
+        placeholder="운동 이름을 입력해 주세요."
+        value={record.name}
+        onChange={handleNameChange}
+        inputType="select"
+        dropdownOptions={bookmarkListOptions}
+        icon={
+          <Star
+            style={{
+              fill: isBookMark ? '#12F287' : 'none',
+            }}
+            width={24}
+            height={24}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleBookmark();
+            }}
+          />
+        }
+      />
+      <h3 className="text-white">날짜 선택</h3>
+      <Input inputType="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
+      <Input
+        placeholder="주의사항, 다짐 등을 작성해 주세요"
+        value={record.memo}
+        onChange={handleMemoChange}
+        className="p-4 rounded-lg"
+        icon={<Memo />}
+      />
+      <ExerciseRecordForm />
+      <Button type="submit" onClick={handleSubmit}>
+        수정하기
+      </Button>
+    </div>
   );
 };
 
