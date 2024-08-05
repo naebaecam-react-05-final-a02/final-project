@@ -4,7 +4,6 @@ import api from '@/service/service';
 import { createClient } from '@/supabase/server';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import Link from 'next/link';
 import DashBoardLevel from './_components/DashBoardLevel';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
@@ -35,13 +34,6 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   return (
     <Mobile>
       <div className="w-full px-4">
-        <Link
-          className="bg-[#A6A6A6] w-full mb-5 rounded-md py-2 px-6 transition-all duration-300 ease-in-out hover:translate-y-1 active:translate-y-2 hover:shadow-md border-b-4 border-[#858585]"
-          href={'/auth_test'}
-        >
-          Auth 관련
-        </Link>
-
         <main className="mb-2 flex flex-col gap-y-2">
           {/* 등급/투두 진행 상황 */}
           <div className="grid grid-cols-[160px_1fr] gap-x-1 select-none bg-[#292436]">

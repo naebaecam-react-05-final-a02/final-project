@@ -5,7 +5,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 export const challengesQueryKeys = {
   all: ['challenge'] as const,
-  popular: ({ category }: { category: string }) => [...challengesQueryKeys.all, 'coming', category] as const,
+  popular: () => [...challengesQueryKeys.all, 'coming'] as const,
 };
 
 export const queryOptions = {
@@ -25,9 +25,9 @@ export const queryOptions = {
     queryFn: () => getVerification(client, cid, vid),
     staleTime: Infinity,
   }),
-  popular: ({ category }: { category: string }) => ({
-    queryKey: challengesQueryKeys.popular({ category }),
-    queryFn: () => fetch(`/api/challenges/coming?category=${category}`).then((res) => res.json()),
+  popular: () => ({
+    queryKey: challengesQueryKeys.popular(),
+    queryFn: () => fetch(`/api/challenges/coming?category=all`).then((res) => res.json()),
   }),
 };
 
