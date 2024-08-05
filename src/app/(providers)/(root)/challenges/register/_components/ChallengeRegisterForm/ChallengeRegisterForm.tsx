@@ -77,7 +77,7 @@ const ChallengeRegisterForm = () => {
             category,
             participants: 0,
           };
-
+          // console.log('registerData', registerData);
           challengeRegister(registerData, {
             onSuccess: () => {
               console.log('Challenge Register Successfully');

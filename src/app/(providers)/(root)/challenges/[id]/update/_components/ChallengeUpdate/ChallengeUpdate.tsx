@@ -141,7 +141,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         defaultValue={challenge.content}
       />
 
-      <FormCalendar s={challenge.startDate} e={challenge.endDate} />
+      <FormCalendar s={new Date(challenge.startDate)} e={new Date(challenge.endDate)} />
 
       <div className="grid gap-y-4">
         <FormImageUploader ref={inputRef} src={challenge.imageURL} />
