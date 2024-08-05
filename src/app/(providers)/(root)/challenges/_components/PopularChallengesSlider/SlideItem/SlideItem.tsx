@@ -44,7 +44,6 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
           <p className="text-primary-100">참여 40</p>
           <p>인증 12</p>
-          <p>후기 4</p>
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
