@@ -1,18 +1,25 @@
+'use client';
+
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
+import { useGetPopularChallenges } from '@/hooks/challenge/useChallenge';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { TChallenge } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
 
 const PopularChallengesSlider = () => {
+  const { data: challenges, isPending } = useGetPopularChallenges();
+  console.log(challenges);
+
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -45,15 +52,19 @@ const PopularChallengesSlider = () => {
             onSwiper={(swiper) => console.log(swiper)}
             onSlideChange={() => console.log('slide change')}
           >
-            {Array.from({ length: 10 }, (_, i) => {
-              return (
-                <li className="flex items-center" key={i}>
-                  <SwiperSlide>
-                    <SlideItem index={i - 1} activeIndex={activeIndex} />
-                  </SwiperSlide>
-                </li>
-              );
-            })}
+            {isPending ? (
+              <p>Loading...</p>
+            ) : (
+              challenges.data.map((challenge: TChallenge, i: number) => {
+                return (
+                  <li className="flex items-center" key={i}>
+                    <SwiperSlide>
+                      <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
+                    </SwiperSlide>
+                  </li>
+                );
+              })
+            )}
           </Swiper>
         </div>
       </div>

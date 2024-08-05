@@ -2,9 +2,12 @@
 
 import ArrowRight from '@/assets/arrow-right.svg';
 import { useGetUser } from '@/hooks/auth/useUsers';
+import api from '@/service/service';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const MyProfile = () => {
+  const router = useRouter();
   const { data: user, isPending } = useGetUser();
   return (
     <section className="flex flex-col gap-10">
@@ -75,6 +78,19 @@ const MyProfile = () => {
       <article className="flex justify-center items-center w-full h-[185px] bg-white/5 rounded-[20px]">
         체중 그래프 자리
       </article>
+      <div className="flex justify-center w-full">
+        <div>
+          <button
+            className="border-b border-primary-100 text-sm text-primary-100"
+            onClick={async () => {
+              await api.auth.signOut();
+              router.replace('/');
+            }}
+          >
+            로그아웃
+          </button>
+        </div>
+      </div>
     </section>
   );
 };
