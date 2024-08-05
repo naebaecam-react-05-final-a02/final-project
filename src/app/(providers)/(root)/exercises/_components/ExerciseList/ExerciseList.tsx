@@ -1,6 +1,5 @@
 import { useDeleteExercises, useGetExercises } from '@/hooks/exercises/useExercise';
 import useDateStore from '@/stores/date.store';
-import useExerciseStore from '@/stores/exercise.store';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import Exercise from './Exercise';
@@ -9,7 +8,6 @@ const ExerciseList = () => {
   const router = useRouter();
   const selectedDate = useDateStore((store) => store.date);
 
-  const setExercise = useExerciseStore((state) => state.setExercise);
   const {
     data: exercises,
     isPending: isFetching,
@@ -22,7 +20,6 @@ const ExerciseList = () => {
   if (isFetchError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
 
   const handleAddButtonClick = () => {
-    setExercise(null);
     router.push('/exercises/record');
   };
 

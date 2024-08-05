@@ -1,5 +1,5 @@
 'use client';
-import { useExerciseTabStore } from '@/stores/useExerciseStore';
+import { useExerciseStore } from '@/stores/exercise.store';
 import { cva } from 'class-variance-authority';
 import { PropsWithChildren } from 'react';
 
@@ -17,8 +17,7 @@ const tabButtonVariants = cva('h-9 w-full ', {
 });
 
 const TabButton = ({ value, children }: PropsWithChildren<TabButtonProps>) => {
-  const exerciseType = useExerciseTabStore((state) => state.exerciseType);
-  const setExerciseType = useExerciseTabStore((state) => state.setExerciseType);
+  const { exerciseType, setExerciseType } = useExerciseStore();
 
   return (
     <button className={tabButtonVariants({ active: exerciseType === value })} onClick={() => setExerciseType(value)}>

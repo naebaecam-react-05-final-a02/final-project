@@ -110,7 +110,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
 
             <div
               className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
-              style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.10)' }}
+              style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
             >
               {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) ? (
                 <Button className="flex-1" onClick={handleJoinChallenge} type="button">

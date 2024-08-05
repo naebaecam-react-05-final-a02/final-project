@@ -1,5 +1,6 @@
 'use client';
 import Chip from '@/components/Chip';
+import Input from '@/components/Input';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSubmitDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
@@ -11,7 +12,6 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
-import RadioGroup from './RadioGroup';
 import TextInput from './TextInput';
 
 const DietForm = () => {
@@ -60,6 +60,16 @@ const DietForm = () => {
     );
   };
 
+  const dietOptions = [
+    { id: '아침', value: '아침' },
+    { id: '점심', value: '점심' },
+    { id: '저녁', value: '저녁' },
+  ];
+
+  const handleDietTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleRadioChange(event.target.value as DietTimeType);
+  };
+
   return (
     <>
       {isPending && (
@@ -67,7 +77,7 @@ const DietForm = () => {
           등록 중...
         </div>
       )}
-      <div className="grid grid-cols-[48px_1fr] gap-3">
+      <div className="grid grid-cols-[48px_1fr] gap-3 px-4">
         <AddButton onClick={addNewChip} />
         <div className="chips flex gap-3 overflow-x-scroll scale">
           {foodChips.map((food, idx) => (
@@ -82,19 +92,21 @@ const DietForm = () => {
         </div>
       </div>
       <form className="flex flex-col justify-center items-center gap-4" onSubmit={handleSubmit}>
-        <div className="w-full">
+        <div className="w-full px-4">
           <h2 className="opacity-70 text-sm">날짜 선택</h2>
           <div className="grid grid-cols-2 items-center gap-2">
-            <TextInput type="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            <RadioGroup
-              name="dietType"
-              values={['아침', '점심', '저녁']}
-              selectedValue={dietType}
-              handleChange={handleRadioChange}
+            <Input
+              inputType="date"
+              name="date"
+              showMonth={false}
+              value={new Date(date)}
+              position="left"
+              onChange={(newDate: Date) => setDate(getFormattedDate(newDate))}
             />
+            <Input inputType="select" value={dietType} dropdownOptions={dietOptions} onChange={handleDietTypeChange} />
           </div>
         </div>
-        <div className="w-full">
+        <div className="w-full px-4">
           <h2 className="opacity-70 text-sm">음식 이름</h2>
           <TextInput
             value={foodForm['foodName']}
@@ -109,7 +121,7 @@ const DietForm = () => {
             }
           </TextInput>
         </div>
-        <div className="w-full">
+        <div className="w-full px-4">
           <h2 className="opacity-70 text-sm">칼로리</h2>
           <TextInput
             type="number"
@@ -118,7 +130,7 @@ const DietForm = () => {
             onChange={(e) => handleFormChange('kcal', Number.parseInt(e.target.value))}
           />
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2 px-4">
           <div className="w-full">
             <h2 className="opacity-70 text-sm">탄수화물</h2>
             <TextInput
@@ -147,9 +159,11 @@ const DietForm = () => {
             />
           </div>
         </div>
-        <button type="submit" className="w-full bg-[#12F28780] text-white px-6 py-3 rounded-lg">
-          입력 완료
-        </button>
+        <div className="w-full px-4">
+          <button type="submit" className="w-full bg-[#12F28780] text-white px-6 py-3 rounded-lg">
+            입력 완료
+          </button>
+        </div>
       </form>
     </>
   );
