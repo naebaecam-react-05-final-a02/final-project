@@ -54,7 +54,7 @@ const VerificationRecordList = ({ id }: { id: number }) => {
         </button>
       </div>
       {verificationRecords.length === 0 ? (
-        <p className="pl-4 text-center">챌린지 인증이 없습니다.</p>
+        <p className="pl-4">챌린지 인증이 없습니다.</p>
       ) : (
         <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll pl-4">
           {verificationRecords.map((record) => (
