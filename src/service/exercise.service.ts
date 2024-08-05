@@ -62,6 +62,18 @@ class ExerciseAPI {
     }
   };
 
+  toggleCompleted = async ({ exercise, isCompleted }: { exercise: ExerciseTodoItemType; isCompleted: boolean }) => {
+    try {
+      const response = await axios.patch(`${this.baseUrl}/${exercise.id}/toggle`, { isCompleted });
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   toggleComplete = async ({
     exerciseId,
     isCompleted,

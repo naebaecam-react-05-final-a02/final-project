@@ -1,3 +1,4 @@
+import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { Tables } from '@/types/supabase';
 import { redirect } from 'next/navigation';
@@ -29,13 +30,15 @@ const ChallengeUpdatePage = async ({ params }: ChallengeUpdatePageProp) => {
 
   if (!me || challenge?.createdBy !== me?.id) {
     // console.log('저놈을 매우 쳐라!');
-    return redirect(`/challenges/discover`);
+    return redirect(`/challenges`);
   }
 
   return (
-    <div className="size-full">
-      <ChallengeUpdate challenge={challenge} />
-    </div>
+    <Mobile>
+      <div className="size-full">
+        <ChallengeUpdate challenge={challenge} />
+      </div>
+    </Mobile>
   );
 };
 
