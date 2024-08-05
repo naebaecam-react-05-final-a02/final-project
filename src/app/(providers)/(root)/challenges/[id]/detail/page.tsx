@@ -81,7 +81,6 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                 <ul className="inline-flex flex-row gap-3 rounded-[4px] border border-white/[0.2] text-[12px] leading-4 bg-opacity-20px-2 py-1 px-2">
                   <li className="text-[#12F287]">참여 40</li>
                   <li>인증 12</li>
-                  <li>후기 4</li>
                 </ul>
               </div>
             </div>
