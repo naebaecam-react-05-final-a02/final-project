@@ -18,8 +18,8 @@ import PhysicalInfoForm from '../PhysicalInfoForm';
 import WelcomePreview from '../WelcomePreview';
 
 const SignUpForm = () => {
-  // const [currentStep, setCurrentStep] = useState('essentialInfo');
-  const [currentStep, setCurrentStep] = useState('success1');
+  const [currentStep, setCurrentStep] = useState('essentialInfo');
+  // const [currentStep, setCurrentStep] = useState('success1');
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const route = useRouter();
 
@@ -70,7 +70,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-between items-end w-full pb-20">
+    <div className="flex flex-col min-h-screen justify-between items-end w-full pb-20">
       <div className="w-full">
         {currentStep === 'essentialInfo' ? <Header title="회원가입" /> : <Header showLogo showBackButton={false} />}
         {currentStep === 'essentialInfo' && (
