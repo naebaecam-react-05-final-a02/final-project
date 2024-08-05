@@ -18,8 +18,8 @@ import PhysicalInfoForm from '../PhysicalInfoForm';
 import WelcomePreview from '../WelcomePreview';
 
 const SignUpForm = () => {
-  const [currentStep, setCurrentStep] = useState('essentialInfo');
-  // const [currentStep, setCurrentStep] = useState('success1');
+  // const [currentStep, setCurrentStep] = useState('essentialInfo');
+  const [currentStep, setCurrentStep] = useState('success1');
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const route = useRouter();
 
