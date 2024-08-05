@@ -75,6 +75,7 @@ const ChallengeRegisterForm = () => {
             tags: null,
             rating: 0,
             category,
+            participants: 0,
           };
 
           challengeRegister(registerData, {

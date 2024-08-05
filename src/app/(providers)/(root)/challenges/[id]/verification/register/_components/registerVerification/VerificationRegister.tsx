@@ -13,13 +13,14 @@ import { FormEvent, useRef } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 
 type VerificationRegisterProps = {
-  params: { id: string };
-  userInfo: { id: string; profileURL: string | null }[] | null;
+  cid: string;
   challengeTitle: string;
+  verifications: (Tables<'challengeVerify'> & { user: { id: string } })[] | null;
+  userInfo: { id: string; profileURL: string | null }[] | null;
 };
 
 //TODO 유저 데이터 가져오기전까지 헬린이로 표시되는거 주의
-const VerificationRegister = ({ params, userInfo, challengeTitle }: VerificationRegisterProps) => {
+const VerificationRegister = ({ cid, challengeTitle, verifications, userInfo }: VerificationRegisterProps) => {
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
@@ -31,15 +32,14 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
 
     const currentTarget = e.currentTarget;
     const file = inputRef?.current?.files?.[0] || null;
-    const challengeId = params.id;
 
     if (!file) {
       console.error('Challenge Verify Image Error : 사진을 올려주세요.');
       return;
     }
 
-    if (!challengeId) {
-      console.error('Challenge Id is invalid', params);
+    if (!cid) {
+      console.error('Challenge Id is invalid', cid);
       return;
     }
 
@@ -62,13 +62,13 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
             impression,
             imageURL: response.imageURL,
             userId: user?.id!,
-            challengeId: Number(challengeId),
+            challengeId: Number(cid),
           };
 
           verify(verifyData, {
             onSuccess: () => {
               console.log('Challenge Verify Successfully');
-              router.push('/');
+              router.push(`/challenges/${cid}/verification/list`);
             },
             onError: (error) => console.error('Chaalenge Verify Failed', error),
           });
@@ -77,6 +77,7 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
       },
     );
   };
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col justify-between size-full p-4 relative">
       {uploading && <div>이미지 업로딩..</div>}
@@ -87,7 +88,7 @@ const VerificationRegister = ({ params, userInfo, challengeTitle }: Verification
           <div className="flex text-sm gap-x-2">
             {userInfo?.length! > 0 && (
               <div className="flex">
-                오늘 벌써 총<p className="text-primary-100">{`${userInfo?.length ?? 0}명`}</p>이 인증했어요!
+                오늘 벌써 총<p className="text-primary-100">{`${userInfo?.length}명`}</p>이 인증했어요!
               </div>
             )}
             {!userInfo?.length && <div>아직 아무도 인증하지 않았네요!</div>}
