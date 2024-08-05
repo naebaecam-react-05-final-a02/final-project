@@ -54,7 +54,7 @@ const InputDate = ({
   const max = maxDate ? (typeof maxDate === 'string' ? new Date(maxDate) : maxDate) : undefined;
 
   const formatDate = (date: Date) => {
-    return showMonth ? dayjs(date).format('YYYY. MM. DD (ddd)') : dayjs(date).format('MM. DD (ddd)');
+    return showMonth ? dayjs(date).format('MM. DD (ddd)') : dayjs(date).format('YYYY. MM. DD (ddd)');
   };
   useEffect(() => {
     if (typeof value === 'string') {
