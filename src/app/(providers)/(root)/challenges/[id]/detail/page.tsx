@@ -20,21 +20,21 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
 
-  const [author, setAuthor] = useState<Author | null>(null);
+  // const [author, setAuthor] = useState<Author | null>(null);
 
-  //TODO: 유저정보
-  useEffect(() => {
-    if (challenge) {
-      const userId = challenge.createdBy;
-      fetch(`/api/users/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('USERRRR:', data);
-          setAuthor(data);
-        })
-        .catch((error) => console.error('Error fetching author data:', error));
-    }
-  }, [challenge]);
+  // //TODO: 유저정보
+  // useEffect(() => {
+  //   if (challenge) {
+  //     const userId = challenge.createdBy;
+  //     fetch(`/api/users/profile/${userId}`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         console.log('USERRRR:', data);
+  //         setAuthor(data);
+  //       })
+  //       .catch((error) => console.error('Error fetching author data:', error));
+  //   }
+  // }, [challenge]);
 
   if (!challenge) {
     return <div>없따!</div>;
@@ -75,12 +75,12 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
             <article className="px-4 py-3 border-b-[1px] border-white/70 header-gradient">
               <div className="relative w-5 h-5 border-white border rounded-full overflow-hidden">
                 <Image
-                  src={author?.profileURL ?? '/default-profile.png'}
-                  alt={author?.nickname ?? 'username'}
+                  src={user?.profileURL ?? '/default-profile.png'}
+                  alt={user?.nickname ?? 'username'}
                   fill
                   style={{ objectFit: 'cover' }}
                 />
-                <div className="text-[12px] text-white/70">{author?.nickname}</div>
+                <div className="text-[12px] text-white/70">{user?.nickname}</div>
               </div>
               <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row gap-1">
@@ -93,7 +93,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               </div>
             </article>
             {/* 챌린지 인증 방법 */}
-            {/* <ChallengeInfoMethod id={id} challenge={challenge} user={author} /> */}
+            <ChallengeInfoMethod id={id} challenge={challenge} user={user} />
             {/* 챌린지 인증 리스트 */}
             <VerificationRecordList id={id} />
             <div
