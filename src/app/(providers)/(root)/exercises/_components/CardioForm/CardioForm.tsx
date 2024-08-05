@@ -10,7 +10,6 @@ type CardioFormProps = {
 
 const CardioForm = ({ onChange }: CardioFormProps) => {
   const cardioList = useCardioInputStore((state) => state.cardioInputs);
-  console.log(cardioList);
   const setCardioList = useCardioInputStore((state) => state.setCardioInputs);
   const addCardio = useCardioInputStore((state) => state.addInput);
 
