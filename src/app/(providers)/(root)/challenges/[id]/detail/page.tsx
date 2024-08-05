@@ -117,10 +117,8 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                   챌린지 신청하기
                 </Button>
               ) : (
-                <Link href={`/challenges/${challenge.id}/verification/register`}>
-                  <Button className="flex-1" type="button">
-                    챌린지 인증하기
-                  </Button>
+                <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
+                  <Button type="button">챌린지 인증하기</Button>
                 </Link>
               )}
               {user?.id === challenge.createdBy && (
