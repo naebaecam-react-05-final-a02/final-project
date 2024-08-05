@@ -27,6 +27,17 @@ class ExerciseAPI {
       throw error;
     }
   };
+  update = async ({ exerciseData, exerciseId }: { exerciseData: RecordData; exerciseId: string }) => {
+    try {
+      const response = await axios.put(`${this.baseUrl}`, { exerciseData, exerciseId });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
   getBookmarks = async (): Promise<운동북마크반환데이터> => {
     try {
       const response = await axios.get(`${this.baseUrl}/bookmarks`);
@@ -63,11 +74,54 @@ class ExerciseAPI {
     }
   };
 
+  toggleComplete = async ({
+    exerciseId,
+    isCompleted,
+  }: {
+    exerciseId: number;
+    isCompleted: boolean;
+  }): Promise<Pick<ExerciseTodoItemType, 'isCompleted'>> => {
+    try {
+      const response = await axios.patch(`${this.baseUrl}/complete/toggle`, { exerciseId, isCompleted });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   getExerciseRecord = async (id: string): Promise<ExerciseRecord> => {
     try {
       console.log('@@1==', 1);
       const response = await axios.get(`${this.baseUrl}/edit?id=${id}`);
       console.log('@@Res==', response.data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  getExercisesByDate = async (date: string): Promise<ExerciseTodoItemType[]> => {
+    try {
+      const response = await axios.get(`${this.baseUrl}?date=${date}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  deleteExercise = async ({ id }: Pick<ExerciseTodoItemType, 'id'>): Promise<{ message: string }> => {
+    try {
+      console.log(id);
+      const response = await axios.delete(`${this.baseUrl}?id=${id}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

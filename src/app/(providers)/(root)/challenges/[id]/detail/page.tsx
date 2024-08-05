@@ -10,7 +10,7 @@ import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import VerificationRecordList from './_components/VerificationRecordList';
 
 interface Author {
@@ -28,18 +28,18 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const [author, setAuthor] = useState<Author | null>(null);
 
   //TODO: 유저정보
-  useEffect(() => {
-    if (challenge) {
-      const userId = challenge.createdBy;
-      fetch(`/api/users/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('USERRRR:', data);
-          setAuthor(data);
-        })
-        .catch((error) => console.error('Error fetching author data:', error));
-    }
-  }, [challenge]);
+  // useEffect(() => {
+  //   if (challenge) {
+  //     const userId = challenge.createdBy;
+  //     fetch(`/api/users/${userId}`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         console.log('USERRRR:', data);
+  //         setAuthor(data);
+  //       })
+  //       .catch((error) => console.error('Error fetching author data:', error));
+  //   }
+  // }, [challenge]);
 
   if (!challenge) {
     return <div>없따!</div>;

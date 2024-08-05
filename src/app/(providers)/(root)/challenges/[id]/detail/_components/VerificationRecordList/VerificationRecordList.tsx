@@ -1,8 +1,7 @@
-import { useGetUser } from '@/hooks/auth/useUsers';
 import ThumbsUp from '@/icons/ThumbsUp';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChevronRight from '../ChevronRight';
 import Title from '../Title';
 
@@ -59,7 +58,10 @@ const VerificationRecordList = ({ id }: { id: number }) => {
       ) : (
         <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll pl-4">
           {verificationRecords.map((record) => (
-            <li className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[94%] bg-white bg-opacity-5">
+            <li
+              key={record.id}
+              className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[94%] bg-white bg-opacity-5"
+            >
               <div className="h-full">
                 <div className="flex flex-row gap-2 mb-2 justify-between">
                   <Image
