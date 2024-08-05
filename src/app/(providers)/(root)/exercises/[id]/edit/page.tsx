@@ -1,12 +1,12 @@
-import React from 'react';
+import Mobile from '@/layouts/Mobile';
 import EditRecordForm from './_components/EditRecordForm';
 
 const ExerciseEditPage = ({ params }: { params: { id: string } }) => {
   const id = params.id;
   return (
-    <div>
+    <Mobile>
       <EditRecordForm exerciseId={id} />
-    </div>
+    </Mobile>
   );
 };
 

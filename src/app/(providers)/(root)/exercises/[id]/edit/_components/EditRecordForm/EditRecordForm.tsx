@@ -6,12 +6,14 @@ import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import {
   useGetExerciseBookmarks,
   useGetExerciseRecord,
-  useRegisterExercise,
   useToggleBookmark,
+  useUpdateExercise,
 } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
+import { useCardioInputStore, useExerciseTabStore, useWeightInputStore } from '@/stores/useExerciseStore';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from '../../../../record/_components/exerciseRecordForm/ExerciseRecordForm';
 
@@ -20,24 +22,26 @@ type EditRecordFormProps = {
 };
 
 const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [bookmarkedExercises, setBookmarkedExercises] = useState<number[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState('');
   const [customWorkout, setCustomWorkout] = useState('');
-  const [date, setDate] = useState('');
-  const [memo, setMemo] = useState('');
-  const [name, setName] = useState('');
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
 
   const [isBookMark, setIsBookMark] = useState(false);
 
-  const { mutate: register } = useRegisterExercise();
+  const { mutate: update } = useUpdateExercise(); // TODO: 수정 API로 변경
   const { mutate: toggleBookmark } = useToggleBookmark();
   const { data: bookmarkData } = useGetExerciseBookmarks();
   const { data: exerciseData, isLoading } = useGetExerciseRecord(exerciseId);
   const [isFirstChange, setIsFirstChange] = useState(false);
   const [record, setRecord] = useState<ExerciseRecord>(exerciseInitialState);
+  const setExerciseType = useExerciseTabStore((state) => state.setExerciseType);
+  const setCardioList = useCardioInputStore((state) => state.setCardioInputs);
+  const setWeightList = useWeightInputStore((state) => state.setWeightInputs);
+
   useEffect(() => {
     if (!isLoading && exerciseData) {
       const formattedRecord = {
@@ -48,8 +52,15 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         exerciseType: exerciseData.exerciseType as ExerciseType,
       };
       setRecord(formattedRecord);
+      setExerciseType(exerciseData.exerciseType);
+      if (exerciseData.exerciseType === 'weight') {
+        setWeightList(exerciseData.record as WeightInput[]);
+      } else {
+        setCardioList(exerciseData.record as CardioInput[]);
+      }
     }
   }, [exerciseData]);
+
   useEffect(() => {
     if (record && record.record) console.log('@@RECORD.', record.record);
   }, [record]);
@@ -105,10 +116,6 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
 
   const handleSubmit = async () => {
     const workoutToSave = selectedWorkout || customWorkout;
-    console.log('선택한 운동 이름:', workoutToSave);
-    console.log('선택한 날짜:', record.date);
-    console.log('메모:', record.name);
-    console.log('기록:', record.record);
 
     // 데이터가 없는 경우 빠르게 반환
     if (!record.date || record.record.length === 0) {
@@ -126,27 +133,19 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
       name: record.name,
       isBookMark: isBookMark,
     };
-    // 상태 초기화
-    setSearchTerm('');
-    setSelectedWorkout('');
-    setCustomWorkout('');
-    setDate('');
-    setName('');
-    setMemo('');
-    console.log('@@RECORD', record);
-    setRecord(exerciseInitialState);
-    setIsBookMark(false);
     try {
-      register(exerciseData, {
-        onSuccess: () => {
-          alert('수정 성공했다!!!!!!!!!!!');
-          //TODO: 추후 수정 반영
-          location.reload();
+      update(
+        { exerciseData, exerciseId },
+        {
+          onSuccess: () => {
+            alert('수정 성공했다!!!!!!!!!!!');
+            router.push('/exercises');
+          },
+          onError: (error: any) => {
+            console.error('수정중 에러발생쓰', error);
+          },
         },
-        onError: (error: any) => {
-          console.error('수정중 에러발생쓰', error);
-        },
-      });
+      );
     } catch (error) {
       console.error('데이터 전송 중 오류 발생:', error);
     }
@@ -247,7 +246,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
       )}
       <h3 className="text-white">날짜 선택</h3>
-      <Input type="date" value={record?.date} onChange={handleDateChange} className="p-2 rounded" />
+      <Input type="date" value={record?.date.split('T')[0]} onChange={handleDateChange} className="p-2 rounded" />
       <Input
         placeholder="주의사항, 다짐 등을 작성해 주세요"
         value={record?.memo}
