@@ -8,6 +8,7 @@ import Star from '@/icons/Star';
 import Mobile from '@/layouts/Mobile';
 import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
 
@@ -20,6 +21,7 @@ const ExerciseRecordPage = () => {
   const [selectedWorkout, setSelectedWorkout] = useState('');
   const [customWorkout, setCustomWorkout] = useState('');
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
+  const router = useRouter();
 
   const { mutate: register } = useRegisterExercise();
   const { data: bookmarkData } = useGetExerciseBookmarks();
@@ -104,7 +106,7 @@ const ExerciseRecordPage = () => {
         onSuccess: () => {
           alert('성공했다!!!!!!!!!!!');
           //TODO: 추후 수정 반영
-          location.reload();
+          router.push('/exercises');
         },
         onError: (error: any) => {
           console.error('등록중 에러발생쓰', error);
