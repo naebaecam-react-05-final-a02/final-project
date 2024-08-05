@@ -74,7 +74,6 @@ const LogInForm = () => {
 
     signIn(formData, {
       onSuccess: () => {
-        alert('로그인 성공!');
         router.push('/');
       },
       onError: (error: any) => {
@@ -98,8 +97,8 @@ const LogInForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-center max-w-[390px]">
-      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className=" mt-[110px] mb-[70px]" />
+    <div className="flex flex-col w-full h-full items-center max-w-[390px]">
+      <Image src={'/OOSIE.png'} alt="OOSIE Logo" width={180} height={48} className="mt-[110px] mb-[70px]" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
         <Input
@@ -109,6 +108,7 @@ const LogInForm = () => {
           onChange={handleChange}
           name="email"
           type="email"
+          autoComplete="on"
           error={errors.email}
         />
         <Input
@@ -118,6 +118,7 @@ const LogInForm = () => {
           onChange={handleChange}
           name="password"
           type="password"
+          autoComplete="off"
           error={errors.password}
         />
 
@@ -150,7 +151,7 @@ const LogInForm = () => {
             onClick={(e) => handleSocialSignIn(e, 'kakao')}
             aria-label="카카오 로그인"
           >
-            <Image src="/kakao.png" alt="Kakao 로그인" width={48} height={48} />
+            <Image src="/auth/kakao.png" alt="Kakao 로그인" width={48} height={48} />
           </button>
           <button
             type="button"
@@ -158,7 +159,7 @@ const LogInForm = () => {
             onClick={(e) => handleSocialSignIn(e, 'google')}
             aria-label="구글 로그인"
           >
-            <Image src="/google.png" alt="Google 로그인" width={48} height={48} />
+            <Image src="/auth/google.png" alt="Google 로그인" width={48} height={48} />
           </button>
         </div>
       </div>

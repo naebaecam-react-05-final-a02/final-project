@@ -103,7 +103,7 @@ const config: Config = {
         },
         '.header-gradient': {
           'border-image':
-            'linear-gradient(to right, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255,255,255, 0.05) 100%) 1',
+            'linear-gradient(to right, transparent, rgba(255,255,255,0.3) 15%, rgba(255,255,255,0.3) 85%, transparent) 1',
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },

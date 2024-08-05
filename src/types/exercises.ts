@@ -26,16 +26,21 @@ export type ExerciseTodoItemType =
   | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'weight'; record: weight[] })
   | (Omit<Tables<'exercises'>, 'exerciseType' | 'record'> & { exerciseType: 'cardio'; record: cardio[] });
 
-export interface ExerciseRecord {
-  date: string;
+export type ExerciseRecord = {
+  date: Date;
   name: string;
   memo: string;
-  record: CardioInput[] | WeightInput[];
   exerciseType: ExerciseType;
-}
-export interface RecordData extends ExerciseRecord {
+} & ({ exerciseType: 'cardio'; record: CardioInput[] } | { exerciseType: 'weight'; record: WeightInput[] });
+
+export type RecordData = {
+  date: Date;
+  name: string;
+  memo: string;
+  exerciseType: ExerciseType;
   isBookMark: boolean;
-}
+  record: CardioInput[] | WeightInput[];
+};
 
 export type ExerciseType = 'weight' | 'cardio';
 

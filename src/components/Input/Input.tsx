@@ -26,7 +26,7 @@ type InputProps =
       inputType: 'select';
       dropdownOptions: InputSelectProps['dropdownOptions'];
     })
-  | (InputDateProps & { inputType: 'date' });
+  | (Omit<InputDateProps, 'inputType'> & { inputType: 'date' });
 
 const Input = (props: InputProps) => {
   const { inputType, ...restProps } = props;

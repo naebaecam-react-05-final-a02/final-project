@@ -15,6 +15,7 @@ const Input = ({ value, name, onChange }: InputProps) => {
         name={name}
         type="number"
         value={value}
+        placeholder="0"
       />
     </div>
   );

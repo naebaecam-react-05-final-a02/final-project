@@ -13,16 +13,17 @@ interface Challenge {
 }
 
 interface User {
-  profileURL?: string;
+  profileURL?: string | null;
+  nickname?: string | null;
 }
 
 interface ChallengeInfoMethodProps {
   id: number;
   challenge: Challenge;
-  user: User | null;
+  challengeAuthor: User | null;
 }
 
-const ChallengeInfoMethod = ({ id, challenge, user }: ChallengeInfoMethodProps) => {
+const ChallengeInfoMethod = ({ id, challenge, challengeAuthor }: ChallengeInfoMethodProps) => {
   return (
     <article className="mb-2 px-4">
       <div className="mb-4 flex flex-row gap-2">
@@ -32,7 +33,7 @@ const ChallengeInfoMethod = ({ id, challenge, user }: ChallengeInfoMethodProps) 
       <div className="flex flex-row gap-2">
         <div className="relative w-5 h-5 border-white border rounded-full overflow-hidden">
           <Image
-            src={user?.profileURL ?? '/default-profile.png'}
+            src={challengeAuthor?.profileURL ?? '/default-profile.png'}
             alt={'username'}
             fill
             style={{ objectFit: 'cover' }}
