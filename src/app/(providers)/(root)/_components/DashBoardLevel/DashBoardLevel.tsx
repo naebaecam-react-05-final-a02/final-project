@@ -20,8 +20,8 @@ const DashBoardLevel = () => {
       )}
       {!loading && (
         <>
-          <div className="w-8 h-full absolute bg-gradient-to-r from-[#12121266] to-[#12121201] left-0"></div>
-          <div className="w-8 h-full absolute bg-gradient-to-l from-[#12121266] to-[#12121201] right-0"></div>
+          <div className="w-8 h-full absolute bg-gradient-to-r from-[#12121266] to-[#12121201] top-0 left-0"></div>
+          <div className="w-8 h-full absolute bg-gradient-to-l from-[#12121266] to-[#12121201] top-0 right-0"></div>
           <div className="absolute left-4 top-4 gap-y-1 grid">
             <h5 className="text-white/50 text-sm">헬린이</h5>
             <h6 className="text-[28px]">Lv.1</h6>
