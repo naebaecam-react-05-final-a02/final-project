@@ -79,7 +79,7 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
     const currentTarget = e.currentTarget;
     const file = inputRef?.current?.files?.[0] || null;
 
-    if (!file && !verification.data.imageURL) {
+    if (!file && !verification.data.imageURLs) {
       console.error('Challenge Verify Image Error : 사진을 올려주세요.');
       return;
     }
@@ -107,7 +107,7 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
           onSuccess: (response) => {
             const updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
               impression,
-              imageURL: response.imageURL,
+              imageURLs: response.imageURLs,
               userId: me?.id!,
               challengeId: Number(cid),
             };
@@ -132,10 +132,10 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
           onError: (error) => console.error('UPLOAD FAILED', error),
         },
       );
-    } else if (verification.data.imageURL) {
+    } else if (verification.data.imageURLs) {
       const updateData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
         impression,
-        imageURL: verification.data.imageURL,
+        imageURLs: verification.data.imageURLs,
         userId: me?.id!,
         challengeId: Number(cid),
       };
@@ -179,7 +179,12 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
         <div className="flex flex-col gap-y-4 w-full">
           <div className="text-base text-white ">챌린지 인증 사진을 새로 업로드 해보아요</div>
           <div className="grid gap-y-4 w-full">
-            <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" src={verification.data.imageURL} />
+            <FormImageUploader
+              ref={inputRef}
+              label="챌린지 인증 사진 추가하기"
+              src={verification.data.imageURLs}
+              maxImage={3}
+            />
             <div className="text-white/50 flex gap-x-1">
               <AiOutlineExclamationCircle />
               <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>

@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { ChangeEvent, forwardRef, Ref, useEffect, useState } from 'react';
-
+import { MdOutlineCancel } from 'react-icons/md';
 type FormImageUploaderType = {
-  src?: string;
+  src?: string[];
   label?: string;
   maxImage?: number;
 };
@@ -12,7 +12,7 @@ type FormImageUploaderType = {
 const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
   ({ src, label, maxImage = 1 }, ref: Ref<HTMLInputElement>) => {
     const [filefile, setFilefile] = useState<File[]>([]);
-    const [fileURLs, setFileURLs] = useState<string[]>([]);
+    const [fileURLs, setFileURLs] = useState<string[]>(src ?? []);
 
     // const [isDrag, setIsDrag] = useState<boolean>(false);
 
@@ -71,6 +71,13 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
     //   };
 
     // }
+
+    const handleImageDel = (idx: number) => {
+      console.log('CLICK___', idx);
+      setFileURLs((prev) => prev.filter((_, i) => i !== idx));
+      setFilefile((prev) => prev.filter((_, i) => i !== idx));
+    };
+
     return (
       <div className="flex flex-col gap-y-2 select-none">
         <p className="text-white/70 text-sm">{label}</p>
@@ -113,11 +120,18 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
 
           {(filefile || src) && (
             <ul className="relative size-14 rounded-lg flex flex-1 gap-x-2 w-fit">
-              {fileURLs.map((fileURL) => (
-                <li className="relative size-14 rounded-lg" key={fileURL}>
-                  <Image src={fileURL} alt="T" fill className="object-cover rounded-lg" />
-                </li>
-              ))}
+              {fileURLs.length > 0 &&
+                fileURLs.map((fileURL, idx) => (
+                  <li className="relative size-14 rounded-lg group" key={fileURL}>
+                    <div
+                      onClick={() => handleImageDel(idx)}
+                      className="rounded-full absolute top-0 right-0 group-hover:opacity-100 opacity-0 transition cursor-pointer bg-black aspect-square z-10"
+                    >
+                      <MdOutlineCancel />
+                    </div>
+                    <Image src={fileURL} alt="T" fill className="object-cover rounded-lg" sizes="56" />
+                  </li>
+                ))}
             </ul>
           )}
         </div>
