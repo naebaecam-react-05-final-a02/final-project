@@ -68,6 +68,7 @@ const InputSelect = ({
       onChange(e);
     }
   };
+
   return (
     <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
       {label && (
@@ -116,14 +117,14 @@ const InputSelect = ({
           <>
             <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
             <ul className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden">
-              {dropdownOptions.map((option) => (
+              {dropdownOptions.map((option, index) => (
                 <li
-                  key={option.id}
+                  key={index}
                   className={`relative w-full rounded-md bg-transparent p-[6px]
-  hover:bg-primary-10 hover:text-primary-100 cursor-pointer transition
-  ${icon ? 'pl-9' : ''} 
-  ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
-  ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
+                  hover:bg-primary-10 hover:text-primary-100 cursor-pointer transition
+                  ${icon ? 'pl-9' : ''} 
+                  ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
+                  ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
                   onClick={(e: React.MouseEvent<HTMLLIElement>) => {
                     handleOptionSelect(option.value, option.id);
                     if (option.onClick) {
