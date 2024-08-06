@@ -16,10 +16,26 @@ import { TChallenge } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
 
+const dummySlide = {
+  category: 'lifestyle',
+  content: 'dummy',
+  createdBy: '2024-01-01',
+  endDate: '2024-01-01',
+  id: '00000000-0000-0000-0000-000000000000',
+  imageURL: null,
+  isProgress: null,
+  participants: 100,
+  rating: 5,
+  startDate: '2024-01-01',
+  tags: null,
+  title: 'dummy',
+  verify: 'dummy',
+};
+
 const PopularChallengesSlider = () => {
   const { data: challenges, isPending } = useGetPopularChallenges();
-  console.log(challenges);
 
+  const getChallengeList = () => [dummySlide, ...challenges?.data, dummySlide];
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -49,13 +65,11 @@ const PopularChallengesSlider = () => {
             spaceBetween={0}
             slidesPerView={3}
             scrollbar={{ draggable: true, hide: true, enabled: false }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
           >
             {isPending ? (
               <p>Loading...</p>
             ) : (
-              challenges.data.map((challenge: TChallenge, i: number) => {
+              getChallengeList().map((challenge: TChallenge, i: number) => {
                 return (
                   <li className="flex items-center" key={i}>
                     <SwiperSlide>
