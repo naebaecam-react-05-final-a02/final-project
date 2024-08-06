@@ -6,21 +6,35 @@ import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useCha
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../../_components/FormImageUploader';
 import { FormFields } from '../../../../register/_components/ChallengeRegisterForm/ChallengeRegisterForm';
 import FormCalendar from '../../../../register/_components/FormCalendar';
-import FormCategory from '../../../../register/_components/FormCategory';
 
 type ChallengeUpdateProps = {
   challenge: Tables<'challenges'>;
+};
+
+const categoryOptions = [{ value: '운동' }, { value: '식단' }, { value: '생활' }, { value: '기타' }];
+const categoryItems: { [key: string]: string } = {
+  운동: 'exercise',
+  식단: 'diet',
+  생활: 'lifestyle',
+  기타: 'etc',
+};
+const categoryItems2: { [key: string]: string } = {
+  exercise: '운동',
+  diet: '식단',
+  lifestyle: '생활',
+  etc: '기타',
 };
 
 const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  const [cate, setCate] = useState<string>(categoryItems2[challenge.category]);
   const { mutate: imageUpload } = useImageUpload();
   const { mutate: challengeDelete } = useChallengeDelete();
   const { mutate: challengeUpdate } = useChallengeUpdate();
@@ -77,7 +91,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
               verify: null,
               tags: null,
               rating: 0,
-              category,
+              category: categoryItems[category],
               participants: challenge.participants,
             };
             challengeUpdate(
@@ -104,7 +118,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         verify: null,
         tags: null,
         rating: 0,
-        category,
+        category: categoryItems[category],
         participants: challenge.participants,
       };
       challengeUpdate(
@@ -130,7 +144,15 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         />
       </div>
 
-      <FormCategory label="카테고리" name="category" defaultValue={challenge.category} />
+      <Input
+        readOnly
+        inputType="select"
+        dropdownOptions={categoryOptions}
+        name="category"
+        value={cate}
+        onChange={(e) => setCate(e.target.value)}
+      />
+      {/* <FormCategory label="카테고리" name="category" defaultValue={challenge.category} /> */}
 
       <div className="select-none">
         <Input

@@ -2,16 +2,16 @@
 
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import Loading from '@/components/Loading/Loading';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import FormImageUploader from '../../../_components/FormImageUploader';
 import FormCalendar from '../FormCalendar';
-import FormCategory from '../FormCategory';
 
 export interface FormFields {
   title: string;
@@ -21,8 +21,17 @@ export interface FormFields {
   category: string;
 }
 
+const categoryOptions = [{ value: '운동' }, { value: '식단' }, { value: '생활' }, { value: '기타' }];
+const categoryItems: { [key: string]: string } = {
+  운동: 'exercise',
+  식단: 'diet',
+  생활: 'lifestyle',
+  기타: 'etc',
+};
+
 const ChallengeRegisterForm = () => {
   const router = useRouter();
+  const [cate, setCate] = useState<string>('운동');
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
@@ -31,7 +40,6 @@ const ChallengeRegisterForm = () => {
   //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const file = inputRef?.current?.files?.[0] || null;
 
     if (!file) {
@@ -73,7 +81,7 @@ const ChallengeRegisterForm = () => {
             verify: null,
             tags: null,
             rating: 0,
-            category,
+            category: categoryItems[category],
             participants: 0,
           };
           // console.log('registerData', registerData);
@@ -93,14 +101,22 @@ const ChallengeRegisterForm = () => {
   //TODO 카테고리, 캘린더 ui 수정 필요
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
-      {uploading && <div>이미지 업로딩..</div>}
-      {isPending && <div>로우딩딩딩..</div>}
+      {(uploading || isPending) && <Loading />}
 
       <div className="select-none">
         <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." />
       </div>
 
-      {<FormCategory label="카테고리" name="category" />}
+      <Input
+        readOnly
+        inputType="select"
+        dropdownOptions={categoryOptions}
+        name="category"
+        value={cate}
+        onChange={(e) => setCate(e.target.value)}
+      />
+
+      {/* {<FormCategory label="카테고리" name="category" />} */}
 
       <div className="select-none">
         <Input label="챌린지 내용 & 인증 방법" name="content" placeholder="챌린지 내용과 인증 방법을 작성해주세요." />
