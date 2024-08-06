@@ -94,9 +94,7 @@ class ExerciseAPI {
 
   getExerciseRecord = async (id: string): Promise<ExerciseRecord> => {
     try {
-      console.log('@@1==', 1);
       const response = await axios.get(`${this.baseUrl}/edit?id=${id}`);
-      console.log('@@Res==', response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
