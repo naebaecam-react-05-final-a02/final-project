@@ -1,6 +1,5 @@
 import { createClient } from '@/supabase/server';
 import { Provider } from '@supabase/supabase-js';
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -26,7 +25,7 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
 
     if (data && data.url) {
-      return NextResponse.redirect(data.url);
+      return NextResponse.json({ url: data.url });
     } else {
       throw new Error('No URL returned from Supabase');
     }
