@@ -31,10 +31,8 @@ const ExerciseRecordPage = () => {
   const { mutate: toggleBookmark } = useToggleBookmark();
 
   const [isFirstChange, setIsFirstChange] = useState(false);
-  console.log('@@bookmarkData', bookmarkData);
-  useEffect(() => {
-    console.log('@@RECORD.', record.record);
-  }, [record.record]);
+
+  useEffect(() => {}, [record.record]);
 
   useEffect(() => {
     if (bookmarkData) {
@@ -42,11 +40,7 @@ const ExerciseRecordPage = () => {
     }
   }, [bookmarkData]);
 
-  useEffect(() => {
-    if (isBookMark) {
-      console.log('@@isBookMark', isBookMark);
-    }
-  }, [isBookMark]);
+  useEffect(() => {}, [isBookMark]);
 
   const filteredWorkouts = favoriteWorkouts.filter((workout) =>
     workout.toLowerCase().includes(searchTerm.toLowerCase()),

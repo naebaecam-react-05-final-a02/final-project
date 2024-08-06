@@ -43,6 +43,16 @@ export const PUT = async (request: NextRequest) => {
     } = await supabase.auth.getUser();
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    if (exerciseData.isBookMark) {
+      const { error: bookmarkError } = await supabase
+        .from('exercisesBookmarks')
+        .insert({ userId: user.id, exerciseId });
+
+      if (bookmarkError) {
+        return NextResponse.json({ error: bookmarkError.message }, { status: 400 });
+      }
+    }
+
     delete exerciseData.isBookMark;
     const { error } = await supabase.from('exercises').update(exerciseData).eq('id', exerciseId);
     console.log(exerciseData);
