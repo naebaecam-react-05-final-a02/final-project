@@ -13,6 +13,7 @@ const UserProfile = ({ className }: UserProfileProps) => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  console.log(user?.nickname);
   return (
     <div className="flex items-center gap-2 h-14 ">
       <div className="relative w-9 h-9 border-white border rounded-full">
@@ -24,7 +25,7 @@ const UserProfile = ({ className }: UserProfileProps) => {
           className="object-cover rounded-full"
         />
       </div>
-      <div className="text-sm">{user?.nickname}</div>
+      <div className="text-sm">{user?.nickname ?? `헬린이_${user?.userIndex}`}</div>
     </div>
   );
 };
