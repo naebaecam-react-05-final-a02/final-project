@@ -3,13 +3,14 @@
 import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
 import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
 import Button from '@/components/Button';
+import Loading from '@/components/Loading/Loading';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useRef } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 
 type VerificationRegisterProps = {
@@ -21,25 +22,21 @@ type VerificationRegisterProps = {
 
 //TODO 유저 데이터 가져오기전까지 헬린이로 표시되는거 주의
 const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationRegisterProps) => {
-  const [t, setT] = useState<boolean>(false);
   const router = useRouter();
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: verify, isPending } = useChallengeVerificationRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setT(true);
-  }, []);
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const currentTarget = e.currentTarget;
-    const file = inputRef?.current?.files?.[0] || null;
     const files = inputRef?.current?.files;
+
     console.log('SUBMIT FILES___', files);
-    if (!file) {
+
+    if (!files) {
       console.error('Challenge Verify Image Error : 사진을 올려주세요.');
       return;
     }
@@ -58,15 +55,21 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
     }
 
     const form = new FormData();
-    form.append('file', file);
+    Array.from(files).forEach((filee, i) => {
+      form.append(`file[${i}]`, filee);
+    });
 
+    // console.log(Array.from(form.keys()).length);
+    // console.log(Array.from(form.keys()));
     upload(
       { storage: 'challengeVerify', form },
       {
         onSuccess: async (response) => {
+          console.log('response___', response);
           const verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
             impression,
-            imageURL: response.imageURL,
+            // imageURL: response.imageURL,
+            imageURLs: response.imageURLs,
             userId: user?.id!,
             challengeId: Number(cid),
           };
@@ -88,8 +91,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
     <>
       {
         <form onSubmit={handleSubmit} className="flex flex-col justify-between size-full p-4 relative">
-          {uploading && <div>이미지 업로딩..</div>}
-          {isPending && <div>로우딩딩딩..</div>}
+          {(uploading || isPending) && <Loading />}
           <div className="grid place-items-center gap-y-6">
             <div className="w-full h-24 bg-white/5  text-white flex flex-col items-start justify-center gap-y-4 px-4 rounded-md">
               <h6 className="text-base font-semibold">{challengeTitle}</h6>
@@ -139,7 +141,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
             <div className="flex flex-col gap-y-4 w-full">
               <div className="text-base text-white ">챌린지 인증 사진을 업로드 해주세요!</div>
               <div className="grid gap-y-4 w-full">
-                <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" />
+                <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" maxImage={3} />
                 <div className="text-white/50 flex gap-x-1">
                   <AiOutlineExclamationCircle />
                   <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>

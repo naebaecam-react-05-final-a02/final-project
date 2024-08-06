@@ -10,25 +10,22 @@ type FormImageUploaderType = {
 };
 
 const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
-  ({ src, label, maxImage = 2 }, ref: Ref<HTMLInputElement>) => {
+  ({ src, label, maxImage = 1 }, ref: Ref<HTMLInputElement>) => {
     const [filefile, setFilefile] = useState<File[]>([]);
     const [fileURLs, setFileURLs] = useState<string[]>([]);
 
     // const [isDrag, setIsDrag] = useState<boolean>(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (e && e.target && e.target.files) {
-        setFilefile((prev) => [...prev, e.target.files![0]]);
-      }
-
       const file = e.target.files;
       let tmpFileURLs = [...fileURLs];
 
       if (file) {
-        console.log('HANDLE FILE CHANGE FILE___', file);
+        // console.log('HANDLE FILE CHANGE FILE___', file);
         const url = URL.createObjectURL(file[0]);
         tmpFileURLs.push(url);
         setFileURLs(tmpFileURLs);
+        setFilefile((prev) => [...prev, e.target.files![0]]);
       }
     };
 
@@ -39,11 +36,11 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
           setFilefile((prev) => prev.slice(-maxImage));
         }
         const dttt = new DataTransfer();
-        console.log('USE EFFECT FILEFILE___', filefile);
+        // console.log('USE EFFECT FILEFILE___', filefile);
         filefile.forEach((f) => dttt.items.add(f));
-        console.log('USE EFFECT DTTTT___', dttt);
+        // console.log('USE EFFECT DTTTT___', dttt);
         ref.current.files = dttt.files;
-        console.log('USE EFFECT REF CURRENT FILES___', ref.current.files);
+        // console.log('USE EFFECT REF CURRENT FILES___', ref.current.files);
       }
     }, [filefile, ref, fileURLs, maxImage]);
 
