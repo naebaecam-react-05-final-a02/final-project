@@ -48,7 +48,7 @@ const ChallengeRegisterForm = () => {
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  console.log(err);
+  // console.log(err);
   //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
