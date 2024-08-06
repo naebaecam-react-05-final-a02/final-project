@@ -90,9 +90,15 @@ class AuthAPI {
   // 소셜 로그인
   signInWithOAuth = async (provider: Provider): Promise<void> => {
     try {
-      window.location.href = `${this.baseUrl}/session/social/?provider=${provider}`;
+      const response = await axios.get(`${this.baseUrl}/session/social/?provider=${provider}`);
+
+      if (response.data && response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        throw new Error('No URL returned from server');
+      }
     } catch (error) {
-      throw error;
+      console.error('OAuth error:', error);
     }
   };
 
