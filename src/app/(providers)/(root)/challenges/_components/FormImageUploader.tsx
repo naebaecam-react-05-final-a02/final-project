@@ -8,11 +8,10 @@ type FormImageUploaderType = {
   label?: string;
 };
 
-//TODO Drag and Drop 시 gif파일 안되게 수정해야함
 const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
   ({ src, label }, ref: Ref<HTMLInputElement>) => {
     const [file, setFile] = useState<File>();
-    const [isDrag, setIsDrag] = useState<boolean>(false);
+    // const [isDrag, setIsDrag] = useState<boolean>(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0] || null;
@@ -20,29 +19,34 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
         setFile(file);
       }
     };
-    const handleDrag = (e: React.DragEvent<HTMLLabelElement>) => {
-      e.preventDefault();
-      if (e.type === 'dragenter') setIsDrag(true);
-      else setIsDrag(false);
-    };
 
-    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-      e.preventDefault();
-    };
-    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
-      e.preventDefault();
-      const files = e.dataTransfer?.files;
-      if (files && files[0]) {
-        setFile(files[0]);
+    // {
+    //   const handleDrag = (e: React.DragEvent<HTMLLabelElement>) => {
+    //     e.preventDefault();
+    //     if (e.type === 'dragenter') setIsDrag(true);
+    //     else setIsDrag(false);
+    //   };
 
-        if (ref && typeof ref !== 'function' && ref.current) {
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(files[0]);
-          ref.current.files = dataTransfer.files;
-        }
-      }
-      setIsDrag(false);
-    };
+    //   const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    //     e.preventDefault();
+    //   };
+    //   const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    //     e.preventDefault();
+    //     const files = e.dataTransfer?.files;
+    //     if (files && files[0]) {
+    //       setFile(files[0]);
+
+    //       if (ref && typeof ref !== 'function' && ref.current) {
+    //         const dataTransfer = new DataTransfer();
+    //         dataTransfer.items.add(files[0]);
+    //         ref.current.files = dataTransfer.files;
+    //       }
+    //     }
+    //     setIsDrag(false);
+    //   };
+
+    // }
+
     return (
       <div className="flex flex-col gap-y-2 select-none">
         <p className="text-white/70 text-sm">{label}</p>
@@ -59,7 +63,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
 
           <div className="size-14 select-none text-white">
             <div className="relative border-2 border-white/50 border-dashed w-full aspect-square rounded-lg">
-              {isDrag && <div className="absolute inset-0 z-10 bg-sky-500/20 pointer-events-none" />}
+              {/* {isDrag && <div className="absolute inset-0 z-10 bg-sky-500/20 pointer-events-none" />} */}
               <label
                 // onDragEnter={handleDrag}
                 // onDragLeave={handleDrag}
