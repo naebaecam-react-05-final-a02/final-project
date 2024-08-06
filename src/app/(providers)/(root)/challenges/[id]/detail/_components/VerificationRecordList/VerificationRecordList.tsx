@@ -1,3 +1,4 @@
+import Loading from '@/components/Loading/Loading';
 import ThumbsUp from '@/icons/ThumbsUp';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,8 +13,16 @@ interface VerificationRecord {
   impression: string;
   date: string;
 }
+interface User {
+  profileURL?: string | null;
+  nickname?: string | null;
+}
+interface ChallengeInfoMethodProps {
+  id: number;
+  challengeAuthor: User | null;
+}
 
-const VerificationRecordList = ({ id }: { id: number }) => {
+const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProps) => {
   const [verificationRecords, setVerificationRecords] = useState<VerificationRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +35,6 @@ const VerificationRecordList = ({ id }: { id: number }) => {
 
         if (response.ok) {
           setVerificationRecords(data);
-          console.log('Fetched verification records:', data); // 데이터 콘솔 출력
         } else {
           setError(data.error);
         }
@@ -39,10 +47,9 @@ const VerificationRecordList = ({ id }: { id: number }) => {
 
     fetchVerificationRecords();
   }, [id]);
-  console.log('@@verificationRecords', verificationRecords);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <Loading />;
+
   return (
     <article>
       <div className="flex flex-row justify-between mb-4 px-4">
@@ -78,7 +85,7 @@ const VerificationRecordList = ({ id }: { id: number }) => {
                 </div>
                 <div className="overflow-hidden text-ellipsis line-clamp-2 text-[14px] mb-4">{record.impression}</div>
                 <div className="text-[14px] flex flex-row justify-between">
-                  <div>유저유저유저</div>
+                  <div>{challengeAuthor?.nickname}</div>
                   <div className="text-white/[0.5] text-[12px]">{record.date.slice(0, 10)}</div>
                 </div>
               </div>

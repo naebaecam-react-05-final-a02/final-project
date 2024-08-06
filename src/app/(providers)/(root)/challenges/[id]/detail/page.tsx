@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/Button';
+import Loading from '@/components/Loading/Loading';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import ChevronLeft from '@/icons/ChevronLeft';
@@ -56,21 +57,17 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const challengeAuthor = challenge.user;
 
   return (
-    <Mobile
-      headerLayout={
-        <header
-          className="fixed w-full left-0 top-0 py-2 px-8 h-14 flex justify-between items-center z-10"
-          style={{ background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.29%, rgba(0, 0, 0, 0.00)100%)' }}
-        >
-          <button onClick={() => router.back()} aria-label="뒤로가기">
-            <ChevronLeft />
-          </button>
-          <h2 className="text-[14px] font-medium">챌린지 상세</h2>
-          <DotsVertical width={24} height={24} />
-        </header>
-      }
-      footerLayout={<div></div>}
-    >
+    <>
+      <header
+        className="fixed w-full left-0 top-0 py-2 px-8 h-14 flex justify-between items-center z-10 text-white"
+        style={{ background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.29%, rgba(0, 0, 0, 0.00)100%)' }}
+      >
+        <button onClick={() => router.back()} aria-label="뒤로가기">
+          <ChevronLeft />
+        </button>
+        <h2 className="text-[14px] font-medium">챌린지 상세</h2>
+        <DotsVertical width={24} height={24} />
+      </header>
       <div className="text-white bg-black">
         <main className="pb-24 min-h-screen">
           <div>
@@ -112,7 +109,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               {/* 챌린지 인증 방법 */}
               <ChallengeInfoMethod id={id} challenge={challenge} challengeAuthor={challengeAuthor} />
               {/* 챌린지 인증 리스트 */}
-              <VerificationRecordList id={id} />
+              <VerificationRecordList id={id} challengeAuthor={challengeAuthor} />
               <div
                 className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
                 style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
@@ -136,7 +133,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </main>
       </div>
-    </Mobile>
+    </>
   );
 };
 
