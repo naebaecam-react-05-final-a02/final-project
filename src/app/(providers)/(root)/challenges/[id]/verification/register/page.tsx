@@ -14,12 +14,17 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
   // 챌린지가 없을 경우
   if (!response.count) {
     return (
-      <div className="size-full flex items-center justify-center select-none flex-col p-4 gap-y-4">
-        <div className=" text-red-300 text-xl">잘못된 접근입니다.</div>
-        <Link className="w-full" href={'/'}>
-          <Button>대시보드로 돌아가기</Button>
-        </Link>
-      </div>
+      <Mobile
+        footerLayout={
+          <Link className="w-full" href={'/'}>
+            <Button>대시보드로 돌아가기</Button>
+          </Link>
+        }
+      >
+        <div className="size-full flex items-center justify-center select-none flex-col p-4 gap-y-4">
+          <div className=" text-red-300 text-xl">잘못된 접근입니다.</div>
+        </div>
+      </Mobile>
     );
   }
 

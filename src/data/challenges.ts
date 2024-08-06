@@ -7,6 +7,11 @@ export const initialChallengeError: { [key: string]: string } = {
   category: '',
 };
 
+export const initialChallengeVerificationError: { [key: string]: string } = {
+  image: '',
+  impression: '',
+};
+
 export const categoryOptions = [{ value: '운동' }, { value: '식단' }, { value: '생활' }, { value: '기타' }];
 export const categoryItemsKORtoENG: { [key: string]: string } = {
   운동: 'exercise',
