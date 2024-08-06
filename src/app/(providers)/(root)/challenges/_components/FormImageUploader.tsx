@@ -1,25 +1,53 @@
 'use client';
 
 import Image from 'next/image';
-import { ChangeEvent, forwardRef, Ref, useState } from 'react';
+import { ChangeEvent, forwardRef, Ref, useEffect, useState } from 'react';
 
 type FormImageUploaderType = {
   src?: string;
   label?: string;
+  maxImage?: number;
 };
 
 const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
-  ({ src, label }, ref: Ref<HTMLInputElement>) => {
-    const [file, setFile] = useState<File>();
+  ({ src, label, maxImage = 2 }, ref: Ref<HTMLInputElement>) => {
+    const [filefile, setFilefile] = useState<File[]>([]);
+    const [fileURLs, setFileURLs] = useState<string[]>([]);
+
     // const [isDrag, setIsDrag] = useState<boolean>(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0] || null;
+      if (e && e.target && e.target.files) {
+        setFilefile((prev) => [...prev, e.target.files![0]]);
+      }
+
+      const file = e.target.files;
+      let tmpFileURLs = [...fileURLs];
+
       if (file) {
-        setFile(file);
+        console.log('HANDLE FILE CHANGE FILE___', file);
+        const url = URL.createObjectURL(file[0]);
+        tmpFileURLs.push(url);
+        setFileURLs(tmpFileURLs);
       }
     };
 
+    useEffect(() => {
+      if (ref && typeof ref !== 'function' && ref.current) {
+        if (fileURLs.length > maxImage) {
+          setFileURLs((prev) => prev.slice(-maxImage));
+          setFilefile((prev) => prev.slice(-maxImage));
+        }
+        const dttt = new DataTransfer();
+        console.log('USE EFFECT FILEFILE___', filefile);
+        filefile.forEach((f) => dttt.items.add(f));
+        console.log('USE EFFECT DTTTT___', dttt);
+        ref.current.files = dttt.files;
+        console.log('USE EFFECT REF CURRENT FILES___', ref.current.files);
+      }
+    }, [filefile, ref, fileURLs, maxImage]);
+
+    // 드래그앤 드롭
     // {
     //   const handleDrag = (e: React.DragEvent<HTMLLabelElement>) => {
     //     e.preventDefault();
@@ -46,12 +74,11 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
     //   };
 
     // }
-
     return (
       <div className="flex flex-col gap-y-2 select-none">
         <p className="text-white/70 text-sm">{label}</p>
-        <div className="flex gap-x-2">
-          {(file || src) && (
+        <div className="flex gap-x-2 w-fit">
+          {/* {(file || src) && (
             <div className="relative size-14 rounded-lg">
               {file ? (
                 <Image src={URL.createObjectURL(file)} alt="ChallengeImg" fill className="object-cover rounded-lg" />
@@ -59,7 +86,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
                 src && <Image src={src} alt="ChallengeImg" fill className="object-cover rounded-lg" />
               )}
             </div>
-          )}
+          )} */}
 
           <div className="size-14 select-none text-white">
             <div className="relative border-2 border-white/50 border-dashed w-full aspect-square rounded-lg">
@@ -75,6 +102,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
                 <div className="absolute text-5xl font-thin -top-[2px]">+</div>
                 <div className="relative size-full"></div>
                 <input
+                  multiple
                   ref={ref}
                   id="file"
                   type="file"
@@ -85,6 +113,16 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
               </label>
             </div>
           </div>
+
+          {(filefile || src) && (
+            <ul className="relative size-14 rounded-lg flex flex-1 gap-x-2 w-fit">
+              {fileURLs.map((fileURL) => (
+                <li className="relative size-14 rounded-lg" key={fileURL}>
+                  <Image src={fileURL} alt="T" fill className="object-cover rounded-lg" />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     );
