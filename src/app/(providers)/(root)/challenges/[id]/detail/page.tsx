@@ -21,7 +21,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   if (!challenge) {
-    return <div>Loading</div>;
+    return <Loading />;
   }
 
   // 날짜 포맷팅
@@ -113,7 +113,6 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               <ChallengeInfoMethod id={id} challenge={challenge} challengeAuthor={challengeAuthor} />
               {/* 챌린지 인증 리스트 */}
               <VerificationRecordList id={id} />
-
               <div
                 className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
                 style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
