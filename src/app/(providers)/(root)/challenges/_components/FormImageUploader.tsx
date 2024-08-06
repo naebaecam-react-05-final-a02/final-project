@@ -73,7 +73,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
     // }
 
     const handleImageDel = (idx: number) => {
-      console.log('CLICK___', idx);
+      // console.log('CLICK___', idx);
       setFileURLs((prev) => prev.filter((_, i) => i !== idx));
       setFilefile((prev) => prev.filter((_, i) => i !== idx));
     };

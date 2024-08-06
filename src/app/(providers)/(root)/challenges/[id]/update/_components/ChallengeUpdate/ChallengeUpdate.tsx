@@ -52,9 +52,9 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const file = inputRef?.current?.files?.[0] || null;
+    const files = inputRef?.current?.files;
 
-    if (!file && !challenge.imageURL) {
+    if (!files && !challenge.imageURL) {
       console.error('Challenge Register Image Error : 사진을 올려주세요.');
       return;
     }
@@ -74,9 +74,11 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
     const { title, content, startDate, endDate, category } = formFields as FormFields;
 
-    if (file) {
+    if (files) {
       const form = new FormData();
-      form.append('file', file);
+      Array.from(files).forEach((filee, i) => {
+        form.append(`file[${i}]`, filee);
+      });
       imageUpload(
         { storage: 'challengeRegister', form },
         {
@@ -88,7 +90,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
               endDate,
               isProgress: challenge.isProgress,
               createdBy: challenge.createdBy,
-              imageURL: response.imageURL,
+              imageURL: response.imageURLs[0],
               verify: null,
               tags: null,
               rating: 0,
@@ -176,7 +178,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
       <FormCalendar s={new Date(challenge.startDate)} e={new Date(challenge.endDate)} />
 
       <div className="grid gap-y-4">
-        <FormImageUploader ref={inputRef} src={challenge.imageURL} />
+        <FormImageUploader ref={inputRef} src={[challenge.imageURL]} />
         <div className="text-white/50 flex gap-x-1">
           <AiOutlineExclamationCircle />
           <p className="text-xs"> 홍보를 위한 썸네일 이미지를 함께 업로드 해주세요!</p>

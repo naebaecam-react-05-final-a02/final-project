@@ -40,9 +40,9 @@ const ChallengeRegisterForm = () => {
   //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const file = inputRef?.current?.files?.[0] || null;
+    const files = inputRef?.current?.files;
 
-    if (!file) {
+    if (!files) {
       console.error('Challenge Register Image Error : 사진을 올려주세요.');
       return;
     }
@@ -63,12 +63,15 @@ const ChallengeRegisterForm = () => {
     const { title, content, startDate, endDate, category } = formFields as FormFields;
 
     const form = new FormData();
-    form.append('file', file);
+    Array.from(files).forEach((filee, i) => {
+      form.append(`file[${i}]`, filee);
+    });
 
     upload(
       { storage: 'challengeRegister', form },
       {
         onSuccess: async (response) => {
+          console.log(response);
           const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
           const registerData: Omit<Tables<'challenges'>, 'id'> = {
             title,
@@ -77,7 +80,7 @@ const ChallengeRegisterForm = () => {
             endDate,
             isProgress: today == startDate,
             createdBy: user?.id!,
-            imageURL: response.imageURL,
+            imageURL: response.imageURLs[0],
             verify: null,
             tags: null,
             rating: 0,
