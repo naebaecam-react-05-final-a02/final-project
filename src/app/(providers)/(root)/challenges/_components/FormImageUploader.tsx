@@ -93,19 +93,24 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
           )} */}
 
           <div className="size-14 select-none text-white">
-            <div className="relative border-2 border-white/50 border-dashed w-full aspect-square rounded-lg">
+            <div
+              className={`relative border-2 border-white/50 border-dashed w-full aspect-square rounded-lg ${
+                fileURLs.length >= maxImage ? 'opacity-10' : 'opacity-100 group'
+              }`}
+            >
               {/* {isDrag && <div className="absolute inset-0 z-10 bg-sky-500/20 pointer-events-none" />} */}
               <label
                 // onDragEnter={handleDrag}
                 // onDragLeave={handleDrag}
                 // onDragOver={handleDragOver}
                 // onDrop={handleDrop}
-                className="size-full flex items-center justify-center  cursor-pointer"
+                className="size-full flex items-center justify-center  group-hover:cursor-pointer"
                 htmlFor="file"
               >
                 <div className="absolute text-5xl font-thin -top-[2px]">+</div>
                 <div className="relative size-full"></div>
                 <input
+                  disabled={fileURLs.length >= maxImage}
                   multiple
                   ref={ref}
                   id="file"
