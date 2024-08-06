@@ -7,10 +7,11 @@ type FormImageUploaderType = {
   src?: string[];
   label?: string;
   maxImage?: number;
+  error?: string;
 };
 
 const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
-  ({ src, label, maxImage = 1 }, ref: Ref<HTMLInputElement>) => {
+  ({ src, label, maxImage = 1, error }, ref: Ref<HTMLInputElement>) => {
     const [filefile, setFilefile] = useState<File[]>([]);
     const [fileURLs, setFileURLs] = useState<string[]>(src ?? []);
 
@@ -140,6 +141,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
             </ul>
           )}
         </div>
+        {error && <div className="text-red-500 text-sm mt-1 ml-1">{error}</div>}
       </div>
     );
   },

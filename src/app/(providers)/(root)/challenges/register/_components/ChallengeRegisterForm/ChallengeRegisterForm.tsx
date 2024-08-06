@@ -29,21 +29,35 @@ const categoryItems: { [key: string]: string } = {
   기타: 'etc',
 };
 
+const initError: { [key: string]: string } = {
+  image: '',
+  title: '',
+  content: '',
+  startDate: '',
+  endDate: '',
+  category: '',
+};
+
 const ChallengeRegisterForm = () => {
   const router = useRouter();
   const [cate, setCate] = useState<string>('운동');
+  const [err, setErr] = useState(initError);
+
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  console.log(err);
   //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErr(initError);
     const files = inputRef?.current?.files;
 
-    if (!files) {
-      console.error('Challenge Register Image Error : 사진을 올려주세요.');
+    if (!files || !files.length) {
+      console.error('Challenge Register Image Error : 사진을 등록해 주세요.');
+      setErr((prev) => ({ ...prev, image: `사진을(를) 등록해 주세요.` }));
       return;
     }
 
@@ -55,6 +69,7 @@ const ChallengeRegisterForm = () => {
       const value = formData.get(field);
       if (typeof value !== 'string' || value.trim() === '') {
         console.error(`Challenge Register ${field} Error : ${field}을(를) 입력 해주세요.`);
+        setErr((prev) => ({ ...prev, [field]: `${field}을(를) 입력 해주세요.` }));
         return;
       }
       formFields[field] = value.trim();
@@ -106,7 +121,7 @@ const ChallengeRegisterForm = () => {
       {(uploading || isPending) && <Loading />}
 
       <div className="select-none">
-        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." />
+        <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." error={err['title']} />
       </div>
 
       <Input
@@ -121,7 +136,12 @@ const ChallengeRegisterForm = () => {
       {/* {<FormCategory label="카테고리" name="category" />} */}
 
       <div className="select-none">
-        <Input label="챌린지 내용 & 인증 방법" name="content" placeholder="챌린지 내용과 인증 방법을 작성해주세요." />
+        <Input
+          label="챌린지 내용 & 인증 방법"
+          name="content"
+          placeholder="챌린지 내용과 인증 방법을 작성해주세요."
+          error={err['content']}
+        />
       </div>
 
       {/* <FormTextArea
@@ -134,7 +154,7 @@ const ChallengeRegisterForm = () => {
       <FormCalendar />
 
       <div className="grid gap-y-4">
-        <FormImageUploader ref={inputRef} />
+        <FormImageUploader ref={inputRef} error={err['image']} />
         <div className="text-white/50 flex gap-x-1">
           <AiOutlineExclamationCircle />
           <p className="text-xs"> 홍보를 위한 썸네일 이미지를 함께 업로드 해주세요!</p>
