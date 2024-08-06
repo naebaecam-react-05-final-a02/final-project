@@ -3,6 +3,12 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import {
+  categoryItemsENGtoKOR,
+  categoryItemsKORtoENG,
+  categoryOptions,
+  initialChallengeError,
+} from '@/data/challenges';
 import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
@@ -17,25 +23,12 @@ type ChallengeUpdateProps = {
   challenge: Tables<'challenges'>;
 };
 
-const categoryOptions = [{ value: '운동' }, { value: '식단' }, { value: '생활' }, { value: '기타' }];
-const categoryItems: { [key: string]: string } = {
-  운동: 'exercise',
-  식단: 'diet',
-  생활: 'lifestyle',
-  기타: 'etc',
-};
-const categoryItems2: { [key: string]: string } = {
-  exercise: '운동',
-  diet: '식단',
-  lifestyle: '생활',
-  etc: '기타',
-};
-
 const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const [err, setErr] = useState(initialChallengeError);
 
-  const [cate, setCate] = useState<string>(categoryItems2[challenge.category]);
+  const [cate, setCate] = useState<string>(categoryItemsENGtoKOR[challenge.category]);
   const { mutate: imageUpload, isPending: uploading } = useImageUpload();
   const { mutate: challengeDelete, isPending: deleting } = useChallengeDelete();
   const { mutate: challengeUpdate, isPending: updating } = useChallengeUpdate();
@@ -52,10 +45,12 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErr(initialChallengeError);
     const files = inputRef?.current?.files;
 
-    if (!files && !challenge.imageURL) {
+    if (!files || !files.length || !challenge.imageURL) {
       console.error('Challenge Register Image Error : 사진을 올려주세요.');
+      setErr((prev) => ({ ...prev, image: `사진을(를) 등록해 주세요.` }));
       return;
     }
 
@@ -67,6 +62,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
       const value = formData.get(field);
       if (typeof value !== 'string' || value.trim() === '') {
         console.error(`Challenge Register ${field} Error : ${field}을(를) 입력 해주세요.`);
+        setErr((prev) => ({ ...prev, [field]: `${field}을(를) 입력 해주세요.` }));
         return;
       }
       formFields[field] = value.trim();
@@ -79,6 +75,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
       Array.from(files).forEach((filee, i) => {
         form.append(`file[${i}]`, filee);
       });
+
       imageUpload(
         { storage: 'challengeRegister', form },
         {
@@ -94,7 +91,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
               verify: null,
               tags: null,
               rating: 0,
-              category: categoryItems[category],
+              category: categoryItemsKORtoENG[category],
               participants: challenge.participants,
             };
             challengeUpdate(
@@ -121,7 +118,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         verify: null,
         tags: null,
         rating: 0,
-        category: categoryItems[category],
+        category: categoryItemsKORtoENG[category],
         participants: challenge.participants,
       };
       challengeUpdate(
@@ -145,6 +142,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           name="title"
           placeholder="최대 12글자로 작성해 주세요."
           defaultValue={challenge.title}
+          error={err['title']}
         />
       </div>
 
@@ -164,6 +162,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           name="content"
           placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
           defaultValue={challenge.content}
+          error={err['content']}
         />
       </div>
 
@@ -178,7 +177,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
       <FormCalendar s={new Date(challenge.startDate)} e={new Date(challenge.endDate)} />
 
       <div className="grid gap-y-4">
-        <FormImageUploader ref={inputRef} src={[challenge.imageURL]} />
+        <FormImageUploader ref={inputRef} src={[challenge.imageURL]} error={err['image']} />
         <div className="text-white/50 flex gap-x-1">
           <AiOutlineExclamationCircle />
           <p className="text-xs"> 홍보를 위한 썸네일 이미지를 함께 업로드 해주세요!</p>

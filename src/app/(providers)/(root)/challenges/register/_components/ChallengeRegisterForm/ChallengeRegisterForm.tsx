@@ -3,6 +3,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { categoryItemsKORtoENG, categoryOptions, initialChallengeError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
@@ -21,38 +22,22 @@ export interface FormFields {
   category: string;
 }
 
-const categoryOptions = [{ value: '운동' }, { value: '식단' }, { value: '생활' }, { value: '기타' }];
-const categoryItems: { [key: string]: string } = {
-  운동: 'exercise',
-  식단: 'diet',
-  생활: 'lifestyle',
-  기타: 'etc',
-};
-
-const initError: { [key: string]: string } = {
-  image: '',
-  title: '',
-  content: '',
-  startDate: '',
-  endDate: '',
-  category: '',
-};
-
 const ChallengeRegisterForm = () => {
   const router = useRouter();
   const [cate, setCate] = useState<string>('운동');
-  const [err, setErr] = useState(initError);
+  const [err, setErr] = useState(initialChallengeError);
 
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   // console.log(err);
   //TODO Rating, Tags 생각..?
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErr(initError);
+    setErr(initialChallengeError);
     const files = inputRef?.current?.files;
 
     if (!files || !files.length) {
@@ -99,7 +84,7 @@ const ChallengeRegisterForm = () => {
             verify: null,
             tags: null,
             rating: 0,
-            category: categoryItems[category],
+            category: categoryItemsKORtoENG[category],
             participants: 0,
           };
           // console.log('registerData', registerData);
