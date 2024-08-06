@@ -2,6 +2,7 @@
 
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import Loading from '@/components/Loading/Loading';
 import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
@@ -35,9 +36,9 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const router = useRouter();
 
   const [cate, setCate] = useState<string>(categoryItems2[challenge.category]);
-  const { mutate: imageUpload } = useImageUpload();
-  const { mutate: challengeDelete } = useChallengeDelete();
-  const { mutate: challengeUpdate } = useChallengeUpdate();
+  const { mutate: imageUpload, isPending: uploading } = useImageUpload();
+  const { mutate: challengeDelete, isPending: deleting } = useChallengeDelete();
+  const { mutate: challengeUpdate, isPending: updating } = useChallengeUpdate();
 
   // console.log('challenge___', challenge);
 
@@ -98,7 +99,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
               { updateData, cid: challenge.id },
               {
                 onSuccess: () => {
-                  alert('수정이 완료되었습니다.');
+                  alert('수정되었습니다.');
                   router.replace(`/challenges`);
                 },
               },
@@ -125,7 +126,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         { updateData, cid: challenge.id },
         {
           onSuccess: () => {
-            alert('수정이 완료되었습니다.');
+            alert('삭제되었습니다.');
             router.replace(`/challenges`);
           },
         },
@@ -135,6 +136,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
+      {(uploading || updating || deleting) && <Loading />}
       <div className="select-none">
         <Input
           label="챌린지 이름"

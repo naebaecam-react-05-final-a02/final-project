@@ -98,7 +98,6 @@ const ChallengeRegisterForm = () => {
     );
   };
 
-  //TODO 카테고리, 캘린더 ui 수정 필요
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
       {(uploading || isPending) && <Loading />}
