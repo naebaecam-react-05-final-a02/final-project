@@ -67,38 +67,47 @@ const ChallengeRegisterForm = () => {
       form.append(`file[${i}]`, filee);
     });
 
-    upload(
-      { storage: 'challengeRegister', form },
-      {
-        onSuccess: async (response) => {
-          console.log(response);
-          const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
-          const registerData: Omit<Tables<'challenges'>, 'id'> = {
-            title,
-            content,
-            startDate,
-            endDate,
-            isProgress: today == startDate,
-            createdBy: user?.id!,
-            imageURL: response.imageURLs[0],
-            verify: null,
-            tags: null,
-            rating: 0,
-            category: categoryItemsKORtoENG[category],
-            participants: 0,
-          };
-          // console.log('registerData', registerData);
-          challengeRegister(registerData, {
-            onSuccess: () => {
-              console.log('Challenge Register Successfully');
-              router.push('/challenges');
-            },
-            onError: (error) => console.error('Chaalenge Register Failed', error),
-          });
+    if (confirm('등록하시겠습니까?')) {
+      upload(
+        { storage: 'challengeRegister', form },
+        {
+          onSuccess: async (response) => {
+            console.log(response);
+            const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
+            const registerData: Omit<Tables<'challenges'>, 'id'> = {
+              title,
+              content,
+              startDate,
+              endDate,
+              isProgress: today == startDate,
+              createdBy: user?.id!,
+              imageURL: response.imageURLs[0],
+              verify: null,
+              tags: null,
+              rating: 0,
+              category: categoryItemsKORtoENG[category],
+              participants: 0,
+            };
+            // console.log('registerData', registerData);
+            challengeRegister(registerData, {
+              onSuccess: () => {
+                alert('등록되었습니다.');
+                console.log('Challenge Register Successfully');
+                router.push('/challenges');
+              },
+              onError: (error) => {
+                alert('등록에 실패하였습니다.');
+                console.error('Chaalenge Register Failed', error);
+              },
+            });
+          },
+          onError: (error) => {
+            alert('이미지 업로드에 실패하였습니다.');
+            console.error('UPLOAD FAILED', error);
+          },
         },
-        onError: (error) => console.error('UPLOAD FAILED', error),
-      },
-    );
+      );
+    }
   };
 
   return (

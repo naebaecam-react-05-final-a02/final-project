@@ -36,11 +36,14 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   // console.log('challenge___', challenge);
 
   const handleDelete = () => {
-    challengeDelete(challenge.id, {
-      onSuccess: () => {
-        router.replace('/challenges');
-      },
-    });
+    if (confirm('삭제하시겠습니까?')) {
+      challengeDelete(challenge.id, {
+        onSuccess: () => {
+          alert('삭제하였습니다.');
+          router.replace('/challenges');
+        },
+      });
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -48,7 +51,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
     setErr(initialChallengeError);
     const files = inputRef?.current?.files;
 
-    if (!files || !files.length || !challenge.imageURL) {
+    if (!files || (!files.length && !challenge.imageURL)) {
       console.error('Challenge Register Image Error : 사진을 올려주세요.');
       setErr((prev) => ({ ...prev, image: `사진을(를) 등록해 주세요.` }));
       return;
@@ -70,66 +73,68 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
     const { title, content, startDate, endDate, category } = formFields as FormFields;
 
-    if (files) {
-      const form = new FormData();
-      Array.from(files).forEach((filee, i) => {
-        form.append(`file[${i}]`, filee);
-      });
+    if (confirm('수정하시겠습니까?')) {
+      if (files) {
+        const form = new FormData();
+        Array.from(files).forEach((filee, i) => {
+          form.append(`file[${i}]`, filee);
+        });
 
-      imageUpload(
-        { storage: 'challengeRegister', form },
-        {
-          onSuccess: (response) => {
-            const updateData: Omit<Tables<'challenges'>, 'id'> = {
-              title,
-              content,
-              startDate,
-              endDate,
-              isProgress: challenge.isProgress,
-              createdBy: challenge.createdBy,
-              imageURL: response.imageURLs[0],
-              verify: null,
-              tags: null,
-              rating: 0,
-              category: categoryItemsKORtoENG[category],
-              participants: challenge.participants,
-            };
-            challengeUpdate(
-              { updateData, cid: challenge.id },
-              {
-                onSuccess: () => {
-                  alert('수정되었습니다.');
-                  router.replace(`/challenges`);
+        imageUpload(
+          { storage: 'challengeRegister', form },
+          {
+            onSuccess: (response) => {
+              const updateData: Omit<Tables<'challenges'>, 'id'> = {
+                title,
+                content,
+                startDate,
+                endDate,
+                isProgress: challenge.isProgress,
+                createdBy: challenge.createdBy,
+                imageURL: response.imageURLs[0],
+                verify: null,
+                tags: null,
+                rating: 0,
+                category: categoryItemsKORtoENG[category],
+                participants: challenge.participants,
+              };
+              challengeUpdate(
+                { updateData, cid: challenge.id },
+                {
+                  onSuccess: () => {
+                    alert('수정하였습니다.');
+                    router.replace(`/challenges`);
+                  },
                 },
-              },
-            );
+              );
+            },
           },
-        },
-      );
-    } else if (challenge.imageURL) {
-      const updateData: Omit<Tables<'challenges'>, 'id'> = {
-        title,
-        content,
-        startDate,
-        endDate,
-        isProgress: challenge.isProgress,
-        createdBy: challenge.createdBy,
-        imageURL: challenge.imageURL,
-        verify: null,
-        tags: null,
-        rating: 0,
-        category: categoryItemsKORtoENG[category],
-        participants: challenge.participants,
-      };
-      challengeUpdate(
-        { updateData, cid: challenge.id },
-        {
-          onSuccess: () => {
-            alert('삭제되었습니다.');
-            router.replace(`/challenges`);
+        );
+      } else if (challenge.imageURL) {
+        const updateData: Omit<Tables<'challenges'>, 'id'> = {
+          title,
+          content,
+          startDate,
+          endDate,
+          isProgress: challenge.isProgress,
+          createdBy: challenge.createdBy,
+          imageURL: challenge.imageURL,
+          verify: null,
+          tags: null,
+          rating: 0,
+          category: categoryItemsKORtoENG[category],
+          participants: challenge.participants,
+        };
+        challengeUpdate(
+          { updateData, cid: challenge.id },
+          {
+            onSuccess: () => {
+              alert('수정하였습니다.');
+              router.replace(`/challenges`);
+            },
           },
-        },
-      );
+        );
+      }
     }
   };
 
@@ -188,7 +193,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         <Button type="submit" className="select-none">
           수정하기
         </Button>
-        <Button onClick={() => handleDelete()} className="select-none">
+        <Button onClick={() => handleDelete()} type="button" className="select-none">
           삭제하기
         </Button>
       </div>

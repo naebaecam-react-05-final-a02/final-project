@@ -67,30 +67,39 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
 
     // console.log(Array.from(form.keys()).length);
     // console.log(Array.from(form.keys()));
-    upload(
-      { storage: 'challengeVerify', form },
-      {
-        onSuccess: async (response) => {
-          // console.log('response___', response);
-          const verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
-            impression,
-            // imageURL: response.imageURL,
-            imageURLs: response.imageURLs,
-            userId: user?.id!,
-            challengeId: Number(cid),
-          };
+    if (confirm('등록하시겠습니까?')) {
+      upload(
+        { storage: 'challengeVerify', form },
+        {
+          onSuccess: async (response) => {
+            // console.log('response___', response);
+            const verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'> = {
+              impression,
+              // imageURL: response.imageURL,
+              imageURLs: response.imageURLs,
+              userId: user?.id!,
+              challengeId: Number(cid),
+            };
 
-          verify(verifyData, {
-            onSuccess: () => {
-              console.log('Challenge Verify Successfully');
-              router.push(`/challenges/${cid}/verification/list`);
-            },
-            onError: (error) => console.error('Chaalenge Verify Failed', error),
-          });
+            verify(verifyData, {
+              onSuccess: () => {
+                alert('등록되었습니다.');
+                console.log('Challenge Verify Successfully');
+                router.push(`/challenges/${cid}/verification/list`);
+              },
+              onError: (error) => {
+                alert('등록에 실패하였습니다.');
+                console.error('Chaalenge Verify Failed', error);
+              },
+            });
+          },
+          onError: (error) => {
+            alert('이미지 업로드에 실패하였습니다.');
+            console.error('UPLOAD FAILED', error);
+          },
         },
-        onError: (error) => console.error('UPLOAD FAILED', error),
-      },
-    );
+      );
+    }
   };
 
   return (
