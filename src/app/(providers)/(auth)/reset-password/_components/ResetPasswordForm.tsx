@@ -1,10 +1,10 @@
 'use client';
 
 import Button from '@/components/Button';
-import Input from '@/components/Input';
 import { useResetPassword } from '@/hooks/auth/useUsers';
 import { useRouter } from 'next/navigation';
 import { FormEvent, MouseEvent, useState } from 'react';
+import PasswordField from '../../_components/PasswordField';
 import { validatePassword } from '../../_utils/validatePassword';
 
 interface ResetPasswordFormProps {
@@ -66,26 +66,12 @@ const ResetPasswordForm = ({ setError }: ResetPasswordFormProps) => {
       <div>
         <h2 className="text-18 font-semibold mb-6">새로운 비밀번호를 설정해 주세요!</h2>
         <form className="flex flex-col gap-4">
-          <Input
-            label="새 비밀번호"
-            type="password"
-            name="password"
-            value={newPassword}
-            onChange={handleNewPasswordChange}
-            error={passwordError}
-            autoComplete="off"
-            required
-          />
-
-          <Input
-            label="새 비밀번호 확인"
-            type="password"
-            name="confirm-password"
+          <PasswordField value={newPassword} onChange={handleNewPasswordChange} error={passwordError} />
+          <PasswordField
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
             error={confirmPasswordError}
-            autoComplete="off"
-            required
+            isConfirmPassword
           />
         </form>
       </div>

@@ -1,5 +1,6 @@
 'use client';
 import Button from '@/components/Button';
+import Loading from '@/components/Loading/Loading';
 import { useSignIn } from '@/hooks/auth/useUsers';
 import { useRouter } from 'next/navigation';
 import EmailField from '../../../_components/EmailField';
@@ -61,6 +62,7 @@ const LogInForm = () => {
       <Button className="mt-12 mb-[35px]" disabled={isPending}>
         {isPending ? '로그인 중...' : '로그인'}
       </Button>
+      {isPending && <Loading />}
     </form>
   );
 };
