@@ -44,6 +44,12 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
             flex flex-col gap-y-4 items-center justify-between overflow-hidden relative text-white "
             >
               <DashBoardLevel />
+              <div
+                className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
+            rounded-b-[20px] flex justify-center text-sm"
+              >
+                현재 개발중...
+              </div>
             </Card>
 
             <Card className=" w-full  flex flex-col items-start ">
