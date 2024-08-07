@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 410 864">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #202121;
+      }
+
+      .cls-2 {
+        fill: #70706a;
+      }
+
+      .cls-3 {
+        stroke: url(#_무제_그라디언트_197-3);
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: #4f4e4d;
+        stroke-width: .7px;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6, .cls-7 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-4 {
+        stroke: url(#_무제_그라디언트_197-4);
+      }
+
+      .cls-5 {
+        stroke: url(#_무제_그라디언트_197-2);
+      }
+
+      .cls-8 {
+        fill: url(#_무제_그라디언트_14);
+        opacity: .4;
+      }
+
+      .cls-9 {
+        fill: #373733;
+      }
+
+      .cls-10 {
+        fill: #5f85a5;
+        opacity: .47;
+      }
+
+      .cls-6 {
+        stroke: url(#_무제_그라디언트_197);
+      }
+
+      .cls-11 {
+        fill: #d08777;
+      }
+
+      .cls-12 {
+        fill: #446087;
+        opacity: .46;
+      }
+
+      .cls-7 {
+        fill: #121623;
+        stroke: #000;
+      }
+    </style>
+    <linearGradient id="_무제_그라디언트_197" data-name="무제 그라디언트 197" x1="3.75" y1="349.66" x2="3.75" y2="289.96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#282825"/>
+      <stop offset=".01" stop-color="#3e3e3b"/>
+      <stop offset=".04" stop-color="#5c5c59"/>
+      <stop offset=".06" stop-color="#767572"/>
+      <stop offset=".09" stop-color="#898886"/>
+      <stop offset=".12" stop-color="#979593"/>
+      <stop offset=".16" stop-color="#9f9d9b"/>
+      <stop offset=".23" stop-color="#a2a09e"/>
+      <stop offset=".51" stop-color="#a5a19f"/>
+      <stop offset=".72" stop-color="#aea8a5"/>
+      <stop offset=".85" stop-color="#b9afab"/>
+      <stop offset=".88" stop-color="#a39b97"/>
+      <stop offset=".95" stop-color="#6d6864"/>
+      <stop offset="1" stop-color="#3e3d39"/>
+    </linearGradient>
+    <linearGradient id="_무제_그라디언트_197-2" data-name="무제 그라디언트 197" x1="406.25" y1="328.22" x2="406.25" y2="235.25" xlink:href="#_무제_그라디언트_197"/>
+    <linearGradient id="_무제_그라디언트_197-3" data-name="무제 그라디언트 197" y1="273.66" y2="213.96" xlink:href="#_무제_그라디언트_197"/>
+    <linearGradient id="_무제_그라디언트_197-4" data-name="무제 그라디언트 197" y1="186.72" x2="3.75" y2="157.93" xlink:href="#_무제_그라디언트_197"/>
+    <radialGradient id="_무제_그라디언트_14" data-name="무제 그라디언트 14" cx="171.52" cy="176.79" fx="171.52" fy="176.79" r="2.18" gradientTransform="translate(-104.9 -248.44) scale(1.51 1.56)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#456780"/>
+      <stop offset=".35" stop-color="#43657e"/>
+      <stop offset=".48" stop-color="#3c5e77"/>
+      <stop offset=".58" stop-color="#31526c"/>
+      <stop offset=".66" stop-color="#21405c"/>
+      <stop offset=".7" stop-color="#14334f"/>
+    </radialGradient>
+  </defs>
+  <rect class="cls-6" y="290.31" width="7.5" height="59" rx=".69" ry=".69"/>
+  <rect class="cls-5" x="402.5" y="235.6" width="7.5" height="92.27" rx=".69" ry=".69"/>
+  <rect class="cls-3" x="0" y="214.31" width="7.5" height="59" rx=".69" ry=".69"/>
+  <rect class="cls-4" x="0" y="158.28" width="7.5" height="28.09" rx=".69" ry=".69"/>
+  <path d="M342.86.71l-275.64.08C31.09.79,3.04,29.32,3.04,66.62l.39,736.23c0,34.36,28.21,60.87,61.49,60.87l281.66.15c32.16-2.01,58.51-27.84,60.55-61.73l-.59-735.41c0-37.3-27.55-66.01-63.68-66.01ZM391.77,799.34c0,27.09-21.27,49.05-47.51,49.05H65.64c-26.24,0-47.51-21.96-47.51-49.05V65.35c0-27.09,21.27-49.05,47.51-49.05h63.88c.87.04,2.54.32,3.89,1.76,1.9,2.02,1.9,4.51,1.9,4.97l.21,5.73h0c0,9.57,7.58,17.39,16.85,17.39h105.17c9.2,0,16.72-7.77,16.72-17.27h0s.27-5.86.27-5.86c0-.46,0-2.94,1.9-4.97,1.35-1.44,3.03-1.71,3.89-1.76h63.94c26.24,0,47.51,21.96,47.51,49.05v733.99Z"/>
+  <rect class="cls-1" x="174.91" y="5.3" width="59.89" height="4.69" rx="1.48" ry="1.48"/>
+  <path class="cls-2" d="M346.19.26L63.57,0C31.26-.01,1.63,29.14,2.42,63.52v737.76c0,35.16,29.13,62.72,62.73,62.72l280.23-.13c33.27-.71,60.21-27.91,61.75-61.34l-.6-738.97c1.67-32.91-28.47-64.08-60.34-63.31ZM401.42,799.44c.01,34.14-24.06,56.76-56.87,59.28l-278.77-.08c-32.16.51-58.14-27.13-58.14-59.21l-.15-734.85C7.5,32.5,31.77,4.91,65.1,4.6h276.1c35.67,0,61.29,26.23,61.29,59.65l-1.07,735.18Z"/>
+  <ellipse class="cls-11" cx="154.59" cy="27.71" rx="6.31" ry="6.52"/>
+  <rect class="cls-9" x="82.72" y="858.02" width="4.88" height="4.38"/>
+  <rect class="cls-9" x="321.47" y="1.46" width="4.71" height="3.99"/>
+  <rect class="cls-9" x="401.34" y="774.15" width="4.37" height="4.74"/>
+  <rect class="cls-9" x="401.37" y="85.67" width="3.97" height="4.74"/>
+  <rect class="cls-9" x="3.6" y="85.67" width="4.07" height="4.74"/>
+  <rect class="cls-9" x="3.42" y="776.09" width="4.22" height="4.74"/>
+  <ellipse class="cls-7" cx="154.59" cy="27.71" rx="6.76" ry="6.98"/>
+  <ellipse class="cls-8" cx="154.59" cy="27.71" rx="3.3" ry="3.41"/>
+  <ellipse class="cls-10" cx="157.17" cy="29.93" rx="1.27" ry="1.31"/>
+  <path class="cls-12" d="M152.15,23.4s-1.22,1.3-1.38,4.15c-.14,2.41,1.38,4.45,1.38,4.45,0,0-2.44-.83-2.32-4.5.11-3.39,2.32-4.11,2.32-4.11Z"/>
+</svg>
