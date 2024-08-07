@@ -106,8 +106,9 @@ class DashBoardAPI {
         .eq('userId', user?.id)
         .gte('date', getStartOfDayISO(date))
         .lte('date', getEndOfDayISO(date))
-        .order('date');
+        .order('id');
 
+      // console.log('exercises___', exercises);
       if (error) {
         console.error('Exercises Database query error:', error);
         return {

@@ -70,8 +70,7 @@ export const mutationOptions = {
         return {
           ...old,
           data: old.data.map((o) => {
-            if (o.id === data.exercise.id && o.userId === data.exercise.userId)
-              return { ...o, isCompleted: data.isCompleted };
+            if (o.id === data.exercise.id) return { ...o, isCompleted: data.isCompleted };
             return o;
           }),
         };
