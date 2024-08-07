@@ -7,6 +7,7 @@ import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import ChevronLeft from '@/icons/ChevronLeft';
 import DotsVertical from '@/icons/DotsVertical';
 import Memo from '@/icons/Memo';
+import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
@@ -82,57 +83,31 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   // 챌린지 작성자 정보
   const challengeAuthor = challenge.user;
 
-  return (
-    <>
-      <header
-        className="fixed w-full left-0 top-0 py-2 px-8 h-14 flex justify-between items-center z-10 text-white"
-        style={{ background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.29%, rgba(0, 0, 0, 0.00)100%)' }}
-      >
-        <button onClick={() => router.back()} aria-label="뒤로가기">
-          <ChevronLeft />
-        </button>
-        <h2 className="text-[14px] font-medium">챌린지 상세</h2>
-        <Link href={`/challenges/${challenge.id}/update`} aria-label="메뉴 열기" className="relative">
-          <DotsVertical width={24} height={24} />
-          {/* {menuOpen && (
-            <div
-              ref={menuRef}
-              className="absolute top-8 right-0 text-left text-white rounded-lg w-36 border border-[#12F287] bg-black/70 p-2"
-              style={{
-                borderRadius: '6px',
-                backdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 8px rgba(18, 242, 135, 0.2)',
-              }}
-            >
-              {user?.id === challenge.createdBy && (
-                <>
-                  <Link href={`/challenges/${challenge.id}/update`}>
-                    <div
-                      className="flex justify-between items-center p-2 mb-1 rounded cursor-pointer hover:bg-[rgba(18,242,135,0.1)]"
-                      // style={{
-                      //   borderBottom: '1px solid rgba(18, 242, 135, 0.2)',
-                      // }}
-                    >
-                      수정하기
-                      <Memo />
-                    </div>
-                  </Link>
-                  <div
-                    onClick={() => handleDelete()} // 삭제 기능 구현 필요
-                    className="flex justify-between items-center p-2 rounded cursor-pointer hover:bg-[rgba(18,242,135,0.1)]"
-                  >
-                    삭제하기
-                  </div>
-                </>
-              )}
-            </div>
-          )} */}
+  const bottomButton = (
+    <div className="flex w-full  gap-x-2">
+      {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) ? (
+        <Button className="flex-1" onClick={handleJoinChallenge} type="button">
+          챌린지 신청하기
+        </Button>
+      ) : (
+        <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
+          <Button type="button">챌린지 인증하기</Button>
         </Link>
-      </header>
+      )}
+      {user?.id === challenge.createdBy && (
+        <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
+          <Button>수정 및 삭제</Button>
+        </Link>
+      )}
+    </div>
+  );
+
+  return (
+    <Mobile isHeaderFixed={false} showHeader={false} showFooter={false} bottomButton={bottomButton}>
       <div className="text-white relative">
         <BackBoard />
-        <main className="pb-24 min-h-screen">
-          <div className="h-screen">
+        <main className="pb-8">
+          <div className="">
             <ThumbnailSection challenge={challenge} />
             <section className="flex flex-col gap-6">
               <article className="px-4 py-3 border-b-[1px] border-white/70 header-gradient">
@@ -156,31 +131,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               <ChallengeInfoMethod id={id} challenge={challenge} challengeAuthor={challengeAuthor} />
               {/* 챌린지 인증 리스트 */}
               <VerificationRecordList id={id} challengeAuthor={challengeAuthor} />
-              {/* 수정하기 삭제하기 버튼 */}
-              <div
-                className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
-                style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
-              >
-                {!challenge.participants.find(({ userId }: { userId: string }) => userId === user?.id) ? (
-                  <Button className="flex-1" onClick={handleJoinChallenge} type="button">
-                    챌린지 신청하기
-                  </Button>
-                ) : (
-                  <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
-                    <Button type="button">챌린지 인증하기</Button>
-                  </Link>
-                )}
-                {user?.id === challenge.createdBy && (
-                  <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
-                    <Button>수정 및 삭제</Button>
-                  </Link>
-                )}
-              </div>
             </section>
           </div>
         </main>
       </div>
-    </>
+    </Mobile>
   );
 };
 

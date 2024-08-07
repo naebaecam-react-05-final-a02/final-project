@@ -9,6 +9,7 @@ import Mobile from '@/layouts/Mobile';
 import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 
+import Header from '@/components/Header';
 import Memo from '@/icons/Memo';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
@@ -33,6 +34,14 @@ const ExerciseRecordPage = () => {
   const [isFirstChange, setIsFirstChange] = useState(false);
 
   useEffect(() => {}, [record.record]);
+
+  useEffect(() => {
+    setRecord(exerciseInitialState);
+
+    return () => {
+      setRecord(exerciseInitialState);
+    };
+  }, []);
 
   useEffect(() => {
     if (bookmarkData) {
@@ -148,8 +157,15 @@ const ExerciseRecordPage = () => {
   });
 
   return (
-    <Mobile>
-      <div className="min-h-screen flex flex-col gap-5 p-5">
+    <Mobile
+      headerLayout={
+        <Header
+          title={`투두 추가하기`}
+          // titleIcon={<DownIcon />}
+        />
+      }
+    >
+      <div className="max-h-screen flex flex-col gap-5 p-5">
         <h3 className="text-white">운동 이름</h3>
         <Input
           label="운동 이름"

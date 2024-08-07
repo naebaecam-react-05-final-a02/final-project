@@ -1,5 +1,13 @@
 import { createClient } from '@/supabase/server';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { NextRequest, NextResponse } from 'next/server';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Seoul');
+
 interface ExerciseData {
   date: string;
   userId: string;
@@ -16,6 +24,8 @@ export async function POST(request: NextRequest) {
   try {
     const { date, exerciseType, name, memo, record } = await request.json();
 
+    const formattedDate = dayjs(date).tz().format('YYYY-MM-DD');
+    console.log('왜 널임', formattedDate);
     const {
       data: { user },
       error: authError,
@@ -27,7 +37,7 @@ export async function POST(request: NextRequest) {
     const userId = user.id;
 
     // 필수 필드 검증
-    if (!date || !exerciseType || !name || !record) {
+    if (!formattedDate || !exerciseType || !name || !record) {
       return NextResponse.json({ message: '모든 필드를 채워주겐니!!!' }, { status: 400 });
     }
 
@@ -41,7 +51,7 @@ export async function POST(request: NextRequest) {
       .from('exercises')
       .insert([
         {
-          date,
+          date: formattedDate,
           userId,
           exerciseType,
           name,
