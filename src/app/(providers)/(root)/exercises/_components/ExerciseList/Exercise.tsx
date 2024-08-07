@@ -1,7 +1,7 @@
 import Checkbox from '@/components/Checkbox';
 import Loading from '@/components/Loading/Loading';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
-import { useDeleteExercises, useToggleComplete, useToggleCompleted } from '@/hooks/exercises/useExercise';
+import { useDeleteExercises, useToggleCompleted } from '@/hooks/exercises/useExercise';
 import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import { ExerciseTodoItemType } from '@/types/exercises';
@@ -20,7 +20,7 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   const [set, data1, data2] = calculateTodoData(exercise);
 
   const { mutate: toggleCompleted } = useToggleCompleted();
-  const { mutate: changeComplete, isPending } = useToggleComplete();
+  // const { mutate: changeComplete, isPending } = useToggleComplete();
   const { mutate: deleteExercise, isPending: isDeleting } = useDeleteExercises();
 
   if (isDeleting) return <Loading />;
@@ -43,19 +43,19 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   };
 
   // TODO: OPTIMISTIC UPDATE
-  const handleCompleteChange = () => {
-    changeComplete(
-      { exerciseId: exercise.id, isCompleted: exercise.isCompleted },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ExercisesQueryKeys.detail(formattedDate) });
-        },
-        onError: (error) => {
-          console.error('운동 상태 토글 실패:', error);
-        },
-      },
-    );
-  };
+  // const handleCompleteChange = () => {
+  //   changeComplete(
+  //     { exerciseId: exercise.id, isCompleted: exercise.isCompleted },
+  //     {
+  //       onSuccess: () => {
+  //         queryClient.invalidateQueries({ queryKey: ExercisesQueryKeys.detail(formattedDate) });
+  //       },
+  //       onError: (error) => {
+  //         console.error('운동 상태 토글 실패:', error);
+  //       },
+  //     },
+  //   );
+  // };
 
   const handleEditButtonClick = (exercise: ExerciseTodoItemType) => {
     router.push(`/exercises/${exercise.id}/edit`);
