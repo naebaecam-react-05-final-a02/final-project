@@ -33,6 +33,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
       : index === activeIndex + 1
       ? 'next'
       : 'normal';
+  console.log(challenge.id, index);
 
   return (
     <div className={SlideItemVariants({ pos })}>

@@ -1,20 +1,39 @@
-import { Tables } from '@/types/supabase';
+import { joinedMyChallengesDataType } from '@/types/challenge';
+import _ from 'lodash';
+import Link from 'next/link';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
-
-type ChallengesTypes = Tables<'challenges'>;
-type JoinedChallengeParticipantsTypes = Tables<'challengeParticipants'> & { challenges: ChallengesTypes };
+import ChallengeItem from '../ChallengeItem';
 
 interface MyChallengesProps {
-  challenges: JoinedChallengeParticipantsTypes[] | null;
+  data: joinedMyChallengesDataType;
 }
 
-const MyChallenges = ({ challenges }: MyChallengesProps) => {
+const MyChallenges = ({ data }: MyChallengesProps) => {
+  const challenges = data.data;
+  console.log(challenges);
   return (
     <section className="flex flex-col gap-4 px-4">
       <div className="w-full flex justify-between items-center">
         <ArticleTitle icon="🤛" title="내가 참여중인 챌린지" />
         <p className="text-white/50 text-sm">총 10개</p>
       </div>
+      <ul>
+        {_.isEmpty(challenges) ? (
+          <div>loading</div>
+        ) : (
+          challenges?.map((challenge) => {
+            return (
+              <li key={challenge.id}>
+                {challenge.challenges && (
+                  <Link href={`/challenges/${challenge.id}/detail`}>
+                    <ChallengeItem challenge={challenge.challenges} />
+                  </Link>
+                )}
+              </li>
+            );
+          })
+        )}
+      </ul>
     </section>
   );
 };
