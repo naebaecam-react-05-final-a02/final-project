@@ -40,20 +40,16 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const handleJoinChallenge = async () => {
     const supabase = createClient();
 
-    if (confirm('신청하시겠습니까?')) {
-      const { error } = await supabase.from('challengeParticipants').insert({
-        challengeId: id,
-        userId: user?.id,
-      });
-      if (error) {
-        // 에러 처리도 제대루 해야함
-        alert('신청에 실패하였습니다.');
-      } else {
-        // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
-        alert('신청하였습니다.');
-
-        router.replace('/challenges');
-      }
+    const { error } = await supabase.from('challengeParticipants').insert({
+      challengeId: id,
+      userId: user?.id,
+    });
+    if (error) {
+      // 에러 처리도 제대루 해야함
+      alert('챌린지 참여 에러');
+    } else {
+      // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
+      router.replace('/challenges');
     }
   };
 
@@ -99,6 +95,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               <ChallengeInfoMethod id={id} challenge={challenge} challengeAuthor={challengeAuthor} />
               {/* 챌린지 인증 리스트 */}
               <VerificationRecordList id={id} challengeAuthor={challengeAuthor} />
+              {/* 수정하기 삭제하기 버튼 */}
               <div
                 className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
                 style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
