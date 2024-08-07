@@ -34,7 +34,6 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
           <IoMdArrowDropright />
         </div>
       </div>
-
       <div className="absolute opacity-50 text-base left-1/2 transform -translate-x-1/2">{title}</div>
 
       <div className="cursor-pointer text-xl">

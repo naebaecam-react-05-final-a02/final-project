@@ -33,6 +33,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
       : index === activeIndex + 1
       ? 'next'
       : 'normal';
+  console.log(challenge.id, index);
 
   return (
     <div className={SlideItemVariants({ pos })}>
@@ -42,7 +43,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
           <h3 className="text-xl font-semibold">{challenge.title}</h3>
         </div>
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
-          <p className="text-primary-100">참여 40</p>
+          <p className="text-primary-100">참여 {challenge.participants}</p>
           <p>인증 12</p>
         </div>
       </div>

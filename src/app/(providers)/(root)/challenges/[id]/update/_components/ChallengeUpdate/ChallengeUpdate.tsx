@@ -11,6 +11,7 @@ import {
 } from '@/data/challenges';
 import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
+import { queryClient } from '@/providers/QueryProvider';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
@@ -40,6 +41,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
       challengeDelete(challenge.id, {
         onSuccess: () => {
           alert('삭제하였습니다.');
+          queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
           router.replace('/challenges');
         },
       });
@@ -103,6 +105,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
                 {
                   onSuccess: () => {
                     alert('수정하였습니다.');
+                    queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
                     router.replace(`/challenges`);
                   },
                 },
@@ -130,6 +133,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           {
             onSuccess: () => {
               alert('수정하였습니다.');
+              queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
               router.replace(`/challenges`);
             },
           },

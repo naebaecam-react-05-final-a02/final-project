@@ -27,7 +27,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const { record, setRecord } = useExerciseStore();
   const [bookmarkedExercises, setBookmarkedExercises] = useState<string[]>([]);
 
-  const { mutate: update } = useUpdateExercise(); // TODO: 수정 API로 변경
+  const { mutate: update } = useUpdateExercise();
   const { mutate: toggleBookmark } = useToggleBookmark();
   const { data: bookmarkData } = useGetExerciseBookmarks();
   const { data: exerciseData, isLoading } = useGetExerciseRecord(exerciseId);

@@ -34,14 +34,14 @@ const ChallengeList = () => {
       fetchNextPage();
     }
   });
-  console.log(challenges?.pages);
+
   return (
     <>
       <p className="text-white/50 text-[12px]">총 {999}개의 챌린지가 있습니다.</p>
       <div className="w-full h-full">
         <ul className="flex flex-col gap-2 overflow-scroll scroll">
           {!challenges?.pages || isPending ? (
-            <SkeletonCardList length={6} />
+            <SkeletonCardList length={1} />
           ) : challenges?.pages[0]?.error ? (
             <p>데이터가 없습니다</p>
           ) : (
@@ -55,7 +55,7 @@ const ChallengeList = () => {
               )),
             )
           )}
-          {isFetching && <SkeletonCardList length={6} />}
+
           {hasNextPage && (
             <>
               <div className="h-24"></div>

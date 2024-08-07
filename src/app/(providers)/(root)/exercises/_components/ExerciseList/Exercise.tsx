@@ -1,23 +1,17 @@
 import Checkbox from '@/components/Checkbox';
+import Loading from '@/components/Loading/Loading';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
-import { useToggleComplete } from '@/hooks/exercises/useExercise';
+import { useDeleteExercises, useToggleComplete } from '@/hooks/exercises/useExercise';
 import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import { ExerciseTodoItemType } from '@/types/exercises';
 import { calculateTodoData } from '@/utils/calculateTodo';
 import { getFormattedDate } from '@/utils/dateFormatter';
-import { UseMutateFunction } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import EditIcon from '/public/icons/edit.svg';
 import DeleteIcon from '/public/icons/x.svg';
 
-const Exercise = ({
-  exercise,
-  deleteExercise,
-}: {
-  exercise: ExerciseTodoItemType;
-  deleteExercise: UseMutateFunction<{ message: string }, Error, Pick<ExerciseTodoItemType, 'id'>, unknown>;
-}) => {
+const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   const router = useRouter();
 
   const formattedDate = getFormattedDate(useDateStore((store) => store.date));
@@ -25,6 +19,9 @@ const Exercise = ({
   const [set, data1, data2] = calculateTodoData(exercise);
 
   const { mutate: changeComplete, isPending } = useToggleComplete();
+  const { mutate: deleteExercise, isPending: isDeleting } = useDeleteExercises();
+
+  if (isDeleting) return <Loading />;
 
   // TODO: OPTIMISTIC UPDATE
   const handleCompleteChange = () => {
@@ -42,7 +39,7 @@ const Exercise = ({
   };
 
   const handleEditButtonClick = (exercise: ExerciseTodoItemType) => {
-    router.push(`/exercises/${exercise.id}/edit`); // TODO: 수정 url
+    router.push(`/exercises/${exercise.id}/edit`);
   };
 
   const handleDeleteButtonClick = (exerciseId: number) => {

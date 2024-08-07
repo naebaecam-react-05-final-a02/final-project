@@ -6,6 +6,8 @@ export type verificationsCountType = {
   totalUsers: number;
 };
 
+type challengesTypes = Tables<'challenges'>;
+
 export type joinedChallengesDataType =
   | { data: null; error: string; details: string }
   | {
@@ -17,6 +19,19 @@ export type joinedChallengesDataType =
           title: string;
           isProgress: boolean;
         } | null;
+      }[];
+      error: null;
+      details: null;
+    };
+
+export type joinedMyChallengesDataType =
+  | { data: null; error: string; details: string }
+  | {
+      data: {
+        challengeId: number;
+        id: number;
+        userId: string;
+        challenges: challengesTypes | null;
       }[];
       error: null;
       details: null;

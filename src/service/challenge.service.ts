@@ -90,7 +90,7 @@ class ChallengeAPI {
 
   getPopularChallenges = async ({ category }: { category: string }) => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/${this.baseURL}/coming?category=all`);
+      const response = await axios.get(`${this.baseURL}/coming?category=all`);
       const data = await response.data;
       return data;
     } catch (error) {
@@ -102,7 +102,7 @@ class ChallengeAPI {
   };
   getPaginationChallenges = async ({ category, page, limit }: { category: string; page: number; limit: number }) => {
     try {
-      const response = await axios.get(`/api/challenges/all?category=${category}&page=${page}&limit=${limit}`);
+      const response = await axios.get(`${this.baseURL}/all?category=${category}&page=${page}&limit=${limit}`);
       console.log(response);
       const data = await response.data;
       return data;

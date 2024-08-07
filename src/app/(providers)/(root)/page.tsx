@@ -27,9 +27,11 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
       queryKey: ['exercises', { date: format(new Date(), 'yyyy-MM-dd') }],
       queryFn: () => api.dashboard.getExercises(supabase, new Date()),
     }),
+    queryClient.prefetchQuery({
+      queryKey: ['joinedChallenge'],
+      queryFn: () => api.dashboard.getJoinedChallenges(supabase),
+    }),
   ]);
-
-  const joinedChallenges = await api.dashboard.getJoinedChallenges(supabase);
 
   return (
     <Mobile>
@@ -45,7 +47,9 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
             </Card>
 
             <Card className=" w-full  flex flex-col items-start ">
-              <DashBoardJoinedChallenges joinedChallenges={joinedChallenges} />
+              <HydrationBoundary state={dehydrate(queryClient)}>
+                <DashBoardJoinedChallenges />
+              </HydrationBoundary>
             </Card>
           </div>
 
