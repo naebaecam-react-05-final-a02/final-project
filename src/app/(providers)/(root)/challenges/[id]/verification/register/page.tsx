@@ -1,4 +1,5 @@
 import Button from '@/components/Button';
+import Header from '@/components/Header';
 import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import Link from 'next/link';
@@ -49,7 +50,7 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
   // console.log('USERINFO___', userInfo);
 
   return (
-    <Mobile>
+    <Mobile headerLayout={<Header title="챌린지 인증" />}>
       <VerificationRegister
         cid={params.id}
         userInfo={userInfo}

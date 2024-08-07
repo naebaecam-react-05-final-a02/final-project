@@ -1,5 +1,7 @@
+import ChevronLeft from '@/icons/ChevronLeft';
+import DotsVertical from '@/icons/DotsVertical';
 import Image from 'next/image';
-import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Challenge {
   content: string;
@@ -15,9 +17,21 @@ interface ThumbnailProps {
 }
 
 const ThumbnailSection = ({ challenge }: ThumbnailProps) => {
+  const router = useRouter();
+
   return (
     <section className="relative w-full aspect-video">
       <Image src={challenge.imageURL} alt="썸네일 이미지" fill className="object-cover mb-5" />
+      <header
+        className="absolute w-full left-0 top-0 py-2 px-8 h-14 flex justify-between items-center z-10 text-white"
+        style={{ background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.29%, rgba(0, 0, 0, 0.00)100%)' }}
+      >
+        <button onClick={() => router.back()} aria-label="뒤로가기">
+          <ChevronLeft />
+        </button>
+        <h2 className="text-[14px] font-medium">챌린지 상세</h2>
+        <DotsVertical width={24} height={24} />
+      </header>
       <div
         className="absolute bottom-0 right-0 w-full p-4"
         style={{

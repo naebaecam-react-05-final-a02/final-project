@@ -30,21 +30,19 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
   });
 
   const counts = await fetchVerificationTotalData(supabase, params.id);
+  const bottomButton = (
+    <Link className="flex-1" href={`/challenges/${params.id}/verification/register`}>
+      <Button>인증하기</Button>
+    </Link>
+  );
 
   return (
     <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Mobile
           headerLayout={<TitleHeader>챌린지 인증 목록</TitleHeader>}
-          footerLayout={
-            <Link
-              className="w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
-              style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
-              href={`/challenges/${params.id}/verification/register`}
-            >
-              <Button>인증하기</Button>
-            </Link>
-          }
+          showFooter={false}
+          bottomButton={bottomButton}
         >
           <VerificationList counts={counts} />
         </Mobile>

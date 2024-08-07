@@ -1,14 +1,18 @@
 'use client';
 
 import ArrowRight from '@/assets/arrow-right.svg';
-import { useGetUser } from '@/hooks/auth/useUsers';
-import api from '@/service/service';
+import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const MyProfile = () => {
   const router = useRouter();
   const { data: user, isPending } = useGetUser();
+  const { mutate: signOut } = useSignOut({
+    onSuccess: () => {
+      router.push('/log-in'); // 로그아웃 성공 시 로그인 페이지로 리디렉션
+    },
+  });
   return (
     <section className="flex flex-col gap-10">
       <article className="flex flex-col gap-6">
@@ -80,13 +84,7 @@ const MyProfile = () => {
       </article>
       <div className="flex justify-center w-full">
         <div>
-          <button
-            className="border-b border-primary-100 text-sm text-primary-100"
-            onClick={async () => {
-              await api.auth.signOut();
-              router.replace('/');
-            }}
-          >
+          <button className="border-b border-primary-100 text-sm text-primary-100" onClick={() => signOut()}>
             로그아웃
           </button>
         </div>

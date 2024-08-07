@@ -14,6 +14,7 @@ export type InputTextProps<T extends InputElementType> = BaseInputProps &
 function InputText<T extends InputElementType = 'input'>({
   label,
   id,
+  success,
   error,
   icon,
   unit,
@@ -49,6 +50,7 @@ function InputText<T extends InputElementType = 'input'>({
         />
         {unit && <span className="absolute right-4 text-white/40 text-sm">{unit}</span>}
       </div>
+      {success && <div className="text-primary-100 text-sm mt-1 ml-1 w-full">{success}</div>}
       {error && <div className="text-red-500 text-sm mt-1 ml-1 w-full">{error}</div>}
     </div>
   );
