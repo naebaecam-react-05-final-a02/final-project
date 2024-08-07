@@ -56,13 +56,13 @@ const WeightChart = ({ query }: WeightChartType) => {
     );
   }
 
-  if (!weights.data || !weights?.data.length) {
-    return (
-      <div className="size-full flex items-center justify-center">
-        <div className="text-white">체중 데이터가 없습니다.</div>
-      </div>
-    );
-  }
+  // if (!weights.data || !weights?.data.length) {
+  //   return (
+  //     <div className="size-full flex items-center justify-center">
+  //       <div className="text-white">체중 데이터가 없습니다.</div>
+  //     </div>
+  //   );
+  // }
 
   // const weightsArray = [...weights?.data!.map((d) => d.weight)];
   const weightsArray = [...tmp.map((d) => d.weight)];
