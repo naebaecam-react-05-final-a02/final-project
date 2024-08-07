@@ -41,7 +41,7 @@ const LogInForm = () => {
       },
       onError: (error: any) => {
         console.error('Login error:', error);
-        let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해 주세요.';
+        let errorMessage = '로그인에 실패했습니다. 다시 시도해 주세요.';
         if (error.status === 400) {
           errorMessage = '이메일 주소와 비밀번호를 확인해 주세요.';
         }

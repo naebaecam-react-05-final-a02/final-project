@@ -1,12 +1,13 @@
 'use client';
 
+import Loading from '@/components/Loading/Loading';
 import { useSocialSignIn } from '@/hooks/auth/useUsers';
 import { Provider } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import SocialLoginButtons from './SocialLoginButtons';
 
 const SocialLogin = () => {
-  const { mutate: socialSignIn } = useSocialSignIn();
+  const { mutate: socialSignIn, isPending } = useSocialSignIn();
   const router = useRouter();
 
   const handleSocialSignIn = (provider: Provider) => {
@@ -24,6 +25,7 @@ const SocialLogin = () => {
     <div className="flex flex-col gap-2 mb-12">
       <div className="text-white text-center text-[14px] leading-6">SNS로 간편 로그인하기</div>
       <SocialLoginButtons onSocialSignIn={handleSocialSignIn} />
+      {isPending && <Loading />}
     </div>
   );
 };

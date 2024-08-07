@@ -12,12 +12,20 @@ import MockUp from './_components/MockUp';
 interface MobileLayoutProps {
   headerLayout?: React.ReactElement;
   footerLayout?: React.ReactElement;
+  isHeaderFixed?: boolean;
+  showHeader?: boolean;
+  showFooter?: boolean;
+  bottomButton?: React.ReactNode;
 }
 
 const Mobile = ({
   children,
   headerLayout = <DefaultHeader />,
   footerLayout = <NavBar />,
+  isHeaderFixed = true,
+  showHeader = true,
+  showFooter = true,
+  bottomButton,
 }: PropsWithChildren<MobileLayoutProps>) => {
   const customElementRef = useRef<HTMLDivElement>(null);
   const [customElement, setCustomElement] = useState<HTMLDivElement>();
@@ -62,23 +70,45 @@ const Mobile = ({
       {width > 800 ? (
         <MockUp>
           <section className="h-[670px] w-full flex flex-col relative text-white">
-            <header className=" w-full h-14 px-4">{headerLayout}</header>
-            <div ref={customElementRef} className="flex-1 w-full h-full overflow-scroll scroll py-4">
+            {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
+            <div
+              ref={customElementRef}
+              className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-4'}`}
+            >
+              {showHeader && !isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
               {children}
             </div>
-
-            <footer className="w-full h-[72px]">{footerLayout}</footer>
+            {bottomButton && (
+              <div
+                className="w-full px-4 py-4 bg-black rounded-t-3xl flex gap-x-2 "
+                style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
+              >
+                {bottomButton}
+              </div>
+            )}
+            {showFooter && <footer className="w-full h-[72px]">{footerLayout}</footer>}
           </section>
         </MockUp>
       ) : (
         <div className="w-full h-screen relative text-white">
-          <section className="h-full w-full flex flex-col ">
-            <header className=" w-full h-14 px-4">{headerLayout}</header>
-            <div ref={customElementRef} className="flex-1 w-full h-full overflow-scroll scroll py-4">
+          <section className="h-full w-full flex flex-col">
+            {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
+            <div
+              ref={customElementRef}
+              className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-4'}`}
+            >
+              {showHeader && !isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
               {children}
             </div>
-
-            <footer className="w-full h-[72px]">{footerLayout}</footer>
+            {bottomButton && (
+              <div
+                className="w-full px-4 py-4 bg-black rounded-t-3xl flex gap-x-2 "
+                style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
+              >
+                {bottomButton}
+              </div>
+            )}
+            {showFooter && <footer className="w-full h-[72px]">{footerLayout}</footer>}
           </section>
           <BackBoard />
         </div>
@@ -86,5 +116,4 @@ const Mobile = ({
     </>
   );
 };
-
 export default Mobile;

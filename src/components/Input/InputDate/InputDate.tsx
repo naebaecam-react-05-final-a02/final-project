@@ -4,6 +4,8 @@ import ArrowDropDown from '@/icons/ArrowDropDown';
 import Calendar from '@/icons/Calendar';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
 import { BaseInputProps } from '../Input';
 import InputCalendar from './InputCalendar';
@@ -22,6 +24,17 @@ const parseDate = (dateString: string) => {
   const [year, month, day] = datePart.split('-').map(Number);
   return new Date(year, month - 1, day);
 };
+
+// dayjs 플러그인 설정
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// 한국 로케일 설정
+dayjs.locale('ko');
+
+// 한국 시간대 설정
+dayjs.tz.setDefault('Asia/Seoul');
+
 const InputDate = ({
   label,
   id,
@@ -48,14 +61,14 @@ const InputDate = ({
   const dateInputRef = useRef<HTMLDivElement>(null);
   const inputUid = useId();
   const inputId = id || inputUid;
-  dayjs.locale('ko');
 
   const min = minDate ? (typeof minDate === 'string' ? new Date(minDate) : minDate) : undefined;
   const max = maxDate ? (typeof maxDate === 'string' ? new Date(maxDate) : maxDate) : undefined;
 
   const formatDate = (date: Date) => {
-    return showMonth ? dayjs(date).format('MM. DD (ddd)') : dayjs(date).format('YYYY. MM. DD (ddd)');
+    return showMonth ? dayjs(date).tz().format('MM. DD (ddd)') : dayjs(date).tz().format('YYYY. MM. DD (ddd)');
   };
+
   useEffect(() => {
     if (typeof value === 'string') {
       setSelectedDate(parseDate(value));
@@ -63,6 +76,8 @@ const InputDate = ({
       setSelectedDate(value);
     }
   }, [value]);
+
+  console.log(formatDate(selectedDate));
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -82,10 +97,11 @@ const InputDate = ({
       console.log('선택 불가능한 날짜입니다.');
       return;
     }
-    setSelectedDate(date);
+    const koreanDate = dayjs(date).tz().toDate();
+    setSelectedDate(koreanDate);
     setIsOpen(false);
     if (onChange) {
-      onChange(date);
+      onChange(koreanDate);
     }
   };
 

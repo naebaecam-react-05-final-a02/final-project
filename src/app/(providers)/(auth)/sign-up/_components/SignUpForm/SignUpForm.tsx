@@ -70,9 +70,13 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen justify-between items-end w-full pb-20">
+    <div className="flex flex-col h-full justify-between items-end w-full pb-10">
       <div className="w-full">
-        {currentStep === 'essentialInfo' ? <Header title="회원가입" /> : <Header showLogo showBackButton={false} />}
+        {currentStep === 'essentialInfo' ? (
+          <Header title="회원가입" className="px-4" />
+        ) : (
+          <Header showLogo showBackButton={false} className="px-4" />
+        )}
         {currentStep === 'essentialInfo' && (
           <EssentialInfoForm
             formState={formState}
