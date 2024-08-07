@@ -170,11 +170,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                     <Button type="button">챌린지 인증하기</Button>
                   </Link>
                 )}
-                {/* {user?.id === challenge.createdBy && (
+                {user?.id === challenge.createdBy && (
                   <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
                     <Button>수정 및 삭제</Button>
                   </Link>
-                )} */}
+                )}
               </div>
             </section>
           </div>
