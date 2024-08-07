@@ -1,7 +1,7 @@
 import Checkbox from '@/components/Checkbox';
 import Loading from '@/components/Loading/Loading';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
-import { useDeleteExercises, useToggleComplete } from '@/hooks/exercises/useExercise';
+import { useDeleteExercises, useToggleComplete, useToggleCompleted } from '@/hooks/exercises/useExercise';
 import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import { ExerciseTodoItemType } from '@/types/exercises';
@@ -14,14 +14,33 @@ import DeleteIcon from '/public/icons/x.svg';
 const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   const router = useRouter();
 
-  const formattedDate = getFormattedDate(useDateStore((store) => store.date));
+  const date = useDateStore((store) => store.date);
+  const formattedDate = getFormattedDate(date);
 
   const [set, data1, data2] = calculateTodoData(exercise);
 
+  const { mutate: toggleCompleted } = useToggleCompleted();
   const { mutate: changeComplete, isPending } = useToggleComplete();
   const { mutate: deleteExercise, isPending: isDeleting } = useDeleteExercises();
 
   if (isDeleting) return <Loading />;
+
+  const handleChange = () => {
+    toggleCompleted(
+      { exercise, isCompleted: !exercise.isCompleted, date },
+      {
+        onError(error, _, context) {
+          console.error('Checked Exercise Todo is Error', error);
+          if (context?.prev) {
+            queryClient.setQueryData(['exercises', { date: formattedDate }], context?.prev);
+          }
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({ queryKey: ['exercises', { date: formattedDate }] });
+        },
+      },
+    );
+  };
 
   // TODO: OPTIMISTIC UPDATE
   const handleCompleteChange = () => {
@@ -61,7 +80,7 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
     <li className="flex flex-col gap-4 bg-[#FFFFFF0D] border border-[#FFFFFF33] shadow-[4px_4px_8px_0px_rgba(0,0,0,0.25)] rounded-[20px] p-4">
       <div>
         <div className="flex justify-between pb-4">
-          <Checkbox checked={exercise.isCompleted} label="" onChange={handleCompleteChange} />
+          <Checkbox checked={exercise.isCompleted} label="" onChange={handleChange} />
           <div className="flex gap-4">
             {/* <button
               onClick={() => {
