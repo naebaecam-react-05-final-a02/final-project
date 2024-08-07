@@ -32,6 +32,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
           email: {
             ...prev.email,
             error: isAvailable ? null : '이미 사용 중인 이메일입니다.',
+            successMessage: isAvailable ? '사용 가능한 이메일입니다!' : null,
             isVerified: isAvailable,
           },
         }));
@@ -58,11 +59,11 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
         email: {
           ...prev.email,
           error: emailError,
+          successMessage: null,
           isVerified: false,
         },
       }));
     } else {
-      console.log('호출 2');
       checkDuplicate('email', value)
         .then((isAvailable) => {
           setFormState((prev) => ({
@@ -70,6 +71,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
             email: {
               ...prev.email,
               error: isAvailable ? null : '이미 사용 중인 이메일입니다.',
+              successMessage: isAvailable ? '사용 가능한 이메일입니다!' : null,
               isVerified: isAvailable,
             },
           }));
@@ -150,14 +152,12 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                   value={formState.email.value}
                   onChange={handleChange}
                   autoComplete="email"
+                  success={formState.email.successMessage}
                   error={formState.email.error}
                   required
                 />
               </div>
             </div>
-            {formState.email.successMessage && (
-              <p className="text-green-500 text-sm mt-1">{formState.email.successMessage}</p>
-            )}
           </div>
           <div className="flex flex-col items-center w-full px-4">
             <div className="w-full">

@@ -1,6 +1,8 @@
 'use client';
 
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useEffect, useRef, useState } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
@@ -13,6 +15,14 @@ interface MonthCalendarProps {
   onPrevMonth: (callback: () => void) => void;
   onNextMonth: (callback: () => void) => void;
 }
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+dayjs.tz.setDefault('Asia/Seoul');
+
+// 한국 시간대 설정
+dayjs.tz.setDefault('Asia/Seoul');
 
 const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth, onNextMonth }: MonthCalendarProps) => {
   const [months, setMonths] = useState<Date[]>([]);
@@ -105,7 +115,7 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
                           ${dayjs(date).isSame(selectedDate, 'day') ? 'bg-primary-10' : ''}
                           ${date.getMonth() !== month.getMonth() ? 'text-gray-400' : ''}
                           ${isToday ? 'text-primary-100' : ''}`}
-                        onClick={() => onSelectDate(date)}
+                        onClick={() => onSelectDate(dayjs(date).tz().toDate())}
                       >
                         <span
                           className={`

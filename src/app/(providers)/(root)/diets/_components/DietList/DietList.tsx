@@ -1,8 +1,10 @@
 import Chip from '@/components/Chip';
+import Loading from '@/components/Loading/Loading';
 import { dietCode } from '@/data/dietTypeCode';
 import { dietsQueryKeys } from '@/hooks/diet/queries';
 import { useDeleteDiets, useGetDiets } from '@/hooks/diet/useDiets';
 import { queryClient } from '@/providers/QueryProvider';
+import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
@@ -11,19 +13,15 @@ import { useRouter } from 'next/navigation';
 import EditIcon from '/public/icons/edit.svg';
 import DeleteIcon from '/public/icons/x.svg';
 
-interface DietListProps {
-  selectedDate: Date;
-}
-
-const DietList = ({ selectedDate }: DietListProps) => {
+const DietList = () => {
   const router = useRouter();
 
+  const selectedDate = useDateStore((store) => store.date);
   const setDiet = useDietStore((state) => state.setDiet);
   const { data: diets, isPending: isFetching, isError: isFetchError } = useGetDiets(getFormattedDate(selectedDate));
-  const { mutate: deleteDiet, error, isPending: isDeleting } = useDeleteDiets();
+  const { mutate: deleteDiet, isPending: isDeleting } = useDeleteDiets();
 
-  if (isFetching) return <div className="text-center">데이터를 불러오고 있습니다...</div>;
-  if (isDeleting) return <div className="text-center">데이터를 삭제하고 있습니다...</div>;
+  if (isFetching || isDeleting) return <Loading />;
   if (isFetchError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
 
   const totalCalories = getDietsCalories(diets);
@@ -96,10 +94,10 @@ const DietList = ({ selectedDate }: DietListProps) => {
                   <h3 className="text-center text-[17px] text-[#FFFFFF80] font-semibold">{dietCode[diet.dietType]}</h3>
                   <div className="flex gap-4">
                     <button onClick={() => handleEditButtonClick(diet)}>
-                      <EditIcon />
+                      <EditIcon width={20} height={20} />
                     </button>
                     <button onClick={() => handleDeleteButtonClick(diet.id)}>
-                      <DeleteIcon />
+                      <DeleteIcon width={20} height={20} stroke="#FFF" />
                     </button>
                   </div>
                 </div>

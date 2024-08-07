@@ -27,7 +27,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const { record, setRecord } = useExerciseStore();
   const [bookmarkedExercises, setBookmarkedExercises] = useState<string[]>([]);
 
-  const { mutate: update } = useUpdateExercise(); // TODO: 수정 API로 변경
+  const { mutate: update } = useUpdateExercise();
   const { mutate: toggleBookmark } = useToggleBookmark();
   const { data: bookmarkData } = useGetExerciseBookmarks();
   const { data: exerciseData, isLoading } = useGetExerciseRecord(exerciseId);
@@ -51,9 +51,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   }, [exerciseData, isLoading, setRecord]);
 
   const handleDateChange = (date: Date) => {
-    console.log(date);
     setRecord({ date });
-    console.log(record);
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +126,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
 
   console.log(record.date);
   return (
-    <div className="min-h-screen flex flex-col gap-5 p-5">
+    <div className="flex flex-col gap-5 p-5">
       <h3 className="text-white">운동 이름</h3>
       <Input
         label="운동 이름"

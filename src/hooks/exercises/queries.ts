@@ -2,13 +2,13 @@ import { queryClient } from '@/providers/QueryProvider';
 import api from '@/service/service';
 
 import { ExerciseTodoItemType, RecordData, useToggleCompletedDataType } from '@/types/exercises';
-import { format } from 'date-fns';
+import { getFormattedDate } from '@/utils/dateFormatter';
 
 export const ExercisesQueryKeys = {
   all: ['exercises'] as const,
   bookmark: () => [...ExercisesQueryKeys.all, 'bookmark'] as const,
   toggleBookmark: () => [...ExercisesQueryKeys.all, 'toggleBookmark'] as const,
-  detail: (date: string) => [...ExercisesQueryKeys.all, date] as const,
+  detail: (date: string) => [...ExercisesQueryKeys.all, { date }] as const,
 };
 
 export const queryOptions = {
@@ -59,23 +59,24 @@ export const mutationOptions = {
     mutationFn: (data: { exercise: ExerciseTodoItemType; isCompleted: boolean; date: Date }) =>
       api.exercise.toggleCompleted(data),
     onMutate: async (data: { exercise: ExerciseTodoItemType; isCompleted: boolean; date: Date }) => {
-      const formattingDate = format(data.date, 'yyyy-MM-dd');
-      await queryClient.cancelQueries({ queryKey: ['exercises', { date: formattingDate }] });
-      const prev: useToggleCompletedDataType = queryClient.getQueryData([
-        'exercises',
-        { date: formattingDate },
-      ]) as useToggleCompletedDataType;
+      // const formattingDate = format(data.date, 'yyyy-MM-dd');
+      await queryClient.cancelQueries({ queryKey: ExercisesQueryKeys.detail(getFormattedDate(data.date)) });
+      const prev: useToggleCompletedDataType = queryClient.getQueryData(
+        ExercisesQueryKeys.detail(getFormattedDate(data.date)),
+      ) as useToggleCompletedDataType;
 
-      queryClient.setQueryData(['exercises', { date: formattingDate }], (old: useToggleCompletedDataType) => {
-        return {
-          ...old,
-          data: old.data.map((o) => {
-            if (o.id === data.exercise.id && o.userId === data.exercise.userId)
-              return { ...o, isCompleted: data.isCompleted };
-            return o;
-          }),
-        };
-      });
+      queryClient.setQueryData(
+        ExercisesQueryKeys.detail(getFormattedDate(data.date)),
+        (old: useToggleCompletedDataType) => {
+          return {
+            ...old,
+            data: old.data.map((o) => {
+              if (o.id === data.exercise.id) return { ...o, isCompleted: data.isCompleted };
+              return o;
+            }),
+          };
+        },
+      );
       return { prev };
     },
   },
