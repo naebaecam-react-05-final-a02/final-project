@@ -1,3 +1,5 @@
+'use client';
+
 import ChallengeIcon from '@/assets/challenges/challenge.svg';
 import { useScrollDirectionStore } from '@/stores/scrollDirection.store';
 import { cva } from 'class-variance-authority';

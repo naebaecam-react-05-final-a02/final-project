@@ -16,12 +16,28 @@ import { TChallenge } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
 
-const dummySlide = {
+const prevDummySlide = {
   category: 'lifestyle',
   content: 'dummy',
   createdBy: '2024-01-01',
   endDate: '2024-01-01',
-  id: '00000000-0000-0000-0000-000000000000',
+  id: 0,
+  imageURL: null,
+  isProgress: null,
+  participants: 100,
+  rating: 5,
+  startDate: '2024-01-01',
+  tags: null,
+  title: 'dummy',
+  verify: 'dummy',
+};
+
+const nextDummySlide = {
+  category: 'lifestyle',
+  content: 'dummy',
+  createdBy: '2024-01-01',
+  endDate: '2024-01-01',
+  id: 9999,
   imageURL: null,
   isProgress: null,
   participants: 100,
@@ -35,7 +51,7 @@ const dummySlide = {
 const PopularChallengesSlider = () => {
   const { data: challenges, isPending } = useGetPopularChallenges();
 
-  const getChallengeList = () => [dummySlide, ...challenges?.data, dummySlide];
+  const getChallengeList = () => [prevDummySlide, ...challenges?.data, nextDummySlide];
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -70,8 +86,9 @@ const PopularChallengesSlider = () => {
               <p>Loading...</p>
             ) : (
               getChallengeList().map((challenge: TChallenge, i: number) => {
+                console.log(challenge.id);
                 return (
-                  <li className="flex items-center" key={i}>
+                  <li className="flex items-center" key={challenge.id}>
                     <SwiperSlide>
                       <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
                     </SwiperSlide>
