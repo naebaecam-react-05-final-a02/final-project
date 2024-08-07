@@ -46,9 +46,9 @@ const MyProfileEditPage = () => {
     if (!yes) return;
 
     const formData = new FormData();
-    formData.append('nickname', inputs.nickname);
-    formData.append('height', inputs.height.toString());
-    formData.append('weight', inputs.weight.toString());
+    if (inputs.nickname) formData.append('nickname', inputs.nickname);
+    if (inputs.height) formData.append('height', inputs.height.toString());
+    if (inputs.weight) formData.append('weight', inputs.weight.toString());
     if (avatarFile) formData.append('avatar', avatarFile);
 
     updateProfile({ formData });
@@ -89,20 +89,21 @@ const MyProfileEditPage = () => {
     <Mobile
       headerLayout={
         <TitleHeader leftButton={<PrevButton />} rightButton={<CheckButton onClick={handleUpdateProfile} />}>
-          프로실 수정
+          프로필 수정
         </TitleHeader>
       }
     >
       <div className="px-4">
         <div className="flex flex-col justify-center items-center">
           <label htmlFor="avatar">
-            <Image
-              className="cursor-pointer rounded-full border border-white"
-              src={avatarPreview || data?.profileURL || '/user/default-avatar.png'}
-              alt="avatar"
-              width={64}
-              height={64}
-            />
+            <div className="relative w-16 h-16">
+              <Image
+                className="cursor-pointer rounded-full border border-white object-cover"
+                src={avatarPreview || data?.profileURL || '/user/default-avatar.png'}
+                alt="avatar"
+                fill
+              />
+            </div>
           </label>
           <input
             ref={imgRef}
