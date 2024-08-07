@@ -30,7 +30,7 @@ const InputDate = ({
   className = '',
   value,
   position = 'right',
-  showMonth = true,
+  showMonth = false,
   minDate,
   maxDate,
   ...props
