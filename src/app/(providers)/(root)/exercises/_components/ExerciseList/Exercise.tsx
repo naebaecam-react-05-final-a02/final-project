@@ -32,11 +32,11 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
         onError(error, _, context) {
           console.error('Checked Exercise Todo is Error', error);
           if (context?.prev) {
-            queryClient.setQueryData(['exercises', { date: formattedDate }], context?.prev);
+            queryClient.setQueryData(ExercisesQueryKeys.detail(formattedDate), context?.prev);
           }
         },
         onSettled: () => {
-          queryClient.invalidateQueries({ queryKey: ['exercises', { date: formattedDate }] });
+          queryClient.invalidateQueries({ queryKey: ExercisesQueryKeys.detail(formattedDate) });
         },
       },
     );
@@ -67,6 +67,7 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
       { id: exerciseId },
       {
         onSuccess: () => {
+          // queryClient.invalidateQueries({ queryKey: ['exercises', { date: formattedDate }] });
           queryClient.invalidateQueries({ queryKey: ExercisesQueryKeys.detail(formattedDate) });
         },
         onError: (e) => {

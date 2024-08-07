@@ -1,9 +1,10 @@
 import Loading from '@/components/Loading/Loading';
+import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import api from '@/service/service';
 import useDateStore from '@/stores/date.store';
 import { createClient } from '@/supabase/client';
+import { getFormattedDate } from '@/utils/dateFormatter';
 import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import Exercise from './Exercise';
 
@@ -23,7 +24,7 @@ const ExerciseList = () => {
     isPending: isFetching,
     isError: isFetchError,
   } = useQuery({
-    queryKey: ['exercises', { date: format(selectedDate, 'yyyy-MM-dd') }],
+    queryKey: ExercisesQueryKeys.detail(getFormattedDate(selectedDate)),
     queryFn: () => api.dashboard.getExercises(supabase, selectedDate),
   });
 

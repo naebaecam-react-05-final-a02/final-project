@@ -1,7 +1,9 @@
 import Card from '@/components/Card';
+import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
 import { createClient } from '@/supabase/server';
+import { getFormattedDate } from '@/utils/dateFormatter';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import DashBoardLevel from './_components/DashBoardLevel';
@@ -24,7 +26,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
       queryFn: () => api.dashboard.getDiets(supabase, new Date()),
     }),
     queryClient.prefetchQuery({
-      queryKey: ['exercises', { date: format(new Date(), 'yyyy-MM-dd') }],
+      queryKey: ExercisesQueryKeys.detail(getFormattedDate(new Date())),
       queryFn: () => api.dashboard.getExercises(supabase, new Date()),
     }),
     queryClient.prefetchQuery({
