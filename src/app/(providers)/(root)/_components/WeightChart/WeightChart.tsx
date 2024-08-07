@@ -4,7 +4,7 @@ import { useGetUser } from '@/hooks/auth/useUsers';
 import api from '@/service/service';
 import { createClient } from '@/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
@@ -13,6 +13,16 @@ import LoadingImage from '/public/icons/loading.png';
 type WeightChartType = {
   query: string;
 };
+
+// 체중 입력하는 곳이 없으므로 임시 데이터
+let tmp = [];
+for (let i = 0; i <= 7; i++) {
+  tmp.push({
+    id: i + 1,
+    date: format(subDays(new Date(), 7 - i), 'yyyy-MM-dd'),
+    weight: Math.floor(Math.random() * 20 + 60),
+  });
+}
 
 const WeightChart = ({ query }: WeightChartType) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -54,14 +64,16 @@ const WeightChart = ({ query }: WeightChartType) => {
     );
   }
 
-  const weightsArray = [...weights?.data!.map((d) => d.weight)];
+  // const weightsArray = [...weights?.data!.map((d) => d.weight)];
+  const weightsArray = [...tmp.map((d) => d.weight)];
   const minWeight = Math.min(...weightsArray);
   const maxWeight = Math.max(...weightsArray);
   const ticks = Array.from({ length: maxWeight - minWeight + 3 }, (_, i) => minWeight - 1 + i);
 
   return (
     <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
-      <LineChart data={weights?.data!} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
+      {/* <LineChart data={weights?.data!} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}> */}
+      <LineChart data={tmp} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
         <XAxis
           filter="url(#glow)"
           tickLine={false}
@@ -109,10 +121,10 @@ const WeightChart = ({ query }: WeightChartType) => {
           dataKey="weight"
           stroke="url(#gradient)"
           dot={({ cx, cy, index }) => {
-            if (index === weights?.data!.length - 1) {
+            if (index === tmp.length - 1) {
               return (
                 <circle
-                  key={weights?.data![index].id}
+                  key={tmp[index].id}
                   cx={cx}
                   cy={cy}
                   r={4}
@@ -123,9 +135,7 @@ const WeightChart = ({ query }: WeightChartType) => {
                 />
               );
             }
-            return (
-              <circle key={weights?.data![index].id} cx={cx} cy={cy} r={4} fill="gray" stroke="white" strokeWidth={1} />
-            );
+            return <circle key={tmp[index].id} cx={cx} cy={cy} r={4} fill="gray" stroke="white" strokeWidth={1} />;
           }}
           activeDot={{ r: 16 }}
         />
