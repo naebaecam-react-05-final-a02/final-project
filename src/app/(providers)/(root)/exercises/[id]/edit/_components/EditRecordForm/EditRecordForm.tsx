@@ -24,8 +24,8 @@ type EditRecordFormProps = {
 const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { record, setRecord, isBookMark, setIsBookMark } = useExerciseStore();
-  const [bookmarkedExercises, setBookmarkedExercises] = useState<number[]>([]);
+  const { record, setRecord } = useExerciseStore();
+  const [bookmarkedExercises, setBookmarkedExercises] = useState<string[]>([]);
 
   const { mutate: update } = useUpdateExercise(); // TODO: 수정 API로 변경
   const { mutate: toggleBookmark } = useToggleBookmark();
@@ -34,7 +34,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
 
   useEffect(() => {
     if (bookmarkData) {
-      setBookmarkedExercises(bookmarkData.map((item) => item.exercises.id));
+      setBookmarkedExercises(bookmarkData.map((item) => item.exerciseName));
     }
   }, [bookmarkData]);
 
@@ -48,9 +48,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         record: exerciseData.record ? exerciseData.record : [],
       });
     }
-  }, [exerciseData, isLoading, setRecord, setIsBookMark]);
-
-  console.log(exerciseData);
+  }, [exerciseData, isLoading, setRecord]);
 
   const handleDateChange = (date: Date) => {
     console.log(date);
@@ -76,7 +74,6 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
 
     const exerciseData = {
       ...record,
-      isBookMark,
     };
     try {
       update(
@@ -96,40 +93,34 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     }
   };
 
-  const handleToggleBookmark = (exerciseId?: number) => {
-    if (exerciseId) {
-      toggleBookmark(exerciseId, {
-        onSuccess: () => {
-          setBookmarkedExercises((prev) => {
-            if (prev.includes(exerciseId)) {
-              return prev.filter((id) => id !== exerciseId);
-            } else {
-              return [...prev, exerciseId];
-            }
-          });
-          queryClient.invalidateQueries(ExercisesQueryKeys.bookmark() as any);
-        },
-        onError: (error) => {
-          console.error('북마크 토글 실패:', error);
-        },
-      });
-    } else {
-      setIsBookMark((prev) => !prev);
-    }
+  const handleToggleBookmark = (exerciseName: string) => {
+    toggleBookmark(exerciseName, {
+      onSuccess: (data) => {
+        if (data.isBookmarked) {
+          setBookmarkedExercises((prev) => [...prev, exerciseName]);
+        } else {
+          setBookmarkedExercises((prev) => prev.filter((name) => name !== exerciseName));
+        }
+        queryClient.invalidateQueries(ExercisesQueryKeys.bookmark() as any);
+      },
+      onError: (error) => {
+        console.error('북마크 토글 실패:', error);
+      },
+    });
   };
+
   const bookmarkListOptions = bookmarkData?.map((item) => ({
-    id: item.exercises.id,
-    value: item.exercises.name,
+    value: item.exerciseName,
     icon: (
       <Star
         width={24}
         height={24}
         style={{
-          fill: bookmarkedExercises.includes(item.exercises.id) ? '#12F287' : 'none',
+          fill: bookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
         }}
         onClick={(e) => {
           e.stopPropagation();
-          handleToggleBookmark(item.exercises.id);
+          handleToggleBookmark(item.exerciseName);
         }}
       />
     ),
@@ -149,13 +140,15 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         icon={
           <Star
             style={{
-              fill: isBookMark ? '#12F287' : 'none',
+              fill: bookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
             }}
             width={24}
             height={24}
             onClick={(e) => {
               e.stopPropagation();
-              handleToggleBookmark();
+              if (record.name) {
+                handleToggleBookmark(record.name);
+              }
             }}
           />
         }

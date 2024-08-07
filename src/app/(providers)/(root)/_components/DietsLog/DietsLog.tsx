@@ -25,7 +25,7 @@ const DietsLog = () => {
 
   return (
     <>
-      <DashBoardHeader date={date} setState={setDate} url={'/diets/write'} title={'식단'} />
+      <DashBoardHeader date={date} setState={setDate} url={'/diets'} title={'식단'} />
 
       <div className="w-full">
         <div className="flex justify-between items-center h-[44px] relative">

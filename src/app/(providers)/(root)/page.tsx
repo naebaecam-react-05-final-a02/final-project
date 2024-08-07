@@ -36,15 +36,15 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
       <div className="w-full px-4">
         <main className="mb-2 flex flex-col gap-y-2">
           {/* 등급/투두 진행 상황 */}
-          <div className="grid grid-cols-[160px_1fr] gap-x-1 select-none bg-[#292436]">
+          <div className="grid grid-cols-[160px_1fr] gap-x-1 select-none ">
             <Card
-              className="border-[1px] border-white/15 bg-white/5 to-97% w-full aspect-square rounded-[20px] 
+              className="border-[1px] border-white/15  to-97% w-full aspect-square rounded-[20px] 
             flex flex-col gap-y-4 items-center justify-between overflow-hidden relative text-white "
             >
               <DashBoardLevel />
             </Card>
 
-            <Card className="bg-[#292436] w-full  flex flex-col items-start ">
+            <Card className=" w-full  flex flex-col items-start ">
               <DashBoardJoinedChallenges joinedChallenges={joinedChallenges} />
             </Card>
           </div>

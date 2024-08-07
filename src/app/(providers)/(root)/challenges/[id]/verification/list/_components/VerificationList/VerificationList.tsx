@@ -4,7 +4,7 @@ import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[i
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 import LocalBanner from '../LocalBanner';
@@ -13,7 +13,6 @@ import VerificationItem from '../VerificationItem';
 
 const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
   const params = useParams();
-  const path = usePathname();
 
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();

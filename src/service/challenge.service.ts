@@ -102,9 +102,7 @@ class ChallengeAPI {
   };
   getPaginationChallenges = async ({ category, page, limit }: { category: string; page: number; limit: number }) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/challenges/all?category=${category}&page=${page}&limit=${limit}`,
-      );
+      const response = await axios.get(`/api/challenges/all?category=${category}&page=${page}&limit=${limit}`);
       console.log(response);
       const data = await response.data;
       return data;
