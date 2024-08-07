@@ -11,12 +11,10 @@ type SetRecordUpdate =
 
 interface ExerciseStore {
   record: ExerciseRecord;
-  isBookMark: boolean;
   cardioInputs: CardioInput[];
   weightInputs: WeightInput[];
   exerciseType: ExerciseType;
   setRecord: (update: SetRecordUpdate) => void;
-  setIsBookMark: (value: boolean | ((prev: boolean) => boolean)) => void;
   setCardioInputs: (inputs: CardioInput[]) => void;
   setWeightInputs: (inputs: WeightInput[]) => void;
   setExerciseType: (type: ExerciseType) => void;
@@ -53,10 +51,6 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
       }
       return { record: newState };
     }),
-  setIsBookMark: (value) =>
-    set((state) => ({
-      isBookMark: typeof value === 'function' ? value(state.isBookMark) : value,
-    })),
   setCardioInputs: (inputs) => set({ cardioInputs: inputs }),
   setWeightInputs: (inputs) => set({ weightInputs: inputs }),
   setExerciseType: (type) => set({ exerciseType: type }),
