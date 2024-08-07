@@ -5,8 +5,6 @@ import api from '@/service/service';
 import { useChallengeCategoryStore } from '@/stores/stores';
 import { Tables } from '@/types/supabase';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import ChallengeItem from '../ChallengeItem';
 import SkeletonCardList from '../Skeleton/Card.skeleton';
 
 const ChallengeList = () => {
@@ -40,7 +38,7 @@ const ChallengeList = () => {
       <p className="text-white/50 text-[12px]">총 {999}개의 챌린지가 있습니다.</p>
       <div className="w-full h-full">
         <ul className="flex flex-col gap-2 overflow-scroll scroll">
-          {!challenges?.pages || isPending ? (
+          {/* {!challenges?.pages || isPending ? (
             <SkeletonCardList length={6} />
           ) : challenges?.pages[0]?.error ? (
             <p>데이터가 없습니다</p>
@@ -54,8 +52,8 @@ const ChallengeList = () => {
                 </li>
               )),
             )
-          )}
-          {isFetching && <SkeletonCardList length={6} />}
+          )} */}
+          {<SkeletonCardList length={100} />}
           {hasNextPage && (
             <>
               <div className="h-24"></div>
