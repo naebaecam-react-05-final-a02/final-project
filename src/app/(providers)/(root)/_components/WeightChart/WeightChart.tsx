@@ -5,8 +5,10 @@ import api from '@/service/service';
 import { createClient } from '@/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import LoadingImage from '/public/icons/loading.png';
 
 type WeightChartType = {
   query: string;
@@ -29,11 +31,7 @@ const WeightChart = ({ query }: WeightChartType) => {
   if (!weights || isLoading) {
     return (
       <div className="size-full flex flex-col justify-center items-center animate-pulse gap-y-4">
-        <div className="w-20 h-4 rounded-full bg-gray-300" />
-        <div className="w-[85%] aspect-video bg-gray-300 rounded relative">
-          <div className="absolute bottom-0 left-0 right-0 h-2 bg-gray-400"></div>
-          <div className="absolute top-0 bottom-0 left-0 w-2 bg-gray-400"></div>
-        </div>
+        <Image className="animate-spin" width={35} height={35} src={LoadingImage} alt="로딩이미지" />
       </div>
     );
   }
