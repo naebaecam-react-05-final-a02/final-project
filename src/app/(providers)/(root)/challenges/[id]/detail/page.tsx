@@ -6,11 +6,13 @@ import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import ChevronLeft from '@/icons/ChevronLeft';
 import DotsVertical from '@/icons/DotsVertical';
+import Memo from '@/icons/Memo';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
 import ThumbnailSection from './_components/Thumbnail.tsx';
 import UserProfile from './_components/UserProfile';
@@ -21,6 +23,22 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
   const router = useRouter();
+  // const [menuOpen, setMenuOpen] = useState(false);
+  // const [isHoveredEdit, setIsHoveredEdit] = useState(false);
+  // const [isHoveredDelete, setIsHoveredDelete] = useState(false);
+  // const menuRef = useRef(null);
+
+  // const handleClickOutside = (event) => {
+  //   if (menuRef.current && !menuRef.current.contains(event.target)) {
+  //     setMenuOpen(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, []);
 
   if (!challenge) {
     return <Loading />;
@@ -57,6 +75,9 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
       }
     }
   };
+  // const handleMenuToggle = () => {
+  //   setMenuOpen(!menuOpen);
+  // };
 
   // 챌린지 작성자 정보
   const challengeAuthor = challenge.user;
@@ -71,7 +92,42 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
           <ChevronLeft />
         </button>
         <h2 className="text-[14px] font-medium">챌린지 상세</h2>
-        <DotsVertical width={24} height={24} />
+        <Link href={`/challenges/${challenge.id}/update`} aria-label="메뉴 열기" className="relative">
+          <DotsVertical width={24} height={24} />
+          {/* {menuOpen && (
+            <div
+              ref={menuRef}
+              className="absolute top-8 right-0 text-left text-white rounded-lg w-36 border border-[#12F287] bg-black/70 p-2"
+              style={{
+                borderRadius: '6px',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 4px 8px rgba(18, 242, 135, 0.2)',
+              }}
+            >
+              {user?.id === challenge.createdBy && (
+                <>
+                  <Link href={`/challenges/${challenge.id}/update`}>
+                    <div
+                      className="flex justify-between items-center p-2 mb-1 rounded cursor-pointer hover:bg-[rgba(18,242,135,0.1)]"
+                      // style={{
+                      //   borderBottom: '1px solid rgba(18, 242, 135, 0.2)',
+                      // }}
+                    >
+                      수정하기
+                      <Memo />
+                    </div>
+                  </Link>
+                  <div
+                    onClick={() => handleDelete()} // 삭제 기능 구현 필요
+                    className="flex justify-between items-center p-2 rounded cursor-pointer hover:bg-[rgba(18,242,135,0.1)]"
+                  >
+                    삭제하기
+                  </div>
+                </>
+              )}
+            </div>
+          )} */}
+        </Link>
       </header>
       <div className="text-white relative">
         <BackBoard />
@@ -114,11 +170,11 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                     <Button type="button">챌린지 인증하기</Button>
                   </Link>
                 )}
-                {user?.id === challenge.createdBy && (
+                {/* {user?.id === challenge.createdBy && (
                   <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
                     <Button>수정 및 삭제</Button>
                   </Link>
-                )}
+                )} */}
               </div>
             </section>
           </div>

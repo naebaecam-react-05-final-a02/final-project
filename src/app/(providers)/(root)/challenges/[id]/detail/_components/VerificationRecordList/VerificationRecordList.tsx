@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ChevronRight from '../ChevronRight';
 import Title from '../Title';
-import UserProfile from '../UserProfile';
 
 interface User {
   profileURL?: string | null;
@@ -67,7 +66,7 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
       {verificationRecords.length === 0 ? (
         <p className="pl-4">챌린지 인증이 없습니다.</p>
       ) : (
-        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll pl-4">
+        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll px-4">
           {verificationRecords.map((record) => (
             <li
               key={record.id}
@@ -105,7 +104,6 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
                     </div>
                     <div>{record.users.nickname}</div>
                   </div>
-
                   <div className="text-white/[0.5] text-[12px]">{record.date.slice(0, 10)}</div>
                 </div>
               </div>
