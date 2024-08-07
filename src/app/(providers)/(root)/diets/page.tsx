@@ -52,7 +52,7 @@ const DietPage = () => {
           </button>
         </header>
         <Week />
-        <DietList selectedDate={selectedDate} />
+        <DietList />
       </div>
     </Mobile>
   );
