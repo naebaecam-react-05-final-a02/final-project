@@ -37,7 +37,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
 
   return (
     <div className={SlideItemVariants({ pos })}>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 items-start">
         <div className="flex gap-2">
           <div className="w-7 h-7 bg-gray-500 rounded-md"></div>
           <h3 className="text-xl font-semibold">{challenge.title}</h3>
@@ -50,7 +50,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
       <div className="w-full flex flex-col gap-2">
         <div className="flex">
           <Bullet />
-          <p className="text-[16px] font-semibold">{challenge.verify}</p>
+          <p className="text-[16px] font-semibold">{challenge.content}</p>
         </div>
 
         <p className="text-[12px] text-white/50 font-light">
