@@ -33,7 +33,7 @@ const ExerciseList = () => {
           </button>
         </div>
       ) : (
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-4 px-4">
           {exercises?.map((exercise) => (
             <Exercise key={`exercise-${exercise.id}`} exercise={exercise} deleteExercise={deleteExercise} />
           ))}

@@ -38,7 +38,6 @@ export type RecordData = {
   name: string;
   memo: string;
   exerciseType: ExerciseType;
-  isBookMark: boolean;
   record: CardioInput[] | WeightInput[];
 };
 

@@ -151,7 +151,7 @@ export type Database = {
           challengeId: number
           date: string | null
           id: number
-          imageURL: string
+          imageURLs: Json
           impression: string
           userId: string
         }
@@ -159,7 +159,7 @@ export type Database = {
           challengeId: number
           date?: string | null
           id?: number
-          imageURL: string
+          imageURLs?: Json
           impression: string
           userId: string
         }
@@ -167,7 +167,7 @@ export type Database = {
           challengeId?: number
           date?: string | null
           id?: number
-          imageURL?: string
+          imageURLs?: Json
           impression?: string
           userId?: string
         }

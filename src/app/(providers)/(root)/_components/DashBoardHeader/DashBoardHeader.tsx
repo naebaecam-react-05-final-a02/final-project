@@ -3,9 +3,8 @@
 import { addDays, format, subDays } from 'date-fns';
 import Link from 'next/link';
 import { Dispatch, SetStateAction } from 'react';
+import { FaListUl } from 'react-icons/fa6';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
-import { IoCreateOutline } from 'react-icons/io5';
-
 type DashBoardHeaderType = {
   date: Date;
   setState: Dispatch<SetStateAction<Date>>;
@@ -39,7 +38,8 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
 
       <div className="cursor-pointer text-xl">
         <Link href={url}>
-          <IoCreateOutline />
+          {/* <IoCreateOutline /> */}
+          <FaListUl />
         </Link>
       </div>
     </div>

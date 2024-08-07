@@ -64,7 +64,7 @@ class AuthAPI {
       if (response.status === 204) {
         throw new Error('User not found');
       }
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

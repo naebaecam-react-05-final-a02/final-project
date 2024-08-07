@@ -1,7 +1,6 @@
 import Checkbox from '@/components/Checkbox';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { useToggleComplete } from '@/hooks/exercises/useExercise';
-import Star from '@/icons/Star';
 import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import { ExerciseTodoItemType } from '@/types/exercises';
@@ -67,7 +66,7 @@ const Exercise = ({
         <div className="flex justify-between pb-4">
           <Checkbox checked={exercise.isCompleted} label="" onChange={handleCompleteChange} />
           <div className="flex gap-4">
-            <button
+            {/* <button
               onClick={() => {
                 // TODO: 즐겨찾기 등록
               }}
@@ -81,7 +80,7 @@ const Exercise = ({
                 height={20}
                 onClick={() => {}}
               />
-            </button>
+            </button> */}
             <button onClick={() => handleEditButtonClick(exercise)}>
               <EditIcon width={20} height={20} />
             </button>

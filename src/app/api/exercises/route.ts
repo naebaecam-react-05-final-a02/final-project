@@ -43,7 +43,6 @@ export const PUT = async (request: NextRequest) => {
     } = await supabase.auth.getUser();
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    delete exerciseData.isBookMark;
     const { error } = await supabase.from('exercises').update(exerciseData).eq('id', exerciseId);
     console.log(exerciseData);
     console.log(error);

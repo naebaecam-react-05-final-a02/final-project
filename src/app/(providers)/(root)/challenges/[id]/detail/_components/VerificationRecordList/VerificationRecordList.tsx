@@ -1,3 +1,4 @@
+import Loading from '@/components/Loading/Loading';
 import ThumbsUp from '@/icons/ThumbsUp';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,12 +9,20 @@ import Title from '../Title';
 interface VerificationRecord {
   id: number;
   userId: string;
-  imageURL: string;
+  imageURLs: string[];
   impression: string;
   date: string;
 }
+interface User {
+  profileURL?: string | null;
+  nickname?: string | null;
+}
+interface ChallengeInfoMethodProps {
+  id: number;
+  challengeAuthor: User | null;
+}
 
-const VerificationRecordList = ({ id }: { id: number }) => {
+const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProps) => {
   const [verificationRecords, setVerificationRecords] = useState<VerificationRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +35,6 @@ const VerificationRecordList = ({ id }: { id: number }) => {
 
         if (response.ok) {
           setVerificationRecords(data);
-          console.log('Fetched verification records:', data); // 데이터 콘솔 출력
         } else {
           setError(data.error);
         }
@@ -39,10 +47,9 @@ const VerificationRecordList = ({ id }: { id: number }) => {
 
     fetchVerificationRecords();
   }, [id]);
-  console.log('@@verificationRecords', verificationRecords);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <Loading />;
+
   return (
     <article>
       <div className="flex flex-row justify-between mb-4 px-4">
@@ -63,14 +70,19 @@ const VerificationRecordList = ({ id }: { id: number }) => {
               className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[94%] bg-white bg-opacity-5"
             >
               <div className="h-full">
-                <div className="flex flex-row gap-2 mb-2 justify-between">
-                  <Image
-                    src={record.imageURL}
-                    width={56}
-                    height={56}
-                    alt={'썸네일 이미지'}
-                    className="object-cover w-14 h-14"
-                  />
+                <div className="flex flex-row mb-2 justify-between">
+                  <div className="flex flex-row gap-2 justify-center items-center">
+                    {record.imageURLs.map((url, index) => (
+                      <Image
+                        key={`${record.id}-${url}`}
+                        src={url}
+                        width={56}
+                        height={56}
+                        alt={'썸네일 이미지'}
+                        className="object-cover w-14 h-14"
+                      />
+                    ))}
+                  </div>
                   <div className="flex flex-row gap-1 text-[12px] text-white font-medium">
                     <ThumbsUp />
                     <span>999</span>
@@ -78,7 +90,7 @@ const VerificationRecordList = ({ id }: { id: number }) => {
                 </div>
                 <div className="overflow-hidden text-ellipsis line-clamp-2 text-[14px] mb-4">{record.impression}</div>
                 <div className="text-[14px] flex flex-row justify-between">
-                  <div>유저유저유저</div>
+                  <div>{challengeAuthor?.nickname}</div>
                   <div className="text-white/[0.5] text-[12px]">{record.date.slice(0, 10)}</div>
                 </div>
               </div>

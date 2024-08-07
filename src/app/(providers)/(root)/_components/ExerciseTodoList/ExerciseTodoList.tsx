@@ -21,7 +21,7 @@ const ExerciseTodoList = () => {
   if (!exercises) {
     return (
       <>
-        <DashBoardHeader date={date} setState={setDate} url={'/exercises/record'} title={'투두'} />
+        <DashBoardHeader date={date} setState={setDate} url={'/exercises'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">{`${format(date, 'M')}월 ${format(
           date,
           'd',
@@ -33,7 +33,7 @@ const ExerciseTodoList = () => {
   if (exercises.error) {
     return (
       <>
-        <DashBoardHeader date={date} setState={setDate} url={'/exercises/record'} title={'투두'} />
+        <DashBoardHeader date={date} setState={setDate} url={'/exercises'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">
           <div>{`${format(date, 'M')}월 ${format(date, 'd')}일 데이터를 가져오지 못했습니다...`}</div>
           {exercises.details && <p className="text-xs text-red-300">상세 정보:{exercises.details}</p>}
@@ -45,7 +45,7 @@ const ExerciseTodoList = () => {
   if (!exercises.data || !exercises.data.length) {
     return (
       <>
-        <DashBoardHeader date={date} setState={setDate} url={'/exercises/record'} title={'투두'} />
+        <DashBoardHeader date={date} setState={setDate} url={'/exercises'} title={'투두'} />
         <div className="text-white text-center w-full mt-6">{`${format(date, 'M')}월 ${format(
           date,
           'd',
@@ -56,7 +56,7 @@ const ExerciseTodoList = () => {
 
   return (
     <>
-      <DashBoardHeader date={date} setState={setDate} url={'/exercises/record'} title={'투두'} />
+      <DashBoardHeader date={date} setState={setDate} url={'/exercises'} title={'투두'} />
       <ul className="size-full grid gap-y-5">
         {exercises.data.slice(0, 5).map((exercise, i) => (
           <li key={i}>

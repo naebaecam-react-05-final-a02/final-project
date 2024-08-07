@@ -1,16 +1,17 @@
 'use client';
 
 import Button from '@/components/Button';
+import Loading from '@/components/Loading/Loading';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import ChevronLeft from '@/icons/ChevronLeft';
 import DotsVertical from '@/icons/DotsVertical';
-import Mobile from '@/layouts/Mobile';
+import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { createClient } from '@/supabase/client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
+import ThumbnailSection from './_components/Thumbnail.tsx';
 import UserProfile from './_components/UserProfile';
 import VerificationRecordList from './_components/VerificationRecordList';
 
@@ -21,7 +22,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   if (!challenge) {
-    return <div>Loading</div>;
+    return <Loading />;
   }
 
   // 날짜 포맷팅
@@ -39,16 +40,20 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const handleJoinChallenge = async () => {
     const supabase = createClient();
 
-    const { error } = await supabase.from('challengeParticipants').insert({
-      challengeId: id,
-      userId: user?.id,
-    });
-    if (error) {
-      // 에러 처리도 제대루 해야함
-      alert('챌린지 참여 에러');
-    } else {
-      // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
-      router.replace('/challenges');
+    if (confirm('신청하시겠습니까?')) {
+      const { error } = await supabase.from('challengeParticipants').insert({
+        challengeId: id,
+        userId: user?.id,
+      });
+      if (error) {
+        // 에러 처리도 제대루 해야함
+        alert('신청에 실패하였습니다.');
+      } else {
+        // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
+        alert('신청하였습니다.');
+
+        router.replace('/challenges');
+      }
     }
   };
 
@@ -56,41 +61,22 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const challengeAuthor = challenge.user;
 
   return (
-    <Mobile
-      headerLayout={
-        <header
-          className="fixed w-full left-0 top-0 py-2 px-8 h-14 flex justify-between items-center z-10"
-          style={{ background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.29%, rgba(0, 0, 0, 0.00)100%)' }}
-        >
-          <button onClick={() => router.back()} aria-label="뒤로가기">
-            <ChevronLeft />
-          </button>
-          <h2 className="text-[14px] font-medium">챌린지 상세</h2>
-          <DotsVertical width={24} height={24} />
-        </header>
-      }
-      footerLayout={<div></div>}
-    >
-      <div className="text-white bg-black">
+    <>
+      <header
+        className="fixed w-full left-0 top-0 py-2 px-8 h-14 flex justify-between items-center z-10 text-white"
+        style={{ background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.29%, rgba(0, 0, 0, 0.00)100%)' }}
+      >
+        <button onClick={() => router.back()} aria-label="뒤로가기">
+          <ChevronLeft />
+        </button>
+        <h2 className="text-[14px] font-medium">챌린지 상세</h2>
+        <DotsVertical width={24} height={24} />
+      </header>
+      <div className="text-white relative">
+        <BackBoard />
         <main className="pb-24 min-h-screen">
-          <div>
-            <div className="relative w-full aspect-video">
-              <Image src={challenge.imageURL} alt="썸네일 이미지" fill className="object-cover mb-5" />
-              <div
-                className="absolute bottom-0 right-0 w-full p-4"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.50)14.97%, rgba(0, 0, 0, 0.00)100%)',
-                  transform: 'matrix(1, 0, 0, -1, 0, 0)',
-                }}
-              >
-                <div className="flex justify-end" style={{ transform: 'inherit' }}>
-                  <ul className="inline-flex flex-row gap-3 rounded-[4px] border border-white/[0.2] text-[12px] leading-4 bg-opacity-20px-2 py-1 px-2">
-                    <li className="text-[#12F287]">참여 40</li>
-                    <li>인증 12</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div className="h-screen">
+            <ThumbnailSection challenge={challenge} />
             <section className="flex flex-col gap-6">
               <article className="px-4 py-3 border-b-[1px] border-white/70 header-gradient">
                 <div className="flex flex-row justify-between">
@@ -112,8 +98,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               {/* 챌린지 인증 방법 */}
               <ChallengeInfoMethod id={id} challenge={challenge} challengeAuthor={challengeAuthor} />
               {/* 챌린지 인증 리스트 */}
-              <VerificationRecordList id={id} />
-
+              <VerificationRecordList id={id} challengeAuthor={challengeAuthor} />
               <div
                 className="fixed bottom-0 left-0 w-full p-4 pb-6 bg-black rounded-t-3xl flex gap-x-2 px-2"
                 style={{ boxShadow: '0px -4px 8px 0px rgba(18, 242, 135, 0.20)' }}
@@ -137,7 +122,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </main>
       </div>
-    </Mobile>
+    </>
   );
 };
 
