@@ -12,6 +12,12 @@ const ExerciseList = () => {
   const selectedDate = useDateStore((store) => store.date);
   const supabase = createClient();
 
+  // const {
+  //   data: exercises,
+  //   isPending: isFetching,
+  //   isError: isFetchError,
+  // } = useGetExercises(getFormattedDate(selectedDate));
+
   const {
     data: exercises,
     isPending: isFetching,
