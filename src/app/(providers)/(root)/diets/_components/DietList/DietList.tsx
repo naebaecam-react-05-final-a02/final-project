@@ -94,10 +94,10 @@ const DietList = () => {
                   <h3 className="text-center text-[17px] text-[#FFFFFF80] font-semibold">{dietCode[diet.dietType]}</h3>
                   <div className="flex gap-4">
                     <button onClick={() => handleEditButtonClick(diet)}>
-                      <EditIcon />
+                      <EditIcon width={20} height={20} />
                     </button>
                     <button onClick={() => handleDeleteButtonClick(diet.id)}>
-                      <DeleteIcon />
+                      <DeleteIcon width={20} height={20} stroke="#FFF" />
                     </button>
                   </div>
                 </div>
