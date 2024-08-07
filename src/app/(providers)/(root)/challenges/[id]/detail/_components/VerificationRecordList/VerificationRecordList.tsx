@@ -9,7 +9,7 @@ import Title from '../Title';
 interface VerificationRecord {
   id: number;
   userId: string;
-  imageURL: string;
+  imageURLs: string[];
   impression: string;
   date: string;
 }
@@ -70,14 +70,19 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
               className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[94%] bg-white bg-opacity-5"
             >
               <div className="h-full">
-                <div className="flex flex-row gap-2 mb-2 justify-between">
-                  <Image
-                    src={record.imageURL}
-                    width={56}
-                    height={56}
-                    alt={'썸네일 이미지'}
-                    className="object-cover w-14 h-14"
-                  />
+                <div className="flex flex-row mb-2 justify-between">
+                  <div className="flex flex-row gap-2 justify-center items-center">
+                    {record.imageURLs.map((url, index) => (
+                      <Image
+                        key={`${record.id}-${url}`}
+                        src={url}
+                        width={56}
+                        height={56}
+                        alt={'썸네일 이미지'}
+                        className="object-cover w-14 h-14"
+                      />
+                    ))}
+                  </div>
                   <div className="flex flex-row gap-1 text-[12px] text-white font-medium">
                     <ThumbsUp />
                     <span>999</span>
