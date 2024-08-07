@@ -8,6 +8,7 @@ import { initialChallengeVerificationError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
+import { queryClient } from '@/providers/QueryProvider';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -85,6 +86,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
               onSuccess: () => {
                 alert('등록되었습니다.');
                 console.log('Challenge Verify Successfully');
+                queryClient.invalidateQueries({ queryKey: ['verifications', { cid: cid }] });
                 router.push(`/challenges/${cid}/verification/list`);
               },
               onError: (error) => {
