@@ -7,6 +7,7 @@ import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import ChevronLeft from '@/icons/ChevronLeft';
 import DotsVertical from '@/icons/DotsVertical';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
+import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -51,7 +52,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
       } else {
         // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
         alert('신청하였습니다.');
-
+        queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
         router.replace('/challenges');
       }
     }
