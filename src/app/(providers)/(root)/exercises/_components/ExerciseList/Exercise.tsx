@@ -101,11 +101,11 @@ const Exercise = ({
             </div>
           </div>
           {/* TODO: exerciseType에 따라 icon 보여주기 */}
-          <div className="flex justify-center items-center w-12 h-12 text-whiteT-50">icon</div>
+          {/* <div className="flex justify-center items-center w-12 h-12 text-whiteT-50">icon</div> */}
         </div>
       </div>
       <div className="bg-[#FFFFFF1A] w-full h-[1px]"></div>
-      <div className="text-whiteT-50 text-xs">{exercise.memo || '-'}</div>
+      <div className="text-whiteT-50 text-xs line-clamp-2 overflow-hidden">{exercise.memo || '-'}</div>
     </li>
   );
 };

@@ -50,11 +50,15 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   if (user && authRoutes.some((route) => path.startsWith(route))) {
-    return NextResponse.redirect(new URL('/', request.url));
+    const redirectUrl = new URL('/', request.url);
+    redirectUrl.pathname = '/';
+    return NextResponse.redirect(redirectUrl);
   }
 
   if (!user && !publicRoutes.some((route) => path.startsWith(route))) {
-    return NextResponse.redirect(new URL('/log-in', request.url));
+    const redirectUrl = new URL('/log-in', request.url);
+    redirectUrl.pathname = '/log-in';
+    return NextResponse.redirect(redirectUrl);
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

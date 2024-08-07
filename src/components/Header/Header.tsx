@@ -7,23 +7,31 @@ interface HeaderProps {
   showLogo?: boolean;
   showBackButton?: boolean;
   icon?: ReactNode;
+  titleIcon?: ReactNode;
   onClick?: () => void;
   className?: string;
 }
 
-const Header = ({ title, showLogo = false, showBackButton = true, icon, onClick, className = '' }: HeaderProps) => {
+const Header = ({
+  title,
+  showLogo = false,
+  showBackButton = true,
+  icon,
+  titleIcon,
+  onClick,
+  className = '',
+}: HeaderProps) => {
   return (
-    <header
-      className={`flex w-full justify-between items-center px-4  header-gradient ${
-        showLogo ? 'pt-[13px] pb-[15px]' : 'pt-[17px] pb-[18px]'
-      }  ${className}`}
-    >
+    <header className={`flex w-full justify-between items-center  header-gradient  ${className}`}>
       {showBackButton ? <BackButton /> : <span className="w-11"></span>}
-      <div className="flex-grow flex justify-center items-center">
+      <div className="flex-grow flex justify-center items-center py-[18px]">
         {showLogo ? (
           <Image src="/OOSIE.png" alt="Logo" width={105} height={28} />
         ) : title ? (
-          <h2 className="text-sm font-medium">{title}</h2>
+          <div className="flex items-center">
+            <h2 className="text-sm font-medium">{title}</h2>
+            {titleIcon && <button className="ml-1">{titleIcon}</button>}
+          </div>
         ) : null}
       </div>
       {icon ? (

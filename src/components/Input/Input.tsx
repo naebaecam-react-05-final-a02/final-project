@@ -10,6 +10,7 @@ import { InputTextProps } from './InputText/InputText';
 export type BaseInputProps = {
   label?: string;
   error?: string | null;
+  success?: string | null;
   icon?: ReactNode;
   unit?: string;
   className?: string;
