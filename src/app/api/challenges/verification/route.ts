@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { data, error } = await supabase.from('challengeVerify').select('*').eq('challengeId', id);
+    const { data, error } = await supabase.from('challengeVerify').select('*,users(*)').eq('challengeId', id);
 
     console.log('Fetched ID:', id);
     console.log('Supabase Error:', error);
