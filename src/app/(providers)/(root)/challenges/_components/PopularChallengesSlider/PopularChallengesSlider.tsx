@@ -86,6 +86,7 @@ const PopularChallengesSlider = () => {
               <p>Loading...</p>
             ) : (
               getChallengeList().map((challenge: TChallenge, i: number) => {
+                console.log(challenge.id);
                 return (
                   <SwiperSlide key={challenge.id}>
                     <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
