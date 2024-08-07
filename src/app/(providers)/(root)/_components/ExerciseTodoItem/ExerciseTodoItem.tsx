@@ -1,11 +1,12 @@
 'use client';
 
 import Checkbox from '@/components/Checkbox';
+import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { useToggleCompleted } from '@/hooks/exercises/useExercise';
 import { queryClient } from '@/providers/QueryProvider';
 import { ExerciseTodoItemType } from '@/types/exercises';
 import { calculateTodoData } from '@/utils/calculateTodo';
-import { format } from 'date-fns';
+import { getFormattedDate } from '@/utils/dateFormatter';
 
 type ExerciseTodoItemProps = {
   exercise: ExerciseTodoItemType;
@@ -14,7 +15,6 @@ type ExerciseTodoItemProps = {
 
 const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
   const { mutate: toggleCompleted } = useToggleCompleted();
-  const formattingDate = format(date, 'yyyy-MM-dd');
 
   const [set, data1, data2] = calculateTodoData(exercise);
 
@@ -25,11 +25,11 @@ const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
         onError(error, _, context) {
           console.error('Checked Exercise Todo is Error', error);
           if (context?.prev) {
-            queryClient.setQueryData(['exercises', { date: formattingDate }], context?.prev);
+            queryClient.setQueryData(ExercisesQueryKeys.detail(getFormattedDate(date)), context?.prev);
           }
         },
         onSettled: () => {
-          queryClient.invalidateQueries({ queryKey: ['exercises', { date: formattingDate }] });
+          queryClient.invalidateQueries({ queryKey: ExercisesQueryKeys.detail(getFormattedDate(date)) });
         },
       },
     );

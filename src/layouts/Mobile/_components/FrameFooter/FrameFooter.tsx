@@ -10,7 +10,7 @@ import PagesIcon from '@/assets/mockup/width_normal.svg';
 
 const FrameFooter = () => {
   return (
-    <div className="px-5 py-2 bg-[#2d2d2d] box-border w-full h-[130px] relative flex flex-col items-center">
+    <div className="px-5 py-2 bg-black box-border w-full h-[130px] relative flex flex-col items-center">
       <div className="rounded-xl w-full h-11 bg-white/50 px-2 flex items-center justify-between gap-1">
         <LanguageIcon width={24} height={24} />
         <div className="flex gap-2">
