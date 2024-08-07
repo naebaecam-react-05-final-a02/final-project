@@ -44,12 +44,19 @@ const InputSelect = ({
         setIsOpen(false);
       }
     };
+    console.log(isOpen);
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!dropdownOptions || dropdownOptions.length === 0) {
+      setIsOpen(false);
+    }
+  }, [dropdownOptions]);
 
   const handleOptionSelect = (value: string, id?: string | number) => {
     setInputValue(value);
