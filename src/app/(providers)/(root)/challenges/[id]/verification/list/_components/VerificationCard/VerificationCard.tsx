@@ -30,7 +30,7 @@ const VerificationCard = ({ verification }: VerificationCardType) => {
       </div>
       <div className="w-full bg-white border border-gray-300 rounded-lg shadow-sm">
         <div className="w-full aspect-video relative bg-gray-100">
-          <Image className="object-cover" fill src={verification?.imageURL!} alt={`${nickname}'s image`} />
+          <Image className="object-cover" fill src={verification?.imageURLs[0]} alt={`${nickname}'s image`} />
           <div className="absolute bottom-0 left-0 right-0 bg-black/40 text-white text-center py-1">챌린지 이미지</div>
         </div>
         <div className="text-xs font-bold p-4">
