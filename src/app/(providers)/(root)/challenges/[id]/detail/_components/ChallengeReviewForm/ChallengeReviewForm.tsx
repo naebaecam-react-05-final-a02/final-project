@@ -58,7 +58,7 @@ const ChallengeReviewForm = () => {
     console.log('Submitting form data:', { title, content, files });
     register(formData, {
       onSuccess: () => {
-        alert('@@ 등록되었습니다!');
+        alert('등록되었습니다!');
         //router push 추가
       },
     });
