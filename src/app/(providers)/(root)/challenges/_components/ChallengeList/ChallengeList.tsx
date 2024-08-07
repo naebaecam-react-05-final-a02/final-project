@@ -41,7 +41,7 @@ const ChallengeList = () => {
       <div className="w-full h-full">
         <ul className="flex flex-col gap-2 overflow-scroll scroll">
           {!challenges?.pages || isPending ? (
-            <SkeletonCardList length={6} />
+            <SkeletonCardList length={1} />
           ) : challenges?.pages[0]?.error ? (
             <p>데이터가 없습니다</p>
           ) : (

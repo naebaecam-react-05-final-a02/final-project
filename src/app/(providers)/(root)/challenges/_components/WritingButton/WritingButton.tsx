@@ -20,7 +20,7 @@ const WritingButton = () => {
 
   return (
     <Link href="/challenges/register">
-      <div className="bg-black rounded-full px-4 h-[60px] flex justify-start items-center fixed right-4 bottom-20 overflow-hidden z-50">
+      <div className="bg-black rounded-full px-4 h-[60px] flex justify-start items-center absolute right-4 bottom-20 overflow-hidden z-50">
         <div className="w-7 h-7">
           <ChallengeIcon />
         </div>
