@@ -6,17 +6,19 @@ import { useEffect, useState } from 'react';
 import ChevronRight from '../ChevronRight';
 import Title from '../Title';
 
+interface User {
+  profileURL?: string | null;
+  nickname?: string | null;
+}
 interface VerificationRecord {
   id: number;
   userId: string;
   imageURLs: string[];
   impression: string;
   date: string;
+  users: User;
 }
-interface User {
-  profileURL?: string | null;
-  nickname?: string | null;
-}
+
 interface ChallengeInfoMethodProps {
   id: number;
   challengeAuthor: User | null;
@@ -49,6 +51,7 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
   }, [id]);
 
   if (loading) return <Loading />;
+  console.log('@@verificationRecords', verificationRecords);
 
   return (
     <article>
@@ -63,7 +66,7 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
       {verificationRecords.length === 0 ? (
         <p className="pl-4">챌린지 인증이 없습니다.</p>
       ) : (
-        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll pl-4">
+        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll px-4">
           {verificationRecords.map((record) => (
             <li
               key={record.id}
@@ -90,7 +93,17 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
                 </div>
                 <div className="overflow-hidden text-ellipsis line-clamp-2 text-[14px] mb-4">{record.impression}</div>
                 <div className="text-[14px] flex flex-row justify-between">
-                  <div>{challengeAuthor?.nickname}</div>
+                  <div className="flex flex-row gap-1 justify-center items-center">
+                    <div className="relative w-5 h-5 border-white border rounded-full overflow-hidden">
+                      <Image
+                        src={record.users?.profileURL ?? '/default-profile.png'}
+                        alt={record.users?.nickname ?? 'username'}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div>{record.users.nickname}</div>
+                  </div>
                   <div className="text-white/[0.5] text-[12px]">{record.date.slice(0, 10)}</div>
                 </div>
               </div>
