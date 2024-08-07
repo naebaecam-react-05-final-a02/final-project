@@ -1,7 +1,6 @@
 import ArrowRight from '@/assets/arrow-right.svg';
 import { Tables } from '@/types/supabase';
 import dayjs from 'dayjs';
-import Link from 'next/link';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import Bullet from '../Bullet';
 import DDayLabel from '../DDayLabel';
@@ -25,13 +24,11 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
         </div>
         <div className="flex items-center opacity-50">
           <Bullet />
-          <p className="text-sm">{challenge.verify}</p>
+          <p className="text-sm">{challenge.content}</p>
         </div>
       </div>
 
-      <Link href={`/challenge/${challenge.id}/detail`}>
-        <ArrowRight className="w-6 h-6 " />
-      </Link>
+      <ArrowRight className="w-6 h-6 " />
     </article>
   );
 };

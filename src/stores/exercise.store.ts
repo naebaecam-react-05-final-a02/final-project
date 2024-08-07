@@ -1,6 +1,14 @@
 import { exerciseInitialState } from '@/data/exerciseInitialState';
 import { CardioInput, ExerciseRecord, ExerciseType, WeightInput } from '@/types/exercises';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { create } from 'zustand';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+dayjs.tz.setDefault('Asia/Seoul');
 
 type ExerciseRecordBase = Omit<ExerciseRecord, 'exerciseType' | 'record'>;
 
@@ -11,12 +19,10 @@ type SetRecordUpdate =
 
 interface ExerciseStore {
   record: ExerciseRecord;
-  isBookMark: boolean;
   cardioInputs: CardioInput[];
   weightInputs: WeightInput[];
   exerciseType: ExerciseType;
   setRecord: (update: SetRecordUpdate) => void;
-  setIsBookMark: (value: boolean | ((prev: boolean) => boolean)) => void;
   setCardioInputs: (inputs: CardioInput[]) => void;
   setWeightInputs: (inputs: WeightInput[]) => void;
   setExerciseType: (type: ExerciseType) => void;
@@ -32,31 +38,28 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
   exerciseType: 'weight',
   setRecord: (update) =>
     set((state) => {
-      const newState = { ...state.record, ...update };
+      const newRecord = { ...state.record, ...update };
+
       if ('date' in update && update.date != null) {
-        newState.date = new Date(update.date);
+        newRecord.date = dayjs(update.date).tz().toDate();
       }
+
+      let newState: Partial<ExerciseStore> = { record: newRecord };
+
+      if ('exerciseType' in update) {
+        newState.exerciseType = update.exerciseType;
+      }
+
       if ('record' in update) {
-        if (newState.exerciseType === 'cardio') {
-          return {
-            record: newState,
-            cardioInputs: newState.record as CardioInput[],
-            exerciseType: 'cardio',
-          };
+        if (newRecord.exerciseType === 'cardio') {
+          newState.cardioInputs = update.record as CardioInput[];
         } else {
-          return {
-            record: newState,
-            weightInputs: newState.record as WeightInput[],
-            exerciseType: 'weight',
-          };
+          newState.weightInputs = update.record as WeightInput[];
         }
       }
-      return { record: newState };
+
+      return newState;
     }),
-  setIsBookMark: (value) =>
-    set((state) => ({
-      isBookMark: typeof value === 'function' ? value(state.isBookMark) : value,
-    })),
   setCardioInputs: (inputs) => set({ cardioInputs: inputs }),
   setWeightInputs: (inputs) => set({ weightInputs: inputs }),
   setExerciseType: (type) => set({ exerciseType: type }),

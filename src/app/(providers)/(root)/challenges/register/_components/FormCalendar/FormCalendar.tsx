@@ -1,58 +1,55 @@
 'use client';
 
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import Input from '@/components/Input';
+import { format, isAfter, subDays } from 'date-fns';
+import { useState } from 'react';
 
 type FormCalendarType = {
-  s?: string;
-  e?: string;
+  s?: Date;
+  e?: Date;
 };
 
 const FormCalendar = ({ s, e }: FormCalendarType) => {
-  const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
-  const [start, setStart] = useState<string>(s ?? today);
-  const [end, setEnd] = useState<string>(e ?? today);
+  const today = new Date();
+  const [start, setStart] = useState<Date>(s ?? today);
+  const [end, setEnd] = useState<Date>(e ?? today);
 
-  const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newStartDate = e.target.value;
-    setStart(newStartDate);
-    if (newStartDate > end) {
-      setEnd(newStartDate);
+  const handleStartDateChange = (newDate: Date) => {
+    setStart(newDate);
+    if (isAfter(newDate, end)) {
+      setEnd(newDate);
     }
   };
+
   return (
     <div className="flex flex-col gap-y-1 w-full select-none">
       <label className="text-white/70 pl-1 text-[12px]" htmlFor="startDate">
         날짜 선택
       </label>
       <div className="flex gap-x-2 h-12 w-full items-center justify-center">
+        <Input
+          inputType="date"
+          position="left"
+          minDate={subDays(today, 1)}
+          value={new Date(start)}
+          onChange={(newDate: Date) => handleStartDateChange(newDate)}
+        />
         <input
-          onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => e.preventDefault()}
-          className="
-          bg-transparent rounded-lg  text-white/40
-          p-3 bg-input-gradient
-          placeholder:text-sm focus:outline-none outline-none
-          w-40
-          focus:border-b-[2px] focus:border-gradient text-sm"
-          name="startDate"
+          className="hidden"
           type="date"
-          // dayMin={today}
-          value={start}
-          onChange={handleStartDateChange}
+          name="startDate"
+          value={format(start, 'yyyy-MM-dd')}
+          onChange={() => {}}
         />
         <span className="text-white/70 flex items-center">~</span>
-        <input
-          onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => e.preventDefault()}
-          className="bg-transparent rounded-lg  text-white/40
-          p-3 bg-input-gradient
-          placeholder:text-sm focus:outline-none outline-none
-          w-40
-          focus:border-b-[2px] focus:border-gradient text-sm"
-          name="endDate"
-          type="date"
-          // dayMin={start}
-          value={end}
-          onChange={(e) => setEnd(e.target.value)}
+        <Input
+          inputType="date"
+          position="right"
+          minDate={start}
+          value={new Date(end)}
+          onChange={(newDate: Date) => setEnd(newDate)}
         />
+        <input className="hidden" type="date" name="endDate" value={format(end, 'yyyy-MM-dd')} onChange={() => {}} />
       </div>
     </div>
   );

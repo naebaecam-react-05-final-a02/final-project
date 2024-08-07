@@ -1,4 +1,5 @@
 import Button from '@/components/Button';
+import Header from '@/components/Header';
 import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import Link from 'next/link';
@@ -14,12 +15,17 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
   // 챌린지가 없을 경우
   if (!response.count) {
     return (
-      <div className="size-full flex items-center justify-center select-none flex-col p-4 gap-y-4">
-        <div className=" text-red-300 text-xl">잘못된 접근입니다.</div>
-        <Link className="w-full" href={'/'}>
-          <Button>대시보드로 돌아가기</Button>
-        </Link>
-      </div>
+      <Mobile
+        footerLayout={
+          <Link className="w-full" href={'/'}>
+            <Button>대시보드로 돌아가기</Button>
+          </Link>
+        }
+      >
+        <div className="size-full flex items-center justify-center select-none flex-col p-4 gap-y-4">
+          <div className=" text-red-300 text-xl">잘못된 접근입니다.</div>
+        </div>
+      </Mobile>
     );
   }
 
@@ -44,7 +50,7 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
   // console.log('USERINFO___', userInfo);
 
   return (
-    <Mobile>
+    <Mobile headerLayout={<Header title="챌린지 인증" />}>
       <VerificationRegister
         cid={params.id}
         userInfo={userInfo}
@@ -56,33 +62,3 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
 };
 
 export default ChallengeVerificationRegisterPage;
-
-/**
- * if (!response.count) {
-    return (
-      <div className="size-full flex items-center justify-center select-none flex-col p-4 gap-y-4">
-        <div className=" text-red-300 text-xl">잘못된 접근입니다.</div>
-        <Link className="w-full" href={'/'}>
-          <Button>대시보드로 돌아가기</Button>
-        </Link>
-      </div>
-    );
-  }
-
-  const data = await fetchVerificationTotalData(supabase, params.id);
-
-  console.log('verifications', data.verifications);
-
-  return (
-    <Mobile>
-      <VerificationRegister
-        cid={params.id}
-        challengeTitle={response.data.title}
-        verifications={data.verifications}
-        totalUsers={data.totalUsers}
-      />
-    </Mobile>
-  );
- * 
- * 
- */

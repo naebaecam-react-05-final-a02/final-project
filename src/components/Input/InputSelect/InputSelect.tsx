@@ -44,12 +44,19 @@ const InputSelect = ({
         setIsOpen(false);
       }
     };
+    console.log(isOpen);
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!dropdownOptions || dropdownOptions.length === 0) {
+      setIsOpen(false);
+    }
+  }, [dropdownOptions]);
 
   const handleOptionSelect = (value: string, id?: string | number) => {
     setInputValue(value);
@@ -82,22 +89,19 @@ const InputSelect = ({
             type="text"
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition ${isOpen ? 'z-20' : ''}
-              border-b-2 ${error ? 'border-error-gradient' : 'border-gradient'} 
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition border-b-2 pr-10 py-3
+              ${isOpen ? 'z-20' : ''}
+              ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
               ${icon ? 'pl-11' : 'pl-3'} 
-              pr-10 py-3 ${textAlign === 'left' ? 'text-left' : 'text-right'}`}
+              ${textAlign === 'left' ? 'text-left' : 'text-right'}`}
             value={inputValue}
             onChange={handleInputChange}
             placeholder={placeholder}
             {...props}
           />
           {icon && (
-            <div
-              className={`absolute left-4 top-1/2 -translate-y-1/2 z-[16] text-white/40 text-xl ${
-                isOpen ? 'z-20' : ''
-              }`}
-            >
+            <div className={`absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-xl ${isOpen ? 'z-20' : ''}`}>
               {icon}
             </div>
           )}
@@ -108,7 +112,12 @@ const InputSelect = ({
               p-[2px] gap-[10px] rounded-[4px] 
               transition-all duration-300 ease-in-out
               ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => {
+              if (dropdownOptions && dropdownOptions.length > 0) {
+                setIsOpen(!isOpen);
+              }
+            }}
+            disabled={!dropdownOptions || dropdownOptions.length === 0}
           >
             <ArrowDropDown isActive={isOpen} />
           </button>

@@ -1,3 +1,4 @@
+import Loading from '@/components/Loading/Loading';
 import ThumbsUp from '@/icons/ThumbsUp';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -5,15 +6,25 @@ import { useEffect, useState } from 'react';
 import ChevronRight from '../ChevronRight';
 import Title from '../Title';
 
+interface User {
+  profileURL?: string | null;
+  nickname?: string | null;
+}
 interface VerificationRecord {
   id: number;
   userId: string;
-  imageURL: string;
+  imageURLs: string[];
   impression: string;
   date: string;
+  users: User;
 }
 
-const VerificationRecordList = ({ id }: { id: number }) => {
+interface ChallengeInfoMethodProps {
+  id: number;
+  challengeAuthor: User | null;
+}
+
+const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProps) => {
   const [verificationRecords, setVerificationRecords] = useState<VerificationRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +37,6 @@ const VerificationRecordList = ({ id }: { id: number }) => {
 
         if (response.ok) {
           setVerificationRecords(data);
-          console.log('Fetched verification records:', data); // 데이터 콘솔 출력
         } else {
           setError(data.error);
         }
@@ -39,10 +49,10 @@ const VerificationRecordList = ({ id }: { id: number }) => {
 
     fetchVerificationRecords();
   }, [id]);
+
+  if (loading) return <Loading />;
   console.log('@@verificationRecords', verificationRecords);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
   return (
     <article>
       <div className="flex flex-row justify-between mb-4 px-4">
@@ -56,21 +66,26 @@ const VerificationRecordList = ({ id }: { id: number }) => {
       {verificationRecords.length === 0 ? (
         <p className="pl-4">챌린지 인증이 없습니다.</p>
       ) : (
-        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll pl-4">
+        <ul className="flex flex-row gap-3 overflow-y-auto  text-white scroll px-4">
           {verificationRecords.map((record) => (
             <li
               key={record.id}
               className=" rounded-2xl p-4 border-2 border-white/[0.1] flex-none w-[94%] bg-white bg-opacity-5"
             >
               <div className="h-full">
-                <div className="flex flex-row gap-2 mb-2 justify-between">
-                  <Image
-                    src={record.imageURL}
-                    width={56}
-                    height={56}
-                    alt={'썸네일 이미지'}
-                    className="object-cover w-14 h-14"
-                  />
+                <div className="flex flex-row mb-2 justify-between">
+                  <div className="flex flex-row gap-2 justify-center items-center">
+                    {record.imageURLs.map((url, index) => (
+                      <Image
+                        key={`${record.id}-${url}`}
+                        src={url}
+                        width={56}
+                        height={56}
+                        alt={'썸네일 이미지'}
+                        className="object-cover w-14 h-14"
+                      />
+                    ))}
+                  </div>
                   <div className="flex flex-row gap-1 text-[12px] text-white font-medium">
                     <ThumbsUp />
                     <span>999</span>
@@ -78,7 +93,17 @@ const VerificationRecordList = ({ id }: { id: number }) => {
                 </div>
                 <div className="overflow-hidden text-ellipsis line-clamp-2 text-[14px] mb-4">{record.impression}</div>
                 <div className="text-[14px] flex flex-row justify-between">
-                  <div>유저유저유저</div>
+                  <div className="flex flex-row gap-1 justify-center items-center">
+                    <div className="relative w-5 h-5 border-white border rounded-full overflow-hidden">
+                      <Image
+                        src={record.users?.profileURL ?? '/default-profile.png'}
+                        alt={record.users?.nickname ?? 'username'}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div>{record.users.nickname}</div>
+                  </div>
                   <div className="text-white/[0.5] text-[12px]">{record.date.slice(0, 10)}</div>
                 </div>
               </div>

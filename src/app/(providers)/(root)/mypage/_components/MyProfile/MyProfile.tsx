@@ -1,24 +1,28 @@
 'use client';
 
 import ArrowRight from '@/assets/arrow-right.svg';
-import { useGetUser } from '@/hooks/auth/useUsers';
-import api from '@/service/service';
+import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const MyProfile = () => {
   const router = useRouter();
   const { data: user, isPending } = useGetUser();
+  const { mutate: signOut } = useSignOut({
+    onSuccess: () => {
+      router.push('/log-in'); // 로그아웃 성공 시 로그인 페이지로 리디렉션
+    },
+  });
   return (
     <section className="flex flex-col gap-10">
       <article className="flex flex-col gap-6">
         <div className="flex gap-4">
-          <div className="relative w-16 h-16 rounded-full border border-white">
+          <div className="relative w-16 h-16 rounded-full border border-white overflow-hidden">
             {user?.profileURL && <Image src={user?.profileURL} alt={'프로필 이미지'} fill />}
           </div>
           <div className="flex flex-col justify-between">
             <div className="flex gap-2 items-end">
-              <p className="text-[16px] font-medium">{user?.nickname}</p>
+              <div className="text-[16px] font-medium">{user?.nickname ?? `헬린이_${user?.userIndex}`}</div>
               <p className="text-sm font-light text-primary-100">LV.100</p>
             </div>
             <p className="text-sm text-white/50 mb-2">{user?.email}</p>
@@ -36,7 +40,7 @@ const MyProfile = () => {
         </div>
         <div className="my-page-intro-bg p-2 rounded-b-2xl rounded-se-2xl h-[76px] relative ">
           <div className="rounded-b-2xl rounded-se-2xl absolute inset-0 border-2 border-white/10"></div>
-          <p className="text-[14px] text-white/70">안녕하세요 주용용이1234입니다.</p>
+          <p className="text-[14px] text-white/70">안녕하세요 {user?.nickname ?? `헬린이_${user?.userIndex}`}입니다.</p>
         </div>
       </article>
       <article className="flex flex-col gap-4">
@@ -80,13 +84,7 @@ const MyProfile = () => {
       </article>
       <div className="flex justify-center w-full">
         <div>
-          <button
-            className="border-b border-primary-100 text-sm text-primary-100"
-            onClick={async () => {
-              await api.auth.signOut();
-              router.replace('/');
-            }}
-          >
+          <button className="border-b border-primary-100 text-sm text-primary-100" onClick={() => signOut()}>
             로그아웃
           </button>
         </div>

@@ -106,8 +106,9 @@ class DashBoardAPI {
         .eq('userId', user?.id)
         .gte('date', getStartOfDayISO(date))
         .lte('date', getEndOfDayISO(date))
-        .order('date');
+        .order('id');
 
+      // console.log('exercises___', exercises);
       if (error) {
         console.error('Exercises Database query error:', error);
         return {
@@ -142,6 +143,41 @@ class DashBoardAPI {
       const { data: challenges, error } = await client
         .from('challengeParticipants')
         .select('*,challenges(title, isProgress)')
+        .eq('userId', user?.id);
+
+      if (error) {
+        console.error('Challenge Participants Database query error:', error);
+        return {
+          data: null,
+          error: 'Challenge Participants Database query failed',
+          details: error.message,
+        };
+      }
+
+      return { data: challenges, error: null, details: null };
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
+    }
+  };
+
+  getJoinedMyChallenges = async (client: SupabaseClient<Database>) => {
+    try {
+      const {
+        data: { user },
+      } = await client.auth.getUser();
+
+      if (!user) {
+        return {
+          data: null,
+          error: 'User not found',
+          details: 'User not found',
+        };
+      }
+
+      const { data: challenges, error } = await client
+        .from('challengeParticipants')
+        .select('*,challenges(*)')
         .eq('userId', user?.id);
 
       if (error) {

@@ -24,7 +24,7 @@ const UserProfile = ({ className }: UserProfileProps) => {
           className="object-cover rounded-full"
         />
       </div>
-      <div className="text-sm">{user?.nickname}</div>
+      <div className="text-sm">{user?.nickname ?? `헬린이_${user?.userIndex}`}</div>
     </div>
   );
 };

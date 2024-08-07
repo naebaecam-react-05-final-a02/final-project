@@ -12,14 +12,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { loadingSlides, nextDummySlide, prevDummySlide } from '../../_constants/constants';
 import { TChallenge } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
 
 const PopularChallengesSlider = () => {
   const { data: challenges, isPending } = useGetPopularChallenges();
-  console.log(challenges);
 
+  const getChallengeList = () => [prevDummySlide, ...challenges?.data, nextDummySlide];
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -49,22 +50,24 @@ const PopularChallengesSlider = () => {
             spaceBetween={0}
             slidesPerView={3}
             scrollbar={{ draggable: true, hide: true, enabled: false }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
           >
-            {isPending ? (
-              <p>Loading...</p>
-            ) : (
-              challenges.data.map((challenge: TChallenge, i: number) => {
-                return (
-                  <li className="flex items-center" key={i}>
-                    <SwiperSlide>
+            {isPending
+              ? loadingSlides.map((challenge: TChallenge, i: number) => {
+                  console.log(challenge.id);
+                  return (
+                    <SwiperSlide key={challenge.id}>
                       <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
                     </SwiperSlide>
-                  </li>
-                );
-              })
-            )}
+                  );
+                })
+              : getChallengeList().map((challenge: TChallenge, i: number) => {
+                  console.log(challenge.id);
+                  return (
+                    <SwiperSlide key={challenge.id}>
+                      <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
+                    </SwiperSlide>
+                  );
+                })}
           </Swiper>
         </div>
       </div>

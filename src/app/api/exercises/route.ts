@@ -1,6 +1,13 @@
 import { createClient } from '@/supabase/server';
 import { getNextDateISO } from '@/utils/dateFormatter';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { NextRequest, NextResponse } from 'next/server';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Seoul');
 
 export const GET = async (request: NextRequest) => {
   try {
@@ -41,12 +48,16 @@ export const PUT = async (request: NextRequest) => {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
+
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    delete exerciseData.isBookMark;
+    if (exerciseData.date) {
+      const formattedDate = dayjs(exerciseData.date).tz().format('YYYY-MM-DD');
+      exerciseData.date = formattedDate;
+    }
+
     const { error } = await supabase.from('exercises').update(exerciseData).eq('id', exerciseId);
-    console.log(exerciseData);
-    console.log(error);
+
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
     return NextResponse.json({ message: '운동이 성공적으로 수정되었습니다' }, { status: 200 });
