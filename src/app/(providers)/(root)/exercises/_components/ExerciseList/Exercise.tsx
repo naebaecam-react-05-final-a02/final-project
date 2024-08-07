@@ -39,7 +39,7 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   };
 
   const handleEditButtonClick = (exercise: ExerciseTodoItemType) => {
-    router.push(`/exercises/${exercise.id}/edit`); // TODO: 수정 url
+    router.push(`/exercises/${exercise.id}/edit`);
   };
 
   const handleDeleteButtonClick = (exerciseId: number) => {
