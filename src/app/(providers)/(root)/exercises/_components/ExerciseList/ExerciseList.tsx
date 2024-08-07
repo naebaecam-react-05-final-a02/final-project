@@ -1,4 +1,5 @@
-import { useDeleteExercises, useGetExercises } from '@/hooks/exercises/useExercise';
+import Loading from '@/components/Loading/Loading';
+import { useGetExercises } from '@/hooks/exercises/useExercise';
 import useDateStore from '@/stores/date.store';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
@@ -13,10 +14,8 @@ const ExerciseList = () => {
     isPending: isFetching,
     isError: isFetchError,
   } = useGetExercises(getFormattedDate(selectedDate));
-  const { mutate: deleteExercise, isPending: isDeleting } = useDeleteExercises();
 
-  if (isFetching) return <div className="text-center">데이터를 불러오고 있습니다...</div>;
-  if (isDeleting) return <div className="text-center">데이터를 삭제하고 있습니다...</div>;
+  if (isFetching) return <Loading />;
   if (isFetchError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
 
   const handleAddButtonClick = () => {
@@ -35,7 +34,7 @@ const ExerciseList = () => {
       ) : (
         <ul className="flex flex-col gap-4 px-4">
           {exercises?.map((exercise) => (
-            <Exercise key={`exercise-${exercise.id}`} exercise={exercise} deleteExercise={deleteExercise} />
+            <Exercise key={`exercise-${exercise.id}`} exercise={exercise} />
           ))}
         </ul>
       )}
