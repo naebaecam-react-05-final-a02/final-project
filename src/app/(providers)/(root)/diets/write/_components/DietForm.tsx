@@ -95,7 +95,7 @@ const DietForm = () => {
             <Input
               inputType="date"
               name="date"
-              showMonth={false}
+              showMonth
               value={new Date(date)}
               position="left"
               onChange={(newDate: Date) => setDate(getFormattedDate(newDate))}

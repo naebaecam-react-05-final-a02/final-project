@@ -15,7 +15,7 @@ const ResetPasswordProcess = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen px-4 justify-start items-center">
+    <div className="flex flex-col w-full h-full px-4 justify-start items-center">
       <Header showLogo className="mb-8 px-4" />
       {step === 'request' && <RequestResetForm onSuccess={handleRequestSuccess} setError={setError} />}
       {step === 'reset' && <ResetPasswordForm email={email} setError={setError} />}

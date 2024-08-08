@@ -151,7 +151,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                   placeholder="이메일을 입력해 주세요."
                   value={formState.email.value}
                   onChange={handleChange}
-                  autoComplete="email"
+                  autoComplete="off"
                   success={formState.email.successMessage}
                   error={formState.email.error}
                   required

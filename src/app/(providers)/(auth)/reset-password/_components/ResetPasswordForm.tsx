@@ -62,7 +62,7 @@ const ResetPasswordForm = ({ setError }: ResetPasswordFormProps) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen justify-between">
+    <div className="flex flex-col w-full  justify-between ">
       <div>
         <h2 className="text-18 font-semibold mb-6">새로운 비밀번호를 설정해 주세요!</h2>
         <form className="flex flex-col gap-4">

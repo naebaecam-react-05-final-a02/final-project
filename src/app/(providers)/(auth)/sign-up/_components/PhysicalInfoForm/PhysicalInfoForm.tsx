@@ -23,6 +23,7 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
             label="키"
             type="number"
             name="height"
+            className="appearance-none  [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
             unit="cm"
             value={formState.height?.value ?? ''}
             onChange={handleChange}
@@ -37,6 +38,7 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
             type="number"
             id="weight"
             name="weight"
+            className="appearance-none  [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
             unit="kg"
             value={formState.weight?.value ?? ''}
             onChange={handleChange}
