@@ -46,7 +46,7 @@ const JoinedChallenges = () => {
   if (joinedChallenges.data === null || joinedChallenges.data.length === 0) {
     return (
       <JoinedChallengesLayout>
-        <p className="text-white/50 text-sm">참여 중인 챌린지가 없습니다.</p>
+        <p className="text-white/50 text-xs">참여 중인 챌린지가 없습니다.</p>
       </JoinedChallengesLayout>
     );
   }
