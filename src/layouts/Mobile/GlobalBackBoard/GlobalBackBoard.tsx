@@ -1,4 +1,4 @@
-const BackBoard = () => {
+const GlobalBackBoard = () => {
   return (
     <div className=" inset-0 bg-[#0E0C15] absolute -z-50 overflow-hidden">
       <div className="w-[140px] h-[300px] absolute top-[70px] left-[48px] blur-[90px] rounded-full bg-[#52467B]"></div>
@@ -8,4 +8,4 @@ const BackBoard = () => {
   );
 };
 
-export default BackBoard;
+export default GlobalBackBoard;

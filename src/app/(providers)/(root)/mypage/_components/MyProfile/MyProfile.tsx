@@ -1,6 +1,7 @@
 'use client';
 
 import ArrowRight from '@/assets/arrow-right.svg';
+import TeamCardSVG from '@/assets/team-card.svg';
 import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -86,6 +87,9 @@ const MyProfile = () => {
       </article>
       <article className="flex justify-center items-center w-full h-[185px] bg-white/5 rounded-[20px]">
         체중 그래프 자리
+      </article>
+      <article>
+        <TeamCardSVG />
       </article>
       <div className="flex justify-center w-full">
         <div>

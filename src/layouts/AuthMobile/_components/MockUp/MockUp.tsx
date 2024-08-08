@@ -7,7 +7,7 @@ import FrameHeader from '../FrameHeader';
 
 const MockUp = ({ children }: PropsWithChildren) => {
   return (
-    <main className="w-full h-screen flex justify-evenly items-center">
+    <main className="w-full h-full min-h-screen flex justify-evenly items-center">
       <Introduction />
       <div className="relative flex justify-center items-center">
         <article className="border-black relative rounded-[60px] overflow-hidden">
