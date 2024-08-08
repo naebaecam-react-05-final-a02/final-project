@@ -43,8 +43,8 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
           <h3 className="text-xl font-semibold">{challenge.title}</h3>
         </div>
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
-          <p className="text-primary-100">참여 {challenge.participants}</p>
-          <p>인증 12</p>
+          <p className="text-primary-100">참여 0</p>
+          <p>인증 0</p>
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
