@@ -11,6 +11,7 @@ import { useState } from 'react';
 import 'swiper/css';
 import validateEssentialInfo from '../../../_utils/validateEssentialInfo';
 import validateNicknameInfo from '../../../_utils/validateNicknameInfo';
+import { validatePassword } from '../../../_utils/validatePassword';
 import validatePhysicalInfo from '../../../_utils/validatePhysicalInfo';
 import EssentialInfoForm from '../EssentialInfoForm/EssentialInfoForm';
 import NicknameForm from '../NicknameForm';
@@ -26,17 +27,44 @@ const SignUpForm = () => {
   const { mutateAsync: signUpAsync, isPending: isSignUpPending, error: signUpError } = useSignUp();
   const { mutateAsync: checkDuplicate } = useCheckDuplicate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === 'essentialInfo') {
       const { isValid, errors } = validateEssentialInfo(formState);
-      if (isValid) {
+      const passwordError = validatePassword(formState.password.value);
+
+      if (isValid && !passwordError) {
+        if (!formState.email.isVerified) {
+          setFormState((prev) => ({
+            ...prev,
+            email: { ...prev.email, error: '이메일 중복 확인이 필요합니다.' },
+          }));
+          return;
+        }
+        if (formState.password.value !== formState.confirmPassword.value) {
+          setFormState((prev) => ({
+            ...prev,
+            confirmPassword: { ...prev.confirmPassword, error: '비밀번호가 일치하지 않습니다.' },
+          }));
+          return;
+        }
         setCurrentStep('nicknameInfo');
       } else {
-        setFormState((prev) => ({ ...prev, ...errors }));
+        setFormState((prev) => ({
+          ...prev,
+          ...errors,
+          password: { ...prev.password, error: passwordError || prev.password.error },
+        }));
       }
     } else if (currentStep === 'nicknameInfo') {
       const { isValid, errors } = validateNicknameInfo(formState);
       if (isValid) {
+        if (!formState.nickname.isVerified) {
+          setFormState((prev) => ({
+            ...prev,
+            nickname: { ...prev.nickname, error: '닉네임 중복 확인이 필요합니다.' },
+          }));
+          return;
+        }
         setCurrentStep('physicalInfo');
       } else {
         setFormState((prev) => ({ ...prev, ...errors }));
@@ -44,11 +72,11 @@ const SignUpForm = () => {
     } else if (currentStep === 'physicalInfo') {
       const { isValid, errors } = validatePhysicalInfo(formState);
       if (isValid) {
-        handleSignUp();
+        await handleSignUp();
       } else {
         setFormState((prev) => ({ ...prev, ...errors }));
       }
-    } else if (currentStep === 'success1' || 'success2') {
+    } else if (currentStep === 'success1' || currentStep === 'success2') {
       route.push('/');
     }
   };

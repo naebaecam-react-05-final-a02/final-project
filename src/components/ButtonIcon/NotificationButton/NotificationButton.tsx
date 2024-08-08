@@ -4,7 +4,7 @@ import IconButton from '../IconButton/IconButton';
 const NotificationButton = () => {
   return (
     <IconButton onClick={() => {}}>
-      <NotificationSVG />
+      <NotificationSVG className="cursor-not-allowed" />
     </IconButton>
   );
 };

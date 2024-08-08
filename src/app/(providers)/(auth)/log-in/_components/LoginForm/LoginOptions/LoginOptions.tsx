@@ -9,7 +9,7 @@ interface LoginOptionsProps {
 
 const LoginOptions = ({ keepLoggedIn, onKeepLoggedInChange }: LoginOptionsProps) => {
   return (
-    <div className="flex w-full justify-between gap-2 mt-4">
+    <div className="flex w-full justify-between gap-2 mt-4 items-center">
       <div>
         <Checkbox checked={keepLoggedIn} label="로그인 유지" onChange={(e) => onKeepLoggedInChange(e.target.checked)} />
       </div>
