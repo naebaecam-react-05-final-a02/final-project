@@ -1,7 +1,7 @@
 interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
-  value: number;
+  value: number | null;
 }
 
 const Input = ({ value, name, onChange }: InputProps) => {
@@ -11,10 +11,10 @@ const Input = ({ value, name, onChange }: InputProps) => {
       <input
         onChange={onChange}
         className="flex justify-center items-center w-12 h-10 rounded-xl  exerciseInput input-bg
-      focus:outline-none focus:border-[#12F287] text-semibold text-white"
+      focus:outline-none focus:border-[#12F287] text-semibold text-white appearance-none"
         name={name}
         type="number"
-        value={value}
+        value={value ?? ''}
         placeholder="0"
       />
     </div>

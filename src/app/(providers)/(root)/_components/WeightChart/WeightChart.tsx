@@ -28,7 +28,7 @@ const WeightChart = ({ query }: WeightChartType) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const supabase = createClient();
   const { data: user } = useGetUser();
-  const { data: weights } = useQuery({
+  const { data: weights, error } = useQuery({
     queryKey: ['weights'],
     queryFn: () => api.dashboard.getWeights(supabase, query),
     enabled: !!user,
@@ -46,7 +46,7 @@ const WeightChart = ({ query }: WeightChartType) => {
     );
   }
 
-  if (weights.error) {
+  if (error) {
     return (
       <div className="size-full flex items-center justify-center flex-col">
         <div className="text-white">체중 데이터를 가져오지 못했습니다.</div>
@@ -56,13 +56,13 @@ const WeightChart = ({ query }: WeightChartType) => {
     );
   }
 
-  if (!weights.data || !weights?.data.length) {
-    return (
-      <div className="size-full flex items-center justify-center">
-        <div className="text-white">체중 데이터가 없습니다.</div>
-      </div>
-    );
-  }
+  // if (!weights.data || !weights?.data.length) {
+  //   return (
+  //     <div className="size-full flex items-center justify-center">
+  //       <div className="text-white">체중 데이터가 없습니다.</div>
+  //     </div>
+  //   );
+  // }
 
   // const weightsArray = [...weights?.data!.map((d) => d.weight)];
   const weightsArray = [...tmp.map((d) => d.weight)];

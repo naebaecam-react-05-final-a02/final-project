@@ -4,6 +4,6 @@ export const exerciseInitialState: ExerciseRecord = {
   date: new Date(),
   name: '',
   memo: '',
-  record: [{}],
+  record: [{ weight: 0, reps: 0 }],
   exerciseType: 'weight',
 } as ExerciseRecord;

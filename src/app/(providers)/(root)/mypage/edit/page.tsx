@@ -159,6 +159,7 @@ const MyProfileEditPage = () => {
               value={inputs.height}
               type={'number'}
               unit={'cm'}
+              className="appearance-none  [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
             />
           </div>
           <div className="flex">
@@ -170,6 +171,7 @@ const MyProfileEditPage = () => {
               value={inputs.weight}
               type={'number'}
               unit={'kg'}
+              className="appearance-none  [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
           </div>
         </div>

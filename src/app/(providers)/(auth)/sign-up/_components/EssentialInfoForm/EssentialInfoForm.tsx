@@ -140,9 +140,9 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
 
   return (
     <form className="flex flex-col gap-4 items-center justify-center w-full mt-10">
-      <div className="flex flex-col w-full  justify-between content-between">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-center w-full px-4">
+      <div className="flex flex-col w-full  justify-between content-between px-4">
+        <div className="flex flex-col gap-4 mb-10">
+          <div className="flex flex-col items-center w-full">
             <div className="w-full">
               <div className="flex w-full items-end">
                 <Input
@@ -151,7 +151,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
                   placeholder="이메일을 입력해 주세요."
                   value={formState.email.value}
                   onChange={handleChange}
-                  autoComplete="email"
+                  autoComplete="off"
                   success={formState.email.successMessage}
                   error={formState.email.error}
                   required
@@ -159,7 +159,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center w-full px-4">
+          <div className="flex flex-col items-center w-full">
             <div className="w-full">
               <Input
                 label="비밀번호"
@@ -176,7 +176,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
             </div>
           </div>
 
-          <div className="flex flex-col items-center w-full px-4">
+          <div className="flex flex-col items-center w-full">
             <div className="w-full">
               <Input
                 label="비밀번호 확인"
@@ -193,6 +193,9 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
             </div>
           </div>
         </div>
+        <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal leading-[18px]">
+          <li>대문자, 특수문자 반드시 1회 포함되어야 합니다.</li>
+        </ul>
       </div>
     </form>
   );

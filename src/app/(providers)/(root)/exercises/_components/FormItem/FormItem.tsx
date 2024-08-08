@@ -5,8 +5,8 @@ import Input from './Input';
 interface FormItemProps {
   index: number;
   type: 'cardio' | 'weight';
-  firstProp: number;
-  secondProp: number;
+  firstProp: number | null;
+  secondProp: number | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
 }
 
