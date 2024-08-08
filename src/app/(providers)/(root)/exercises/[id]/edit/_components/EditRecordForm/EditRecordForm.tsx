@@ -95,7 +95,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         { exerciseData, exerciseId },
         {
           onSuccess: () => {
-            alert('수정 성공했다!!!!!!!!!!!');
+            alert('수정에 성공했습니다');
             router.push('/exercises');
           },
           onError: (error: any) => {
