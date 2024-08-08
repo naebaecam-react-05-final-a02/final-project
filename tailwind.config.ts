@@ -107,6 +107,10 @@ const config: Config = {
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },
+        '.bg-custom-dashed-border': {
+          'background-image': `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23333' stroke-width='4' stroke-dasharray='5' stroke-dashoffset='20' stroke-linecap='butt'/%3e%3c/svg%3e")`,
+          'border-radius': '8px',
+        },
       };
       addUtilities(newUtilities);
     }),
