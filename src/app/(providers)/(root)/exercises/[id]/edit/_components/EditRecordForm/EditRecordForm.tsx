@@ -11,7 +11,7 @@ import {
 import Memo from '@/icons/Memo';
 import Star from '@/icons/Star';
 import { useExerciseStore } from '@/stores/exercise.store';
-import { ExerciseType } from '@/types/exercises';
+import { CardioInput, ExerciseType, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -65,7 +65,24 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const handleSubmit = async () => {
     // 데이터가 없는 경우 빠르게 반환
 
-    if (!record.date || record.record.length === 0) {
+    const isCardioInput = (input: CardioInput | WeightInput): input is CardioInput => {
+      return 'minutes' in input || 'distance' in input;
+    };
+
+    const isWeightInput = (input: CardioInput | WeightInput): input is WeightInput => {
+      return 'weight' in input || 'reps' in input;
+    };
+
+    const isValidRecord = record.record.some((set) => {
+      if (isCardioInput(set)) {
+        return (set.minutes && set.minutes > 0) || (set.distance && set.distance > 0);
+      } else if (isWeightInput(set)) {
+        return (set.weight && set.weight > 0) || (set.reps && set.reps > 0);
+      }
+      return false;
+    });
+
+    if (!record.date || !isValidRecord) {
       alert('운동 이름, 날짜, 세트는 필수 입력 사항입니다.');
       return;
     }
