@@ -11,11 +11,12 @@ import WeightChart from '../../../_components/WeightChart';
 const MyProfile = () => {
   const router = useRouter();
   const { data: user, isPending } = useGetUser();
-  const { mutate: signOut } = useSignOut({
-    onSuccess: () => {
-      router.push('/log-in'); // 로그아웃 성공 시 로그인 페이지로 리디렉션
-    },
-  });
+  const { mutate: signOut } = useSignOut();
+
+  const handleSignOut = () => {
+    signOut();
+    router.push('/log-in');
+  };
 
   console.log(user?.introduction.length);
   return (
@@ -106,7 +107,7 @@ const MyProfile = () => {
       </article>
       <div className="flex justify-center w-full">
         <div>
-          <button className="border-b border-primary-100 text-sm text-primary-100" onClick={() => signOut()}>
+          <button className="border-b border-primary-100 text-sm text-primary-100" onClick={handleSignOut}>
             로그아웃
           </button>
         </div>

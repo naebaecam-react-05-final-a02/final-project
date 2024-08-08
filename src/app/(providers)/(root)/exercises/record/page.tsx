@@ -2,7 +2,6 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
-import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
 import Star from '@/icons/Star';
 import Mobile from '@/layouts/Mobile';
@@ -27,6 +26,7 @@ const ExerciseRecordPage = () => {
   const [customWorkout, setCustomWorkout] = useState('');
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
   const router = useRouter();
+  const [localBookmarkedExercises, setLocalBookmarkedExercises] = useState<string[]>([]);
 
   const { mutate: register } = useRegisterExercise();
   const { data: bookmarkData } = useGetExerciseBookmarks();
@@ -50,7 +50,7 @@ const ExerciseRecordPage = () => {
 
   useEffect(() => {
     if (bookmarkData) {
-      setBookmarkedExercises(bookmarkData.map((item) => item.exerciseName));
+      setLocalBookmarkedExercises(bookmarkData.map((item) => item.exerciseName));
     }
   }, [bookmarkData]);
 
@@ -146,15 +146,21 @@ const ExerciseRecordPage = () => {
   };
 
   const handleToggleBookmark = (exerciseName: string) => {
+    setLocalBookmarkedExercises((prev) =>
+      prev.includes(exerciseName) ? prev.filter((name) => name !== exerciseName) : [...prev, exerciseName],
+    );
+
     toggleBookmark(exerciseName, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(ExercisesQueryKeys.bookmark() as any);
-      },
       onError: (error) => {
         console.error('북마크 토글 실패:', error);
+        // 에러 시 로컬 상태 롤백
+        setLocalBookmarkedExercises((prev) =>
+          prev.includes(exerciseName) ? prev.filter((name) => name !== exerciseName) : [...prev, exerciseName],
+        );
       },
     });
   };
+
   const bookmarkListOptions = bookmarkData?.map((item) => {
     return {
       value: item.exerciseName,
@@ -164,7 +170,7 @@ const ExerciseRecordPage = () => {
           height={24}
           className="cursor-pointer"
           style={{
-            fill: bookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
+            fill: localBookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
           }}
           onClick={(e) => {
             e.stopPropagation();
@@ -199,7 +205,7 @@ const ExerciseRecordPage = () => {
           icon={
             <Star
               style={{
-                fill: bookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
+                fill: localBookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
               }}
               className="cursor-pointer"
               width={24}

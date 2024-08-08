@@ -30,6 +30,7 @@ const InputSelect = ({
   className = '',
   textAlign = 'left',
   placeholder = '운동 이름을 입력해주세요.',
+  readOnly,
   ...props
 }: InputSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +76,12 @@ const InputSelect = ({
     }
   };
 
+  const toggleDropdown = () => {
+    if (dropdownOptions && dropdownOptions.length > 0) {
+      setIsOpen(!isOpen);
+    }
+  };
+
   return (
     <div className="flex flex-col w-full">
       {label && (
@@ -89,15 +96,17 @@ const InputSelect = ({
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
               bg-input-gradient backdrop-blur-[10px] focus:outline-none transition border-b-2 pr-10 py-3
-              
               ${isOpen ? 'z-20' : ''}
               ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
               ${icon ? 'pl-11' : 'pl-3'} 
-              ${textAlign === 'left' ? 'text-left' : 'text-right'}`}
+              ${textAlign === 'left' ? 'text-left' : 'text-right'}
+              ${readOnly ? 'cursor-pointer' : ''}`}
             value={inputValue}
             onChange={handleInputChange}
             placeholder={placeholder}
+            readOnly={readOnly}
+            onClick={readOnly ? toggleDropdown : undefined}
             {...props}
           />
           {icon && (
@@ -112,11 +121,7 @@ const InputSelect = ({
               p-[2px] gap-[10px] rounded-[4px] 
               transition-all duration-300 ease-in-out
               ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}
-            onClick={() => {
-              if (dropdownOptions && dropdownOptions.length > 0) {
-                setIsOpen(!isOpen);
-              }
-            }}
+            onClick={toggleDropdown}
             disabled={!dropdownOptions || dropdownOptions.length === 0}
           >
             <ArrowDropDown isActive={isOpen} />
