@@ -7,6 +7,7 @@ import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 import { useWindowWidthStore } from '@/stores/windowWidth.store';
 import MockUp from './_components/MockUp';
+import BackBoard from './BackBoard/BackBoard';
 
 const AuthMobile = ({ children }: PropsWithChildren) => {
   const customElementRef = useRef<HTMLDivElement>(null);
@@ -59,12 +60,16 @@ const AuthMobile = ({ children }: PropsWithChildren) => {
           </section>
         </MockUp>
       ) : (
-        <div className="w-full h-screen relative text-white">
+        <div className="w-full h-full fixed overflow-hidden text-white">
           <section className="h-full w-full flex flex-col ">
-            <div ref={customElementRef} className="flex-1 w-full h-full overflow-scroll scroll">
+            <div
+              ref={customElementRef}
+              className="flex-1 w-full h-full overflow-scroll scroll mx-auto max-w-[390px] flex justify-center"
+            >
               {children}
             </div>
           </section>
+          <BackBoard />
         </div>
       )}
     </>
