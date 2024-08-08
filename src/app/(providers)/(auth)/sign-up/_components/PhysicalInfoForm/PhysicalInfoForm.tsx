@@ -4,12 +4,31 @@ import { FormState, PhysicalInfoFormProps } from '@/types/auth';
 const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    const numericRegex = /^[0-9]*$/;
+
+    if (!numericRegex.test(value)) {
+      return;
+    }
+    let error: string | null = null;
+    const numValue = Number(value);
+
+    if (name === 'height') {
+      if (value && (numValue < 100 || numValue > 250)) {
+        error = '유효한 키 범위를 입력해주세요 (100cm - 250cm).';
+      }
+    } else if (name === 'weight') {
+      if (value && (numValue < 30 || numValue > 300)) {
+        error = '유효한 몸무게 범위를 입력해주세요 (30kg - 300kg).';
+      }
+    }
+
     setFormState((prev) => ({
       ...prev,
       [name]: {
         ...prev[name as keyof FormState],
         value,
-        error: null,
+        error,
       },
     }));
   };
