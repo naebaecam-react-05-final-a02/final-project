@@ -5,6 +5,7 @@ import useDetectScroll, { Direction } from '@smakss/react-scroll-direction';
 import _ from 'lodash';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
+import { useWindowWidthStore } from '@/stores/windowWidth.store';
 import MockUp from './_components/MockUp';
 
 const AuthMobile = ({ children }: PropsWithChildren) => {
@@ -18,7 +19,8 @@ const AuthMobile = ({ children }: PropsWithChildren) => {
     still: Direction.Still,
   });
   const setDir = useScrollDirectionStore((state) => state.setDir);
-  const [width, setWidth] = useState<number>(0);
+  const width = useWindowWidthStore((state) => state.width);
+  const setWidth = useWindowWidthStore((state) => state.setWidth);
 
   const handleResize = _.debounce(() => {
     setWidth(window.innerWidth);
