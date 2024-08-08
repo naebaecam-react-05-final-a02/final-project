@@ -81,7 +81,7 @@ const DietForm = () => {
       {isPending && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
-        <div ref={scrollRef} className="chips flex overflow-x-scroll scale">
+        <div className="chips flex overflow-x-scroll scale">
           <Swiper
             slidesPerView="auto"
             spaceBetween={16}
