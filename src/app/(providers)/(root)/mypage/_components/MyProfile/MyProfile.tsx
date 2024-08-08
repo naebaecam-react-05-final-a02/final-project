@@ -16,6 +16,7 @@ const MyProfile = () => {
   const handleSignOut = () => {
     signOut();
     router.push('/log-in');
+    window.location.reload();
   };
 
   console.log(user?.introduction.length);
