@@ -11,6 +11,7 @@ const SlideItemVariants = cva('border border-white/10 w-[270px] h-[270px] slide-
       prev: 'blur-[4px] scale-75 translate-x-5',
       next: 'blur-[4px] scale-75 -translate-x-5',
       normal: 'blur-[6px] scale-75',
+      dummy: 'opacity-0',
     },
     defaultVariants: {
       pos: 'normal',
@@ -26,14 +27,15 @@ interface SlideItemProps {
 
 const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
   const pos =
-    index === activeIndex
+    challenge.id === -1 || challenge.id === -5
+      ? 'dummy'
+      : index === activeIndex
       ? 'active'
       : index === activeIndex - 1
       ? 'prev'
       : index === activeIndex + 1
       ? 'next'
       : 'normal';
-  console.log(challenge.id, index);
 
   return (
     <div className={SlideItemVariants({ pos })}>

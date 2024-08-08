@@ -19,7 +19,7 @@ const MyChallenges = ({ data }: MyChallengesProps) => {
       </div>
       <ul className="flex flex-col gap-2">
         {_.isEmpty(challenges) ? (
-          <div>loading</div>
+          <p className="w-full flex justify-center py-4 text-white/70">아직 신청한 챌린지가 없습니다.</p>
         ) : (
           challenges?.map((challenge) => {
             return (
