@@ -1,5 +1,6 @@
 import useDateStore from '@/stores/date.store';
 import { getNextDate } from '@/utils/dateFormatter';
+import { isToday as getIsToday } from 'date-fns';
 import DateCell from './DateCell';
 
 const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
@@ -15,15 +16,18 @@ const Week = () => {
         const cellDate = getNextDate(selectedDate, gap);
         const date = cellDate.getDate();
         const day = cellDate.getDay();
+        const isToday = getIsToday(cellDate);
         return (
           <div
             key={`date-${date}`}
-            className={`w-full flex flex-col justify-between items-center ${
-              gap === 0 && 'bg-[#FFFFFF0D] rounded-full'
-            }`}
+            className={`w-full flex flex-col justify-between items-center ${gap === 0 && 'bg-whiteT-5 rounded-full'}`}
           >
-            <div className="w-full text-center pt-4 text-[#FFFFFF4D] text-xs">{dayNames[day]}</div>
-            <DateCell onClick={() => setDate(getNextDate(selectedDate, gap))}>{date}</DateCell>
+            <div className={`w-full text-center pt-4 text-whiteT-30 text-xs ${isToday && 'text-primary-30'}`}>
+              {dayNames[day]}
+            </div>
+            <DateCell onClick={() => setDate(cellDate)} isToday={isToday}>
+              {date}
+            </DateCell>
           </div>
         );
       })}

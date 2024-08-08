@@ -21,11 +21,15 @@ const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentPr
         <Image width={24} height={24} className="max-w-fit" src={`/foods/${food.foodType}.png`} alt={food.foodType} />
       </div>
       <div className="flex flex-col justify-center items-start">
-        <span className="text-sm whitespace-nowrap">{food.foodName || '-'}</span>
-        <span className="text-[10px] opacity-30 whitespace-nowrap">{food.kcal || 0} Kcal</span>
+        <span className="text-sm whitespace-nowrap leading-tight">{food.foodName || '-'}</span>
+        <span className="text-[10px] opacity-30 whitespace-nowrap leading-tight">{food.kcal || 0} Kcal</span>
       </div>
       {handleDelete && (
         <CloseIcon
+          width={20}
+          height={20}
+          stroke="#ffffff80"
+          strokeWidth={1.5}
           onClick={(e) => {
             e.stopPropagation();
             handleDelete();
