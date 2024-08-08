@@ -54,7 +54,7 @@ function InputText<T extends InputElementType = 'input'>({
   );
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full justify-between">
       {label && (
         <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px]">
           <span>{label}</span>

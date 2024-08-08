@@ -1,4 +1,6 @@
 import LogoSVG from '@/assets/mockup/intro-logo.svg';
+import Button from '@/components/Button';
+import Link from 'next/link';
 
 const Introduction = () => {
   return (
@@ -19,6 +21,11 @@ const Introduction = () => {
           <li>마이페이지 조회 및 수정</li>
         </ul>
       </div>
+      <Link href="https://forms.gle/aQdsM1RdQuSKjVes5" target="_blank">
+        <div className="w-40">
+          <Button>피드백 설문 참여하기</Button>
+        </div>
+      </Link>
     </article>
   );
 };

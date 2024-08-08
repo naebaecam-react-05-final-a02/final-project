@@ -55,7 +55,6 @@ const ChallengeList = () => {
               )),
             )
           )}
-
           {hasNextPage && (
             <>
               <div className="h-24"></div>
