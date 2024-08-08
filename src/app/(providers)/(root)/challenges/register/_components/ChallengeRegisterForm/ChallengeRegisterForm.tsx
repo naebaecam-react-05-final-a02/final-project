@@ -119,6 +119,7 @@ const ChallengeRegisterForm = () => {
       </div>
 
       <Input
+        label="카테고리"
         readOnly
         inputType="select"
         dropdownOptions={categoryOptions}
