@@ -63,7 +63,7 @@ const DietsLog = () => {
       </div>
 
       {foods && foods.length > 0 && (
-        <div className="w-full py-4 flex gap-x-4 overflow-x-scroll border-t border-white/10">
+        <div className="chips w-full py-4 flex gap-x-4 overflow-x-scroll border-t border-white/10">
           {foods.map((food) => (
             <Chip key={food.id} food={food} />
           ))}
