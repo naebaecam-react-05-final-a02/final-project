@@ -107,6 +107,13 @@ const config: Config = {
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },
+        '.autofill-bg': {
+          '&:-webkit-autofill': {
+            '-webkit-box-shadow': '0 0 0 1000px transparent inset',
+            transition: 'background-color 5000s ease-in-out 0s',
+            'background-image': 'linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%)',
+          },
+        },
       };
       addUtilities(newUtilities);
     }),

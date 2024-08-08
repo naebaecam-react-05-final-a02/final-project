@@ -3,6 +3,7 @@
 import DefaultHeader from '@/components/MobileHeader/MobileHeader';
 import NavBar from '@/components/NavBar';
 import { useScrollDirectionStore } from '@/stores/scrollDirection.store';
+import { useWindowWidthStore } from '@/stores/windowWidth.store';
 import useDetectScroll, { Direction } from '@smakss/react-scroll-direction';
 import _ from 'lodash';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
@@ -37,7 +38,9 @@ const Mobile = ({
     still: Direction.Still,
   });
   const setDir = useScrollDirectionStore((state) => state.setDir);
-  const [width, setWidth] = useState<number>(0);
+
+  const width = useWindowWidthStore((state) => state.width);
+  const setWidth = useWindowWidthStore((state) => state.setWidth);
 
   const handleResize = _.debounce(() => {
     setWidth(window.innerWidth);
@@ -49,9 +52,11 @@ const Mobile = ({
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    console.log('mount');
     return () => {
       // cleanup
       window.removeEventListener('resize', handleResize);
+      console.log('unmount');
     };
   }, []);
 

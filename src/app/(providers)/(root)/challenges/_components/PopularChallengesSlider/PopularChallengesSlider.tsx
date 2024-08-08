@@ -12,41 +12,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { loadingSlides, nextDummySlide, prevDummySlide } from '../../_constants/constants';
 import { TChallenge } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
-
-const prevDummySlide = {
-  category: 'lifestyle',
-  content: 'dummy',
-  createdBy: '2024-01-01',
-  endDate: '2024-01-01',
-  id: 0,
-  imageURL: null,
-  isProgress: null,
-  participants: 100,
-  rating: 5,
-  startDate: '2024-01-01',
-  tags: null,
-  title: 'dummy',
-  verify: 'dummy',
-};
-
-const nextDummySlide = {
-  category: 'lifestyle',
-  content: 'dummy',
-  createdBy: '2024-01-01',
-  endDate: '2024-01-01',
-  id: 9999,
-  imageURL: null,
-  isProgress: null,
-  participants: 100,
-  rating: 5,
-  startDate: '2024-01-01',
-  tags: null,
-  title: 'dummy',
-  verify: 'dummy',
-};
 
 const PopularChallengesSlider = () => {
   const { data: challenges, isPending } = useGetPopularChallenges();
@@ -82,18 +51,23 @@ const PopularChallengesSlider = () => {
             slidesPerView={3}
             scrollbar={{ draggable: true, hide: true, enabled: false }}
           >
-            {isPending ? (
-              <p>Loading...</p>
-            ) : (
-              getChallengeList().map((challenge: TChallenge, i: number) => {
-                console.log(challenge.id);
-                return (
-                  <SwiperSlide key={challenge.id}>
-                    <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
-                  </SwiperSlide>
-                );
-              })
-            )}
+            {isPending
+              ? loadingSlides.map((challenge: TChallenge, i: number) => {
+                  console.log(challenge.id);
+                  return (
+                    <SwiperSlide key={challenge.id}>
+                      <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
+                    </SwiperSlide>
+                  );
+                })
+              : getChallengeList().map((challenge: TChallenge, i: number) => {
+                  console.log(challenge.id);
+                  return (
+                    <SwiperSlide key={challenge.id}>
+                      <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
+                    </SwiperSlide>
+                  );
+                })}
           </Swiper>
         </div>
       </div>

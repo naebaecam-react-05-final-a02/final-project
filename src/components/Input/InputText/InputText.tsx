@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps, useId } from 'react';
+import { ComponentProps, useId, useRef } from 'react';
 import { BaseInputProps } from '../Input';
 
 type InputElementType = 'input' | 'textarea';
@@ -25,11 +25,36 @@ function InputText<T extends InputElementType = 'input'>({
 }: InputTextProps<T>) {
   const inputUid = useId();
   const inputId = id || inputUid;
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   const InputComponent = inputType === 'textarea' ? 'textarea' : 'input';
 
+  const baseClasses = `w-full rounded-lg text-white placeholder-white/40
+    focus:outline-none transition
+    focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'} ${className}
+    ${icon ? 'pl-11' : 'pl-4'} 
+    ${unit ? 'pr-12' : 'pr-3'} 
+    py-3.5`;
+
+  const inputSpecificClasses =
+    inputType === 'textarea'
+      ? 'resize-none bg-transparent backdrop-blur-[10px] bg-input-gradient'
+      : 'appearance-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
+
+  const inputClasses = `${baseClasses} ${inputSpecificClasses}`;
+
+  const renderInput = () => (
+    <InputComponent
+      ref={inputRef}
+      id={inputId}
+      className={inputClasses}
+      {...(inputType === 'textarea' ? { rows } : {})}
+      {...(props as any)}
+    />
+  );
+
   return (
-    <div className="flex flex-col w-full gap-y-1.5">
+    <div className="flex flex-col w-full">
       {label && (
         <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px]">
           <span>{label}</span>
@@ -37,17 +62,11 @@ function InputText<T extends InputElementType = 'input'>({
       )}
       <div className="relative flex items-center">
         {icon && <div className="absolute left-3.5 z-10 text-white/40 text-xl">{icon}</div>}
-        <InputComponent
-          id={inputId}
-          className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
-            bg-input-gradient backdrop-blur-[10px] focus:outline-none transition 
-            focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'} ${className}
-            ${icon ? 'pl-11' : 'pl-4'} 
-            ${unit ? 'pr-12' : 'pr-3'} 
-            py-3.5 ${inputType === 'textarea' ? 'resize-none' : ''}`}
-          {...(inputType === 'textarea' ? { rows } : {})}
-          {...(props as any)}
-        />
+        {inputType === 'input' ? (
+          <div className="input-wrapper backdrop-blur-[10px] bg-input-gradient w-full rounded-lg">{renderInput()}</div>
+        ) : (
+          renderInput()
+        )}
         {unit && <span className="absolute right-4 text-white/40 text-sm">{unit}</span>}
       </div>
       {success && <div className="text-primary-100 text-sm mt-1 ml-1 w-full">{success}</div>}

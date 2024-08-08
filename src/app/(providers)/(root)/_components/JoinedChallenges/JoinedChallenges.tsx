@@ -17,7 +17,7 @@ const JoinedChallengesLayout = ({ children }: { children: React.ReactNode }) => 
 
 const JoinedChallenges = () => {
   const supabase = createClient();
-  const { data: joinedChallenges } = useQuery({
+  const { data: joinedChallenges, error } = useQuery({
     queryKey: ['joinedChallenge'],
     queryFn: () => api.dashboard.getJoinedChallenges(supabase),
   });
@@ -32,7 +32,7 @@ const JoinedChallenges = () => {
     );
   }
 
-  if (joinedChallenges.error) {
+  if (error) {
     return (
       <JoinedChallengesLayout>
         <div className="text-red-300 text-sm">

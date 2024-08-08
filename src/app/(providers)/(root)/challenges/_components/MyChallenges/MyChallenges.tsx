@@ -25,7 +25,7 @@ const MyChallenges = ({ data }: MyChallengesProps) => {
             return (
               <li key={challenge.id}>
                 {challenge.challenges && (
-                  <Link href={`/challenges/${challenge.id}/detail`}>
+                  <Link href={`/challenges/${challenge.challenges.id}/detail`}>
                     <ChallengeItem challenge={challenge.challenges} />
                   </Link>
                 )}

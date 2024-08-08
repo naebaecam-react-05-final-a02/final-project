@@ -69,14 +69,41 @@ const SignUpForm = () => {
     }
   };
 
+  const headerConfigs = {
+    essentialInfo: {
+      title: '회원가입',
+      showBackButton: true,
+    },
+    nicknameInfo: {
+      showLogo: true,
+      showBackButton: true,
+      customBackAction: () => setCurrentStep('essentialInfo'),
+    },
+    physicalInfo: {
+      showLogo: true,
+      showBackButton: true,
+      customBackAction: () => setCurrentStep('nicknameInfo'),
+    },
+    success1: {
+      showLogo: true,
+      showBackButton: false,
+    },
+    success2: {
+      showLogo: true,
+      showBackButton: false,
+    },
+  };
+
+  const renderHeader = () => {
+    const config = headerConfigs[currentStep as keyof typeof headerConfigs] || {};
+    return <Header className="px-4" {...config} />;
+  };
+
   return (
     <div className="flex flex-col h-full justify-between items-end w-full pb-10">
       <div className="w-full">
-        {currentStep === 'essentialInfo' ? (
-          <Header title="회원가입" className="px-4" />
-        ) : (
-          <Header showLogo showBackButton={false} className="px-4" />
-        )}
+        {renderHeader()}
+
         {currentStep === 'essentialInfo' && (
           <EssentialInfoForm
             formState={formState}

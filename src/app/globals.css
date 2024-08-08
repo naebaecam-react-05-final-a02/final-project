@@ -105,3 +105,51 @@ body {
 html {
   zoom: 100% !important;
 }
+
+/* input 자동완성 스타일 제거 */
+input,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input-wrapper {
+  position: relative;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
+}
+
+.input-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.input-wrapper input,
+.input-wrapper textarea {
+  position: relative;
+  z-index: 2;
+  background: transparent !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
+  background-clip: content-box !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+.has-value {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
+}

@@ -58,8 +58,8 @@ const DietPage = () => {
           </div>
         </>
       )}
-      <div className="flex flex-col gap-8">
-        <span className="w-10" aria-hidden="true" role="presentation"></span>
+      <div className="flex flex-col">
+        <span className="w-10 mb-2" aria-hidden="true" role="presentation"></span>
         <Week />
         <DietList />
       </div>
