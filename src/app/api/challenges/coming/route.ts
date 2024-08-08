@@ -30,6 +30,6 @@ export async function GET(request: NextRequest) {
     .sort((a, b) => b.participants - a.participants || dayjs(b.startDate).unix() - dayjs(a.startDate).unix());
 
   const limitedChallenges = sortedChallenges.slice(0, 10);
-  console.log(limitedChallenges);
+
   return NextResponse.json({ data: limitedChallenges });
 }

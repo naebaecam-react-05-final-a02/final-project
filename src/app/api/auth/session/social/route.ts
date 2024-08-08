@@ -6,8 +6,6 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const provider = searchParams.get('provider') as Provider;
 
-  console.log(provider);
-
   if (!provider) {
     return NextResponse.json({ error: 'Provider is required' }, { status: 400 });
   }

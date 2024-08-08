@@ -29,7 +29,6 @@ const MyProfileEditPage = () => {
   });
   const { data, isPending } = useGetUser();
   const queryClient = useQueryClient();
-  console.log(inputs);
 
   const { mutate: updateProfile } = useMutation({
     mutationFn: async ({ formData }: { formData: FormData }) => api.users.updateUserProfile({ formData }),

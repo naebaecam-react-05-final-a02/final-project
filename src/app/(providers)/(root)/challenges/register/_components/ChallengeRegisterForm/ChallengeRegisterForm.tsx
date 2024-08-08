@@ -48,7 +48,7 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    console.log(formData.get('category'));
+
     const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'category'];
     const formFields: Partial<FormFields> = {};
 
@@ -74,7 +74,6 @@ const ChallengeRegisterForm = () => {
         { storage: 'challengeRegister', form },
         {
           onSuccess: async (response) => {
-            console.log(response);
             const today = new Date(new Date().getTime() + 1000 * 60 * 60 * 9).toISOString().slice(0, 10);
             const registerData: Omit<Tables<'challenges'>, 'id'> = {
               title,
@@ -94,7 +93,7 @@ const ChallengeRegisterForm = () => {
             challengeRegister(registerData, {
               onSuccess: () => {
                 alert('등록되었습니다.');
-                console.log('Challenge Register Successfully');
+
                 router.push('/challenges');
               },
               onError: (error) => {

@@ -46,9 +46,7 @@ const InputCalendar = ({ onSelectDate, selectedDate }: InputCalendarProps) => {
     setCurrentDisplayDate(date);
   }, []);
 
-  useEffect(() => {
-    console.log(currentDisplayDate);
-  }, [currentDisplayDate]);
+  useEffect(() => {}, [currentDisplayDate]);
 
   return (
     <div className="w-full p-4">

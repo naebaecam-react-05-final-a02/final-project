@@ -55,7 +55,7 @@ const ChallengeReviewForm = () => {
     formData.append('challengeId', challengeId);
     formData.append('rating', starRating.toString());
     files.forEach((file) => formData.append('reviewImages', file));
-    console.log('Submitting form data:', { title, content, files });
+
     register(formData, {
       onSuccess: () => {
         alert('등록되었습니다!');

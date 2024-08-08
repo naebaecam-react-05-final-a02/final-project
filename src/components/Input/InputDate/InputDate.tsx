@@ -94,7 +94,6 @@ const InputDate = ({
 
   const handleDateSelect = (date: Date) => {
     if ((min && date < min) || (max && date > max)) {
-      console.log('선택 불가능한 날짜입니다.');
       return;
     }
     const koreanDate = dayjs(date).tz().toDate();
