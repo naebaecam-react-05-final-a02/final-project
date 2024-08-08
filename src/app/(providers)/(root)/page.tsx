@@ -5,7 +5,7 @@ import api from '@/service/service';
 import { createClient } from '@/supabase/server';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { addDays, format, subDays } from 'date-fns';
 import DashBoardLevel from './_components/DashBoardLevel';
 import DietsLog from './_components/DietsLog';
 import ExerciseTodoList from './_components/ExerciseTodoList';
@@ -21,14 +21,25 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
       queryKey: ['weights'],
       queryFn: () => api.dashboard.getWeights(supabase, query),
     }),
+
     queryClient.prefetchQuery({
       queryKey: ['diets', { date: format(new Date(), 'yyyy-MM-dd') }],
       queryFn: () => api.dashboard.getDiets(supabase, new Date()),
+    }),
+
+    queryClient.prefetchQuery({
+      queryKey: ExercisesQueryKeys.detail(getFormattedDate(subDays(new Date(), 1))),
+      queryFn: () => api.dashboard.getExercises(supabase, subDays(new Date(), 1)),
     }),
     queryClient.prefetchQuery({
       queryKey: ExercisesQueryKeys.detail(getFormattedDate(new Date())),
       queryFn: () => api.dashboard.getExercises(supabase, new Date()),
     }),
+    queryClient.prefetchQuery({
+      queryKey: ExercisesQueryKeys.detail(getFormattedDate(addDays(new Date(), 1))),
+      queryFn: () => api.dashboard.getExercises(supabase, addDays(new Date(), 1)),
+    }),
+
     queryClient.prefetchQuery({
       queryKey: ['joinedChallenge'],
       queryFn: () => api.dashboard.getJoinedChallenges(supabase),
@@ -37,8 +48,8 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
   return (
     <Mobile>
-      <div className="w-full px-4">
-        <main className="mb-2 flex flex-col gap-y-2">
+      <div className="w-full px-4 ">
+        <main className="mb-2 flex flex-col gap-y-3">
           {/* 등급/투두 진행 상황 */}
           <div className="grid grid-cols-[160px_1fr] gap-x-3 select-none ">
             <Card
