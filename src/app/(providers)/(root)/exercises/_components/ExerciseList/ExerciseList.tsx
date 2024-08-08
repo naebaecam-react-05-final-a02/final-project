@@ -46,7 +46,7 @@ const ExerciseList = () => {
     return (
       <div className="flex flex-col items-center gap-3">
         <span>운동 기록이 없습니다</span>
-        <button className="text-sm" onClick={handleAddButtonClick}>
+        <button className="text-sm text-primary-100 underline underline-offset-2" onClick={handleAddButtonClick}>
           추가하러 가기
         </button>
       </div>

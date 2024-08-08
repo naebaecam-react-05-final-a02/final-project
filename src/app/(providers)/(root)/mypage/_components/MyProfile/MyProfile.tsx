@@ -2,9 +2,11 @@
 
 import ArrowRight from '@/assets/arrow-right.svg';
 import TeamCardSVG from '@/assets/team-card.svg';
+import Card from '@/components/Card';
 import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import WeightChart from '../../../_components/WeightChart';
 
 const MyProfile = () => {
   const router = useRouter();
@@ -14,6 +16,8 @@ const MyProfile = () => {
       router.push('/log-in'); // 로그아웃 성공 시 로그인 페이지로 리디렉션
     },
   });
+
+  console.log(user?.introduction.length);
   return (
     <section className="flex flex-col gap-10">
       <article className="flex flex-col gap-6">
@@ -42,7 +46,9 @@ const MyProfile = () => {
         <div className="my-page-intro-bg p-2 rounded-b-2xl rounded-se-2xl h-[76px] relative ">
           <div className="rounded-b-2xl rounded-se-2xl absolute inset-0 border-2 border-white/10"></div>
 
-          {<p className="text-[14px] text-white/70">{user?.introduction}</p> ?? (
+          {user?.introduction && user.introduction.length > 0 ? (
+            <p className="text-[14px] text-white/70">{user.introduction}</p>
+          ) : (
             <p className="text-[14px] text-white/70">
               안녕하세요 {user?.nickname ?? `헬린이_${user?.userIndex}`}입니다.
             </p>
@@ -85,10 +91,17 @@ const MyProfile = () => {
           </button>
         </div>
       </article>
-      <article className="flex justify-center items-center w-full h-[185px] bg-white/5 rounded-[20px]">
-        체중 그래프 자리
-      </article>
-      <article>
+      <Card className="relative size-full h-[250px] select-none">
+        <WeightChart query={''} />
+
+        <div
+          className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
+            rounded-b-[20px] flex justify-center text-sm"
+        >
+          현재는 더미 데이터로 표시됩니다.
+        </div>
+      </Card>
+      <article className="w-full flex justify-center">
         <TeamCardSVG />
       </article>
       <div className="flex justify-center w-full">

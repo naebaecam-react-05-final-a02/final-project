@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import Header from '@/components/Header';
 import Memo from '@/icons/Memo';
+import { CardioInput, WeightInput } from '@/types/exercises';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -89,8 +90,25 @@ const ExerciseRecordPage = () => {
     console.log('메모:', record.name);
     console.log('기록:', record.record);
 
+    const isCardioInput = (input: CardioInput | WeightInput): input is CardioInput => {
+      return 'minutes' in input || 'distance' in input;
+    };
+
+    const isWeightInput = (input: CardioInput | WeightInput): input is WeightInput => {
+      return 'weight' in input || 'reps' in input;
+    };
+
+    const isValidRecord = record.record.some((set) => {
+      if (isCardioInput(set)) {
+        return (set.minutes && set.minutes > 0) || (set.distance && set.distance > 0);
+      } else if (isWeightInput(set)) {
+        return (set.weight && set.weight > 0) || (set.reps && set.reps > 0);
+      }
+      return false;
+    });
+
     // 데이터가 없는 경우 빠르게 반환
-    if (!record.date || record.record.length === 0) {
+    if (!record.date || !isValidRecord) {
       console.error('필수 입력 사항 누락:', { workoutToSave, date: record.date, recordLength: record.record.length });
       alert('운동 이름, 날짜, 세트는 필수 입력 사항~~');
       return;

@@ -37,7 +37,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
 
   return (
     <Mobile>
-      <div className="w-full px-4">
+      <div className="w-full px-4 mt-2">
         <main className="mb-2 flex flex-col gap-y-2">
           {/* 등급/투두 진행 상황 */}
           <div className="grid grid-cols-[160px_1fr] gap-x-3 select-none ">
@@ -50,7 +50,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
                 className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
             rounded-b-[20px] flex justify-center text-sm"
               >
-                현재 개발중...
+                개발중이에요!
               </div>
             </Card>
 
@@ -84,7 +84,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
               className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
             rounded-b-[20px] flex justify-center text-sm"
             >
-              현재 개발중... 위 그래프는 임시 데이터입니다.
+              현재는 더미 데이터로 표시됩니다.
             </div>
           </Card>
         </main>

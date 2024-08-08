@@ -7,6 +7,10 @@ import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import DashBoardHeader from '../DashBoardHeader';
 
 const DietsLog = () => {
@@ -30,7 +34,7 @@ const DietsLog = () => {
       <div className="w-full">
         <div className="flex justify-between items-center h-[44px] relative">
           <div className="border-l-4 border-[#03C717]/80 w-1/2 absolute top-0 -left-4 bottom-0 right-0 bg-gradient-to-r from-[#12f287]/10  to-white/0" />
-          <p className="font-bold text-sm text-[#12F287]">칼로리</p>
+          <p className="font-semibold text-sm text-[#12F287]">칼로리</p>
           <div className="flex gap-x-1 items-end">
             <p className="text-white font-bold text-lg">{calories.kcal.toLocaleString()}</p>
             <p className="text-white/30 text-[12px]">Kcal</p>
@@ -38,7 +42,7 @@ const DietsLog = () => {
         </div>
 
         <div className="flex justify-between  items-center h-[44px]">
-          <p className="font-bold text-sm text-white/30">탄수화물</p>
+          <p className="font-semibold text-sm text-white/30">탄수화물</p>
           <div className="flex gap-x-1 items-center">
             <p className="text-white font-bold text-lg">{calories.carbohydrate}</p>
             <p className="text-white/30 text-[12px]">g</p>
@@ -46,7 +50,7 @@ const DietsLog = () => {
         </div>
 
         <div className="flex justify-between  items-center h-[44px]">
-          <p className="font-bold text-sm text-white/30">단백질</p>
+          <p className="font-semibold text-sm text-white/30">단백질</p>
           <div className="flex gap-x-1 items-center">
             <p className="text-white font-bold text-lg">{calories.protein}</p>
             <p className="text-white/30 text-[12px]">g</p>
@@ -54,7 +58,7 @@ const DietsLog = () => {
         </div>
 
         <div className="flex justify-between  items-center h-[44px] ">
-          <p className="font-bold text-sm text-white/30">지방</p>
+          <p className="font-semibold text-sm text-white/30">지방</p>
           <div className="flex gap-x-1 items-center">
             <p className="text-white font-bold text-lg">{calories.fat}</p>
             <p className="text-white/30 text-[12px]">g</p>
@@ -63,10 +67,21 @@ const DietsLog = () => {
       </div>
 
       {foods && foods.length > 0 && (
-        <div className="w-full py-4 flex gap-x-4 overflow-x-scroll scrollbar-hide border-t border-white/10">
-          {foods.map((food) => (
-            <Chip key={food.id} food={food} />
-          ))}
+        <div className="w-full py-4 border-t border-white/10">
+          <Swiper
+            slidesPerView="auto"
+            spaceBetween={16}
+            freeMode={true}
+            mousewheel={true}
+            modules={[FreeMode, Mousewheel]}
+            className="!flex !justify-start !mx-0 !w-full"
+          >
+            {foods.map((food) => (
+              <SwiperSlide key={food.id} className="!w-auto !flex-shrink-0">
+                <Chip food={food} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       )}
     </>

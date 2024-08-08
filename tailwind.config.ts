@@ -88,7 +88,6 @@ const config: Config = {
     },
   },
   plugins: [
-    require('tailwind-scrollbar-hide'),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.border-gradient': {

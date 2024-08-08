@@ -11,6 +11,7 @@ const SlideItemVariants = cva('border border-white/10 w-[270px] h-[270px] slide-
       prev: 'blur-[4px] scale-75 translate-x-5',
       next: 'blur-[4px] scale-75 -translate-x-5',
       normal: 'blur-[6px] scale-75',
+      dummy: 'opacity-0',
     },
     defaultVariants: {
       pos: 'normal',
@@ -26,14 +27,15 @@ interface SlideItemProps {
 
 const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
   const pos =
-    index === activeIndex
+    challenge.id === -1 || challenge.id === -5
+      ? 'dummy'
+      : index === activeIndex
       ? 'active'
       : index === activeIndex - 1
       ? 'prev'
       : index === activeIndex + 1
       ? 'next'
       : 'normal';
-  console.log(challenge.id, index);
 
   return (
     <div className={SlideItemVariants({ pos })}>
@@ -43,8 +45,8 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
           <h3 className="text-xl font-semibold">{challenge.title}</h3>
         </div>
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
-          <p className="text-primary-100">참여 {challenge.participants}</p>
-          <p>인증 12</p>
+          <p className="text-primary-100">참여 0</p>
+          <p>인증 0</p>
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">

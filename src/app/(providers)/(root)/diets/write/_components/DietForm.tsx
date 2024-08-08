@@ -12,6 +12,10 @@ import { DietTimeType } from '@/types/diet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
 import TextInput from './TextInput';
@@ -77,16 +81,27 @@ const DietForm = () => {
       {isPending && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
-        <div className="chips flex gap-3 overflow-x-scroll scale">
-          {foodChips.map((food, idx) => (
-            <Chip
-              key={food.id}
-              food={food}
-              isActive={activeChipIdx === idx}
-              handleDelete={() => deleteChip(food.id!)}
-              onClick={() => changeChip(idx)}
-            />
-          ))}
+        <div className="chips flex overflow-x-scroll scale">
+          <Swiper
+            slidesPerView="auto"
+            spaceBetween={16}
+            freeMode={true}
+            mousewheel={true}
+            modules={[FreeMode, Mousewheel]}
+            className="!flex !justify-start !mx-0 !w-full"
+          >
+            {foodChips.map((food, idx) => (
+              <SwiperSlide key={food.id} className="!w-auto !flex-shrink-0 !mr-3">
+                <Chip
+                  key={food.id}
+                  food={food}
+                  isActive={activeChipIdx === idx}
+                  handleDelete={() => deleteChip(food.id!)}
+                  onClick={() => changeChip(idx)}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
       <form className="flex flex-col justify-center items-center gap-4" onSubmit={handleSubmit}>

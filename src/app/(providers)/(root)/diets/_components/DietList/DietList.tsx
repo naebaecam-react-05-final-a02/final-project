@@ -10,6 +10,10 @@ import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import EditIcon from '/public/icons/edit.svg';
 import DeleteIcon from '/public/icons/x.svg';
 
@@ -58,7 +62,7 @@ const DietList = () => {
       {diets?.length === 0 ? (
         <div className="flex flex-col items-center gap-3">
           <span>식단 기록이 없습니다</span>
-          <button className="text-sm" onClick={handleAddButtonClick}>
+          <button className="text-sm text-primary-100 underline underline-offset-2" onClick={handleAddButtonClick}>
             추가하러 가기
           </button>
         </div>
@@ -135,10 +139,21 @@ const DietList = () => {
                   </div>
                 </div>
                 <div className="bg-[#FFFFFF1A] w-[calc(full-16px)] h-[1px] mx-4"></div>
-                <div className="chips flex gap-3 overflow-x-scroll scale p-3">
-                  {diet.foods.map((food) => (
-                    <Chip key={food.id} food={food} />
-                  ))}
+                <div className="chips flex justify-start gap-3 overflow-x-auto p-3 whitespace-nowrap">
+                  <Swiper
+                    slidesPerView="auto"
+                    spaceBetween={16}
+                    freeMode={true}
+                    mousewheel={true}
+                    modules={[FreeMode, Mousewheel]}
+                    className="!flex !justify-start !mx-0 !w-full"
+                  >
+                    {diet.foods.map((food) => (
+                      <SwiperSlide key={food.id} className="!w-auto !flex-shrink-0" style={{ width: 'auto' }}>
+                        <Chip food={food} />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
               </li>
             ))}

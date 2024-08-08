@@ -39,7 +39,7 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
       <div className="cursor-pointer text-xl opacity-70">
         <Link href={url}>
           {/* <IoCreateOutline /> */}
-          <FaListUl />
+          <FaListUl className="w-4 h-4" />
         </Link>
       </div>
     </div>

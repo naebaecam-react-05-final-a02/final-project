@@ -3,8 +3,12 @@ import IconButton from '../IconButton/IconButton';
 
 const NotificationButton = () => {
   return (
-    <IconButton onClick={() => {}}>
-      <NotificationSVG />
+    <IconButton
+      onClick={() => {
+        alert('아직 준비중인 기능입니다!');
+      }}
+    >
+      <NotificationSVG className="cursor-not-allowed" />
     </IconButton>
   );
 };

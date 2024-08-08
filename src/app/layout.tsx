@@ -13,8 +13,8 @@ export default function HtmlLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans">{children}</body>
+    <html className="w-full h-full" lang="en">
+      <body className="font-sans w-full h-full">{children}</body>
     </html>
   );
 }
