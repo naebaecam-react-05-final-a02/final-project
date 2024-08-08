@@ -1,7 +1,7 @@
 import { queryClient } from '@/providers/QueryProvider';
 import api from '@/service/service';
 
-import { ExerciseTodoItemType, RecordData, useToggleCompletedDataType } from '@/types/exercises';
+import { ExerciseTodoItemType, RecordData, UseToggleCompletedDataType } from '@/types/exercises';
 import { getFormattedDate } from '@/utils/dateFormatter';
 
 export const ExercisesQueryKeys = {
@@ -61,13 +61,13 @@ export const mutationOptions = {
     onMutate: async (data: { exercise: ExerciseTodoItemType; isCompleted: boolean; date: Date }) => {
       // const formattingDate = format(data.date, 'yyyy-MM-dd');
       await queryClient.cancelQueries({ queryKey: ExercisesQueryKeys.detail(getFormattedDate(data.date)) });
-      const prev: useToggleCompletedDataType = queryClient.getQueryData(
+      const prev: UseToggleCompletedDataType = queryClient.getQueryData(
         ExercisesQueryKeys.detail(getFormattedDate(data.date)),
-      ) as useToggleCompletedDataType;
+      ) as UseToggleCompletedDataType;
 
       queryClient.setQueryData(
         ExercisesQueryKeys.detail(getFormattedDate(data.date)),
-        (old: useToggleCompletedDataType) => {
+        (old: UseToggleCompletedDataType) => {
           return {
             ...old,
             data: old.data.map((o) => {

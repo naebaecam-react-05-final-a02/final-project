@@ -3,7 +3,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
-import { categoryItemsKORtoENG, categoryOptions, initialChallengeError } from '@/data/challenges';
+import { initialChallengeError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
@@ -11,6 +11,7 @@ import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import CallengeCategory from '../../../_components/CallengeCategory';
 import FormImageUploader from '../../../_components/FormImageUploader';
 import FormCalendar from '../FormCalendar';
 
@@ -47,6 +48,7 @@ const ChallengeRegisterForm = () => {
     }
 
     const formData = new FormData(e.currentTarget);
+    console.log(formData.get('category'));
     const fields: (keyof FormFields)[] = ['title', 'content', 'startDate', 'endDate', 'category'];
     const formFields: Partial<FormFields> = {};
 
@@ -85,7 +87,7 @@ const ChallengeRegisterForm = () => {
               verify: null,
               tags: null,
               rating: 0,
-              category: categoryItemsKORtoENG[category],
+              category,
               participants: 0,
             };
             // console.log('registerData', registerData);
@@ -114,18 +116,21 @@ const ChallengeRegisterForm = () => {
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
       {(uploading || isPending) && <Loading />}
 
+      <CallengeCategory />
+
       <div className="select-none">
         <Input label="챌린지 이름" name="title" placeholder="최대 12글자로 작성해 주세요." error={err['title']} />
       </div>
 
-      <Input
+      {/* <Input
+        label="카테고리"
         readOnly
         inputType="select"
         dropdownOptions={categoryOptions}
         name="category"
         value={cate}
         onChange={(e) => setCate(e.target.value)}
-      />
+      /> */}
 
       {/* {<FormCategory label="카테고리" name="category" />} */}
 
