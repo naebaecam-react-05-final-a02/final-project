@@ -34,7 +34,6 @@ const ExercisePage = () => {
 
   return (
     <Mobile
-      isHeaderFixed={false}
       headerLayout={
         <Header
           title={`${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월`}
