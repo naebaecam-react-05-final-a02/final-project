@@ -8,9 +8,9 @@ import Link from 'next/link';
 const scrollButtonVariant = cva('transition-all duration-300 overflow-hidden whitespace-nowrap', {
   variants: {
     dir: {
-      still: 'pl-1 w-[112px]',
-      up: 'pl-1 w-[112px]',
-      down: 'w-0 text-transparent',
+      still: 'w-0 text-transparent',
+      down: 'pl-1 w-[112px]',
+      up: 'w-0 text-transparent',
     },
   },
 });
