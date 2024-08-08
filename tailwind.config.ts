@@ -111,6 +111,13 @@ const config: Config = {
           'background-image': `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23333' stroke-width='4' stroke-dasharray='5' stroke-dashoffset='20' stroke-linecap='butt'/%3e%3c/svg%3e")`,
           'border-radius': '8px',
         },
+        '.autofill-bg': {
+          '&:-webkit-autofill': {
+            '-webkit-box-shadow': '0 0 0 1000px transparent inset',
+            transition: 'background-color 5000s ease-in-out 0s',
+            'background-image': 'linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%)',
+          },
+        },
       };
       addUtilities(newUtilities);
     }),

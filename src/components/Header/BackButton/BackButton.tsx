@@ -1,16 +1,25 @@
 'use client';
 
 import ChevronLeft from '@/icons/ChevronLeft';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ComponentProps } from 'react';
 
-type BackButtonProps = Omit<ComponentProps<'button'>, 'onClick'>;
+type BackButtonProps = Omit<ComponentProps<'button'>, 'onClick'> & {
+  customAction?: () => void;
+};
 
-const BackButton = ({ className = '', ...props }: BackButtonProps) => {
+const BackButton = ({ className = '', customAction, ...props }: BackButtonProps) => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleClick = () => {
-    router.back();
+    if (customAction) {
+      customAction();
+    } else if (pathname === '/exercises' || pathname === '/diets') {
+      router.push('/');
+    } else {
+      router.back();
+    }
   };
 
   return (

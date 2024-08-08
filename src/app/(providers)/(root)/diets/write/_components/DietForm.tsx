@@ -1,4 +1,5 @@
 'use client';
+import Button from '@/components/Button';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
@@ -74,7 +75,7 @@ const DietForm = () => {
   return (
     <>
       {isPending && <Loading />}
-      <div className="grid grid-cols-[48px_1fr] gap-3 px-4">
+      <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
         <div className="chips flex gap-3 overflow-x-scroll scale">
           {foodChips.map((food, idx) => (
@@ -95,7 +96,7 @@ const DietForm = () => {
             <Input
               inputType="date"
               name="date"
-              showMonth={false}
+              showMonth
               value={new Date(date)}
               position="left"
               onChange={(newDate: Date) => setDate(getFormattedDate(newDate))}
@@ -119,47 +120,49 @@ const DietForm = () => {
           </TextInput>
         </div>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm">칼로리</h2>
-          <TextInput
+          <Input
+            label="칼로리"
             type="number"
+            value={foodForm['kcal'] === null ? '' : foodForm['kcal']}
+            placeholder="0"
             unit="kcal"
-            value={foodForm['kcal']}
             onChange={(e) => handleFormChange('kcal', Number.parseInt(e.target.value))}
           />
         </div>
         <div className="grid grid-cols-3 gap-2 px-4">
           <div className="w-full">
-            <h2 className="opacity-70 text-sm">탄수화물</h2>
-            <TextInput
+            <Input
+              label="탄수화물"
               type="number"
+              value={foodForm['carbohydrate'] === null ? '' : foodForm['carbohydrate']}
+              placeholder="0"
               unit="g"
-              value={foodForm['carbohydrate']}
               onChange={(e) => handleFormChange('carbohydrate', Number.parseInt(e.target.value))}
             />
           </div>
           <div className="w-full">
-            <h2 className="opacity-70 text-sm">단백질</h2>
-            <TextInput
+            <Input
+              label="단백질"
               type="number"
+              value={foodForm['protein'] === null ? '' : foodForm['protein']}
+              placeholder="0"
               unit="g"
-              value={foodForm['protein']}
               onChange={(e) => handleFormChange('protein', Number.parseInt(e.target.value))}
             />
           </div>
           <div className="w-full">
-            <h2 className="opacity-70 text-sm">지방</h2>
-            <TextInput
+            <Input
+              label="지방"
               type="number"
+              value={foodForm['fat'] === null ? '' : foodForm['fat']}
+              placeholder="0"
               unit="g"
-              value={foodForm['fat']}
               onChange={(e) => handleFormChange('fat', Number.parseInt(e.target.value))}
             />
           </div>
         </div>
         <div className="w-full px-4">
-          <button type="submit" className="w-full bg-[#12F28780] text-white px-6 py-3 rounded-lg">
-            입력 완료
-          </button>
+          <Button type="submit">입력 완료</Button>
         </div>
       </form>
     </>
