@@ -30,7 +30,7 @@ export const useCardioInputStore = create<CardioInputStoreTypes>((set) => ({
   deleteInput: (index) =>
     set((state) => {
       if (state.cardioInputs.length <= 1) {
-        alert('You need to have at least one input');
+        alert('최소한 한 개의 세트는 유지해야 합니다.');
         return { cardioInputs: state.cardioInputs };
       }
       return { cardioInputs: state.cardioInputs.filter((_, i) => i !== index) };
@@ -56,7 +56,7 @@ export const useWeightInputStore = create<WeightInputStoreTypes>((set) => ({
   deleteInput: (index) =>
     set((state) => {
       if (state.weightInputs.length <= 1) {
-        alert('You need to have at least one input');
+        alert('최소한 한 개의 세트는 유지해야 합니다.');
         return { weightInputs: state.weightInputs };
       }
       return { weightInputs: state.weightInputs.filter((_, i) => i !== index) };

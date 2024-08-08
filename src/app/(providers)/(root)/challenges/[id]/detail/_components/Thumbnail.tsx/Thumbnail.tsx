@@ -40,7 +40,10 @@ const ThumbnailSection = ({ challenge }: ThumbnailProps) => {
         }}
       >
         <div className="flex justify-end" style={{ transform: 'inherit' }}>
-          <ul className="inline-flex flex-row gap-3 rounded-[4px] border border-white/[0.2] text-[12px] leading-4 bg-black/10 py-1 px-2">
+          <ul
+            className="inline-flex flex-row gap-3 rounded-[4px] border-2 border-white/[0.2] text-[12px] font-semibold leading-4 bg-black/10 py-1 px-2 backdrop-blur-[8px]"
+            style={{ boxShadow: '2px 2px 4px 0px rgba(0, 0, 0, 0.20)' }}
+          >
             <li className="text-[#12F287]">참여 40</li>
             <li>인증 12</li>
           </ul>

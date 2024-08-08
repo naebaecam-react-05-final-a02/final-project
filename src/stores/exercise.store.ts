@@ -76,13 +76,13 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     set((state) => {
       if (state.exerciseType === 'cardio') {
         if (state.cardioInputs.length <= 1) {
-          alert('You need to have at least one input');
+          alert('최소한 한 개의 세트는 유지해야 합니다.');
           return state;
         }
         return { cardioInputs: state.cardioInputs.filter((_, i) => i !== index) };
       } else {
         if (state.weightInputs.length <= 1) {
-          alert('You need to have at least one input');
+          alert('최소한 한 개의 세트는 유지해야 합니다.');
           return state;
         }
         return { weightInputs: state.weightInputs.filter((_, i) => i !== index) };
