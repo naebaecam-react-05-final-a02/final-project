@@ -2,6 +2,7 @@
 
 import ArrowRight from '@/assets/arrow-right.svg';
 import TeamCardSVG from '@/assets/team-card.svg';
+import Card from '@/components/Card';
 import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -90,10 +91,17 @@ const MyProfile = () => {
           </button>
         </div>
       </article>
-      <article className="flex flex-col justify-center items-center w-full h-[185px] bg-white/5 rounded-[20px] p-4">
-        <WeightChart query="week" />
-      </article>
-      <article>
+      <Card className="relative size-full h-[250px] select-none">
+        <WeightChart query={''} />
+
+        <div
+          className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
+            rounded-b-[20px] flex justify-center text-sm"
+        >
+          현재는 더미 데이터로 표시됩니다.
+        </div>
+      </Card>
+      <article className="w-full flex justify-center">
         <TeamCardSVG />
       </article>
       <div className="flex justify-center w-full">
