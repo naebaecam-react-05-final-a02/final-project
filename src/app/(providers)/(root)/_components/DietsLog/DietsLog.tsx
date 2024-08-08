@@ -7,12 +7,14 @@ import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import useHorizontalScroll from '../../../../../hooks/useHorizontalScroll ';
 import DashBoardHeader from '../DashBoardHeader';
 
 const DietsLog = () => {
   const supabase = createClient();
   const { data: user } = useGetUser();
   const [date, setDate] = useState<Date>(new Date());
+  const scrollRef = useHorizontalScroll();
 
   const { data: diets } = useQuery({
     queryKey: ['diets', { date: format(date, 'yyyy-MM-dd') }],
@@ -63,7 +65,7 @@ const DietsLog = () => {
       </div>
 
       {foods && foods.length > 0 && (
-        <div className="w-full py-4 flex gap-x-4 overflow-x-scroll scrollbar-hide border-t border-white/10">
+        <div ref={scrollRef} className="chips w-full py-4 flex gap-x-4 overflow-x-scroll border-t border-white/10">
           {foods.map((food) => (
             <Chip key={food.id} food={food} />
           ))}

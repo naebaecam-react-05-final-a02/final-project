@@ -12,6 +12,7 @@ import { DietTimeType } from '@/types/diet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
+import useHorizontalScroll from '../../../../../../hooks/useHorizontalScroll ';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
 import TextInput from './TextInput';
@@ -30,7 +31,7 @@ const DietForm = () => {
     changeChip,
     resetForm,
   } = useDietForm({ initialValue });
-
+  const scrollRef = useHorizontalScroll();
   const router = useRouter();
 
   // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
@@ -77,7 +78,7 @@ const DietForm = () => {
       {isPending && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
-        <div className="chips flex gap-3 overflow-x-scroll scale">
+        <div ref={scrollRef} className="chips flex gap-3 overflow-x-scroll scale">
           {foodChips.map((food, idx) => (
             <Chip
               key={food.id}
