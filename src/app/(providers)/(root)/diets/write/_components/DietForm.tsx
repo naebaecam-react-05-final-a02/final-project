@@ -116,7 +116,13 @@ const DietForm = () => {
               position="left"
               onChange={(newDate: Date) => setDate(getFormattedDate(newDate))}
             />
-            <Input inputType="select" value={dietType} dropdownOptions={dietOptions} onChange={handleDietTypeChange} />
+            <Input
+              inputType="select"
+              readOnly
+              value={dietType}
+              dropdownOptions={dietOptions}
+              onChange={handleDietTypeChange}
+            />
           </div>
         </div>
         <div className="w-full px-4">
