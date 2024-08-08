@@ -34,7 +34,6 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json(data);
   } catch (e) {
-    console.log(e);
     return NextResponse.json({ message: '운동 조회에 실패했습니다' }, { status: 400 });
   }
 };

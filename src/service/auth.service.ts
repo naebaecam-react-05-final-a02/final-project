@@ -13,7 +13,6 @@ class AuthAPI {
 
   // 회원가입
   signUp = async (data: FormData): Promise<UserInfo> => {
-    console.log(data);
     try {
       const response = await axios.post(`${this.baseUrl}/sign-up`, data, {
         headers: {

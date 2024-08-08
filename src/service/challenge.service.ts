@@ -103,7 +103,7 @@ class ChallengeAPI {
   getPaginationChallenges = async ({ category, page, limit }: { category: string; page: number; limit: number }) => {
     try {
       const response = await axios.get(`${this.baseURL}/all?category=${category}&page=${page}&limit=${limit}`);
-      console.log(response);
+
       const data = await response.data;
       return data;
     } catch (error) {
@@ -130,7 +130,7 @@ class ChallengeAPI {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response);
+
     return response;
   };
 }

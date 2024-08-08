@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
   const limit = Number(searchParams.get('limit'));
   const today = dayjs().format('YYYY-MM-DD');
 
-  console.log(category, page, limit);
   const supabase = createClient();
   const to = (page - 1) * limit;
   const from = page * limit;

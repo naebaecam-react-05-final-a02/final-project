@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const { date, exerciseType, name, memo, record } = await request.json();
 
     const formattedDate = dayjs(date).tz().format('YYYY-MM-DD');
-    console.log('왜 널임', formattedDate);
+
     const {
       data: { user },
       error: authError,

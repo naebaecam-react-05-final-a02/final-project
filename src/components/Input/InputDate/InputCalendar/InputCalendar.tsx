@@ -2,7 +2,7 @@
 
 import ChevronLeft from '@/icons/ChevronLeft';
 import ChevronRight from '@/icons/ChevronRight';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import 'swiper/css';
 import MonthCalendar from './MonthCalendar';
 
@@ -46,9 +46,9 @@ const InputCalendar = ({ onSelectDate, selectedDate }: InputCalendarProps) => {
     setCurrentDisplayDate(date);
   }, []);
 
-  useEffect(() => {
-    console.log(currentDisplayDate);
-  }, [currentDisplayDate]);
+  // useEffect(() => {
+  //   console.log(currentDisplayDate);
+  // }, [currentDisplayDate]);
 
   return (
     <div className="w-full p-4">

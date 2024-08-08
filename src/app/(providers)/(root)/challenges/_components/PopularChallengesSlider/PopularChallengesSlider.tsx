@@ -53,7 +53,6 @@ const PopularChallengesSlider = () => {
           >
             {isPending
               ? loadingSlides.map((challenge: TChallenge, i: number) => {
-                  console.log(challenge.id);
                   return (
                     <SwiperSlide key={challenge.id}>
                       <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
@@ -61,7 +60,6 @@ const PopularChallengesSlider = () => {
                   );
                 })
               : getChallengeList().map((challenge: TChallenge, i: number) => {
-                  console.log(challenge.id);
                   return (
                     <SwiperSlide key={challenge.id}>
                       <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />

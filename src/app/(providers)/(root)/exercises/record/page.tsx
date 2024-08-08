@@ -84,11 +84,6 @@ const ExerciseRecordPage = () => {
 
   const handleSubmit = async () => {
     const workoutToSave = selectedWorkout || customWorkout;
-    console.log('선택한 운동 이름:', workoutToSave);
-    console.log(new Date(getFormattedDate(record.date)));
-    console.log('선택한 날짜:', record.date);
-    console.log('메모:', record.name);
-    console.log('기록:', record.record);
 
     const isCardioInput = (input: CardioInput | WeightInput): input is CardioInput => {
       return 'minutes' in input || 'distance' in input;

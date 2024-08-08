@@ -12,8 +12,6 @@ export async function POST(request: NextRequest) {
       error: sessionError,
     } = await supabase.auth.getSession();
 
-    console.log(session);
-
     if (sessionError || !session) {
       console.error('Session error:', sessionError);
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 });

@@ -52,11 +52,10 @@ const Mobile = ({
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    console.log('mount');
+
     return () => {
       // cleanup
       window.removeEventListener('resize', handleResize);
-      console.log('unmount');
     };
   }, []);
 
