@@ -5,8 +5,8 @@ import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import api from '@/service/service';
 import { createClient } from '@/supabase/client';
 import { getFormattedDate } from '@/utils/dateFormatter';
-import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { useQueries } from '@tanstack/react-query';
+import { addDays, format, subDays } from 'date-fns';
 import { useState } from 'react';
 import DashBoardHeader from '../DashBoardHeader';
 import ExerciseTodoItem from '../ExerciseTodoItem';
@@ -15,15 +15,38 @@ const ExerciseTodoList = () => {
   const supabase = createClient();
   const [date, setDate] = useState<Date>(new Date());
   const { data: user, isPending } = useGetUser();
-  const {
-    data: exercises,
-    isPending: isPending2,
-    error,
-  } = useQuery({
-    queryKey: ExercisesQueryKeys.detail(getFormattedDate(date)),
-    queryFn: () => api.dashboard.getExercises(supabase, date),
-    enabled: !!user,
+
+  const [_h, result, _h2] = useQueries({
+    queries: [
+      {
+        queryKey: ExercisesQueryKeys.detail(getFormattedDate(subDays(date, 1))),
+        queryFn: () => api.dashboard.getExercises(supabase, subDays(date, 1)),
+        enabled: !!user,
+      },
+      {
+        queryKey: ExercisesQueryKeys.detail(getFormattedDate(date)),
+        queryFn: () => api.dashboard.getExercises(supabase, date),
+        enabled: !!user,
+      },
+      {
+        queryKey: ExercisesQueryKeys.detail(getFormattedDate(addDays(date, 1))),
+        queryFn: () => api.dashboard.getExercises(supabase, addDays(date, 1)),
+        enabled: !!user,
+      },
+    ],
   });
+
+  const { data: exercises, isPending: isPending2, error } = result;
+
+  // const {
+  //   data: exercises,
+  //   isPending: isPending2,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ExercisesQueryKeys.detail(getFormattedDate(date)),
+  //   queryFn: () => api.dashboard.getExercises(supabase, date),
+  //   enabled: !!user,
+  // });
 
   if (!exercises) {
     return (
