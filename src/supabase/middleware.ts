@@ -31,13 +31,12 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
 
-  // 'keepLoggedIn' 쿠키 확인
   const keepLoggedIn = request.cookies.get('keepLoggedIn')?.value === 'true';
 
   if (user && keepLoggedIn) {
-    // 세션 갱신 시도
     const { data, error } = await supabase.auth.refreshSession();
     if (error) {
       console.error('Failed to refresh session:', error);
@@ -51,16 +50,13 @@ export async function updateSession(request: NextRequest) {
 
   if (user && authRoutes.some((route) => path.startsWith(route))) {
     const redirectUrl = new URL('/', request.url);
-    redirectUrl.pathname = '/';
     return NextResponse.redirect(redirectUrl);
   }
 
   if (!user && !publicRoutes.some((route) => path.startsWith(route))) {
     const redirectUrl = new URL('/log-in', request.url);
-    redirectUrl.pathname = '/log-in';
     return NextResponse.redirect(redirectUrl);
   }
-
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
