@@ -10,7 +10,10 @@ import { DietTableType } from '@/types/diet';
 import { getDietsCalories, getFoodsCalories } from '@/utils/calculateDiet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
-import useHorizontalScroll from '../../../../../../hooks/useHorizontalScroll ';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import EditIcon from '/public/icons/edit.svg';
 import DeleteIcon from '/public/icons/x.svg';
 
@@ -21,7 +24,6 @@ const DietList = () => {
   const setDiet = useDietStore((state) => state.setDiet);
   const { data: diets, isPending: isFetching, isError: isFetchError } = useGetDiets(getFormattedDate(selectedDate));
   const { mutate: deleteDiet, isPending: isDeleting } = useDeleteDiets();
-  const scrollRef = useHorizontalScroll();
 
   if (isFetching || isDeleting) return <Loading />;
   if (isFetchError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
@@ -137,10 +139,21 @@ const DietList = () => {
                   </div>
                 </div>
                 <div className="bg-[#FFFFFF1A] w-[calc(full-16px)] h-[1px] mx-4"></div>
-                <div ref={scrollRef} className="chips flex gap-3 overflow-x-scroll scale p-3">
-                  {diet.foods.map((food) => (
-                    <Chip key={food.id} food={food} />
-                  ))}
+                <div className="chips flex justify-start gap-3 overflow-x-auto p-3 whitespace-nowrap">
+                  <Swiper
+                    slidesPerView="auto"
+                    spaceBetween={16}
+                    freeMode={true}
+                    mousewheel={true}
+                    modules={[FreeMode, Mousewheel]}
+                    className="!flex !justify-start !mx-0 !w-full"
+                  >
+                    {diet.foods.map((food) => (
+                      <SwiperSlide key={food.id} className="!w-auto !flex-shrink-0" style={{ width: 'auto' }}>
+                        <Chip food={food} />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
               </li>
             ))}
