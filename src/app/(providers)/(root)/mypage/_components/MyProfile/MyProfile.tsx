@@ -14,6 +14,7 @@ const MyProfile = () => {
       router.push('/log-in'); // 로그아웃 성공 시 로그인 페이지로 리디렉션
     },
   });
+  console.log(user?.introduction.length);
   return (
     <section className="flex flex-col gap-10">
       <article className="flex flex-col gap-6">
@@ -42,7 +43,9 @@ const MyProfile = () => {
         <div className="my-page-intro-bg p-2 rounded-b-2xl rounded-se-2xl h-[76px] relative ">
           <div className="rounded-b-2xl rounded-se-2xl absolute inset-0 border-2 border-white/10"></div>
 
-          {<p className="text-[14px] text-white/70">{user?.introduction}</p> ?? (
+          {user?.introduction && user.introduction.length > 0 ? (
+            <p className="text-[14px] text-white/70">{user.introduction}</p>
+          ) : (
             <p className="text-[14px] text-white/70">
               안녕하세요 {user?.nickname ?? `헬린이_${user?.userIndex}`}입니다.
             </p>
