@@ -78,7 +78,7 @@ const Mobile = ({
             {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
             <div
               ref={customElementRef}
-              className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-2'}`}
+              className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-4'}`}
             >
               {showHeader && !isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
               {children}
@@ -100,7 +100,7 @@ const Mobile = ({
             {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
             <div
               ref={customElementRef}
-              className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-2'}`}
+              className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-4'}`}
             >
               {showHeader && !isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
               {children}
