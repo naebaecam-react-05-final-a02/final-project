@@ -16,7 +16,6 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import useHorizontalScroll from '../../../../../../hooks/useHorizontalScroll ';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
 import TextInput from './TextInput';
@@ -35,7 +34,7 @@ const DietForm = () => {
     changeChip,
     resetForm,
   } = useDietForm({ initialValue });
-  const scrollRef = useHorizontalScroll();
+
   const router = useRouter();
 
   // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
