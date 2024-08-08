@@ -3,11 +3,12 @@ import api from '../../service/service';
 
 export const usersQueryKeys = {
   all: ['user'] as const,
+  user: () => [...usersQueryKeys.all, 'details'] as const,
 };
 
 export const queryOptions = {
   user: () => ({
-    queryKey: usersQueryKeys.all,
+    queryKey: usersQueryKeys.user(),
     queryFn: async () => {
       const user = await api.auth.getUserInfo();
 

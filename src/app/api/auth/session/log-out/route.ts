@@ -1,9 +1,13 @@
 import { createClient } from '@/supabase/server';
 import { NextResponse } from 'next/server';
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
   const supabase = createClient();
   await supabase.auth.signOut();
 
-  return NextResponse.json({ message: 'Logout successful' });
+  const redirectUrl = new URL('/log-in', request.url);
+
+  return NextResponse.redirect(redirectUrl, {
+    status: 302,
+  });
 }

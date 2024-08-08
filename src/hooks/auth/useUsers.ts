@@ -1,5 +1,6 @@
-import { useMutation, UseMutationOptions, useQuery } from '@tanstack/react-query';
-import { mutationOptions, queryOptions } from './queries';
+import { useMutation, UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { mutationOptions, queryOptions, usersQueryKeys } from './queries';
 
 // 유저정보
 export const useGetUser = () => useQuery(queryOptions.user());
@@ -11,8 +12,26 @@ export const useSignUp = () => useMutation(mutationOptions.signUp);
 export const useSignIn = () => useMutation(mutationOptions.signIn);
 
 // 로그아웃
-export const useSignOut = (options?: Omit<UseMutationOptions, 'mutationFn'>) =>
-  useMutation({ ...mutationOptions.signOut, ...options });
+export const useSignOut = (options?: Omit<UseMutationOptions, 'mutationFn'>) => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    ...mutationOptions.signOut,
+    ...options,
+    onSuccess: async (data, variables, context) => {
+      queryClient.clear();
+
+      queryClient.invalidateQueries({ queryKey: usersQueryKeys.all });
+
+      if (options?.onSuccess) {
+        await options.onSuccess(data, variables, context);
+      }
+
+      router.push('/log-in');
+    },
+  });
+};
 
 // 소셜로그인
 export const useSocialSignIn = () => useMutation(mutationOptions.socialSignIn());
