@@ -2,6 +2,7 @@
 
 import Button from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
+import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import Mobile from '@/layouts/Mobile';
@@ -119,7 +120,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
                     <div className="font-semibold text-[16px] leading-6">{challenge.title}</div>
                   </div>
                   <span className="py-[2px] px-2 border-[0.8px] border-[#12F287] rounded-lg text-[12px] font-medium text-[#12F287]">
-                    {challenge.category}
+                    {categoryItemsENGtoKOR[challenge.category]}
                   </span>
                 </div>
               </article>
