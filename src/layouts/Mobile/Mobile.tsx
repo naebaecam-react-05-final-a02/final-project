@@ -95,7 +95,7 @@ const Mobile = ({
           </section>
         </MockUp>
       ) : (
-        <div className="w-full h-screen relative text-white">
+        <div className="w-full h-full fixed overflow-hidden text-white">
           <section className="h-full w-full flex flex-col">
             {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
             <div
