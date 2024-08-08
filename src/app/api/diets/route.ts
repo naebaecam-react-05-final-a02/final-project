@@ -29,7 +29,7 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json(data);
   } catch (e) {
     console.log(e);
-    return NextResponse.json({ message: '다이어트 조회에 실패했습니다' }, { status: 400 });
+    return NextResponse.json({ message: '식단 조회에 실패했습니다' }, { status: 400 });
   }
 };
 
@@ -50,9 +50,9 @@ export const POST = async (request: NextRequest) => {
       .insert({ date, dietType: dietTypeCode[dietType], foods, userId: user.id });
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
-    return NextResponse.json({ message: '다이어트가 성공적으로 등록되었습니다' }, { status: 200 });
+    return NextResponse.json({ message: '식단이 성공적으로 등록되었습니다' }, { status: 200 });
   } catch (e) {
-    return NextResponse.json({ message: '다이어트 등록에 실패했습니다' }, { status: 400 });
+    return NextResponse.json({ message: '식단 등록에 실패했습니다' }, { status: 400 });
   }
 };
 
@@ -74,9 +74,9 @@ export const PUT = async (request: NextRequest) => {
       .eq('id', id);
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
-    return NextResponse.json({ message: '다이어트가 성공적으로 수정되었습니다' }, { status: 200 });
+    return NextResponse.json({ message: '식단이 성공적으로 수정되었습니다' }, { status: 200 });
   } catch (e) {
-    return NextResponse.json({ message: '다이어트 수정에 실패했습니다' }, { status: 400 });
+    return NextResponse.json({ message: '식단 수정에 실패했습니다' }, { status: 400 });
   }
 };
 
@@ -96,8 +96,8 @@ export const DELETE = async (request: NextRequest) => {
     const { error } = await supabase.from('diets').delete().eq('id', id);
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
-    return NextResponse.json({ message: '다이어트가 성공적으로 삭제되었습니다' }, { status: 200 });
+    return NextResponse.json({ message: '식단이 성공적으로 삭제되었습니다' }, { status: 200 });
   } catch (e) {
-    return NextResponse.json({ message: '다이어트 삭제에 실패했습니다' }, { status: 400 });
+    return NextResponse.json({ message: '식단 삭제에 실패했습니다' }, { status: 400 });
   }
 };
