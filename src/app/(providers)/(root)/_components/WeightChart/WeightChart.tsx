@@ -71,9 +71,9 @@ const WeightChart = ({ query }: WeightChartType) => {
   const ticks = Array.from({ length: maxWeight - minWeight + 3 }, (_, i) => minWeight - 1 + i);
 
   return (
-    <ResponsiveContainer width="99.5%" height={'99.5%'} debounce={1} minHeight={100}>
+    <ResponsiveContainer width="100%" height={'99.5%'} debounce={1} minHeight={100}>
       {/* <LineChart data={weights?.data!} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}> */}
-      <LineChart data={tmp} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}>
+      <LineChart data={tmp} margin={{ right: 0, left: -40, bottom: 10, top: 10 }}>
         <XAxis
           filter="url(#glow)"
           tickLine={false}
