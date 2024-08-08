@@ -29,8 +29,8 @@ const ExercisePage = () => {
         />
       }
     >
-      <div className="flex flex-col gap-8">
-        <span className="w-10" aria-hidden="true" role="presentation"></span>
+      <div className="flex flex-col">
+        <span className="w-10 mt-2" aria-hidden="true" role="presentation"></span>
         {/* <header className="flex justify-between items-center"> */}
         {/* <button
             className="flex w-10 h-10 justify-center items-center rounded-xl backdrop-blur-[5px] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25),-2px_-2px_4px_0px_hsla(0, 0%, 100%, 0.1)]"

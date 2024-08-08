@@ -28,13 +28,14 @@ interface ExerciseStore {
   setExerciseType: (type: ExerciseType) => void;
   addInput: () => void;
   deleteInput: (index: number) => void;
+  clearRecord: () => void;
 }
 
 export const useExerciseStore = create<ExerciseStore>((set) => ({
   record: exerciseInitialState,
   isBookMark: false,
-  cardioInputs: [{ minutes: 0, distance: 0 }],
-  weightInputs: [{ weight: 0, reps: 0 }],
+  cardioInputs: [{ minutes: null, distance: null }],
+  weightInputs: [{ weight: null, reps: null }],
   exerciseType: 'weight',
   setRecord: (update) =>
     set((state) => {
@@ -66,9 +67,9 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
   addInput: () =>
     set((state) => {
       if (state.exerciseType === 'cardio') {
-        return { cardioInputs: [...state.cardioInputs, { minutes: 0, distance: 0 }] };
+        return { cardioInputs: [...state.cardioInputs, { minutes: null, distance: null }] };
       } else {
-        return { weightInputs: [...state.weightInputs, { weight: 0, reps: 0 }] };
+        return { weightInputs: [...state.weightInputs, { weight: null, reps: null }] };
       }
     }),
   deleteInput: (index) =>
@@ -86,5 +87,27 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
         }
         return { weightInputs: state.weightInputs.filter((_, i) => i !== index) };
       }
+    }),
+  clearRecord: () =>
+    set((state) => {
+      const newRecord: ExerciseRecord =
+        state.exerciseType === 'cardio'
+          ? {
+              ...exerciseInitialState,
+              exerciseType: 'cardio',
+              record: [{ minutes: null, distance: null }],
+            }
+          : {
+              ...exerciseInitialState,
+              exerciseType: 'weight',
+              record: [{ weight: null, reps: null }],
+            };
+
+      return {
+        record: newRecord,
+        cardioInputs: [{ minutes: null, distance: null }],
+        weightInputs: [{ weight: null, reps: null }],
+        exerciseType: state.exerciseType,
+      };
     }),
 }));

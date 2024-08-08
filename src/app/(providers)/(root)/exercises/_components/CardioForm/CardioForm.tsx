@@ -32,7 +32,7 @@ const CardioForm = () => {
         <div className="grid grid-cols-4 justify-items-center h-12 ">
           <InputLabel>세트</InputLabel>
           <InputLabel>분</InputLabel>
-          <InputLabel>M</InputLabel>
+          <InputLabel>km</InputLabel>
           <InputLabel>-</InputLabel>
         </div>
         {cardioInputs.map((item, index) => (
