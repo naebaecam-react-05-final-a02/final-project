@@ -47,8 +47,6 @@ const ChallengeCreatePage = () => {
     PostChallenge({ formData });
   };
 
-  console.log(inputs);
-
   return (
     <Mobile>
       <div>

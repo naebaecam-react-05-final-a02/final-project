@@ -17,7 +17,6 @@ const MyProfile = () => {
     },
   });
 
-  console.log(user?.introduction.length);
   return (
     <section className="flex flex-col gap-10">
       <article className="flex flex-col gap-6">

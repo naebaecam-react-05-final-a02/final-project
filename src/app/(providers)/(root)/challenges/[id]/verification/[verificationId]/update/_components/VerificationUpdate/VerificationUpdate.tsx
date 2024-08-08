@@ -56,7 +56,6 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
         { cid, vid },
         {
           onSuccess: () => {
-            console.log('Challenge Verify Delete Successfully');
             queryClient.invalidateQueries({
               queryKey: ['verifications', { cid }],
             });
@@ -116,7 +115,6 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
               { updateData, cid, vid },
               {
                 onSuccess: () => {
-                  console.log('Challenge Verify Update Successfully');
                   queryClient.invalidateQueries({
                     queryKey: ['verifications'],
                   });
@@ -144,7 +142,6 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
         { updateData, cid, vid },
         {
           onSuccess: () => {
-            console.log('Challenge Verify Update Successfully');
             queryClient.invalidateQueries({
               queryKey: ['verifications'],
             });

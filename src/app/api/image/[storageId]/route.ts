@@ -26,7 +26,6 @@ export async function POST(req: NextRequest, { params }: ContextType) {
 
     Array.from(formData).forEach((_, i) => {
       files.push(formData.get(`file[${i}]`));
-      console.log(`ROUTE FILE[${i}]`, files[i]);
     });
 
     if (!files) {
@@ -48,8 +47,6 @@ export async function POST(req: NextRequest, { params }: ContextType) {
     try {
       // const { data, error } = await supabase.storage.from(storage).upload(`/${filename}`, file);
       const results = await Promise.all(promises);
-
-      console.log('RESULTS___', results);
 
       // if (error) {
       //   console.error('File upload error:', error);

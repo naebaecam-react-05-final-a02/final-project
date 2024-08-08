@@ -10,7 +10,7 @@ interface MyChallengesProps {
 
 const MyChallenges = ({ data }: MyChallengesProps) => {
   const challenges = data.data;
-  console.log(challenges);
+
   return (
     <section className="flex flex-col gap-4 px-4">
       <div className="w-full flex justify-between items-center">
