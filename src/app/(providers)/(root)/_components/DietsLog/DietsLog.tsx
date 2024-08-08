@@ -7,14 +7,16 @@ import { getDietsCalories, getFoods } from '@/utils/calculateDiet';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import useHorizontalScroll from '../../../../../hooks/useHorizontalScroll ';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import DashBoardHeader from '../DashBoardHeader';
 
 const DietsLog = () => {
   const supabase = createClient();
   const { data: user } = useGetUser();
   const [date, setDate] = useState<Date>(new Date());
-  const scrollRef = useHorizontalScroll();
 
   const { data: diets } = useQuery({
     queryKey: ['diets', { date: format(date, 'yyyy-MM-dd') }],
@@ -65,10 +67,21 @@ const DietsLog = () => {
       </div>
 
       {foods && foods.length > 0 && (
-        <div ref={scrollRef} className="chips w-full py-4 flex gap-x-4 overflow-x-scroll border-t border-white/10">
-          {foods.map((food) => (
-            <Chip key={food.id} food={food} />
-          ))}
+        <div className="w-full py-4 border-t border-white/10">
+          <Swiper
+            slidesPerView="auto"
+            spaceBetween={16}
+            freeMode={true}
+            mousewheel={true}
+            modules={[FreeMode, Mousewheel]}
+            className="!flex !justify-start !mx-0 !w-full"
+          >
+            {foods.map((food) => (
+              <SwiperSlide key={food.id} className="!w-auto !flex-shrink-0">
+                <Chip food={food} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       )}
     </>
