@@ -10,15 +10,23 @@ import api from '@/service/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import useInputs from '../_hooks/useInputs';
 import { TInputs } from '../_types/types';
 
 const MyProfileEditPage = () => {
+  const router = useRouter();
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement | null>(null);
-  const [inputs, onChange, reset, setInputs] = useInputs<TInputs>({ nickname: '', email: '', height: 0, weight: 0 });
+  const [inputs, onChange, reset, setInputs] = useInputs<TInputs>({
+    nickname: '',
+    email: '',
+    introduction: '',
+    height: 0,
+    weight: 0,
+  });
   const { data, isPending } = useGetUser();
   const queryClient = useQueryClient();
   console.log(inputs);
@@ -29,6 +37,7 @@ const MyProfileEditPage = () => {
       if (result.status !== 200) return;
       queryClient.invalidateQueries({ queryKey: ['user'] });
       alert('수정이 완료되었습니다');
+      router.replace('/mypage');
     },
   });
 
@@ -47,6 +56,7 @@ const MyProfileEditPage = () => {
 
     const formData = new FormData();
     if (inputs.nickname) formData.append('nickname', inputs.nickname);
+    if (inputs.introduction) formData.append('introduction', inputs.introduction);
     if (inputs.height) formData.append('height', inputs.height.toString());
     if (inputs.weight) formData.append('weight', inputs.weight.toString());
     if (avatarFile) formData.append('avatar', avatarFile);
@@ -78,8 +88,14 @@ const MyProfileEditPage = () => {
 
   useEffect(() => {
     if (!isPending && data) {
-      const { nickname, email, height, weight } = data;
-      setInputs({ nickname: nickname as string, email, height: height as number, weight: weight as number });
+      const { nickname, email, height, weight, introduction } = data;
+      setInputs({
+        nickname: nickname as string,
+        email,
+        height: height as number,
+        weight: weight as number,
+        introduction: introduction as string,
+      });
     }
   }, [isPending, data]);
 
@@ -149,6 +165,16 @@ const MyProfileEditPage = () => {
           </div>
           <div className="flex">
             <InputText
+              inputType="textarea"
+              name={'introduction'}
+              label={'소개'}
+              id={'introduction'}
+              onChange={onChange}
+              value={inputs.introduction}
+            />
+          </div>
+          <div className="flex">
+            <InputText
               name={'height'}
               label={'키'}
               id={'height'}
@@ -156,6 +182,7 @@ const MyProfileEditPage = () => {
               value={inputs.height}
               type={'number'}
               unit={'cm'}
+              className="appearance-none  [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
             />
           </div>
           <div className="flex">
@@ -167,6 +194,7 @@ const MyProfileEditPage = () => {
               value={inputs.weight}
               type={'number'}
               unit={'kg'}
+              className="appearance-none  [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
           </div>
         </div>

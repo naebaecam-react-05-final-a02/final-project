@@ -24,7 +24,7 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
         </div>
         <div className="flex items-center opacity-50">
           <Bullet />
-          <p className="text-sm">{challenge.content}</p>
+          <p className="max-w-[270px] text-sm line-clamp-1">{challenge.content}</p>
         </div>
       </div>
 

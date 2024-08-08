@@ -10,6 +10,7 @@ interface HeaderProps {
   titleIcon?: ReactNode;
   onClick?: () => void;
   className?: string;
+  customBackAction?: () => void;
 }
 
 const Header = ({
@@ -20,10 +21,11 @@ const Header = ({
   titleIcon,
   onClick,
   className = '',
+  customBackAction,
 }: HeaderProps) => {
   return (
     <header className={`flex w-full justify-between items-center  header-gradient  ${className}`}>
-      {showBackButton ? <BackButton /> : <span className="w-11"></span>}
+      {showBackButton ? <BackButton customAction={customBackAction} /> : <span className="w-11"></span>}
       <div className="flex-grow flex justify-center items-center py-[18px]">
         {showLogo ? (
           <Image src="/OOSIE.png" alt="Logo" width={105} height={28} />

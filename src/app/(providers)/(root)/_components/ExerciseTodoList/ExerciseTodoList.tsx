@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/components/Loading/Loading';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import api from '@/service/service';
@@ -13,8 +14,12 @@ import ExerciseTodoItem from '../ExerciseTodoItem';
 const ExerciseTodoList = () => {
   const supabase = createClient();
   const [date, setDate] = useState<Date>(new Date());
-  const { data: user } = useGetUser();
-  const { data: exercises } = useQuery({
+  const { data: user, isPending } = useGetUser();
+  const {
+    data: exercises,
+    isPending: isPending2,
+    error,
+  } = useQuery({
     queryKey: ExercisesQueryKeys.detail(getFormattedDate(date)),
     queryFn: () => api.dashboard.getExercises(supabase, date),
     enabled: !!user,
@@ -31,8 +36,10 @@ const ExerciseTodoList = () => {
       </>
     );
   }
-
-  if (exercises.error) {
+  if (isPending && isPending2) {
+    <Loading />;
+  }
+  if (error) {
     return (
       <>
         <DashBoardHeader date={date} setState={setDate} url={'/exercises'} title={'투두'} />

@@ -13,12 +13,12 @@ import Header from '@/components/Header';
 import Memo from '@/icons/Memo';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
 
 const ExerciseRecordPage = () => {
   const queryClient = useQueryClient();
-  const { record, setRecord } = useExerciseStore();
+  const { record, setRecord, clearRecord } = useExerciseStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentExerciseId, setCurrentExerciseId] = useState<number | null>(null);
   const [bookmarkedExercises, setBookmarkedExercises] = useState<string[]>([]);
@@ -35,13 +35,17 @@ const ExerciseRecordPage = () => {
 
   useEffect(() => {}, [record.record]);
 
+  const memoizedClearRecord = useCallback(() => {
+    clearRecord();
+  }, [clearRecord]);
+
   useEffect(() => {
-    setRecord(exerciseInitialState);
+    memoizedClearRecord();
 
     return () => {
-      setRecord(exerciseInitialState);
+      memoizedClearRecord();
     };
-  }, []);
+  }, [memoizedClearRecord]);
 
   useEffect(() => {
     if (bookmarkData) {
@@ -140,6 +144,7 @@ const ExerciseRecordPage = () => {
         <Star
           width={24}
           height={24}
+          className="cursor-pointer"
           style={{
             fill: bookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
           }}
@@ -165,8 +170,7 @@ const ExerciseRecordPage = () => {
         />
       }
     >
-      <div className="max-h-screen flex flex-col gap-5 p-5">
-        <h3 className="text-white">운동 이름</h3>
+      <div className="max-h-screen flex flex-col gap-4 p-5">
         <Input
           label="운동 이름"
           placeholder="운동 이름을 입력해 주세요."
@@ -179,6 +183,7 @@ const ExerciseRecordPage = () => {
               style={{
                 fill: bookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
               }}
+              className="cursor-pointer"
               width={24}
               height={24}
               onClick={(e) => {
@@ -206,9 +211,15 @@ const ExerciseRecordPage = () => {
         {(selectedWorkout || customWorkout) && (
           <p className="text-white">선택된 운동: {selectedWorkout || customWorkout}</p>
         )}
-        <h3 className="text-white">날짜 선택</h3>
-        <Input inputType="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
         <Input
+          label="날짜 선택"
+          inputType="date"
+          value={record.date}
+          onChange={handleDateChange}
+          className="p-2 rounded"
+        />
+        <Input
+          label="메모"
           placeholder="주의사항, 다짐 등을 작성해 주세요"
           value={record.memo}
           onChange={handleMemoChange}

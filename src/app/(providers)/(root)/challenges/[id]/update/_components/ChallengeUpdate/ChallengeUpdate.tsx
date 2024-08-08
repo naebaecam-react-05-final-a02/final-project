@@ -3,12 +3,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
-import {
-  categoryItemsENGtoKOR,
-  categoryItemsKORtoENG,
-  categoryOptions,
-  initialChallengeError,
-} from '@/data/challenges';
+import { categoryItemsENGtoKOR, initialChallengeError } from '@/data/challenges';
 import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { queryClient } from '@/providers/QueryProvider';
@@ -16,6 +11,7 @@ import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import CallengeCategory from '../../../../_components/CallengeCategory';
 import FormImageUploader from '../../../../_components/FormImageUploader';
 import { FormFields } from '../../../../register/_components/ChallengeRegisterForm/ChallengeRegisterForm';
 import FormCalendar from '../../../../register/_components/FormCalendar';
@@ -97,7 +93,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
                 verify: null,
                 tags: null,
                 rating: 0,
-                category: categoryItemsKORtoENG[category],
+                category,
                 participants: challenge.participants,
               };
               challengeUpdate(
@@ -125,7 +121,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           verify: null,
           tags: null,
           rating: 0,
-          category: categoryItemsKORtoENG[category],
+          category,
           participants: challenge.participants,
         };
         challengeUpdate(
@@ -145,6 +141,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
       {(uploading || updating || deleting) && <Loading />}
+      <CallengeCategory defaultValue={challenge.category} />
       <div className="select-none">
         <Input
           label="챌린지 이름"
@@ -155,14 +152,14 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         />
       </div>
 
-      <Input
+      {/* <Input
         readOnly
         inputType="select"
         dropdownOptions={categoryOptions}
         name="category"
         value={cate}
         onChange={(e) => setCate(e.target.value)}
-      />
+      /> */}
       {/* <FormCategory label="카테고리" name="category" defaultValue={challenge.category} /> */}
 
       <div className="select-none">

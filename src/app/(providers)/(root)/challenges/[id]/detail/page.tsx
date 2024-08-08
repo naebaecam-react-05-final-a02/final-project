@@ -5,16 +5,12 @@ import Loading from '@/components/Loading/Loading';
 import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
-import ChevronLeft from '@/icons/ChevronLeft';
-import DotsVertical from '@/icons/DotsVertical';
-import Memo from '@/icons/Memo';
 import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
 import ThumbnailSection from './_components/Thumbnail.tsx';
 import UserProfile from './_components/UserProfile';
@@ -105,7 +101,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <Mobile isHeaderFixed={false} showHeader={false} showFooter={false} bottomButton={bottomButton}>
-      <div className="text-white relative">
+      <div className="text-white relative -my-4">
         <BackBoard />
         <main className="pb-8">
           <div className="">

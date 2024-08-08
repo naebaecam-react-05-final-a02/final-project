@@ -17,7 +17,7 @@ const MyChallenges = ({ data }: MyChallengesProps) => {
         <ArticleTitle icon="🤛" title="내가 참여중인 챌린지" />
         <p className="text-white/50 text-sm">총 {challenges?.length}개</p>
       </div>
-      <ul>
+      <ul className="flex flex-col gap-2">
         {_.isEmpty(challenges) ? (
           <div>loading</div>
         ) : (

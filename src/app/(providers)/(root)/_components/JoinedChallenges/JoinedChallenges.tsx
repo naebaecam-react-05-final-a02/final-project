@@ -17,7 +17,7 @@ const JoinedChallengesLayout = ({ children }: { children: React.ReactNode }) => 
 
 const JoinedChallenges = () => {
   const supabase = createClient();
-  const { data: joinedChallenges } = useQuery({
+  const { data: joinedChallenges, error } = useQuery({
     queryKey: ['joinedChallenge'],
     queryFn: () => api.dashboard.getJoinedChallenges(supabase),
   });
@@ -32,7 +32,7 @@ const JoinedChallenges = () => {
     );
   }
 
-  if (joinedChallenges.error) {
+  if (error) {
     return (
       <JoinedChallengesLayout>
         <div className="text-red-300 text-sm">
@@ -46,7 +46,7 @@ const JoinedChallenges = () => {
   if (joinedChallenges.data === null || joinedChallenges.data.length === 0) {
     return (
       <JoinedChallengesLayout>
-        <p className="text-white/50 text-sm">참여 중인 챌린지가 없습니다.</p>
+        <p className="text-white/50 text-xs">참여 중인 챌린지가 없습니다.</p>
       </JoinedChallengesLayout>
     );
   }

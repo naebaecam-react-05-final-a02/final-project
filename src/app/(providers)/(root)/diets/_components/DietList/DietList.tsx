@@ -54,7 +54,7 @@ const DietList = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col px-4 gap-8">
       {diets?.length === 0 ? (
         <div className="flex flex-col items-center gap-3">
           <span>식단 기록이 없습니다</span>
@@ -72,15 +72,21 @@ const DietList = () => {
             <div className="grid grid-cols-3 justify-items-center">
               <div className="flex flex-col items-center text-sm">
                 <span className="text-[#FFFFFF80] py-2 font-semibold">탄수화물</span>
-                <span className="py-2 font-medium">{totalCalories.carbohydrate}g</span>
+                <span className="py-2 font-medium">
+                  <span className="mr-[2px]">{totalCalories.carbohydrate}</span>g
+                </span>
               </div>
               <div className="flex flex-col items-center text-sm">
                 <span className="text-[#FFFFFF80] py-2 font-semibold">단백질</span>
-                <span className="py-2 font-medium">{totalCalories.protein}g</span>
+                <span className="py-2 font-medium">
+                  <span className="mr-[2px]">{totalCalories.protein}</span>g
+                </span>
               </div>
               <div className="flex flex-col items-center text-sm">
-                <span className="text-[#FFFFFF80] py-2 font-semibold">지방</span>
-                <span className="py-2 font-medium">{totalCalories.fat}g</span>
+                <span className="text-[#FFFFFF80] py-2 font-semibold ">지방</span>
+                <span className="py-2 font-medium">
+                  <span className="mr-[2px]">{totalCalories.fat}</span>g
+                </span>
               </div>
             </div>
           </div>
@@ -109,21 +115,21 @@ const DietList = () => {
                   <div className="flex justify-between p-3 text-sm font-medium">
                     <span className="text-[#FFFFFF80]">탄수화물</span>
                     <span>
-                      {calories[idx].carbohydrate}
+                      <span className="mr-[2px]">{calories[idx].carbohydrate}</span>
                       <span className="text-xs text-[#FFFFFF4D]">g</span>
                     </span>
                   </div>
                   <div className="flex justify-between p-3 text-sm font-medium">
                     <span className="text-[#FFFFFF80]">단백질</span>
                     <span>
-                      {calories[idx].protein}
+                      <span className="mr-[2px]">{calories[idx].protein}</span>
                       <span className="text-xs text-[#FFFFFF4D]">g</span>
                     </span>
                   </div>
                   <div className="flex justify-between p-3 text-sm font-medium">
                     <span className="text-[#FFFFFF80]">지방</span>
                     <span>
-                      {calories[idx].fat}
+                      <span className="mr-[2px]">{calories[idx].fat}</span>
                       <span className="text-xs text-[#FFFFFF4D]">g</span>
                     </span>
                   </div>
@@ -139,7 +145,7 @@ const DietList = () => {
           </ul>
         </>
       )}
-    </>
+    </div>
   );
 };
 

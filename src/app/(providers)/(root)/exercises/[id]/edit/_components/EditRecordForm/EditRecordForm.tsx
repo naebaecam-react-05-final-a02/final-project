@@ -124,10 +124,8 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     ),
   }));
 
-  console.log(record.date);
   return (
-    <div className="flex flex-col gap-5 p-5">
-      <h3 className="text-white">운동 이름</h3>
+    <div className="flex flex-col gap-4 p-4 pt-6">
       <Input
         label="운동 이름"
         placeholder="운동 이름을 입력해 주세요."
@@ -151,9 +149,15 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
           />
         }
       />
-      <h3 className="text-white">날짜 선택</h3>
-      <Input inputType="date" value={record.date} onChange={handleDateChange} className="p-2 rounded" />
       <Input
+        label="날짜 선택"
+        inputType="date"
+        value={record.date}
+        onChange={handleDateChange}
+        className="p-2 rounded"
+      />
+      <Input
+        label="메모"
         placeholder="주의사항, 다짐 등을 작성해 주세요"
         value={record.memo}
         onChange={handleMemoChange}

@@ -30,6 +30,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
         <Input
           inputType="date"
           position="left"
+          showMonth
           minDate={subDays(today, 1)}
           value={new Date(start)}
           onChange={(newDate: Date) => handleStartDateChange(newDate)}
@@ -46,6 +47,7 @@ const FormCalendar = ({ s, e }: FormCalendarType) => {
           inputType="date"
           position="right"
           minDate={start}
+          showMonth
           value={new Date(end)}
           onChange={(newDate: Date) => setEnd(newDate)}
         />

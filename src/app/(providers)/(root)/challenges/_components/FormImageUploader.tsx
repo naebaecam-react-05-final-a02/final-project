@@ -95,7 +95,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
 
           <div className="size-14 select-none text-white">
             <div
-              className={`relative border-2 border-white/50 border-dashed w-full aspect-square rounded-lg ${
+              className={`relative bg-custom-dashed-border border-white/50  w-full aspect-square  ${
                 fileURLs.length >= maxImage ? 'opacity-10' : 'opacity-100 group'
               }`}
             >

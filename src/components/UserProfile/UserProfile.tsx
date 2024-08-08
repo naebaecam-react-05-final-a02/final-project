@@ -17,7 +17,7 @@ const UserProfile = ({ className }: UserProfileProps) => {
     <div className="flex items-center gap-2 h-14 ">
       <div className="relative w-9 h-9 border-white border rounded-full">
         <Image
-          src={user?.profileURL ?? '/default-profile.png'}
+          src={user?.profileURL ?? '/user/default-avatar.png'}
           alt={'username'}
           fill
           sizes="100"

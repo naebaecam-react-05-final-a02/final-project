@@ -44,7 +44,6 @@ const InputSelect = ({
         setIsOpen(false);
       }
     };
-    console.log(isOpen);
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -77,7 +76,7 @@ const InputSelect = ({
   };
 
   return (
-    <div className="flex flex-col w-full gap-y-1.5 [&+&]:mt-4">
+    <div className="flex flex-col w-full">
       {label && (
         <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
@@ -90,6 +89,7 @@ const InputSelect = ({
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
               bg-input-gradient backdrop-blur-[10px] focus:outline-none transition border-b-2 pr-10 py-3
+              
               ${isOpen ? 'z-20' : ''}
               ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
