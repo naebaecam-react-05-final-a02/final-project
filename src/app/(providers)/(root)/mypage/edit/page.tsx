@@ -10,11 +10,13 @@ import api from '@/service/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import useInputs from '../_hooks/useInputs';
 import { TInputs } from '../_types/types';
 
 const MyProfileEditPage = () => {
+  const router = useRouter();
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement | null>(null);
@@ -29,6 +31,7 @@ const MyProfileEditPage = () => {
       if (result.status !== 200) return;
       queryClient.invalidateQueries({ queryKey: ['user'] });
       alert('수정이 완료되었습니다');
+      router.replace('/mypage');
     },
   });
 
