@@ -42,7 +42,7 @@ export async function updateSession(request: NextRequest) {
       console.error('Failed to refresh session:', error);
     }
   }
-
+  console.log(user);
   const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
   const authRoutes = ['/log-in', '/sign-up'];
 
@@ -53,9 +53,11 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (!user && !publicRoutes.some((route) => path.startsWith(route))) {
-    const redirectUrl = new URL('/log-in', request.url);
-    return NextResponse.redirect(redirectUrl);
+  if (!user || user === undefined) {
+    if (!publicRoutes.some((route) => path.startsWith(route))) {
+      const redirectUrl = new URL('/log-in', request.url);
+      return NextResponse.redirect(redirectUrl);
+    }
   }
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:

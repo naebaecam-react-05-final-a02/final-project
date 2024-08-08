@@ -6,6 +6,7 @@ import Card from '@/components/Card';
 import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import WeightChart from '../../../_components/WeightChart';
 
 const MyProfile = () => {
@@ -14,11 +15,22 @@ const MyProfile = () => {
   const { mutate: signOut } = useSignOut();
 
   const handleSignOut = () => {
+    const deleteCookie = (name: string) => {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    };
+
+    deleteCookie('sb-abijrjpibayqrzanhqcq-auth-token.0');
+    deleteCookie('sb-abijrjpibayqrzanhqcq-auth-token.1');
+
     signOut();
     router.push('/log-in');
     window.location.reload();
   };
-
+  useEffect(() => {
+    if (!user) {
+      router.push('/log-in');
+    }
+  }, [user]);
   console.log(user?.introduction.length);
   return (
     <section className="flex flex-col gap-6">
