@@ -3,6 +3,7 @@ export interface TInputs {
   nickname: string;
   height: number;
   weight: number;
+  introduction: string;
 }
 
 export interface ProfileFormTypes extends TInputs {

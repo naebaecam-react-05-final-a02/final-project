@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 function useInputs<T>(initialForm: T) {
   const [form, setForm] = useState(initialForm);
   // change
-  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name === 'height' || name === 'weight') {
       setForm((form) => ({ ...form, [name]: Number(value) }));

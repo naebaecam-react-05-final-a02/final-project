@@ -20,7 +20,13 @@ const MyProfileEditPage = () => {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement | null>(null);
-  const [inputs, onChange, reset, setInputs] = useInputs<TInputs>({ nickname: '', email: '', height: 0, weight: 0 });
+  const [inputs, onChange, reset, setInputs] = useInputs<TInputs>({
+    nickname: '',
+    email: '',
+    introduction: '',
+    height: 0,
+    weight: 0,
+  });
   const { data, isPending } = useGetUser();
   const queryClient = useQueryClient();
   console.log(inputs);
@@ -50,6 +56,7 @@ const MyProfileEditPage = () => {
 
     const formData = new FormData();
     if (inputs.nickname) formData.append('nickname', inputs.nickname);
+    if (inputs.introduction) formData.append('introduction', inputs.introduction);
     if (inputs.height) formData.append('height', inputs.height.toString());
     if (inputs.weight) formData.append('weight', inputs.weight.toString());
     if (avatarFile) formData.append('avatar', avatarFile);
@@ -81,8 +88,14 @@ const MyProfileEditPage = () => {
 
   useEffect(() => {
     if (!isPending && data) {
-      const { nickname, email, height, weight } = data;
-      setInputs({ nickname: nickname as string, email, height: height as number, weight: weight as number });
+      const { nickname, email, height, weight, introduction } = data;
+      setInputs({
+        nickname: nickname as string,
+        email,
+        height: height as number,
+        weight: weight as number,
+        introduction: introduction as string,
+      });
     }
   }, [isPending, data]);
 
@@ -148,6 +161,16 @@ const MyProfileEditPage = () => {
               value={inputs.email}
               type={'email'}
               disabled={true}
+            />
+          </div>
+          <div className="flex">
+            <InputText
+              inputType="textarea"
+              name={'introduction'}
+              label={'소개'}
+              id={'introduction'}
+              onChange={onChange}
+              value={inputs.introduction}
             />
           </div>
           <div className="flex">
