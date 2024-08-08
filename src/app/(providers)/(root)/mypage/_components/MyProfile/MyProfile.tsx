@@ -5,6 +5,7 @@ import TeamCardSVG from '@/assets/team-card.svg';
 import { useGetUser, useSignOut } from '@/hooks/auth/useUsers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import WeightChart from '../../../_components/WeightChart';
 
 const MyProfile = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const MyProfile = () => {
       router.push('/log-in'); // 로그아웃 성공 시 로그인 페이지로 리디렉션
     },
   });
+
   console.log(user?.introduction.length);
   return (
     <section className="flex flex-col gap-10">
@@ -88,8 +90,8 @@ const MyProfile = () => {
           </button>
         </div>
       </article>
-      <article className="flex justify-center items-center w-full h-[185px] bg-white/5 rounded-[20px]">
-        체중 그래프 자리
+      <article className="flex flex-col justify-center items-center w-full h-[185px] bg-white/5 rounded-[20px] p-4">
+        <WeightChart query="week" />
       </article>
       <article>
         <TeamCardSVG />
