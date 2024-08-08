@@ -10,7 +10,7 @@ const Week = () => {
   const setDate = useDateStore((store) => store.setDate);
 
   return (
-    <div className="w-full grid grid-cols-7 justify-items-center">
+    <div className="w-full grid grid-cols-7 justify-items-center mb-6">
       {weekIterateArray.map((gap) => {
         const cellDate = getNextDate(selectedDate, gap);
         const date = cellDate.getDate();

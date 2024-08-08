@@ -17,6 +17,7 @@ export type InputDateProps = Omit<BaseInputProps & ComponentProps<'input'>, 'inp
   showMonth?: boolean;
   minDate?: Date | string;
   maxDate?: Date | string;
+  textAlign?: 'left' | 'right';
 };
 
 const parseDate = (dateString: string) => {
@@ -46,6 +47,7 @@ const InputDate = ({
   showMonth = false,
   minDate,
   maxDate,
+  textAlign = 'left',
   ...props
 }: InputDateProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,8 +79,6 @@ const InputDate = ({
     }
   }, [value]);
 
-  console.log(formatDate(selectedDate));
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dateInputRef.current && !dateInputRef.current.contains(event.target as Node)) {
@@ -106,7 +106,7 @@ const InputDate = ({
   };
 
   return (
-    <div className="flex flex-col w-full gap-y-1.5">
+    <div className="flex flex-col w-full">
       {label && (
         <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
@@ -117,16 +117,18 @@ const InputDate = ({
           <input
             type="text"
             id={inputId}
-            className={`w-full bg-transparent rounded-lg text-right text-[15px] font-medium
+            className={`w-full bg-transparent rounded-lg text-[15px] font-medium cursor-pointer
               bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-[14px] pl-11
               border-b-2
               ${isOpen ? 'z-20' : ''}
               ${isOpen ? 'text-white' : 'text-whiteT-50 '}
-              ${error ? 'border-error-gradient' : 'border-gradient'} 
+              ${error ? 'border-error-gradient' : 'border-gradient'}
+               ${textAlign === 'right' ? 'text-right' : 'text-left'}
               ${className}
               `}
             value={selectedDate ? formatDate(selectedDate) : formatDate(new Date())}
             readOnly
+            onClick={() => setIsOpen(!isOpen)}
             {...props}
           />
           <div className={`absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-xl ${isOpen ? 'z-20' : ''}`}>
