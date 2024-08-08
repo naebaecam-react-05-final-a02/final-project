@@ -50,7 +50,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
                 className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
             rounded-b-[20px] flex justify-center text-sm"
               >
-                현재 개발중...
+                개발중이에요!
               </div>
             </Card>
 
@@ -84,7 +84,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
               className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
             rounded-b-[20px] flex justify-center text-sm"
             >
-              현재 개발중... 위 그래프는 임시 데이터입니다.
+              위 그래프는 더미 데이터입니다.
             </div>
           </Card>
         </main>

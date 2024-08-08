@@ -43,7 +43,7 @@ const ChallengeList = () => {
           {!challenges?.pages || isPending ? (
             <SkeletonCardList length={1} />
           ) : challenges?.pages[0]?.error ? (
-            <p>데이터가 없습니다</p>
+            <p className="w-full flex justify-center py-4 text-white/70">해당 챌린지가 없습니다.</p>
           ) : (
             challenges.pages.map((page) =>
               page.data.map((challenge: TChallenge) => (
