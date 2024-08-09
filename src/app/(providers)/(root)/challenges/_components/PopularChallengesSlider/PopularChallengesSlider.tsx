@@ -13,12 +13,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { loadingSlides, nextDummySlide, prevDummySlide } from '../../_constants/constants';
-import { TChallenge } from '../../_types/types';
+import { PopularChallengesTypes } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
 
 const PopularChallengesSlider = () => {
   const { data: challenges, isPending } = useGetPopularChallenges();
+  console.log(challenges);
 
   const getChallengeList = () => [prevDummySlide, ...challenges?.data, nextDummySlide];
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -52,14 +53,14 @@ const PopularChallengesSlider = () => {
             scrollbar={{ draggable: true, hide: true, enabled: false }}
           >
             {isPending
-              ? loadingSlides.map((challenge: TChallenge, i: number) => {
+              ? loadingSlides.map((challenge: PopularChallengesTypes, i: number) => {
                   return (
                     <SwiperSlide key={challenge.id}>
                       <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
                     </SwiperSlide>
                   );
                 })
-              : getChallengeList().map((challenge: TChallenge, i: number) => {
+              : getChallengeList().map((challenge: PopularChallengesTypes, i: number) => {
                   return (
                     <SwiperSlide key={challenge.id}>
                       <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
