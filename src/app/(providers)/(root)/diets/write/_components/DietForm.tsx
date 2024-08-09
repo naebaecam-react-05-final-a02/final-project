@@ -3,6 +3,7 @@ import Button from '@/components/Button';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { useSearchFoodInfo } from '@/hooks/diet/foods/useFoods';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSubmitDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
@@ -18,7 +19,6 @@ import { FreeMode, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
-import TextInput from './TextInput';
 
 const DietForm = () => {
   const initialValue = useDietStore((state) => state.diet);
@@ -45,7 +45,10 @@ const DietForm = () => {
     initialValue?.dietType,
   );
 
-  const { mutate: submitDiet, isPending } = useSubmitDiet();
+  const { mutate: submitDiet, isPending: isSubmitting } = useSubmitDiet();
+  const { data: searchFoods = [], isFetching: isSearching, isError, refetch } = useSearchFoodInfo(foodForm['foodName']);
+
+  if (isError) return <div>에러입니다</div>;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,7 +81,7 @@ const DietForm = () => {
 
   return (
     <>
-      {isPending && <Loading />}
+      {isSubmitting && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
         <div className="chips flex overflow-x-scroll scale">
@@ -127,18 +130,36 @@ const DietForm = () => {
         </div>
         <div className="w-full px-4">
           <h2 className="opacity-70 text-sm">음식 이름</h2>
-          <TextInput
+          <Input
+            inputType="select"
             value={foodForm['foodName']}
             placeholder="음식 이름을 입력해주세요."
-            onChange={(e) => handleFormChange('foodName', e.target.value)}
-          >
-            {
-              <EmojiSelector
-                foodType={foodForm['foodType']}
-                handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
-              />
+            dropdownOptions={
+              isSearching
+                ? [{ value: '검색중...' }]
+                : [
+                    { value: foodForm['foodName'] },
+                    ...searchFoods.map((food) => ({
+                      value: `${food.DESC_KOR}`,
+                      onClick: () => {
+                        handleFormChange('foodName', food.DESC_KOR);
+                        handleFormChange('kcal', Number.parseInt(food.NUTR_CONT1));
+                        handleFormChange('carbohydrate', Number.parseInt(food.NUTR_CONT2));
+                        handleFormChange('protein', Number.parseInt(food.NUTR_CONT3));
+                        handleFormChange('fat', Number.parseInt(food.NUTR_CONT4));
+                      },
+                    })),
+                  ]
             }
-          </TextInput>
+            onChange={(e) => {
+              handleFormChange('foodName', e.target.value);
+              refetch();
+            }}
+          />
+          <EmojiSelector
+            foodType={foodForm['foodType']}
+            handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
+          />
         </div>
         <div className="w-full px-4">
           <Input

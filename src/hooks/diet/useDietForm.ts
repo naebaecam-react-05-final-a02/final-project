@@ -17,7 +17,7 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
     const updatedValue = field === 'foodName' || field === 'foodType' ? value : value === '' ? null : Number(value);
     const updatedFoods = foodChips.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: value } : food));
     setFoodChips(updatedFoods);
-    setFoodForms({ ...foodForm, [field]: updatedValue });
+    setFoodForms((prev) => ({ ...prev, [field]: updatedValue }));
   };
 
   const addNewChip = () => {
