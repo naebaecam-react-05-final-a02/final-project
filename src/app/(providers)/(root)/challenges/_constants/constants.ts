@@ -1,4 +1,4 @@
-import { TChallenge } from '../_types/types';
+import { PopularChallengesTypes } from '../_types/types';
 
 export const prevDummySlide = {
   category: 'lifestyle',
@@ -8,12 +8,14 @@ export const prevDummySlide = {
   id: -1,
   imageURL: '',
   isProgress: true,
-  participants: 100,
+  challengeParticipants: [{ count: 0 }],
+  challengeVerify: [{ count: 0 }],
+  participantsCount: 100,
+  verificationsCount: 100,
   rating: 5,
   startDate: '2024-01-01',
   tags: null,
   title: 'dummy',
-  verify: 'dummy',
 };
 
 export const nextDummySlide = {
@@ -24,15 +26,17 @@ export const nextDummySlide = {
   id: -5,
   imageURL: '',
   isProgress: true,
-  participants: 100,
+  challengeParticipants: [{ count: 0 }],
+  challengeVerify: [{ count: 0 }],
+  participantsCount: 100,
+  verificationsCount: 100,
   rating: 5,
   startDate: '2024-01-01',
   tags: null,
   title: 'dummy',
-  verify: 'dummy',
 };
 
-export const loadingSlides: TChallenge[] = [
+export const loadingSlides: PopularChallengesTypes[] = [
   {
     category: 'lifestyle',
     content: '불러오는 중...',
@@ -41,12 +45,14 @@ export const loadingSlides: TChallenge[] = [
     id: -1,
     imageURL: '',
     isProgress: true,
-    participants: 100,
+    challengeParticipants: [{ count: 0 }],
+    challengeVerify: [{ count: 0 }],
+    participantsCount: 100,
+    verificationsCount: 100,
     rating: 5,
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -56,12 +62,14 @@ export const loadingSlides: TChallenge[] = [
     id: -2,
     imageURL: '',
     isProgress: true,
-    participants: 100,
+    challengeParticipants: [{ count: 0 }],
+    challengeVerify: [{ count: 0 }],
+    participantsCount: 100,
+    verificationsCount: 100,
     rating: 5,
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -71,12 +79,14 @@ export const loadingSlides: TChallenge[] = [
     id: -3,
     imageURL: '',
     isProgress: true,
-    participants: 100,
+    challengeParticipants: [{ count: 0 }],
+    challengeVerify: [{ count: 0 }],
+    participantsCount: 100,
+    verificationsCount: 100,
     rating: 5,
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -86,12 +96,14 @@ export const loadingSlides: TChallenge[] = [
     id: -4,
     imageURL: '',
     isProgress: true,
-    participants: 100,
+    challengeParticipants: [{ count: 0 }],
+    challengeVerify: [{ count: 0 }],
+    participantsCount: 100,
+    verificationsCount: 100,
     rating: 5,
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -101,11 +113,13 @@ export const loadingSlides: TChallenge[] = [
     id: -5,
     imageURL: '',
     isProgress: true,
-    participants: 100,
+    challengeParticipants: [{ count: 0 }],
+    challengeVerify: [{ count: 0 }],
+    participantsCount: 100,
+    verificationsCount: 100,
     rating: 5,
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verifications: 0,
   },
 ];
