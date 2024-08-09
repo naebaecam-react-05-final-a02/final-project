@@ -1,17 +1,36 @@
 'use client';
 
-import React from 'react';
+import { useGetUser } from '@/hooks/auth/useUsers';
+import { queryClient } from '@/providers/QueryProvider';
+import { createClient } from '@/supabase/client';
+import React, { useEffect } from 'react';
 import NotificationButton from '../ButtonIcon/NotificationButton';
 import UserProfile from '../UserProfile/UserProfile';
 
 const DefaultHeader = () => {
-  const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const { data: user } = useGetUser();
 
-  console.log('TODAY___', todayStr < '2024-08-09', tomorrowStr);
+  useEffect(() => {
+    if (!user) return;
+
+    const supabase = createClient();
+    const channels = supabase
+      .channel('alarm')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'alarm', filter: `targetUserId=eq.${user.id}` },
+        (payload) => {
+          console.log('PAYLOAD___', payload);
+          queryClient.invalidateQueries({ queryKey: ['alarm'] });
+        },
+      )
+      .subscribe((status) => {
+        console.log('STATUS___', status);
+      });
+    return () => {
+      channels.unsubscribe();
+    };
+  }, [user]);
 
   return (
     <div className="flex justify-between header-gradient">
