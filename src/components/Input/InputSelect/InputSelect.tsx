@@ -149,7 +149,7 @@ const InputSelect = ({
                   {option.icon && (
                     <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 text-xl">{option.icon}</div>
                   )}
-                  {option.value}
+                  {option.value || '-'}
                 </li>
               ))}
             </ul>

@@ -3,10 +3,13 @@ import Button from '@/components/Button';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { foodsQueryKeys } from '@/hooks/diet/foods/queries';
 import { useSearchFoodInfo } from '@/hooks/diet/foods/useFoods';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSubmitDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
+import { useDebounce } from '@/hooks/useDebounce';
+import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { DietTimeType } from '@/types/diet';
@@ -46,7 +49,21 @@ const DietForm = () => {
   );
 
   const { mutate: submitDiet, isPending: isSubmitting } = useSubmitDiet();
-  const { data: searchFoods = [], isFetching: isSearching, isError, refetch } = useSearchFoodInfo(foodForm['foodName']);
+  const {
+    data: searchedFoods = [],
+    isFetching: isSearching,
+    isError,
+    refetch,
+  } = useSearchFoodInfo(foodForm['foodName']);
+
+  const searchFood = () => {
+    if (foodForm['foodName']) refetch();
+    else queryClient.setQueryData(foodsQueryKeys.all, []);
+  };
+
+  const debouncedSearchFoods = useDebounce(() => {
+    searchFood();
+  }, 1000);
 
   if (isError) return <div>에러입니다</div>;
 
@@ -78,7 +95,6 @@ const DietForm = () => {
   const handleDietTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleRadioChange(event.target.value as DietTimeType);
   };
-
   return (
     <>
       {isSubmitting && <Loading />}
@@ -99,7 +115,10 @@ const DietForm = () => {
                   key={food.id}
                   food={food}
                   isActive={activeChipIdx === idx}
-                  handleDelete={() => deleteChip(food.id!)}
+                  handleDelete={() => {
+                    deleteChip(food.id!);
+                    queryClient.setQueryData(foodsQueryKeys.all, []);
+                  }}
                   onClick={() => changeChip(idx)}
                 />
               </SwiperSlide>
@@ -139,7 +158,7 @@ const DietForm = () => {
                 ? [{ value: '검색중...' }]
                 : [
                     { value: foodForm['foodName'] },
-                    ...searchFoods.map((food) => ({
+                    ...searchedFoods.map((food) => ({
                       value: `${food.DESC_KOR}`,
                       onClick: () => {
                         handleFormChange('foodName', food.DESC_KOR);
@@ -153,7 +172,7 @@ const DietForm = () => {
             }
             onChange={(e) => {
               handleFormChange('foodName', e.target.value);
-              refetch();
+              debouncedSearchFoods();
             }}
           />
           <EmojiSelector
