@@ -46,7 +46,7 @@ export const loadingSlides: TChallenge[] = [
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verify: '불러오는 중...',
+    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -61,7 +61,7 @@ export const loadingSlides: TChallenge[] = [
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verify: '불러오는 중...',
+    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -76,7 +76,7 @@ export const loadingSlides: TChallenge[] = [
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verify: '불러오는 중...',
+    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -91,7 +91,7 @@ export const loadingSlides: TChallenge[] = [
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verify: '불러오는 중...',
+    verifications: 0,
   },
   {
     category: 'lifestyle',
@@ -106,6 +106,6 @@ export const loadingSlides: TChallenge[] = [
     startDate: '2024-01-01',
     tags: null,
     title: '불러오는 중...',
-    verify: '불러오는 중...',
+    verifications: 0,
   },
 ];

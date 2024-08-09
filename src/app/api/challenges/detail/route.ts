@@ -14,7 +14,11 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('challenges')
-      .select('*,participants:challengeParticipants(userId),user:users(*)')
+      .select(
+        `*,participants:challengeParticipants(userId),user:users(*), challengeParticipants:challengeParticipants(count),
+        challengeVerify:challengeVerify(count)
+    `,
+      )
       .eq('id', id)
       .single();
 
@@ -22,7 +26,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data, { status: 200 });
+    const sortedData = {
+      ...data,
+      participantsCount: data.challengeParticipants[0]?.count ?? 0,
+      verificationsCount: data.challengeVerify[0]?.count ?? 0,
+    };
+    return NextResponse.json(sortedData, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
   }

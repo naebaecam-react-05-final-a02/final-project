@@ -12,7 +12,8 @@ export async function GET(request: NextRequest) {
     .select(
       `
     *,
-    challengeParticipants:challengeParticipants(count)
+    challengeParticipants:challengeParticipants(count),
+    challengeVerify:challengeVerify(count)
   `,
     )
     .gt('startDate', today)
@@ -26,6 +27,7 @@ export async function GET(request: NextRequest) {
     .map((challenge) => ({
       ...challenge,
       participants: challenge.challengeParticipants[0]?.count ?? 0,
+      verifications: challenge.challengeVerify[0]?.count ?? 0,
     }))
     .sort((a, b) => b.participants - a.participants || dayjs(b.startDate).unix() - dayjs(a.startDate).unix());
 
