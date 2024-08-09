@@ -10,9 +10,9 @@ Deno.serve(async () => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const today = new Date();
+    const today = new Date(Date.now() + 9 * 60 * 60 * 1000);
     const todayStr = today.toISOString().split('T')[0];
-
+    console.log('NOW TODAY___', today, todayStr);
     // 다 가져와도 되나?
     const { data: challenges, error } = await supabase.from('challenges').select('id,startDate,endDate,isProgress');
 
@@ -23,21 +23,21 @@ Deno.serve(async () => {
 
     const promises = challenges.map((challenge) => {
       let isProgress = challenge.isProgress;
-      if (challenge.startDate <= todayStr && challenge.endDate >= todayStr) {
-        // 시작일이 오늘과 같거나 이전이고
-        // 종료일이 오늘과 같거나 더 크면 진행 중인 챌린지
-        isProgress = true;
-      } else if (challenge.endDate < todayStr) {
+      if (challenge.endDate < todayStr) {
         // 시작일 상관없고
         // 종료일이 오늘보다 작다면 끝난 챌린지
         isProgress = false;
+      } else if (challenge.startDate <= todayStr && challenge.endDate >= todayStr) {
+        // 시작일이 오늘과 같거나 이전이고
+        // 종료일이 오늘과 같거나 더 크면 진행 중인 챌린지
+        isProgress = true;
       }
 
       return supabase.from('challenges').update({ isProgress }).eq('id', challenge.id).select('id, isProgress');
     });
 
     const results = await Promise.all(promises);
-
+    console.log('results___', results);
     return new Response(JSON.stringify({ message: 'Challenges updated successfully', results }), {
       headers: { 'Content-Type': 'application/json' },
     });
