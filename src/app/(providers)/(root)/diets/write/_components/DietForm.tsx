@@ -162,10 +162,10 @@ const DietForm = () => {
                       value: `${food.DESC_KOR}`,
                       onClick: () => {
                         handleFormChange('foodName', food.DESC_KOR);
-                        handleFormChange('kcal', food.NUTR_CONT1);
-                        handleFormChange('carbohydrate', food.NUTR_CONT2);
-                        handleFormChange('protein', food.NUTR_CONT3);
-                        handleFormChange('fat', food.NUTR_CONT4);
+                        handleFormChange('kcal', Number(food.NUTR_CONT1));
+                        handleFormChange('carbohydrate', Number(food.NUTR_CONT2));
+                        handleFormChange('protein', Number(food.NUTR_CONT3));
+                        handleFormChange('fat', Number(food.NUTR_CONT4));
                       },
                     })),
                   ]

@@ -14,8 +14,11 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
   const [foodForm, setFoodForms] = useState<FoodType>(foodChips[0]);
 
   const handleChange = (field: keyof FoodType, value: string | number | null) => {
-    const updatedValue = field === 'foodName' || field === 'foodType' ? value : value === '' ? null : Number(value);
-    setFoodChips((prev) => prev.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: value } : food)));
+    const updatedValue =
+      field === 'foodName' || field === 'foodType' ? value : value === '' ? null : Number(Number(value).toFixed(0));
+    setFoodChips((prev) =>
+      prev.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: updatedValue } : food)),
+    );
     setFoodForms((prev) => ({ ...prev, [field]: updatedValue }));
   };
 
