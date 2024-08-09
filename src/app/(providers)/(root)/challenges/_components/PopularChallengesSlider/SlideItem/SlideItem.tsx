@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 import Link from 'next/link';
-import { PopularChallengesTypes } from '../../../_types/types';
+import { TChallenge } from '../../../_types/types';
 import Bullet from '../../Bullet/Bullet';
 
 const SlideItemVariants = cva('border border-white/10 w-[270px] h-[270px] slide-item transition', {
@@ -20,7 +20,7 @@ const SlideItemVariants = cva('border border-white/10 w-[270px] h-[270px] slide-
 });
 
 interface SlideItemProps {
-  challenge: PopularChallengesTypes;
+  challenge: TChallenge;
   index: number;
   activeIndex: number;
 }
@@ -45,8 +45,8 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
           <h3 className="text-xl font-semibold">{challenge.title}</h3>
         </div>
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
-          <p className="text-primary-100">참여 {challenge.challengeParticipants?.[0].count}</p>
-          <p>인증 0</p>
+          <p className="text-primary-100">참여 {challenge.participants}</p>
+          <p>인증 {challenge.verifications}</p>
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
