@@ -42,6 +42,26 @@ const Mobile = ({
   const width = useWindowWidthStore((state) => state.width);
   const setWidth = useWindowWidthStore((state) => state.setWidth);
 
+  // const [test, setTest] = useState<any>();
+
+  // useEffect(() => {
+  //   const supabase = createClient();
+  //   // console.log('HEADER USE EFFECT___');
+  //   const channel = supabase
+  //     .channel('db-changes')
+  //     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'challenges' }, (payload) => {
+  //       setTest(payload);
+  //       // console.log('PAYLOAD___', { payload });
+  //     })
+  //     .subscribe();
+  //   // console.log(channel);
+  //   return () => {
+  //     supabase.removeChannel(channel);
+  //   };
+  // }, []);
+
+  // console.log('TEST___', test);
+
   const handleResize = _.debounce(() => {
     setWidth(window.innerWidth);
   }, 200);

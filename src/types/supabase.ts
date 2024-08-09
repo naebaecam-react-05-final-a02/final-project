@@ -99,12 +99,10 @@ export type Database = {
           id: number
           imageURL: string
           isProgress: boolean
-          participants: number
           rating: number | null
           startDate: string
           tags: string | null
           title: string
-          verify: string | null
         }
         Insert: {
           category?: string
@@ -114,12 +112,10 @@ export type Database = {
           id?: number
           imageURL: string
           isProgress?: boolean
-          participants?: number
           rating?: number | null
           startDate: string
           tags?: string | null
           title: string
-          verify?: string | null
         }
         Update: {
           category?: string
@@ -129,12 +125,10 @@ export type Database = {
           id?: number
           imageURL?: string
           isProgress?: boolean
-          participants?: number
           rating?: number | null
           startDate?: string
           tags?: string | null
           title?: string
-          verify?: string | null
         }
         Relationships: [
           {
