@@ -15,8 +15,7 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
 
   const handleChange = (field: keyof FoodType, value: string | number | null) => {
     const updatedValue = field === 'foodName' || field === 'foodType' ? value : value === '' ? null : Number(value);
-    const updatedFoods = foodChips.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: value } : food));
-    setFoodChips(updatedFoods);
+    setFoodChips((prev) => prev.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: value } : food)));
     setFoodForms((prev) => ({ ...prev, [field]: updatedValue }));
   };
 
@@ -30,8 +29,9 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
 
   const deleteChip = (deleteFoodId: string) => {
     if (foodChips.length === 1) {
-      setFoodChips([initialFoodState]);
-      setFoodForms(foodChips[0]);
+      // setFoodChips([initialFoodState]);
+      // setFoodForms(foodChips[0]);
+      alert('최소 1개의 음식이 남아있어야 합니다.');
     } else {
       const deletedFoods = foodChips.filter((food) => food.id !== deleteFoodId);
       setFoodChips(deletedFoods);
