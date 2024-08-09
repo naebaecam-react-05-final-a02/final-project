@@ -93,12 +93,10 @@ export type Database = {
           id: number;
           imageURL: string;
           isProgress: boolean;
-          participants: number;
           rating: number | null;
           startDate: string;
           tags: string | null;
           title: string;
-          verifications: number;
         };
         Insert: {
           category?: string;
@@ -108,12 +106,10 @@ export type Database = {
           id?: number;
           imageURL: string;
           isProgress?: boolean;
-          participants?: number;
           rating?: number | null;
           startDate: string;
           tags?: string | null;
           title: string;
-          verifications?: number;
         };
         Update: {
           category?: string;
@@ -123,12 +119,10 @@ export type Database = {
           id?: number;
           imageURL?: string;
           isProgress?: boolean;
-          participants?: number;
           rating?: number | null;
           startDate?: string;
           tags?: string | null;
           title?: string;
-          verifications?: number;
         };
         Relationships: [
           {
