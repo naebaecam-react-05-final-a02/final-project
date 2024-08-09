@@ -1,4 +1,4 @@
-import { TChallenge } from '../_types/types';
+import { PopularChallengesTypes } from '../_types/types';
 
 export const prevDummySlide = {
   category: 'lifestyle',
@@ -32,7 +32,7 @@ export const nextDummySlide = {
   verify: 'dummy',
 };
 
-export const loadingSlides: TChallenge[] = [
+export const loadingSlides: PopularChallengesTypes[] = [
   {
     category: 'lifestyle',
     content: '불러오는 중...',
@@ -47,6 +47,7 @@ export const loadingSlides: TChallenge[] = [
     tags: null,
     title: '불러오는 중...',
     verify: '불러오는 중...',
+    challengeParticipants: [{ count: 0 }],
   },
   {
     category: 'lifestyle',
@@ -62,6 +63,7 @@ export const loadingSlides: TChallenge[] = [
     tags: null,
     title: '불러오는 중...',
     verify: '불러오는 중...',
+    challengeParticipants: [{ count: 0 }],
   },
   {
     category: 'lifestyle',
@@ -77,6 +79,7 @@ export const loadingSlides: TChallenge[] = [
     tags: null,
     title: '불러오는 중...',
     verify: '불러오는 중...',
+    challengeParticipants: [{ count: 0 }],
   },
   {
     category: 'lifestyle',
@@ -92,6 +95,7 @@ export const loadingSlides: TChallenge[] = [
     tags: null,
     title: '불러오는 중...',
     verify: '불러오는 중...',
+    challengeParticipants: [{ count: 0 }],
   },
   {
     category: 'lifestyle',
@@ -107,5 +111,6 @@ export const loadingSlides: TChallenge[] = [
     tags: null,
     title: '불러오는 중...',
     verify: '불러오는 중...',
+    challengeParticipants: [{ count: 0 }],
   },
 ];

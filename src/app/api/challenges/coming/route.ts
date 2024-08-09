@@ -18,6 +18,8 @@ export async function GET(request: NextRequest) {
     .gt('startDate', today)
     .order('startDate', { ascending: false });
 
+  console.log(challengesData?.[0]?.challengeParticipants?.[0]?.count);
+
   if (challengesError) {
     console.error('Error fetching challenges:', challengesError);
     return NextResponse.json({ error: 'Failed to fetch challenges' }, { status: 500 });
