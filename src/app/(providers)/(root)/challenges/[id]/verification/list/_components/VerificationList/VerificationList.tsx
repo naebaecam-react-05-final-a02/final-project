@@ -36,8 +36,6 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     staleTime: Infinity,
   });
 
-  console.log(verifications);
-
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries, observer) => {
@@ -77,9 +75,15 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
                   <VerificationItem verification={verification} />
                 </li>
               ))}
+              {isFetching &&
+                hasNextPage &&
+                Array.from({ length: 5 }).map((_, i) => (
+                  <li key={i}>
+                    <VerificationCardSkeleton />
+                  </li>
+                ))}
             </Masonry>
           </ul>
-          {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
         </div>
       )}
 
