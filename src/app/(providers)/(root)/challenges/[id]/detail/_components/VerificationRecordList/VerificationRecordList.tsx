@@ -4,7 +4,7 @@ import Loading from '@/components/Loading/Loading';
 import ThumbsUpIcon from '@/components/ThumbsUpIcon';
 import api from '@/service/service';
 import { verificationsType } from '@/types/challenge';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import 'swiper/css';
@@ -59,6 +59,8 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
   //   fetchVerificationRecords();
   // }, [id]);
 
+  const queryClient = useQueryClient();
+
   const {
     data: verifications,
     error,
@@ -67,7 +69,30 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
     queryKey: ['verifications', id],
     queryFn: () => api.challenge.getVerifications({ challengeId: id }),
   });
-  console.log(verifications);
+
+  const { mutate: toggleLike } = useMutation({
+    mutationFn: ({ verificationId: id, isLiked }: { verificationId: number; isLiked: boolean }) =>
+      api.challenge.toggleLike({ verificationId: id, isLiked }),
+    onMutate: async (newData) => {
+      await queryClient.cancelQueries({ queryKey: ['verifications'] });
+      const prevVerifications = queryClient.getQueryData(['verifications', id]);
+      queryClient.setQueryData(['verifications', id], (oldData: verificationsType[]) => {
+        return oldData?.map((verification: verificationsType) => {
+          if (verification.id === newData.verificationId) {
+            return {
+              ...verification,
+              isLiked: !newData.isLiked,
+              likes_count: newData.isLiked ? verification.likes_count - 1 : verification.likes_count + 1,
+            };
+          }
+          return verification;
+        });
+      });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['verifications'] });
+    },
+  });
 
   if (isPending) return <Loading />;
 
@@ -113,12 +138,16 @@ const VerificationRecordList = ({ id, challengeAuthor }: ChallengeInfoMethodProp
                       <ThumbsUp />
                       <span>999</span>
                     </div> */}
-                    <ThumbsUpIcon
-                      verificationId={verification.id}
-                      likesCount={verification.likes_count}
-                      isLiked={verification.isLiked}
-                      isBackground={false}
-                    />
+                    <button
+                      onClick={() => toggleLike({ isLiked: verification.isLiked, verificationId: verification.id })}
+                    >
+                      <ThumbsUpIcon
+                        verificationId={verification.id}
+                        likesCount={verification.likes_count}
+                        isLiked={verification.isLiked}
+                        isBackground={false}
+                      />
+                    </button>
                   </div>
                   <div className="overflow-hidden text-ellipsis line-clamp-2 text-[14px] mb-4">
                     {verification.impression}

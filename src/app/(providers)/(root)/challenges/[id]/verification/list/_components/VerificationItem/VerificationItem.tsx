@@ -37,11 +37,9 @@ const VerificationItem = ({
                   likes_count: newData.isLiked ? verification.likes_count - 1 : verification.likes_count + 1,
                 };
               }
-
               return verification;
             });
           });
-
           return {
             ...oldData,
             pages: data,
