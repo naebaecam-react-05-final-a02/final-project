@@ -11,12 +11,46 @@ export async function GET(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isLike = await supabase
-    .from('challengeVerificationLikes')
-    .select('*')
-    .eq('challengeId', challengeId)
-    .eq('userId', user?.id)
-    .single();
+    .from('challengeVerify')
+    .select(`*, challengeVerificationLikes(verificationId)`)
+    .eq('challengeId', challengeId);
 
-  console.log(isLike);
   return NextResponse.json({ status: 200 });
+}
+
+export async function POST(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const verificationId = searchParams.get('verificationId');
+  const supabase = createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (authError) return NextResponse.json({ authError, status: 401 });
+
+  const { data, error: postError } = await supabase.from('challengeVerificationLikes').insert({
+    verificationId,
+    userId: user?.id,
+  });
+  if (authError) return NextResponse.json({ postError, status: 400 });
+  return NextResponse.json({ data, status: 200 });
+}
+
+export async function DELETE(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const verificationId = searchParams.get('verificationId');
+  const supabase = createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (authError) return NextResponse.json({ authError, status: 401 });
+
+  const { data, error: deleteError } = await supabase
+    .from('challengeVerificationLikes')
+    .delete()
+    .eq('verificationId', verificationId)
+    .eq('userId', user?.id);
+  if (authError) return NextResponse.json({ deleteError, status: 400 });
+  return NextResponse.json({ data, status: 200 });
 }

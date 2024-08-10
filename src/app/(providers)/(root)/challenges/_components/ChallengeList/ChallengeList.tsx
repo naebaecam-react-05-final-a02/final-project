@@ -17,7 +17,6 @@ const ChallengeList = () => {
   const LIMIT = 6;
 
   const { data: count, error } = useGetChallengeCount({ category });
-  console.log(count);
 
   const {
     data: challenges,

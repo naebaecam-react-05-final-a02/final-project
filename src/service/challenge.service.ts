@@ -9,6 +9,12 @@ class ChallengeAPI {
     this.baseURL = baseURL;
   }
 
+  getVerifications = async ({ challengeId }: { challengeId: number }) => {
+    const response = await axios.get(`${this.baseURL}/verification/${challengeId}`);
+    const data = response.data;
+    return data;
+  };
+
   registerChallenge = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/register`, challengeData);
@@ -144,6 +150,13 @@ class ChallengeAPI {
       }
       throw error;
     }
+  };
+  toggleLike = async ({ verificationId, isLiked }: { verificationId: number; isLiked: boolean }) => {
+    const response = isLiked
+      ? await axios.delete(`${this.baseURL}/verification/likes?verificationId=${verificationId}`)
+      : await axios.post(`${this.baseURL}/verification/likes?verificationId=${verificationId}`);
+    const data = response.data;
+    return data;
   };
 }
 

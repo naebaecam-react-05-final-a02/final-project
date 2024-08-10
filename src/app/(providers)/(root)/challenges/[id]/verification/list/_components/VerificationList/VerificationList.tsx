@@ -28,7 +28,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       // console.log('LASTPAGE', lastPage);
       // console.log('ALLPAGE', allPage);
-      const nextPage = lastPage.length === 10 ? allPage.length : undefined;
+      const nextPage = lastPage.length === 6 ? allPage.length : undefined;
       return nextPage;
     },
     initialPageParam: 1,
@@ -36,7 +36,7 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     staleTime: Infinity,
   });
 
-  // console.log(verifications);
+  console.log(verifications);
 
   useEffect(() => {
     const obs = new IntersectionObserver(

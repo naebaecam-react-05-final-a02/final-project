@@ -22,7 +22,6 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: challenge } = useGetChallengeDetail(id);
   const router = useRouter();
 
-  console.log(challenge);
   // const [menuOpen, setMenuOpen] = useState(false);
   // const [isHoveredEdit, setIsHoveredEdit] = useState(false);
   // const [isHoveredDelete, setIsHoveredDelete] = useState(false);
