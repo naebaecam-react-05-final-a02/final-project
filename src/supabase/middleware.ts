@@ -42,7 +42,7 @@ export async function updateSession(request: NextRequest) {
       console.error('Failed to refresh session:', error);
     }
   }
-  console.log(user);
+
   const publicRoutes = ['/log-in', '/sign-up', '/api', '/reset-password', '/reset-password-request'];
   const authRoutes = ['/log-in', '/sign-up'];
 

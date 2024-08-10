@@ -1,6 +1,12 @@
 import { Tables } from './supabase';
 
-export type verificationsType = Tables<'challengeVerify'> & { users: Tables<'users'>; imageURLs: string[] };
+export type verificationsType = Tables<'challengeVerify'> & {
+  users: Tables<'users'>;
+  imageURLs: string[];
+  likes: { verificationId: number; userId: string }[] | [];
+  likes_count: number;
+  isLiked: boolean;
+};
 export type verificationsCountType = {
   totalVerifications: number | undefined;
   totalUsers: number;

@@ -1,17 +1,24 @@
 import { verificationsType } from '@/types/challenge';
 import { Database, Tables } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
+import _ from 'lodash';
 import { getEndOfDayISO, getStartOfDayISO } from '../../../../../../../utils/dateFormatter';
 
-const DATA_PER_PAGE = 10;
+const DATA_PER_PAGE = 6;
 
 export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>, id: string, offset?: number) => {
+  const {
+    data: { user },
+    error,
+  } = await client.auth.getUser();
   const query = client
     .from('challengeVerify')
-    .select('*,users (id, nickname, email,profileURL)')
+    .select(
+      '*,users (id, nickname, email,profileURL),likes:challengeVerificationLikes(userId, verificationId), likes_count:challengeVerificationLikes(count)',
+    )
     .eq('challengeId', id)
-    .gte('date', getStartOfDayISO()) // 인증 오늘꺼만 가져오게?
-    .lte('date', getEndOfDayISO())
+    // .gte('date', getStartOfDayISO()) // 인증 오늘꺼만 가져오게?
+    // .lte('date', getEndOfDayISO())
     .order('date', { ascending: false });
 
   if (offset) {
@@ -20,12 +27,27 @@ export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>,
 
     query.range(from, to);
   } else {
-    query.limit(10);
+    query.limit(6);
   }
 
   const response = await query;
 
-  return response.data as verificationsType[];
+  const data = response.data;
+
+  const verifications = data?.map((item) => {
+    // Ensure likes is an array and has the expected structure
+    const isLiked = Array.isArray(item.likes)
+      ? !_.isEmpty(item.likes.find((like: any) => like.userId === user?.id))
+      : [];
+
+    return {
+      ...item,
+      likes_count: item.likes_count.length !== 0 ? item.likes_count[0]?.count : 0,
+      isLiked,
+    };
+  });
+
+  return verifications as verificationsType[];
 };
 
 export const fetchVerificationTotalData = async (client: SupabaseClient<Database>, id: string) => {

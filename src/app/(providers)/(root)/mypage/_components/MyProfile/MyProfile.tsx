@@ -31,7 +31,7 @@ const MyProfile = () => {
       router.push('/log-in');
     }
   }, [user]);
-  console.log(user?.introduction.length);
+
   return (
     <section className="flex flex-col gap-6">
       <article className="flex flex-col gap-6">
