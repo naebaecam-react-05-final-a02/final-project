@@ -88,6 +88,7 @@ const config: Config = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.border-gradient': {

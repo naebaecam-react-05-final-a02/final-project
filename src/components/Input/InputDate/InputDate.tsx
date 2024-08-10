@@ -118,10 +118,10 @@ const InputDate = ({
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-[15px] font-medium cursor-pointer
               bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-[14px] pl-11
-              border-b-2
+              
               ${isOpen ? 'z-20' : ''}
               ${isOpen ? 'text-white' : 'text-whiteT-50 '}
-              ${error ? 'border-error-gradient' : 'border-gradient'}
+              
                ${textAlign === 'right' ? 'text-right' : 'text-left'}
               ${className}
               `}

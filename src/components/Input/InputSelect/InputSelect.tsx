@@ -95,9 +95,8 @@ const InputSelect = ({
             type="text"
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition border-b-2 pr-10 py-3
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition pr-10 py-[14px]
               ${isOpen ? 'z-20' : ''}
-              ${error ? 'border-error-gradient' : 'border-gradient'} 
               ${className}
               ${icon ? 'pl-11' : 'pl-3'} 
               ${textAlign === 'left' ? 'text-left' : 'text-right'}
