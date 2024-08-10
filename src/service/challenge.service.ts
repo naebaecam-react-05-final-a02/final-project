@@ -1,3 +1,4 @@
+import { CategoryTypes } from '@/app/(providers)/(root)/challenges/all/_constants/constants';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
@@ -132,6 +133,17 @@ class ChallengeAPI {
     });
 
     return response;
+  };
+  getChallengeCount = async ({ category }: { category: CategoryTypes }) => {
+    try {
+      const response = await axios.get(`${this.baseURL}/all/count?category=${category}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
   };
 }
 

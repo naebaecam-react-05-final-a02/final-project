@@ -1,5 +1,6 @@
 'use client';
 
+import { useGetChallengeCount } from '@/hooks/challenge/useChallenge';
 import useIntersect from '@/hooks/useIntersect';
 import api from '@/service/service';
 import { useChallengeCategoryStore } from '@/stores/stores';
@@ -14,6 +15,9 @@ const ChallengeList = () => {
 
   type TChallenge = Tables<'challenges'>;
   const LIMIT = 6;
+
+  const { data: count, error } = useGetChallengeCount({ category });
+  console.log(count);
 
   const {
     data: challenges,
@@ -37,7 +41,7 @@ const ChallengeList = () => {
 
   return (
     <>
-      <p className="text-white/50 text-[12px]">총 {999}개의 챌린지가 있습니다.</p>
+      <p className="text-white/50 text-[12px]">총 {count}개의 챌린지가 있습니다.</p>
       <div className="w-full h-full">
         <ul className="flex flex-col gap-2 overflow-scroll scroll">
           {!challenges?.pages || isPending ? (
@@ -57,9 +61,9 @@ const ChallengeList = () => {
           )}
           {hasNextPage && (
             <>
-              <div className="h-24"></div>
+              <div className="h-12"></div>
               <div ref={ref}></div>
-              <div className="h-36"></div>
+              <div className="h-18"></div>
             </>
           )}
         </ul>
