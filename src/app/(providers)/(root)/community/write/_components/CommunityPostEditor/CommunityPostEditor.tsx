@@ -6,7 +6,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useCallback } from 'react';
-import sanitizeContent from '../../_utils/sanitizeContent';
+import sanitizeContent from '../../../_utils/sanitizeContent';
 import MenuBar from '../MenuBar';
 
 const MAX_CHARACTERS = 2000;

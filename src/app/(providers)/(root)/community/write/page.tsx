@@ -1,4 +1,4 @@
-import CommunityPostForm from '../_components/CommunityPostForm';
+import CommunityPostForm from './_components/CommunityPostForm';
 
 const CommunityWritePage = () => {
   return <CommunityPostForm />;

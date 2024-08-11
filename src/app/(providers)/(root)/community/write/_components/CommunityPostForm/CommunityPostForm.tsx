@@ -6,7 +6,7 @@ import Input from '@/components/Input';
 import { useCreateCommunityPost } from '@/hooks/community/useCommunity';
 import { CommunityPostData } from '@/types/community';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import validateCommunityPost, { ValidationResult } from '../../_utils/validateCommunityPost';
+import validateCommunityPost, { ValidationResult } from '../../../_utils/validateCommunityPost';
 import CommunityPostEditor from '../CommunityPostEditor';
 
 const CommunityPostForm = () => {
