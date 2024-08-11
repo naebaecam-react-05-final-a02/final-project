@@ -4,6 +4,7 @@ import CheckButton from '@/components/ButtonIcon/CheckButton';
 import PrevButton from '@/components/ButtonIcon/PrevButton';
 import InputText from '@/components/Input/InputText/InputText';
 import TitleHeader from '@/components/PrevButtonAndTitleHeader/PrevButtonAndTitleHeader';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
@@ -16,6 +17,7 @@ import useInputs from '../_hooks/useInputs';
 import { TInputs } from '../_types/types';
 
 const MyProfileEditPage = () => {
+  const modal = useModal();
   const router = useRouter();
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
@@ -32,25 +34,25 @@ const MyProfileEditPage = () => {
 
   const { mutate: updateProfile } = useMutation({
     mutationFn: async ({ formData }: { formData: FormData }) => api.users.updateUserProfile({ formData }),
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       if (result.status !== 200) return;
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      alert('수정이 완료되었습니다');
+      await modal.alert(['수정이 완료되었습니다']);
       router.replace('/mypage');
     },
   });
 
   const { mutate: deleteProfile } = useMutation({
     mutationFn: async () => api.users.deleteUserAvatar(),
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       if (result.status !== 200) return;
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      alert('삭제가 완료되었습니다.');
+      await modal.alert(['삭제가 완료되었습니다.']);
     },
   });
 
   const handleUpdateProfile = async () => {
-    const yes = confirm('수정사항을 저장하시겠습니까?');
+    const yes = await modal.confirm(['수정사항을 저장하시겠습니까?']);
     if (!yes) return;
 
     const formData = new FormData();
@@ -79,7 +81,7 @@ const MyProfileEditPage = () => {
   };
 
   const handleDeleteAvatar = async () => {
-    const yes = confirm('정말로 프로필 이미지를 삭제하시겠습니까?');
+    const yes = await modal.confirm(['정말로 프로필 이미지를 삭제하시겠습니까?']);
     if (!yes) return;
 
     deleteProfile();

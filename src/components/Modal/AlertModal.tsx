@@ -5,16 +5,21 @@ import { useModal } from '@/contexts/modal.context/modal.context';
 import Button from '../Button';
 import ModalBody from './ModalBody';
 
-const AlertModal = ({ onNextEvent, contents }: { contents: string[]; onNextEvent: () => void }) => {
+interface AlertModalProps {
+  onSuccess: () => void;
+  contents: string[];
+}
+
+const AlertModal = ({ onSuccess, contents }: AlertModalProps) => {
   const modal = useModal();
 
   const handleClickConfirm = () => {
     modal.close();
-    onNextEvent();
+    onSuccess();
   };
 
   return (
-    <ModalBody>
+    <ModalBody onCancel={handleClickConfirm}>
       <div className="w-full h-full flex flex-col gap-6 justify-between">
         <div className="w-full flex justify-center items-center">
           <AlertSVG />

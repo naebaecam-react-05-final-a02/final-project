@@ -4,18 +4,26 @@ import { useModal } from '@/contexts/modal.context/modal.context';
 import Button from '../Button';
 import ModalBody from './ModalBody';
 
-const ConfirmModal = ({ onNextEvent, contents }: { contents: string[]; onNextEvent: () => void }) => {
+interface ConfirmModalProps {
+  onSuccess: () => void;
+  onCancel: () => void;
+
+  contents: string[];
+}
+
+const ConfirmModal = ({ onSuccess, onCancel, contents }: ConfirmModalProps) => {
   const modal = useModal();
   const handleCloseModal = () => {
     modal.close();
+    onCancel();
   };
   const handleClickConfirm = () => {
     modal.close();
-    onNextEvent();
+    onSuccess();
   };
 
   return (
-    <ModalBody>
+    <ModalBody onCancel={handleCloseModal}>
       <div className="w-full h-full flex flex-col gap-6 justify-between">
         <div className="w-full flex justify-center items-center">
           <ConfirmSVG />

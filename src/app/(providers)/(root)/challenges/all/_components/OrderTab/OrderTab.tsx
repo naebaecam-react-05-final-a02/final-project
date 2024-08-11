@@ -6,8 +6,10 @@ import FilterIcon from '../FilterIcon';
 
 const OrderTab = () => {
   const modal = useModal();
-  const handleClickButton = () => {
-    modal.confirm({ contents: ['테스트용 모달입니다', '이건 작동하지 않습니다'], onNextEvent: () => {} });
+  const handleClickButton = async () => {
+    const ok = await modal.confirm(['테스트용 모달입니다', '이건 작동하지 않습니다']);
+    if (!ok) return alert('false입니다');
+    return alert('true입니다');
   };
 
   return (

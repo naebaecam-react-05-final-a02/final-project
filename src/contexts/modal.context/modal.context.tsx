@@ -1,22 +1,21 @@
 'use client';
 
 import AlertModal from '@/components/Modal/AlertModal';
-import Backdrop from '@/components/Modal/BackDrop';
 import ConfirmModal from '@/components/Modal/ConfirmModal';
 //import { useScrollLock } from '@yoojinyoung/usescrolllock';
 import { PropsWithChildren, createContext, useContext, useState } from 'react';
 
 interface TInitialValue {
-  alert: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => void;
-  confirm: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => void;
+  alert: (contents: string[]) => Promise<boolean>;
+  confirm: (contents: string[]) => Promise<boolean>;
   open: (el: React.ReactElement) => void;
   close: () => void;
   isModalOpen: boolean;
 }
 
 const initialValue: TInitialValue = {
-  alert: () => {},
-  confirm: () => {},
+  alert: async () => true,
+  confirm: async () => true,
   open: () => {},
   close: () => {},
   isModalOpen: false,
@@ -30,11 +29,15 @@ export function ModalProvider({ children }: PropsWithChildren) {
 
   const value = {
     isModalOpen: !!modal,
-    alert: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => {
-      setModal(<AlertModal contents={contents} onNextEvent={onNextEvent} />);
+    alert: async (contents: string[]) => {
+      return new Promise<boolean>((resolve) => {
+        setModal(<AlertModal contents={contents} onSuccess={() => resolve(true)} />);
+      });
     },
-    confirm: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => {
-      setModal(<ConfirmModal contents={contents} onNextEvent={onNextEvent} />);
+    confirm: async (contents: string[]) => {
+      return new Promise<boolean>((resolve) => {
+        setModal(<ConfirmModal contents={contents} onSuccess={() => resolve(true)} onCancel={() => resolve(false)} />);
+      });
     },
     open: (el: React.ReactElement) => {
       setModal(el);
@@ -46,8 +49,8 @@ export function ModalProvider({ children }: PropsWithChildren) {
 
   return (
     <ModalContext.Provider value={value}>
+      {modal}
       {children}
-      {modal && <Backdrop>{modal}</Backdrop>}
     </ModalContext.Provider>
   );
 }
