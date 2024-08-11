@@ -21,8 +21,11 @@ Deno.serve(async () => {
       return new Response(JSON.stringify({ error }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 
+    console.log('Challenge___', challenges);
+
     const promises = challenges.map((challenge: any) => {
       let isProgress = challenge.isProgress;
+
       if (challenge.endDate < todayStr) {
         // 시작일 상관없고
         // 종료일이 오늘보다 작다면 끝난 챌린지
@@ -31,8 +34,12 @@ Deno.serve(async () => {
         // 시작일이 오늘과 같거나 이전이고
         // 종료일이 오늘과 같거나 더 크면 진행 중인 챌린지
         isProgress = true;
+      } else if (challenge.startDate > todayStr) {
+        isProgress = false;
       }
-
+      console.log(
+        `${challenge.id} prev isProgress: ${challenge.isProgress}->${isProgress} startDate: ${challenge.startDate}, endDate: ${challenge.endDate}`,
+      );
       return supabase.from('challenges').update({ isProgress }).eq('id', challenge.id).select('id, isProgress');
     });
 
