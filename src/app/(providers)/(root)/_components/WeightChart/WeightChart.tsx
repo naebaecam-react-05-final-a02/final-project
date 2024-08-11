@@ -72,7 +72,7 @@ const WeightChart = ({ query }: WeightChartType) => {
 
   return (
     <>
-      <div className="w-full text-center text-sm text-white">나의 체중 변화</div>
+      <div className="w-full text-center text-sm text-white/50">나의 체중 변화</div>
       <ResponsiveContainer width="100%" height={'99.5%'} debounce={1} minHeight={100}>
         {/* <LineChart data={weights?.data!} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}> */}
         <LineChart data={tmp} margin={{ right: 0, left: -40, bottom: 10, top: 10 }}>
