@@ -11,7 +11,11 @@ const NotificationButton = () => {
   const { data: alarm, error } = useQuery({
     queryKey: ['alarm'],
     queryFn: async () => {
-      const response = await supabase.from('alarm').select('*').eq('targetUserId', user?.id).order('createdAt');
+      const response = await supabase
+        .from('alarm')
+        .select('*')
+        .match({ targetUserId: user?.id, isRead: false })
+        .order('createdAt');
       return response.data;
     },
     enabled: !!user,
@@ -22,13 +26,7 @@ const NotificationButton = () => {
   return (
     <div className="relative select-none">
       {alarm && alarm?.length > 0 && (
-        <div
-          className="absolute rounded-full size-4 bg-red-500 text-white text-[10px] 
-        flex items-center justify-center
-      -top-1 -right-1 z-10"
-        >
-          {true ? alarm.length : '+9'}
-        </div>
+        <div className="absolute rounded-full size-[6px] bg-primary-100 top-2 right-2 z-10" />
       )}
       <IconButton
         onClick={() => {

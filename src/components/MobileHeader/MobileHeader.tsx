@@ -18,7 +18,7 @@ const DefaultHeader = () => {
       .channel('alarm')
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'alarm', filter: `targetUserId=eq.${user.id}` },
+        { event: '*', schema: 'public', table: 'alarm', filter: `targetUserId=eq.${user.id}` },
         (payload) => {
           console.log('PAYLOAD___', payload);
           queryClient.invalidateQueries({ queryKey: ['alarm'] });
