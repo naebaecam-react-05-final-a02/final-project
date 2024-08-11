@@ -115,11 +115,8 @@ const InputSelect = ({
           )}
           <button
             type="button"
-            className={`absolute right-3 top-1/2 transform -translate-y-1/2 
-              flex flex-col justify-center items-center ${isOpen ? 'z-20' : ''}
-              p-[2px] gap-[10px] rounded-[4px] 
-              transition-all duration-300 ease-in-out
-              ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col justify-center items-center p-[2px] gap-[10px] rounded-[4px] transition-all duration-300 ease-in-out
+              ${isOpen ? 'bg-primary-10 rotate-180 z-20' : 'bg-[rgba(255,255,255,0.05)]'}`}
             onClick={toggleDropdown}
             disabled={!dropdownOptions || dropdownOptions.length === 0}
           >
@@ -129,12 +126,16 @@ const InputSelect = ({
         {isOpen && dropdownOptions && dropdownOptions.length > 0 && (
           <>
             <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
-            <ul className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden">
+            <ul
+              className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden
+            transform origin-top transition-all duration-300 ease-in-out scale-100 opacity-100"
+            >
               {dropdownOptions.map((option, index) => (
                 <li
                   key={index}
-                  className={`relative w-full rounded-md bg-transparent p-[6px]
-                  hover:bg-primary-10 hover:text-primary-100 cursor-pointer transition
+                  style={{ animationDelay: `${index * 50}ms` }}
+                  className={`relative w-full rounded-md bg-transparent p-[6px] transform transition-all duration-300 ease-in-out opacity-0 translate-y-2 scale-95
+                  hover:bg-primary-10 hover:text-primary-100 cursor-pointer animate-dropdown-item
                   ${icon ? 'pl-9' : ''} 
                   ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
                   ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
