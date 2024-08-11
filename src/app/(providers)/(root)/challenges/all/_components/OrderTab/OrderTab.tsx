@@ -7,7 +7,7 @@ import FilterIcon from '../FilterIcon';
 const OrderTab = () => {
   const modal = useModal();
   const handleClickButton = () => {
-    modal.open({ type: 'alert', content: '테스트용 모달입니다', onNextEvent: () => {} });
+    modal.confirm({ contents: ['테스트용 모달입니다', '이건 작동하지 않습니다'], onNextEvent: () => {} });
   };
 
   return (

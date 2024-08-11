@@ -6,33 +6,38 @@ import ConfirmModal from '@/components/Modal/ConfirmModal';
 //import { useScrollLock } from '@yoojinyoung/usescrolllock';
 import { PropsWithChildren, createContext, useContext, useState } from 'react';
 
-export type ModalTypes = 'confirm' | 'alert';
-
 interface TInitialValue {
-  open: ({ type, content, onNextEvent }: { type: ModalTypes; content: string; onNextEvent: () => void }) => void;
+  alert: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => void;
+  confirm: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => void;
+  open: (el: React.ReactElement) => void;
   close: () => void;
   isModalOpen: boolean;
 }
 
 const initialValue: TInitialValue = {
-  open: ({ type, content, onNextEvent }) => {},
+  alert: () => {},
+  confirm: () => {},
+  open: () => {},
   close: () => {},
   isModalOpen: false,
 };
 const ModalContext = createContext<TInitialValue>(initialValue);
+
 export const useModal = () => useContext<TInitialValue>(ModalContext);
 
 export function ModalProvider({ children }: PropsWithChildren) {
   const [modal, setModal] = useState<React.ReactElement | null>(null);
-  console.log(modal);
+
   const value = {
     isModalOpen: !!modal,
-    open: ({ type, content, onNextEvent }: { type: ModalTypes; content: string; onNextEvent: () => void }) => {
-      if (type === 'confirm') {
-        setModal(<ConfirmModal type={type} content={content} onNextEvent={onNextEvent} />);
-      } else if (type === 'alert') {
-        setModal(<AlertModal type={type} content={content} onNextEvent={onNextEvent} />);
-      }
+    alert: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => {
+      setModal(<AlertModal contents={contents} onNextEvent={onNextEvent} />);
+    },
+    confirm: ({ contents, onNextEvent }: { contents: string[]; onNextEvent: () => void }) => {
+      setModal(<ConfirmModal contents={contents} onNextEvent={onNextEvent} />);
+    },
+    open: (el: React.ReactElement) => {
+      setModal(el);
     },
     close: () => {
       setModal(null);
