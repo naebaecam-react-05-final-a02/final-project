@@ -9,6 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      alarm: {
+        Row: {
+          createdAt: string
+          id: number
+          idForURL: string | null
+          isRead: boolean | null
+          targetUserId: string | null
+          type: string | null
+        }
+        Insert: {
+          createdAt?: string
+          id?: number
+          idForURL?: string | null
+          isRead?: boolean | null
+          targetUserId?: string | null
+          type?: string | null
+        }
+        Update: {
+          createdAt?: string
+          id?: number
+          idForURL?: string | null
+          isRead?: boolean | null
+          targetUserId?: string | null
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alarm_targetUserId_fkey"
+            columns: ["targetUserId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challengeParticipants: {
         Row: {
           challengeId: number
@@ -99,12 +134,10 @@ export type Database = {
           id: number
           imageURL: string
           isProgress: boolean
-          participants: number
           rating: number | null
           startDate: string
           tags: string | null
           title: string
-          verify: string | null
         }
         Insert: {
           category?: string
@@ -114,12 +147,10 @@ export type Database = {
           id?: number
           imageURL: string
           isProgress?: boolean
-          participants?: number
           rating?: number | null
           startDate: string
           tags?: string | null
           title: string
-          verify?: string | null
         }
         Update: {
           category?: string
@@ -129,12 +160,10 @@ export type Database = {
           id?: number
           imageURL?: string
           isProgress?: boolean
-          participants?: number
           rating?: number | null
           startDate?: string
           tags?: string | null
           title?: string
-          verify?: string | null
         }
         Relationships: [
           {
@@ -142,6 +171,35 @@ export type Database = {
             columns: ["createdBy"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challengeVerificationLikes: {
+        Row: {
+          created_at: string
+          id: number
+          userId: string
+          verificationId: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          userId?: string
+          verificationId: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          userId?: string
+          verificationId?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challengeVerificationLikes_verificationId_fkey"
+            columns: ["verificationId"]
+            isOneToOne: false
+            referencedRelation: "challengeVerify"
             referencedColumns: ["id"]
           },
         ]
@@ -181,6 +239,44 @@ export type Database = {
           },
           {
             foreignKeyName: "challengeParticipants_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityPosts: {
+        Row: {
+          category: string
+          content: string
+          createdAt: string
+          id: number
+          tags: string[] | null
+          title: string
+          userId: string | null
+        }
+        Insert: {
+          category: string
+          content: string
+          createdAt?: string
+          id?: number
+          tags?: string[] | null
+          title: string
+          userId?: string | null
+        }
+        Update: {
+          category?: string
+          content?: string
+          createdAt?: string
+          id?: number
+          tags?: string[] | null
+          title?: string
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityPosts_userId_fkey"
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
