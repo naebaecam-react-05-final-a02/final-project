@@ -1,12 +1,7 @@
-import Mobile from '@/layouts/Mobile';
 import CommunityPostList from './_components/CommunityPostList';
 
 const CommunityPage = () => {
-  return (
-    <Mobile>
-      <CommunityPostList />
-    </Mobile>
-  );
+  return <CommunityPostList />;
 };
 
 export default CommunityPage;

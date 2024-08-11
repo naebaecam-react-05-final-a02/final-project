@@ -12,7 +12,14 @@ export async function GET(request: NextRequest) {
 
   const { data, error, count } = await supabase
     .from('communityPosts')
-    .select('*', { count: 'exact' })
+    .select(
+      `*, user:userId (
+      id,
+      nickname,
+      profileURL
+    )`,
+      { count: 'exact' },
+    )
     .range(from, to)
     .order('createdAt', { ascending: false });
 

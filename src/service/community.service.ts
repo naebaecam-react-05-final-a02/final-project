@@ -1,4 +1,4 @@
-import { CommunityPostData } from '@/types/community';
+import { CommunityPostCreateData, CommunityPostData } from '@/types/community';
 import axios from 'axios';
 
 class CommunityAPI {
@@ -8,7 +8,7 @@ class CommunityAPI {
     this.baseURL = baseURL;
   }
 
-  write = async (data: CommunityPostData) => {
+  write = async (data: CommunityPostCreateData) => {
     try {
       const response = await axios.post(`${this.baseURL}/write`, data);
       return response.data;
@@ -18,6 +18,22 @@ class CommunityAPI {
       }
       throw error;
     }
+  };
+
+  getPosts = async ({
+    pageParam = 1,
+  }: {
+    pageParam?: number;
+  }): Promise<{ data: CommunityPostData[]; page: number; limit: number }> => {
+    const response = await axios.get(`${this.baseURL}/posts`, {
+      params: { page: pageParam, limit: 10 },
+    });
+    return response.data;
+  };
+
+  getPostDetail = async (id: string): Promise<CommunityPostData> => {
+    const response = await axios.get(`${this.baseURL}/posts/${id}`);
+    return response.data;
   };
 }
 
