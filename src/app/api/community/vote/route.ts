@@ -49,3 +49,25 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// 투표 결과 가져오기
+export async function GET(request: NextRequest) {
+  const supabase = createClient();
+
+  try {
+    // 데이터베이스에서 투표 데이터를 가져오기
+    const { data, error } = await supabase.from('communityVotes').select('*').single(); // 가장 최근 투표 가져오기 (또는 특정 ID로 변경 가능)
+
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json({ data }, { status: 200 });
+  } catch (error) {
+    console.error('데이터 가져오는 중 오류 발생:', error);
+    return NextResponse.json(
+      { message: '데이터를 가져오는 데 실패했습니다.', error: (error as Error).message },
+      { status: 500 },
+    );
+  }
+}
