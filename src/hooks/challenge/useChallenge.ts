@@ -1,4 +1,4 @@
-import { CategoryTypes } from '@/app/(providers)/(root)/challenges/all/_constants/constants';
+import { ChallengeFilterTypes } from '@/types/challenge';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -31,5 +31,5 @@ export const useGetChallengeDetail = (id: number) => useQuery(queryOptions.getCh
 
 export const useGetPopularChallenges = () => useQuery(queryOptions.popular());
 
-export const useGetChallengeCount = ({ category }: { category: CategoryTypes }) =>
-  useQuery(queryOptions.count({ category }));
+export const useGetChallengeCount = ({ filter }: { filter: ChallengeFilterTypes }) =>
+  useQuery(queryOptions.count({ filter }));

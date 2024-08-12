@@ -34,7 +34,7 @@ function InputText<T extends InputElementType = 'input'>({
     focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'} ${className}
     ${icon ? 'pl-11' : 'pl-4'} 
     ${unit ? 'pr-12' : 'pr-3'} 
-    py-3.5`;
+    py-3`;
 
   const inputSpecificClasses =
     inputType === 'textarea'
@@ -56,7 +56,7 @@ function InputText<T extends InputElementType = 'input'>({
   return (
     <div className="flex flex-col w-full justify-between">
       {label && (
-        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px]">
+        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-sm">
           <span>{label}</span>
         </label>
       )}

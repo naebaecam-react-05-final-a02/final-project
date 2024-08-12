@@ -1,4 +1,4 @@
-import { CategoryTypes } from '@/app/(providers)/(root)/challenges/all/_constants/constants';
+import { ChallengeFilterTypes } from '@/types/challenge';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
@@ -107,9 +107,21 @@ class ChallengeAPI {
       throw error;
     }
   };
-  getPaginationChallenges = async ({ category, page, limit }: { category: string; page: number; limit: number }) => {
+  getPaginationChallenges = async ({
+    filter,
+    page,
+    limit,
+  }: {
+    filter: ChallengeFilterTypes;
+    page: number;
+    limit: number;
+  }) => {
     try {
-      const response = await axios.get(`${this.baseURL}/all?category=${category}&page=${page}&limit=${limit}`);
+      const response = await axios.get(
+        `${this.baseURL}/all?categories=${filter.categories.join(',')}&status=${filter.status.join(
+          ',',
+        )}&order=${filter.order.join(',')}&page=${page}&limit=${limit}`,
+      );
 
       const data = await response.data;
       return data;
@@ -140,9 +152,13 @@ class ChallengeAPI {
 
     return response;
   };
-  getChallengeCount = async ({ category }: { category: CategoryTypes }) => {
+  getChallengeCount = async ({ filter }: { filter: ChallengeFilterTypes }) => {
     try {
-      const response = await axios.get(`${this.baseURL}/all/count?category=${category}`);
+      const response = await axios.get(
+        `${this.baseURL}/all/count?categories=${filter.categories.join(',')}&status=${filter.status.join(
+          ',',
+        )}&order=${filter.order.join(',')}`,
+      );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
