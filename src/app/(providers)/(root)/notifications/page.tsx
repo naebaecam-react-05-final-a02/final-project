@@ -29,7 +29,6 @@ const NotificationsPage = async () => {
   return (
     <Mobile headerLayout={<TitleHeader rightButton={<NotificationClear />}>알림</TitleHeader>} showFooter={false}>
       <div className="px-4 grid gap-y-6">
-        <h6 className="text-white/70 text-xs">최근 50개의 알람까지 보여집니다.</h6>
         <NotificationList />
       </div>
     </Mobile>

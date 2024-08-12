@@ -249,7 +249,7 @@ export type Database = {
           },
         ]
       }
-      comunityVotes: {
+      communityVotes: {
         Row: {
           id: number
           items: Json | null

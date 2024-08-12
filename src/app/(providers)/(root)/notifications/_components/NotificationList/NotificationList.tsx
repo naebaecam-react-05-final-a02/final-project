@@ -27,9 +27,9 @@ const NotificationList = () => {
       const response = await supabase
         .from('notifications')
         .select('*')
-        .match({ targetUserId: user?.id, isRead: false })
         .order('createdAt', { ascending: false })
         .limit(50)
+        .match({ targetUserId: user?.id, isRead: false })
         .returns<Tables<'notifications'>[]>();
 
       return response.data;
@@ -45,28 +45,35 @@ const NotificationList = () => {
     return <div className="text-red-300">알림을 가져오는 동안 에러가 발생했습니다.</div>;
   }
 
+  if (notifications && !notifications.length) {
+    return <div className="text-base w-full text-center mt-14">도착한 알림이 없습니다!</div>;
+  }
+
   return (
-    <ul className="flex flex-col gap-y-6">
-      {notifications?.map(({ id, type, createdAt, category }) => (
-        <li key={id} className="flex gap-x-7">
-          <div className="flex flex-col items-center gap-y-2 pt-[10px]">
-            <div className="rounded-full bg-white/10 size-[7px]" />
-            <div className="bg-white/10 w-px h-12" />
-          </div>
-          <div className="w-full pb-[10px] flex flex-col gap-y-2">
-            <div className="flex w-full">
-              <div className="flex-1">
-                <NotificationChip type={NotificationTypeConverter(type)} />
+    <>
+      <h6 className="text-white/70 text-xs">최근 50개의 알람까지 보여집니다.</h6>
+      <ul className="flex flex-col gap-y-6">
+        {notifications?.map(({ id, type, createdAt, category }) => (
+          <li key={id} className="flex gap-x-7">
+            <div className="flex flex-col items-center gap-y-2 pt-[10px]">
+              <div className="rounded-full bg-white/10 size-[7px]" />
+              <div className="bg-white/10 w-px h-12" />
+            </div>
+            <div className="w-full pb-[10px] flex flex-col gap-y-2">
+              <div className="flex w-full">
+                <div className="flex-1">
+                  <NotificationChip type={NotificationTypeConverter(type)} />
+                </div>
+                <div className="text-white/50 text-xs">{dayjs(createdAt).format('YYYY.MM.DD A hh:mm')}</div>
               </div>
-              <div className="text-white/50 text-xs">{dayjs(createdAt).format('YYYY.MM.DD A hh:mm')}</div>
+              <div className="text-xs">
+                <NotificationText category={category} />
+              </div>
             </div>
-            <div className="text-xs">
-              <NotificationText category={category} />
-            </div>
-          </div>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 
