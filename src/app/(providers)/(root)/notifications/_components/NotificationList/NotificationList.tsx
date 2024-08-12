@@ -2,6 +2,7 @@
 
 import Loading from '@/components/Loading/Loading';
 import NotificationChip from '@/components/NotificationChip';
+import NotificationText from '@/components/NotificationText';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
@@ -30,7 +31,7 @@ const NotificationList = () => {
         .order('createdAt', { ascending: false })
         .limit(50)
         .returns<Tables<'notifications'>[]>();
-      console.log('RESPONSE___', response);
+
       return response.data;
     },
     enabled: !!user,
@@ -46,7 +47,7 @@ const NotificationList = () => {
 
   return (
     <ul className="flex flex-col gap-y-6">
-      {notifications?.map(({ id, type, createdAt }) => (
+      {notifications?.map(({ id, type, createdAt, category }) => (
         <li key={id} className="flex gap-x-7">
           <div className="flex flex-col items-center gap-y-2 pt-[10px]">
             <div className="rounded-full bg-white/10 size-[7px]" />
@@ -59,7 +60,9 @@ const NotificationList = () => {
               </div>
               <div className="text-white/50 text-xs">{dayjs(createdAt).format('YYYY.MM.DD A hh:mm')}</div>
             </div>
-            <div className="text-xs">주용용님1234님이 회원님의 게시글에 댓글을</div>
+            <div className="text-xs">
+              <NotificationText category={category} />
+            </div>
           </div>
         </li>
       ))}

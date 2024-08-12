@@ -1,5 +1,5 @@
 type NotificationTextProps = {
-  type: string;
+  type?: string;
   category: string;
 };
 
