@@ -58,7 +58,7 @@ const DietList = () => {
   };
 
   return (
-    <div className="flex flex-col px-4 gap-8">
+    <div className="flex flex-col px-4 gap-4">
       {diets?.length === 0 ? (
         <div className="flex flex-col items-center gap-3">
           <span>식단 기록이 없습니다</span>

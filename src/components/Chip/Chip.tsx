@@ -1,5 +1,4 @@
 import { FoodType } from '@/types/diet';
-import Image from 'next/image';
 import { ComponentProps } from 'react';
 import CloseIcon from '/public/icons/x.svg';
 
@@ -17,9 +16,7 @@ const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentPr
       }`}
       onClick={onClick}
     >
-      <div className="p-2">
-        <Image width={24} height={24} className="max-w-fit" src={`/foods/${food.foodType}.png`} alt={food.foodType} />
-      </div>
+      <div className="p-2 text-lg">{food.foodType}</div>
       <div className="flex flex-col justify-center items-start">
         <span className="text-sm whitespace-nowrap leading-tight pr-1">{food.foodName || '-'}</span>
         <span className="text-[10px] opacity-30 whitespace-nowrap leading-tight">{food.kcal || 0} Kcal</span>
