@@ -15,13 +15,13 @@ const DefaultHeader = () => {
 
     const supabase = createClient();
     const channels = supabase
-      .channel('alarm')
+      .channel('notifications')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'alarm', filter: `targetUserId=eq.${user.id}` },
+        { event: '*', schema: 'public', table: 'notifications', filter: `targetUserId=eq.${user.id}` },
         (payload) => {
           console.log('PAYLOAD___', payload);
-          queryClient.invalidateQueries({ queryKey: ['alarm'] });
+          queryClient.invalidateQueries({ queryKey: ['notifications'] });
         },
       )
       .subscribe((status) => {

@@ -28,13 +28,14 @@ Deno.serve(async () => {
     const promises = challenges.flatMap((challenge: any) => {
       return challenge.participants.map((participant: any) => {
         return supabase
-          .from('alarm')
+          .from('notifications')
           .insert({
             createdAt: new Date(),
             idForURL: challenge.id,
             targetUserId: participant.userId,
             isRead: false,
             type: 'challenge',
+            category: 'pre-start',
           })
           .select('id');
       });
