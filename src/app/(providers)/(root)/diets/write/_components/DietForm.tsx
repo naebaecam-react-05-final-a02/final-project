@@ -3,9 +3,13 @@ import Button from '@/components/Button';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { foodsQueryKeys } from '@/hooks/diet/foods/queries';
+import { useSearchFoodInfo } from '@/hooks/diet/foods/useFoods';
 import useDietForm from '@/hooks/diet/useDietForm';
 import { useSubmitDiet } from '@/hooks/diet/useDiets';
 import useRadio from '@/hooks/diet/useRadio';
+import { useDebounce } from '@/hooks/useDebounce';
+import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { DietTimeType } from '@/types/diet';
@@ -18,7 +22,6 @@ import { FreeMode, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import AddButton from './AddButton';
 import EmojiSelector from './EmojiSelector';
-import TextInput from './TextInput';
 
 const DietForm = () => {
   const initialValue = useDietStore((state) => state.diet);
@@ -45,7 +48,19 @@ const DietForm = () => {
     initialValue?.dietType,
   );
 
-  const { mutate: submitDiet, isPending } = useSubmitDiet();
+  const { mutate: submitDiet, isPending: isSubmitting } = useSubmitDiet();
+  const {
+    data: searchedFoods = [],
+    isFetching: isSearching,
+    isError,
+    refetch,
+  } = useSearchFoodInfo(foodForm['foodName']);
+
+  const debouncedSearchFoods = useDebounce(() => {
+    refetch();
+  }, 1000);
+
+  if (isError) return <div>에러입니다</div>;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,10 +90,9 @@ const DietForm = () => {
   const handleDietTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleRadioChange(event.target.value as DietTimeType);
   };
-
   return (
     <>
-      {isPending && <Loading />}
+      {isSubmitting && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
         <div className="chips flex overflow-x-scroll scale">
@@ -96,7 +110,10 @@ const DietForm = () => {
                   key={food.id}
                   food={food}
                   isActive={activeChipIdx === idx}
-                  handleDelete={() => deleteChip(food.id!)}
+                  handleDelete={() => {
+                    deleteChip(food.id!);
+                    queryClient.setQueryData(foodsQueryKeys.all, []);
+                  }}
                   onClick={() => changeChip(idx)}
                 />
               </SwiperSlide>
@@ -106,7 +123,7 @@ const DietForm = () => {
       </div>
       <form className="flex flex-col justify-center items-center gap-4" onSubmit={handleSubmit}>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm">날짜 선택</h2>
+          <h2 className="opacity-70 text-sm mb-1">날짜 선택</h2>
           <div className="grid grid-cols-2 items-center gap-2">
             <Input
               inputType="date"
@@ -126,19 +143,45 @@ const DietForm = () => {
           </div>
         </div>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm">음식 이름</h2>
-          <TextInput
-            value={foodForm['foodName']}
-            placeholder="음식 이름을 입력해주세요."
-            onChange={(e) => handleFormChange('foodName', e.target.value)}
-          >
-            {
-              <EmojiSelector
-                foodType={foodForm['foodType']}
-                handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
-              />
-            }
-          </TextInput>
+          <h2 className="opacity-70 text-sm mb-1">음식 이름</h2>
+          <div className="grid grid-cols-[1fr_48px] gap-2">
+            <Input
+              inputType="select"
+              value={foodForm['foodName']}
+              placeholder="음식 이름을 입력해주세요."
+              dropdownOptions={
+                isSearching
+                  ? [{ value: '검색중...', preventClick: true }]
+                  : searchedFoods.length === 0
+                  ? [
+                      { value: foodForm['foodName'] },
+                      { value: `${foodForm['foodName']}의 음식 검색 결과가 없습니다`, preventClick: true },
+                    ]
+                  : [
+                      { value: foodForm['foodName'] },
+                      ...searchedFoods.map((food) => ({
+                        value: `${food.DESC_KOR}`,
+                        text: `${food.SERVING_WT}g당 ${food.NUTR_CONT1}kcal`,
+                        onClick: () => {
+                          handleFormChange('foodName', food.DESC_KOR);
+                          handleFormChange('kcal', Number(food.NUTR_CONT1));
+                          handleFormChange('carbohydrate', Number(food.NUTR_CONT2));
+                          handleFormChange('protein', Number(food.NUTR_CONT3));
+                          handleFormChange('fat', Number(food.NUTR_CONT4));
+                        },
+                      })),
+                    ]
+              }
+              onChange={(e) => {
+                handleFormChange('foodName', e.target.value);
+                debouncedSearchFoods();
+              }}
+            />
+            <EmojiSelector
+              foodType={foodForm['foodType']}
+              handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
+            />
+          </div>
         </div>
         <div className="w-full px-4">
           <Input

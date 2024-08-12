@@ -5,11 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 //import { useScrollLock } from '@yoojinyoung/usescrolllock';
 import AlertModal from '@/components/Modal/AlertModal';
 import Backdrop from '@/components/Modal/BackDrop';
+import ChallengeFilterModal from '@/components/Modal/ChallengeFilterModal';
+import { ChallengeFilterTypes } from '@/types/challenge';
 import { PropsWithChildren, createContext, useContext, useRef, useState } from 'react';
 
 interface TInitialValue {
   alert: (contents: string[]) => Promise<boolean>;
   confirm: (contents: string[]) => Promise<boolean>;
+  custom: {
+    filter: () => Promise<ChallengeFilterTypes | false>;
+  };
   open: (el: React.ReactElement) => void;
   close: (id: string) => void;
 }
@@ -17,6 +22,14 @@ interface TInitialValue {
 const initialValue: TInitialValue = {
   alert: async () => true,
   confirm: async () => true,
+  custom: {
+    filter: async () => ({
+      categories: ['all'],
+      status: ['recruiting'],
+      order: ['date'],
+      isOk: false,
+    }),
+  },
   open: () => {},
   close: () => {},
 };
@@ -34,10 +47,12 @@ export function ModalProvider({ children }: PropsWithChildren) {
   const addModal = (modal: ModalTypes) => setModals((prev) => [...prev, modal]);
   const deleteModal = (id: string) => setModals((prev) => prev.filter((modal) => modal.id !== id));
   const resolveRef = useRef<Function>(() => {});
+  console.log(resolveRef);
 
   const value = {
     alert: async (contents: string[]) => {
       return new Promise<boolean>((resolve) => {
+        resolveRef.current = resolve;
         const modalId = uuidv4();
         const modal = <AlertModal id={modalId} contents={contents} onSuccess={() => resolve(true)} />;
         addModal({ id: modalId, modal });
@@ -45,6 +60,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
     },
     confirm: async (contents: string[]) => {
       return new Promise<boolean>((resolve) => {
+        resolveRef.current = resolve;
         const modalId = uuidv4();
         const modal = (
           <ConfirmModal
@@ -56,6 +72,22 @@ export function ModalProvider({ children }: PropsWithChildren) {
         );
         addModal({ id: modalId, modal });
       });
+    },
+    custom: {
+      filter: async () => {
+        return new Promise<ChallengeFilterTypes | false>((resolve) => {
+          resolveRef.current = resolve;
+          const modalId = uuidv4();
+          const modal = (
+            <ChallengeFilterModal
+              id={modalId}
+              onSuccess={(filter: ChallengeFilterTypes) => resolve(filter)}
+              onCancel={() => resolve(false)}
+            />
+          );
+          addModal({ id: modalId, modal });
+        });
+      },
     },
     open: (modal: React.ReactElement) => {
       const modalId = uuidv4();
@@ -80,7 +112,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
           {modals.map((modal, index) => {
             const zIndex = 'z-' + (index + 1) * 10;
             return (
-              <div className={`flex justify-center items-center h-full w-full absolute ${zIndex}`} key={modal.id}>
+              <div className={`flex justify-center items-center absolute ${zIndex}`} key={modal.id}>
                 {modal.modal}
               </div>
             );

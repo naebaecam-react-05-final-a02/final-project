@@ -1,15 +1,18 @@
 'use client';
 
 import { useModal } from '@/contexts/modal.context/modal.context';
+import { useChallengeFilterStore } from '@/stores/challengeFilter.store';
 import Categories from '../Categories';
 import FilterIcon from '../FilterIcon';
 
 const OrderTab = () => {
+  const setFilter = useChallengeFilterStore((state) => state.setFilter);
   const modal = useModal();
   const handleClickButton = async () => {
-    const ok = await modal.confirm(['테스트용 모달입니다', '이건 작동하지 않습니다']);
-    if (!ok) return alert('false입니다');
-    return alert('true입니다');
+    const filter = await modal.custom.filter();
+    console.log(filter);
+    if (!filter) return;
+    setFilter(filter);
   };
 
   return (

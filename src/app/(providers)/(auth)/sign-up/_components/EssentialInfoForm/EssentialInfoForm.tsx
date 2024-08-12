@@ -3,8 +3,8 @@
 import Input from '@/components/Input';
 import { EssentialInfoFormProps, FormState } from '@/types/auth';
 import { useCallback, useMemo } from 'react';
+import { useDebounce } from '../../../../../../hooks/useDebounce';
 import { validatePassword } from '../../../_utils/validatePassword';
-import { useDebounce } from '../../_hooks/useDebounce';
 
 const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: EssentialInfoFormProps) => {
   const validationRules = useMemo(

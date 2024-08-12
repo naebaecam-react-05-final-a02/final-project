@@ -7,8 +7,10 @@ import { BaseInputProps } from '../Input';
 type DropdownOption = {
   id?: string | number;
   value: string;
+  text?: string;
   icon?: ReactNode;
   onClick?: (e: React.MouseEvent) => void;
+  preventClick?: boolean;
 };
 
 export type InputSelectProps = Omit<BaseInputProps & ComponentProps<'input'>, 'inputType'> & {
@@ -140,7 +142,7 @@ const InputSelect = ({
                   ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
                   ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
                   onClick={(e: React.MouseEvent<HTMLLIElement>) => {
-                    handleOptionSelect(option.value, option.id);
+                    if (!option.preventClick) handleOptionSelect(option.value, option.id);
                     if (option.onClick) {
                       option.onClick(e);
                     }
@@ -149,7 +151,8 @@ const InputSelect = ({
                   {option.icon && (
                     <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 text-xl">{option.icon}</div>
                   )}
-                  {option.value}
+                  <div>{option.value || '-'}</div>
+                  <div className="text-xs">{option.text}</div>
                 </li>
               ))}
             </ul>
