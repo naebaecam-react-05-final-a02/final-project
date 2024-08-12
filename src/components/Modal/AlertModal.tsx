@@ -4,7 +4,7 @@ import AlertSVG from '@/assets/modal/alert.svg';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useState } from 'react';
 import Button from '../Button';
-import ModalBody from './ModalBody';
+import AnimatedModalFrame from './AnimatedModalFrame';
 
 interface ModalProps {
   onSuccess: () => void;
@@ -25,7 +25,7 @@ const AlertModal = ({ id, onSuccess, contents }: ModalProps) => {
   };
 
   return (
-    <ModalBody isVisible={isVisible}>
+    <AnimatedModalFrame isVisible={isVisible}>
       <div className="w-full h-full flex flex-col gap-6 justify-between">
         <div className="w-full flex justify-center items-center">
           <AlertSVG />
@@ -41,7 +41,7 @@ const AlertModal = ({ id, onSuccess, contents }: ModalProps) => {
           닫기
         </Button>
       </div>
-    </ModalBody>
+    </AnimatedModalFrame>
   );
 };
 

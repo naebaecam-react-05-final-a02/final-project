@@ -5,12 +5,13 @@ interface ModalBodyProps {
   isVisible: boolean;
 }
 
-const ModalBody = ({ isVisible, children }: PropsWithChildren<ModalBodyProps>) => {
+const AnimatedModalFrame = ({ isVisible, children }: PropsWithChildren<ModalBodyProps>) => {
   return (
     <>
       <AnimatePresence>
         {isVisible && (
           <motion.div
+            className="p-4 w-80 border-primary-100 border-2 bg-white/5 rounded-3xl modal-shadow"
             initial={{ y: '100%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '100%', opacity: 0 }}
@@ -21,7 +22,7 @@ const ModalBody = ({ isVisible, children }: PropsWithChildren<ModalBodyProps>) =
               duration: 0.3,
             }}
           >
-            <div className="p-4 w-80 border-primary-100 border-2 bg-white/5 rounded-3xl modal-shadow">{children}</div>
+            {children}
           </motion.div>
         )}
       </AnimatePresence>
@@ -29,4 +30,4 @@ const ModalBody = ({ isVisible, children }: PropsWithChildren<ModalBodyProps>) =
   );
 };
 
-export default ModalBody;
+export default AnimatedModalFrame;
