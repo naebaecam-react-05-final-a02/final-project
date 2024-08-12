@@ -1,61 +1,46 @@
 'use client';
 import React, { useState } from 'react';
+import VoteItems from './_components/VoteItmes';
 import VoteTitle from './_components/VoteTitle';
 
 const VotePage = () => {
   const [title, setTitle] = useState('');
   const [items, setItems] = useState(['']);
+  const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
 
-  const addItem = () => {
-    setItems([...items, '']);
-  };
-
-  const removeItem = (index: number) => {
-    if (items.length > 1) {
-      setItems(items.filter((_, itemIndex) => itemIndex !== index));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const formData = new FormData();
-
-    // 제목, 내용 등 다른 폼 데이터는 FormData로 수집
-    const title = (e.target as any).title.value;
-    const content = (e.target as any).content.value;
 
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('items', JSON.stringify(items)); // JSON 형식으로 투표 항목을 담기
+    formData.append('items', JSON.stringify(items));
 
     if (image) {
       formData.append('image', image);
     }
 
     console.log('FormData:', Array.from(formData.entries()));
-    // 여기서 서버로 데이터를 전송할 수 있음
-  };
-
-  const handleItemChange = (index: number, value: string) => {
-    const newItems = [...items];
-    newItems[index] = value;
-    setItems(newItems);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-      console.log('Image selected:', e.target.files[0].name);
-    }
+    // 서버로 데이터를 전송하는 코드 추가 가능
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-gray-900 min-h-screen text-white">
       <h1 className="text-xl font-semibold mb-4">투표</h1>
       <VoteTitle title={title} onTitleChange={setTitle} />
-      <div className="mb-6">
+      <VoteItems
+        items={items}
+        onItemChange={(index, value) => {
+          setItems((prevItems) => {
+            const newItems = [...prevItems];
+            newItems[index] = value;
+            return newItems;
+          });
+        }}
+        onAddItem={() => setItems([...items, ''])}
+        onRemoveItem={(index) => setItems(items.filter((_, itemIndex) => itemIndex !== index))}
+      />
+      {/* <div className="mb-6">
         <label className="block text-sm font-medium mb-2">투표 항목</label>
         {items.map((item, index) => (
           <div key={index} className="flex items-center mb-2">
@@ -82,7 +67,7 @@ const VotePage = () => {
         >
           세트 추가하기 +
         </button>
-      </div>
+      </div> */}
       <div className="mb-6">
         <label className="block text-sm font-medium mb-2">게시글 내용</label>
         <textarea
@@ -93,7 +78,7 @@ const VotePage = () => {
         <div className="text-right text-gray-500 text-sm">0 / 2000</div>
       </div>
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <label className="block text-sm font-medium mb-2">이미지 추가하기</label>
         <div className="w-full h-32 border-2 border-dashed border-gray-600 rounded-md flex items-center justify-center text-gray-500">
           <label className="cursor-pointer flex flex-col items-center">
@@ -102,7 +87,7 @@ const VotePage = () => {
           </label>
           {image && <span className="ml-2 text-sm text-gray-400">{image.name}</span>}
         </div>
-      </div>
+      </div> */}
 
       <button type="submit" className="w-full p-3 bg-green-600 hover:bg-green-700 rounded-md text-white">
         투표 등록하기
