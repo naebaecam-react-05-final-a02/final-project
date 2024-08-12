@@ -1,6 +1,9 @@
-import { foodTypes } from '@/data/foodTypes';
-import Image from 'next/image';
+import { foodEmojis, foodTypes } from '@/data/foodTypes';
 import { useState } from 'react';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface EmojiSelectorProps {
   foodType: string;
@@ -8,34 +11,63 @@ interface EmojiSelectorProps {
 }
 
 const EmojiSelector = ({ foodType, handleEmojiChange }: EmojiSelectorProps) => {
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState<boolean>(false);
+  const [selectedTypeIndex, setSelectedTypeIndex] = useState<number>(0);
+
+  const handleFoodTypeClicked = (idx: number) => setSelectedTypeIndex(idx);
 
   return (
-    <div className="h-full relative">
+    <div className="h-full relative cursor-pointer">
       <div
-        className="h-full flex justify-center items-center rounded-lg bg-input-gradient border-gradient"
+        className="h-full flex justify-center items-center rounded-lg bg-input-gradient border-gradient text-2xl"
         onClick={() => setModal(!modal)}
       >
-        <Image width={20} height={20} src={`/foods/${foodType}.png`} alt={foodType} />
+        {foodType}
       </div>
       <div
-        className={`z-50 absolute top-full right-0 w-[calc(100vw-32px)] max-h-[40vh] overflow-y-scroll flex flex-wrap justify-center gap-3 bg-blackT-60 backdrop-blur-md p-3 rounded-xl ${
+        className={`z-50 absolute top-full right-0 w-[calc(100vw-32px)] bg-blackT-50 border-2 border-primary-50 backdrop-blur-md px-3 py-2 rounded-xl ${
           modal ? 'block' : 'hidden'
         }`}
       >
-        {foodTypes.map((foodType) => (
-          <Image
-            key={foodType}
-            width={25}
-            height={25}
-            src={`/foods/${foodType}.png`}
-            alt={foodType}
-            onClick={() => {
-              handleEmojiChange(foodType);
-              setModal(false);
-            }}
-          />
-        ))}
+        <div className="flex flex-wrap gap-1 overflow-hidden mb-3">
+          <Swiper
+            slidesPerView={'auto'}
+            spaceBetween={10}
+            freeMode={true}
+            mousewheel={true}
+            modules={[FreeMode, Mousewheel]}
+            className="!flex !justify-start !mx-0 !w-full py-2"
+          >
+            {foodTypes.map((foodType, idx) => (
+              <SwiperSlide key={foodType} className="!w-auto my-1 cursor-pointer">
+                <span
+                  className={`text-xs px-2.5 py-1 border ${
+                    selectedTypeIndex === idx
+                      ? 'text-primary-100 border-primary-100'
+                      : 'text-whiteT-50 border-whiteT-50'
+                  } rounded-lg`}
+                  onClick={() => handleFoodTypeClicked(idx)}
+                >
+                  {foodType}
+                </span>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        <ul className="flex flex-wrap gap-2 overflow-y-auto">
+          {Object.values(foodEmojis)[selectedTypeIndex].map((foodType) => (
+            <li
+              key={foodType}
+              className="text-3xl"
+              onClick={() => {
+                handleEmojiChange(foodType);
+                setModal(false);
+              }}
+            >
+              {foodType}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

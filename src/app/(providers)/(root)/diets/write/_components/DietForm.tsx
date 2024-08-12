@@ -56,13 +56,8 @@ const DietForm = () => {
     refetch,
   } = useSearchFoodInfo(foodForm['foodName']);
 
-  const searchFood = () => {
-    if (foodForm['foodName']) refetch();
-    else queryClient.setQueryData(foodsQueryKeys.all, []);
-  };
-
   const debouncedSearchFoods = useDebounce(() => {
-    searchFood();
+    refetch();
   }, 1000);
 
   if (isError) return <div>에러입니다</div>;

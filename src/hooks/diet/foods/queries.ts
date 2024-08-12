@@ -7,6 +7,9 @@ export const foodsQueryKeys = {
 export const queryOptions = {
   searchFoodInfo: (foodName: string) => ({
     queryKey: foodsQueryKeys.all,
-    queryFn: () => api.diet.getFoodInfoByFoodName(foodName),
+    queryFn: () => {
+      if (foodName) return api.diet.getFoodInfoByFoodName(foodName);
+      return [];
+    },
   }),
 };
