@@ -96,6 +96,12 @@ const config: Config = {
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },
+        '.border-gradient-noti': {
+          'border-image':
+            'linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%) 1',
+          'border-image-slice': '1',
+          'border-width': '0 0 1px 0',
+        },
         '.border-error-gradient': {
           'border-image': 'linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, #E52817 50%, rgba(0, 0, 0, 0.9) 100%) 1',
           'border-image-slice': '1',
