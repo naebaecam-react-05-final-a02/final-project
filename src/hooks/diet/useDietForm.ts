@@ -14,10 +14,12 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
   const [foodForm, setFoodForms] = useState<FoodType>(foodChips[0]);
 
   const handleChange = (field: keyof FoodType, value: string | number | null) => {
-    const updatedValue = field === 'foodName' || field === 'foodType' ? value : value === '' ? null : Number(value);
-    const updatedFoods = foodChips.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: value } : food));
-    setFoodChips(updatedFoods);
-    setFoodForms({ ...foodForm, [field]: updatedValue });
+    const updatedValue =
+      field === 'foodName' || field === 'foodType' ? value : value === '' ? null : Number(Number(value).toFixed(0));
+    setFoodChips((prev) =>
+      prev.map((food, idx) => (idx === activeChipIdx ? { ...food, [field]: updatedValue } : food)),
+    );
+    setFoodForms((prev) => ({ ...prev, [field]: updatedValue }));
   };
 
   const addNewChip = () => {
@@ -30,8 +32,9 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
 
   const deleteChip = (deleteFoodId: string) => {
     if (foodChips.length === 1) {
-      setFoodChips([initialFoodState]);
-      setFoodForms(foodChips[0]);
+      // setFoodChips([initialFoodState]);
+      // setFoodForms(foodChips[0]);
+      alert('최소 1개의 음식이 남아있어야 합니다.');
     } else {
       const deletedFoods = foodChips.filter((food) => food.id !== deleteFoodId);
       setFoodChips(deletedFoods);
@@ -56,10 +59,8 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
   const validateFood = (food: FoodType = foodChips[activeChipIdx]) => {
     const { foodName, kcal, carbohydrate, protein, fat } = food;
     if (!foodName) return alert('음식 이름을 입력해주세요');
-    if (kcal === null || carbohydrate === null || protein === null || fat === null) {
-      return true;
-    }
-    if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) return alert('영양 성분을 올바르게 입력해주세요');
+    // TODO: 영양 성분 유효성 검사 로직 다시
+    // if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) return alert('영양 성분을 올바르게 입력해주세요');
     return true;
   };
 
