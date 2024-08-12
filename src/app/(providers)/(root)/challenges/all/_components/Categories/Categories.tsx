@@ -2,7 +2,8 @@
 
 import { useChallengeCategoryStore } from '@/stores/stores';
 
-import { CATEGORIES, CategoryTypes } from '../../_constants/constants';
+import { CATEGORY_LIST } from '@/constants/challenges';
+import { CategoryTypes } from '../../_constants/constants';
 import CategoryButton from '../CategoryButton';
 
 const Categories = () => {
@@ -15,7 +16,7 @@ const Categories = () => {
 
   return (
     <ul className="flex gap-2">
-      {CATEGORIES.map((button, i) => (
+      {CATEGORY_LIST.map((button, i) => (
         <li key={button.value}>
           <CategoryButton {...button} category={category} onClick={handleClickButton} />
         </li>
