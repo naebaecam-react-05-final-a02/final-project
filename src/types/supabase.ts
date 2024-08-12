@@ -9,41 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      alarm: {
-        Row: {
-          createdAt: string
-          id: number
-          idForURL: string | null
-          isRead: boolean | null
-          targetUserId: string | null
-          type: string | null
-        }
-        Insert: {
-          createdAt?: string
-          id?: number
-          idForURL?: string | null
-          isRead?: boolean | null
-          targetUserId?: string | null
-          type?: string | null
-        }
-        Update: {
-          createdAt?: string
-          id?: number
-          idForURL?: string | null
-          isRead?: boolean | null
-          targetUserId?: string | null
-          type?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "alarm_targetUserId_fkey"
-            columns: ["targetUserId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       challengeParticipants: {
         Row: {
           challengeId: number
@@ -246,6 +211,73 @@ export type Database = {
           },
         ]
       }
+      communityPosts: {
+        Row: {
+          category: string
+          content: string
+          createdAt: string
+          id: number
+          tags: string[] | null
+          title: string
+          userId: string | null
+        }
+        Insert: {
+          category: string
+          content: string
+          createdAt?: string
+          id?: number
+          tags?: string[] | null
+          title: string
+          userId?: string | null
+        }
+        Update: {
+          category?: string
+          content?: string
+          createdAt?: string
+          id?: number
+          tags?: string[] | null
+          title?: string
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityPosts_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comunityVotes: {
+        Row: {
+          id: number
+          items: Json | null
+          title: string | null
+          userId: string
+        }
+        Insert: {
+          id?: number
+          items?: Json | null
+          title?: string | null
+          userId: string
+        }
+        Update: {
+          id?: number
+          items?: Json | null
+          title?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comunityVotes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       diets: {
         Row: {
           createdAt: string
@@ -422,6 +454,44 @@ export type Database = {
           {
             foreignKeyName: "goals_userId_fkey"
             columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          category: string
+          createdAt: string
+          id: number
+          idForURL: string | null
+          isRead: boolean | null
+          targetUserId: string
+          type: string
+        }
+        Insert: {
+          category: string
+          createdAt?: string
+          id?: number
+          idForURL?: string | null
+          isRead?: boolean | null
+          targetUserId: string
+          type: string
+        }
+        Update: {
+          category?: string
+          createdAt?: string
+          id?: number
+          idForURL?: string | null
+          isRead?: boolean | null
+          targetUserId?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alarm_targetUserId_fkey"
+            columns: ["targetUserId"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
