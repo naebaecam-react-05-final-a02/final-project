@@ -20,13 +20,17 @@ const VoteItems = ({ items, onItemChange, onAddItem, onRemoveItem }: voteItemsPr
             onChange={(e) => onItemChange(index, e.target.value)}
             className="flex-grow p-3 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500"
           />
-          <button
-            type="button"
-            onClick={() => onRemoveItem(index)}
-            className="ml-2 p-2 bg-red-600 hover:bg-red-700 rounded text-white"
-          >
-            {items.length > 1 ? '삭제' : '–'}
-          </button>
+          {index >= 2 ? (
+            <button
+              type="button"
+              onClick={() => onRemoveItem(index)}
+              className="ml-2 p-2 bg-red-600 hover:bg-red-700 rounded text-white"
+            >
+              삭제
+            </button>
+          ) : (
+            <span className="ml-2 text-white text-lg">•</span> // 쩜 표시
+          )}
         </div>
       ))}
       <button
@@ -34,7 +38,7 @@ const VoteItems = ({ items, onItemChange, onAddItem, onRemoveItem }: voteItemsPr
         onClick={onAddItem}
         className="mt-4 w-full p-3 bg-blue-600 hover:bg-blue-700 rounded-md text-white"
       >
-        세트 추가하기 +
+        항목 추가하기 +
       </button>
     </div>
   );
