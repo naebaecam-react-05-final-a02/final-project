@@ -2,24 +2,30 @@
 
 import AlertSVG from '@/assets/modal/alert.svg';
 import { useModal } from '@/contexts/modal.context/modal.context';
+import { useState } from 'react';
 import Button from '../Button';
 import ModalBody from './ModalBody';
 
-interface AlertModalProps {
+interface ModalProps {
   onSuccess: () => void;
   contents: string[];
+  id: string;
 }
 
-const AlertModal = ({ onSuccess, contents }: AlertModalProps) => {
+const AlertModal = ({ id, onSuccess, contents }: ModalProps) => {
   const modal = useModal();
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleClickConfirm = () => {
-    modal.close();
     onSuccess();
+    setIsVisible(false);
+    setTimeout(() => {
+      modal.close(id);
+    }, 300);
   };
 
   return (
-    <ModalBody onCancel={handleClickConfirm}>
+    <ModalBody isVisible={isVisible}>
       <div className="w-full h-full flex flex-col gap-6 justify-between">
         <div className="w-full flex justify-center items-center">
           <AlertSVG />

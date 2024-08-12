@@ -1,18 +1,30 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { PropsWithChildren } from 'react';
-import Backdrop from './BackDrop';
 
 interface ModalBodyProps {
-  onCancel: () => void;
+  isVisible: boolean;
 }
 
-const ModalBody = ({ children, onCancel }: PropsWithChildren<ModalBodyProps>) => {
+const ModalBody = ({ isVisible, children }: PropsWithChildren<ModalBodyProps>) => {
   return (
     <>
-      <Backdrop onCancel={onCancel}>
-        <div className="p-4 mx-[35px] w-full border-primary-100 border-2 bg-white/5 rounded-3xl modal-shadow">
-          {children}
-        </div>
-      </Backdrop>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0 }}
+            transition={{
+              type: 'spring',
+              stiffness: 350,
+              damping: 20,
+              duration: 0.3,
+            }}
+          >
+            <div className="p-4 w-80 border-primary-100 border-2 bg-white/5 rounded-3xl modal-shadow">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -8,7 +8,7 @@ import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,6 +19,8 @@ import { TInputs } from '../_types/types';
 const MyProfileEditPage = () => {
   const modal = useModal();
   const router = useRouter();
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
+  const [onValidateNickname, setOnValidateNickname] = useState<boolean>(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement | null>(null);
@@ -50,6 +52,13 @@ const MyProfileEditPage = () => {
       await modal.alert(['삭제가 완료되었습니다.']);
     },
   });
+
+  const { data: nicknameValidation, error: nicknameValidationError } = useQuery({
+    queryKey: ['user', 'nickname'],
+    queryFn: () => api.users.validateNickname({ nickname: inputs.nickname }),
+    enabled: onValidateNickname,
+  });
+  console.log(nicknameValidation, nicknameValidationError);
 
   const handleUpdateProfile = async () => {
     const yes = await modal.confirm(['수정사항을 저장하시겠습니까?']);
@@ -148,10 +157,25 @@ const MyProfileEditPage = () => {
             />
 
             <div className="w-[64px] flex items-end">
-              <Button className="w-[64px] text-sm">
+              <Button
+                onClick={() => {
+                  setOnValidateNickname(false);
+                  if (!inputs.nickname) {
+                    setIsNicknameValid(false);
+                    setIsNicknameValid(null);
+                    modal.alert(['닉네임을 입력해주세요']);
+                    return;
+                  }
+                  setOnValidateNickname(true);
+                }}
+                className="w-[64px] text-sm"
+              >
                 <p className="w-full">확인</p>
               </Button>
             </div>
+          </div>
+          <div>
+            {nicknameValidation?.status === 200 ? <p>사용할 수 있는 닉네임입니다.</p> : <p>닉네임이 중복되었습니다.</p>}
           </div>
           <div className="flex">
             <InputText

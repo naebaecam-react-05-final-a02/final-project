@@ -12,7 +12,6 @@ function Backdrop({ children, onCancel }: PropsWithChildren<BackDropProps>) {
 
   const handleCancel = () => {
     onCancel();
-    close();
   };
   return (
     <div className="  z-20 fixed inset-0  flex justify-center items-center">

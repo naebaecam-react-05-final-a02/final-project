@@ -1,29 +1,37 @@
 'use client';
 import ConfirmSVG from '@/assets/modal/check.svg';
 import { useModal } from '@/contexts/modal.context/modal.context';
+import { useState } from 'react';
 import Button from '../Button';
 import ModalBody from './ModalBody';
 
 interface ConfirmModalProps {
   onSuccess: () => void;
   onCancel: () => void;
-
   contents: string[];
+  id: string;
 }
 
-const ConfirmModal = ({ onSuccess, onCancel, contents }: ConfirmModalProps) => {
+const ConfirmModal = ({ id, onSuccess, onCancel, contents }: ConfirmModalProps) => {
   const modal = useModal();
+  const [isVisible, setIsVisible] = useState(true);
   const handleCloseModal = () => {
-    modal.close();
     onCancel();
+    setIsVisible(false);
+    setTimeout(() => {
+      modal.close(id);
+    }, 300);
   };
   const handleClickConfirm = () => {
-    modal.close();
     onSuccess();
+    setIsVisible(false);
+    setTimeout(() => {
+      modal.close(id);
+    }, 300);
   };
 
   return (
-    <ModalBody onCancel={handleCloseModal}>
+    <ModalBody isVisible={isVisible}>
       <div className="w-full h-full flex flex-col gap-6 justify-between">
         <div className="w-full flex justify-center items-center">
           <ConfirmSVG />
