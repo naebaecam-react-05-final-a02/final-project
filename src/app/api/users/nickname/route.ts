@@ -7,6 +7,6 @@ export async function GET(request: NextRequest) {
   const nickname = searchParams.get('nickname');
   const { data, error } = await supabase.from('users').select(`*`).eq('nickname', nickname).single();
   console.log(data, error);
-  if (error) return NextResponse.json({ status: 200 });
-  return NextResponse.json({ status: 400 });
+  if (error) return NextResponse.json({ status: 200, isAvailable: true });
+  return NextResponse.json({ status: 400, isAvailable: false });
 }
