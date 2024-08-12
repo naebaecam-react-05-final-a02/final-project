@@ -3,6 +3,7 @@ import CancelSVG from '@/assets/modal/cancel.svg';
 import OrderButtonList from '@/components/OrderButtonList/OrderButtonList';
 import { CATEGORY_LIST, ORDER_LIST, STATUS_LIST } from '@/constants/challenges';
 import { useModal } from '@/contexts/modal.context/modal.context';
+import { useChallengeFilterStore } from '@/stores/challengeFilter.store';
 import {
   ChallengeCategoryTypes,
   ChallengeFilterInputTypes,
@@ -10,23 +11,21 @@ import {
   ChallengeOrderTypes,
   ChallengeStatusTypes,
 } from '@/types/challenge';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../Button';
 import AnimatedModalFrame from '../AnimatedModalFrame';
 interface ChallengeFilterModalProps {
   onSuccess: (filter: ChallengeFilterTypes) => void;
   onCancel: () => void;
-
   id: string;
 }
 
 const ChallengeFilterModal = ({ id, onSuccess, onCancel }: ChallengeFilterModalProps) => {
   const modal = useModal();
-
+  const existingFilter = useChallengeFilterStore((state) => state.filter);
   const [filter, setFilter] = useState<ChallengeFilterTypes>({
-    isOk: false,
     categories: ['all'],
-    status: ['recruiting'],
+    status: ['all'],
     order: ['date'],
   });
   const [isVisible, setIsVisible] = useState(true);
@@ -89,6 +88,10 @@ const ChallengeFilterModal = ({ id, onSuccess, onCancel }: ChallengeFilterModalP
   const handleOrderChange = (value: ChallengeFilterInputTypes) => {
     setFilter((prev) => ({ ...prev, order: [value as ChallengeOrderTypes] }));
   };
+
+  useEffect(() => {
+    setFilter(existingFilter);
+  }, [existingFilter]);
 
   return (
     <AnimatedModalFrame isVisible={isVisible}>

@@ -48,7 +48,6 @@ export type ChallengeOrderTypes = 'date' | 'alphabet' | 'participants' | 'verifi
 export type ChallengeCategoryTypes = 'all' | 'exercise' | 'diet' | 'lifestyle' | 'etc';
 
 export interface ChallengeFilterTypes {
-  isOk: boolean;
   categories: ChallengeCategoryTypes[];
   status: ChallengeStatusTypes[];
   order: ChallengeOrderTypes[];

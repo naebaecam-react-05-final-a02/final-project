@@ -3,7 +3,8 @@
 import { useGetChallengeCount } from '@/hooks/challenge/useChallenge';
 import useIntersect from '@/hooks/useIntersect';
 import api from '@/service/service';
-import { useChallengeCategoryStore } from '@/stores/stores';
+
+import { useChallengeFilterStore } from '@/stores/challengeFilter.store';
 import { Tables } from '@/types/supabase';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -11,12 +12,12 @@ import ChallengeItem from '../ChallengeItem';
 import SkeletonCardList from '../Skeleton/Card.skeleton';
 
 const ChallengeList = () => {
-  const category = useChallengeCategoryStore((state) => state.category);
+  const filter = useChallengeFilterStore((state) => state.filter);
 
   type TChallenge = Tables<'challenges'>;
   const LIMIT = 6;
 
-  const { data: count, error } = useGetChallengeCount({ category });
+  const { data: count, error } = useGetChallengeCount({ filter });
 
   const {
     data: challenges,
@@ -25,8 +26,8 @@ const ChallengeList = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ['challenges', 'popular', category],
-    queryFn: ({ pageParam }) => api.challenge.getPaginationChallenges({ category, page: pageParam, limit: LIMIT }),
+    queryKey: ['challenges', 'popular', filter],
+    queryFn: ({ pageParam }) => api.challenge.getPaginationChallenges({ filter, page: pageParam, limit: LIMIT }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });

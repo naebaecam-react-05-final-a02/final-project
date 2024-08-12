@@ -4,29 +4,36 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category');
+  const categories = searchParams.get('categories')?.split(',');
+  const order = searchParams.get('order')?.split(',');
+  const status = searchParams.get('status')?.split(',');
   const page = Number(searchParams.get('page'));
   const limit = Number(searchParams.get('limit'));
   const today = dayjs().format('YYYY-MM-DD');
 
+  console.log(categories, status, order);
+
   const supabase = createClient();
   const to = (page - 1) * limit;
   const from = page * limit;
+
   const { data, error } =
-    category !== 'all'
+    categories?.[0] !== 'all'
       ? await supabase
           .from('challenges')
-          .select(`*`)
-          .eq('category', category)
+          .select(`*, verifications:challengeVerify(count), participants:challengeParticipants(count)`)
+          .in('category', categories || [])
           .order('startDate', { ascending: true })
           .gte('endDate', today)
           .range(to, from)
       : await supabase
           .from('challenges')
-          .select(`*`)
+          .select(`*, verifications:challengeVerify(count), participants:challengeParticipants(count)`)
           .order('startDate', { ascending: true })
           .gte('endDate', today)
           .range(to, from);
+
+  console.log(data);
 
   if (error) {
     return NextResponse.json({ error: error.message, data: null, nextPage: null });
