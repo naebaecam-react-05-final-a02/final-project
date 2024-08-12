@@ -1,3 +1,4 @@
+import { CategoryTypes } from '@/app/(providers)/(root)/challenges/all/_constants/constants';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -29,3 +30,6 @@ export const useChallengeVerificationDelete = () => useMutation(mutationOptions.
 export const useGetChallengeDetail = (id: number) => useQuery(queryOptions.getChallengeDetail(id));
 
 export const useGetPopularChallenges = () => useQuery(queryOptions.popular());
+
+export const useGetChallengeCount = ({ category }: { category: CategoryTypes }) =>
+  useQuery(queryOptions.count({ category }));

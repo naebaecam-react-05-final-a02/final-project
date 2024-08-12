@@ -1,3 +1,4 @@
+import { CategoryTypes } from '@/app/(providers)/(root)/challenges/all/_constants/constants';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
@@ -7,6 +8,12 @@ class ChallengeAPI {
   constructor(baseURL: string = '/api/challenges') {
     this.baseURL = baseURL;
   }
+
+  getVerifications = async ({ challengeId }: { challengeId: number }) => {
+    const response = await axios.get(`${this.baseURL}/verification/${challengeId}`);
+    const data = response.data;
+    return data;
+  };
 
   registerChallenge = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
     try {
@@ -132,6 +139,24 @@ class ChallengeAPI {
     });
 
     return response;
+  };
+  getChallengeCount = async ({ category }: { category: CategoryTypes }) => {
+    try {
+      const response = await axios.get(`${this.baseURL}/all/count?category=${category}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+  toggleLike = async ({ verificationId, isLiked }: { verificationId: number; isLiked: boolean }) => {
+    const response = isLiked
+      ? await axios.delete(`${this.baseURL}/verification/likes?verificationId=${verificationId}`)
+      : await axios.post(`${this.baseURL}/verification/likes?verificationId=${verificationId}`);
+    const data = response.data;
+    return data;
   };
 }
 

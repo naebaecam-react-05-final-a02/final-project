@@ -1,8 +1,9 @@
+import { CategoryTypes } from '@/app/(providers)/(root)/challenges/all/_constants/constants';
 import { create } from 'zustand';
 
 interface TChallengeCategoryStore {
-  category: string;
-  setCategory: (order: string) => void;
+  category: CategoryTypes;
+  setCategory: (order: CategoryTypes) => void;
 }
 export const useChallengeCategoryStore = create<TChallengeCategoryStore>((set) => ({
   category: 'all',

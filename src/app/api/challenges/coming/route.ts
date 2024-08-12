@@ -4,8 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const supabase = createClient();
-
-  const today = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+  const today = dayjs().format('YYYY-MM-DD');
 
   const { data: challengesData, error: challengesError } = await supabase
     .from('challenges')
@@ -16,7 +15,7 @@ export async function GET(request: NextRequest) {
     challengeVerify:challengeVerify(count)
   `,
     )
-    .gt('startDate', today)
+    .gte('endDate', today)
     .order('startDate', { ascending: false });
 
   if (challengesError) {

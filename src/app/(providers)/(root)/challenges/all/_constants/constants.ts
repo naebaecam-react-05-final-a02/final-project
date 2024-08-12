@@ -1,6 +1,8 @@
 // const CATEGORIES = ['all', 'exercise', 'diet', 'life', 'feeling', 'eco', 'habit'];
 
-export const CATEGORIES = [
+export type CategoryTypes = 'all' | 'exercise' | 'diet' | 'lifestyle' | 'etc';
+
+export const CATEGORIES: { label: string; value: CategoryTypes }[] = [
   { label: '전체', value: 'all' },
   { label: '운동', value: 'exercise' },
   { label: '식단', value: 'diet' },

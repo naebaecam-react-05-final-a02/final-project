@@ -28,15 +28,13 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       // console.log('LASTPAGE', lastPage);
       // console.log('ALLPAGE', allPage);
-      const nextPage = lastPage.length === 10 ? allPage.length : undefined;
+      const nextPage = lastPage.length === 6 ? allPage.length : undefined;
       return nextPage;
     },
     initialPageParam: 1,
     select: (data) => data.pages.flatMap((p) => p),
     staleTime: Infinity,
   });
-
-  // console.log(verifications);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -77,9 +75,15 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
                   <VerificationItem verification={verification} />
                 </li>
               ))}
+              {isFetching &&
+                hasNextPage &&
+                Array.from({ length: 5 }).map((_, i) => (
+                  <li key={i}>
+                    <VerificationCardSkeleton />
+                  </li>
+                ))}
             </Masonry>
           </ul>
-          {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
         </div>
       )}
 
