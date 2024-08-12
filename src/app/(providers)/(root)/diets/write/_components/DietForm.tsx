@@ -123,7 +123,7 @@ const DietForm = () => {
       </div>
       <form className="flex flex-col justify-center items-center gap-4" onSubmit={handleSubmit}>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm">날짜 선택</h2>
+          <h2 className="opacity-70 text-sm mb-1">날짜 선택</h2>
           <div className="grid grid-cols-2 items-center gap-2">
             <Input
               inputType="date"
@@ -143,7 +143,7 @@ const DietForm = () => {
           </div>
         </div>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm">음식 이름</h2>
+          <h2 className="opacity-70 text-sm mb-1">음식 이름</h2>
           <div className="grid grid-cols-[1fr_48px] gap-2">
             <Input
               inputType="select"
