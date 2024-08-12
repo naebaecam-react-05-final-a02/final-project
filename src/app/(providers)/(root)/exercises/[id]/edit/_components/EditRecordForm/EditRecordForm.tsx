@@ -150,6 +150,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         onChange={handleNameChange}
         inputType="select"
         dropdownOptions={bookmarkListOptions}
+        autoComplete="off"
         icon={
           <Star
             style={{

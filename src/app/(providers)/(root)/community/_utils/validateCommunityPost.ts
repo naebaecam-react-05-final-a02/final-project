@@ -1,4 +1,4 @@
-import { CommunityPostData } from '@/types/community';
+import { CommunityPostCreateData } from '@/types/community';
 
 export interface ValidationResult {
   isValid: boolean;
@@ -11,7 +11,7 @@ export interface ValidationResult {
 
 const MAX_TITLE_LENGTH = 50;
 
-const validateCommunityPost = (data: CommunityPostData): ValidationResult => {
+const validateCommunityPost = (data: CommunityPostCreateData): ValidationResult => {
   const errors: ValidationResult['errors'] = {};
 
   if (!data.title.trim()) {

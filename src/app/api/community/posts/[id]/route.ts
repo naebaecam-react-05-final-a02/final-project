@@ -5,11 +5,23 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   const supabase = createClient();
   const { id } = params;
 
-  const { data, error } = await supabase.from('community_posts').select('*').eq('id', id).single();
+  const { data, error } = await supabase
+    .from('communityPosts')
+    .select(
+      `
+    *,
+    user:userId (
+      id,
+      nickname,
+      profileURL
+    )
+  `,
+    )
+    .eq('id', id)
+    .single();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
-
   return NextResponse.json(data);
 }

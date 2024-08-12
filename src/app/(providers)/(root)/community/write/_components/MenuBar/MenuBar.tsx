@@ -6,8 +6,6 @@ import { FaBold, FaItalic, FaListUl, FaRemoveFormat } from 'react-icons/fa';
 import { FaImage, FaListOl } from 'react-icons/fa6';
 import { IoIosRedo, IoIosUndo } from 'react-icons/io';
 
-// type Level = 1 | 2 | 3 | 4 | 5 | 6;
-
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   if (!editor) {
@@ -21,9 +19,6 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
     transition-colors duration-200 bg-transparent
   `;
   const activeButtonClass = '!bg-primary-10 !text-primary-100 !border-primary-100';
-  // const headingButtonClass = `${buttonClass} font-bold`;
-
-  // const headingLevels: Level[] = [1, 2, 3, 4, 5];
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -38,50 +33,80 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       reader.readAsDataURL(file);
     }
   };
+
+  const preventDefault = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
     <div className="control-group p-2 rounded shadow">
       <div className="button-group flex flex-wrap">
         <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().toggleBold().run();
+          }}
           className={`${buttonClass} ${editor.isActive('bold') ? activeButtonClass : ''}`}
           title="Bold"
         >
           <FaBold />
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().toggleItalic().run();
+          }}
           className={`${buttonClass} ${editor.isActive('italic') ? activeButtonClass : ''}`}
           title="Italic"
         >
           <FaItalic />
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().toggleBulletList().run();
+          }}
           className={`${buttonClass} ${editor.isActive('bulletList') ? activeButtonClass : ''}`}
           title="Bullet List"
         >
           <FaListUl />
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().toggleOrderedList().run();
+          }}
           className={`${buttonClass} ${editor.isActive('orderedList') ? activeButtonClass : ''}`}
           title="Ordered List"
         >
           <FaListOl />
         </button>
-
-        <button onClick={() => imageInputRef.current?.click()} className={`${buttonClass}`} title="Add Image">
+        <button
+          onClick={(e) => {
+            preventDefault(e);
+            imageInputRef.current?.click();
+          }}
+          className={`${buttonClass}`}
+          title="Add Image"
+        >
           <FaImage />
         </button>
         <button
-          onClick={() => editor.chain().focus().clearNodes().unsetAllMarks().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().clearNodes().unsetAllMarks().run();
+          }}
           className={`${buttonClass}`}
           title="Clear Formatting"
         >
           <FaRemoveFormat />
         </button>
         <button
-          onClick={() => editor.chain().focus().undo().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().undo().run();
+          }}
           disabled={!editor.can().undo()}
           className={`${buttonClass}`}
           title="Undo"
@@ -89,7 +114,10 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           <IoIosUndo />
         </button>
         <button
-          onClick={() => editor.chain().focus().redo().run()}
+          onClick={(e) => {
+            preventDefault(e);
+            editor.chain().focus().redo().run();
+          }}
           disabled={!editor.can().redo()}
           className={`${buttonClass}`}
           title="Redo"
@@ -98,17 +126,6 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
         </button>
 
         <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
-
-        {/* {headingLevels.map((level) => (
-          <button
-            key={level}
-            onClick={() => editor.chain().focus().toggleHeading({ level }).run()}
-            className={`${headingButtonClass} ${editor.isActive('heading', { level }) ? activeButtonClass : ''}`}
-            title={`Heading ${level}`}
-          >
-            H<span className="text-[12px]">{level}</span>
-          </button>
-        ))} */}
       </div>
     </div>
   );

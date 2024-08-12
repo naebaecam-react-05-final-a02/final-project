@@ -192,6 +192,7 @@ const ExerciseRecordPage = () => {
           onChange={handleNameChange}
           inputType="select"
           dropdownOptions={bookmarkListOptions}
+          autoComplete="off"
           icon={
             <Star
               style={{

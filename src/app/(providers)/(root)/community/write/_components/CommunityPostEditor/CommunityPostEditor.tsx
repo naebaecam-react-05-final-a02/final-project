@@ -3,7 +3,7 @@
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
-import { EditorContent, useEditor } from '@tiptap/react';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useCallback } from 'react';
 import sanitizeContent from '../../../_utils/sanitizeContent';
@@ -12,7 +12,7 @@ import MenuBar from '../MenuBar';
 const MAX_CHARACTERS = 2000;
 
 interface CommunityPostEditorProps {
-  onContentChange: (content: string, isValid: boolean) => void;
+  onContentChange: (content: string, isValid: boolean, editor: Editor) => void;
 }
 
 const CommunityPostEditor = ({ onContentChange }: CommunityPostEditorProps) => {
@@ -24,7 +24,7 @@ const CommunityPostEditor = ({ onContentChange }: CommunityPostEditorProps) => {
       content = await sanitizeContent(content);
 
       const isValid = characterCount > 0 && characterCount <= MAX_CHARACTERS;
-      onContentChange(content, isValid);
+      onContentChange(content, isValid, editor);
     },
     [onContentChange],
   );
@@ -59,7 +59,7 @@ const CommunityPostEditor = ({ onContentChange }: CommunityPostEditorProps) => {
     <div className="rounded-lg bg-input-gradient backdrop-blur-[10px]">
       <MenuBar editor={editor} />
 
-      <div className="border-t border-white/4">
+      <div className="border-t border-whiteT-40">
         <EditorContent editor={editor} />
       </div>
 
