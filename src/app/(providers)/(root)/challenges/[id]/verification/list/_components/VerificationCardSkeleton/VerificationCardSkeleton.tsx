@@ -1,19 +1,15 @@
-import React from 'react';
-
 const VerificationCardSkeleton = () => {
   return (
-    <div className="bg-blue-200 p-4 flex flex-col gap-y-4 border border-gray-400 rounded-lg animate-pulse">
-      <div className="flex gap-x-2 items-center">
-        <div className="rounded-full bg-gray-200 size-8" />
-        <div className="bg-gray-200 rounded-lg text-sm font-bold w-20 h-4" />
-      </div>
-      <div className="size-full ">
-        <div className="w-full aspect-video bg-gray-200 " />
-        <div className="text-xs font-bold p-2">
-          <p className="w-full h-4 rounded-md bg-gray-200"></p>
+    <article className="rounded-3xl bg-white/5 border border-white/10 box-border p-2 flex flex-col gap-3 select-none">
+      <div className="w-full aspect-[8/7] bg-gray-500 rounded-2xl relative overflow-hidden"></div>
+      <div>
+        <div className="flex gap-1 items-center">
+          <div className="w-[18px] h-[18px] bg-gray-500 border border-white rounded-full relative"></div>
+          <p className="text-white/70 text-[12px] w-full"></p>
         </div>
+        <p className="text-[12px] text-white w-full"></p>
       </div>
-    </div>
+    </article>
   );
 };
 

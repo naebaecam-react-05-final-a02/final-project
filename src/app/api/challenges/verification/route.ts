@@ -79,9 +79,6 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase.from('challengeVerify').select('*,users(*)').eq('challengeId', id);
 
-    console.log('Fetched ID:', id);
-    console.log('Supabase Error:', error);
-
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

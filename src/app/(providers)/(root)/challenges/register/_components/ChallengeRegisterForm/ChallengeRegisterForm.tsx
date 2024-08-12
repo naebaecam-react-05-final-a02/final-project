@@ -83,11 +83,10 @@ const ChallengeRegisterForm = () => {
               isProgress: today == startDate,
               createdBy: user?.id!,
               imageURL: response.imageURLs[0],
-              verify: null,
+
               tags: null,
               rating: 0,
               category,
-              participants: 0,
             };
             // console.log('registerData', registerData);
             challengeRegister(registerData, {

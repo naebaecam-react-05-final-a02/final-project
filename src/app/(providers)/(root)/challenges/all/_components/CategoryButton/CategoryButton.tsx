@@ -1,10 +1,11 @@
 import { cva } from 'class-variance-authority';
+import { CategoryTypes } from '../../_constants/constants';
 
 interface ButtonProps {
   label: string;
-  value: string;
-  category: string;
-  onClick: (value: string) => void;
+  value: CategoryTypes;
+  category: CategoryTypes;
+  onClick: (value: CategoryTypes) => void;
 }
 
 const categoryButtonVariants = cva('text-sm w-11 h-7  border rounded-lg', {

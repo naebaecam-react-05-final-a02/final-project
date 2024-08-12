@@ -19,13 +19,13 @@ export async function GET(request: NextRequest) {
           .select(`*`)
           .eq('category', category)
           .order('startDate', { ascending: true })
-          .gte('startDate', today)
+          .gte('endDate', today)
           .range(to, from)
       : await supabase
           .from('challenges')
           .select(`*`)
           .order('startDate', { ascending: true })
-          .gte('startDate', today)
+          .gte('endDate', today)
           .range(to, from);
 
   if (error) {

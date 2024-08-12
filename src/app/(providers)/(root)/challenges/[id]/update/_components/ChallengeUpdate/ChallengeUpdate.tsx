@@ -90,11 +90,9 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
                 isProgress: challenge.isProgress,
                 createdBy: challenge.createdBy,
                 imageURL: response.imageURLs[0],
-                verify: null,
                 tags: null,
                 rating: 0,
                 category,
-                participants: challenge.participants,
               };
               challengeUpdate(
                 { updateData, cid: challenge.id },
@@ -118,11 +116,9 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           isProgress: challenge.isProgress,
           createdBy: challenge.createdBy,
           imageURL: challenge.imageURL,
-          verify: null,
           tags: null,
           rating: 0,
           category,
-          participants: challenge.participants,
         };
         challengeUpdate(
           { updateData, cid: challenge.id },

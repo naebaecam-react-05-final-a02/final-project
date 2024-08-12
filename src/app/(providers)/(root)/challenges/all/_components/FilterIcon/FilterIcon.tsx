@@ -1,3 +1,4 @@
+'use client';
 import FilterIconSVG from '@/assets/filter.svg';
 
 interface FilterIconProps {

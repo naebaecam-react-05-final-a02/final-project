@@ -267,3 +267,7 @@ textarea:-webkit-autofill:active {
 .ProseMirror ol ol ol {
   list-style-type: lower-roman;
 }
+.modal-shadow {
+  box-shadow: -4px -4px 8px 0px rgba(18, 242, 135, 0.1), 4px 4px 8px 0px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}

@@ -21,6 +21,12 @@ class UsersAPI {
     const response = await axios.delete(`${this.baseUrl}/profile/avatar`);
     return response;
   };
+
+  validateNickname = async ({ nickname }: { nickname: string }) => {
+    const response = await axios.get(`${this.baseUrl}/nickname?nickname=${nickname}`);
+    const data = response.data;
+    return data;
+  };
 }
 
 export default UsersAPI;
