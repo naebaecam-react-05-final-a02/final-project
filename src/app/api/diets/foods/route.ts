@@ -10,8 +10,13 @@ export const GET = async (request: NextRequest) => {
       `https://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1?ServiceKey=${process.env.NUTRITION_INFO_SERVICE_KEY}&type=json&desc_kor=${foodName}`,
     );
 
+    if (response.data.body.totalCount === 0) {
+      return NextResponse.json([]);
+    }
+
     return NextResponse.json(response.data.body.items);
   } catch (e) {
+    console.log(e);
     return NextResponse.json({ message: '식단 조회에 실패했습니다' }, { status: 400 });
   }
 };

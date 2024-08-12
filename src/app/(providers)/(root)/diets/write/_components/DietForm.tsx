@@ -155,11 +155,17 @@ const DietForm = () => {
             placeholder="음식 이름을 입력해주세요."
             dropdownOptions={
               isSearching
-                ? [{ value: '검색중...' }]
+                ? [{ value: '검색중...', preventClick: true }]
+                : searchedFoods.length === 0
+                ? [
+                    { value: foodForm['foodName'] },
+                    { value: `${foodForm['foodName']}의 음식 검색 결과가 없습니다`, preventClick: true },
+                  ]
                 : [
                     { value: foodForm['foodName'] },
                     ...searchedFoods.map((food) => ({
                       value: `${food.DESC_KOR}`,
+                      text: `${food.SERVING_WT}g당 ${food.NUTR_CONT1}kcal`,
                       onClick: () => {
                         handleFormChange('foodName', food.DESC_KOR);
                         handleFormChange('kcal', Number(food.NUTR_CONT1));
