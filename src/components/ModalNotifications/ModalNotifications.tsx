@@ -1,14 +1,14 @@
 import { Tables } from '@/types/supabase';
 import Link from 'next/link';
 import { RxCross2 } from 'react-icons/rx';
-import NotificationList from '../NotificationList';
+import ModalNotificationList from '../ModalNotificationList';
 
-type NotificationsProps = {
+type ModalNotificationsProps = {
   notifications: Tables<'notifications'>[] | null | undefined;
   onClose: () => void;
 };
 
-const Notifications = ({ notifications, onClose }: NotificationsProps) => {
+const ModalNotifications = ({ notifications, onClose }: ModalNotificationsProps) => {
   return (
     <div
       className="fixed top-14 right-4 w-[320px] h-[440px] rounded-3xl border-primary-100/50 border-2 p-4 
@@ -25,7 +25,7 @@ flex flex-col gap-y-5  z-50 backdrop-blur-md select-none bg-white/5"
       {notifications && !notifications.length && (
         <div className="flex-1 font-bold text-lg text-white">새로운 알림이 없습니다!</div>
       )}
-      {notifications && notifications.length > 0 && <NotificationList notifications={notifications} />}
+      {notifications && notifications.length > 0 && <ModalNotificationList notifications={notifications} />}
       <Link
         href={'/notifications'}
         className="w-full py-[10px] text-center bg-primary-100/10 rounded-lg border-gray-300 border-[1px] text-sm
@@ -37,4 +37,4 @@ flex flex-col gap-y-5  z-50 backdrop-blur-md select-none bg-white/5"
   );
 };
 
-export default Notifications;
+export default ModalNotifications;

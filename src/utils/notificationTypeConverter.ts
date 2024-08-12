@@ -11,8 +11,3 @@ const engNotificationTypeItems: { [key: string]: string } = {
 export const NotificationTypeConverter = (type: string) => {
   return korNotificationTypeItems[type] ?? engNotificationTypeItems[type];
 };
-
-export const NotificationCategoryConverter = (category: string) => {
-  if (category === 'pre-start') return `챌린지가 내일부터 시작됩니다.`;
-  return '대기';
-};

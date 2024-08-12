@@ -1,7 +1,7 @@
 'use client';
 import NotificationSVG from '@/assets/nav/notification.svg';
+import ModalNotifications from '@/components/ModalNotifications';
 import ModalPortalLayout from '@/components/ModalPortal/ModalPortalLayout';
-import Notifications from '@/components/Notifications';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
@@ -51,7 +51,7 @@ const NotificationButton = () => {
       <div className="relative select-none">
         {isOpen && (
           <ModalPortalLayout onClose={() => setIsOpen(false)}>
-            <Notifications notifications={notifications} onClose={() => setIsOpen(false)} />
+            <ModalNotifications notifications={notifications} onClose={() => setIsOpen(false)} />
           </ModalPortalLayout>
         )}
         {notifications && notifications?.length > 0 && (
