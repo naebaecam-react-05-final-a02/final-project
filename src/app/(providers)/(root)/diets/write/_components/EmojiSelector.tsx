@@ -11,12 +11,15 @@ const EmojiSelector = ({ foodType, handleEmojiChange }: EmojiSelectorProps) => {
   const [modal, setModal] = useState(false);
 
   return (
-    <>
-      <div className={'absolute top-1/2 -translate-y-1/2 left-3'}>
-        <Image width={20} height={20} src={`/foods/${foodType}.png`} alt={foodType} onClick={() => setModal(!modal)} />
+    <div className="h-full relative">
+      <div
+        className="h-full flex justify-center items-center rounded-lg bg-input-gradient border-gradient"
+        onClick={() => setModal(!modal)}
+      >
+        <Image width={20} height={20} src={`/foods/${foodType}.png`} alt={foodType} />
       </div>
       <div
-        className={`z-50 absolute top-full left-0 w-full flex flex-wrap justify-center gap-3 bg-[#00000090] p-3 rounded-xl ${
+        className={`z-50 absolute top-full right-0 w-[calc(100vw-32px)] max-h-[40vh] overflow-y-scroll flex flex-wrap justify-center gap-3 bg-blackT-60 backdrop-blur-md p-3 rounded-xl ${
           modal ? 'block' : 'hidden'
         }`}
       >
@@ -34,7 +37,7 @@ const EmojiSelector = ({ foodType, handleEmojiChange }: EmojiSelectorProps) => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

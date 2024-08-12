@@ -149,42 +149,44 @@ const DietForm = () => {
         </div>
         <div className="w-full px-4">
           <h2 className="opacity-70 text-sm">음식 이름</h2>
-          <Input
-            inputType="select"
-            value={foodForm['foodName']}
-            placeholder="음식 이름을 입력해주세요."
-            dropdownOptions={
-              isSearching
-                ? [{ value: '검색중...', preventClick: true }]
-                : searchedFoods.length === 0
-                ? [
-                    { value: foodForm['foodName'] },
-                    { value: `${foodForm['foodName']}의 음식 검색 결과가 없습니다`, preventClick: true },
-                  ]
-                : [
-                    { value: foodForm['foodName'] },
-                    ...searchedFoods.map((food) => ({
-                      value: `${food.DESC_KOR}`,
-                      text: `${food.SERVING_WT}g당 ${food.NUTR_CONT1}kcal`,
-                      onClick: () => {
-                        handleFormChange('foodName', food.DESC_KOR);
-                        handleFormChange('kcal', Number(food.NUTR_CONT1));
-                        handleFormChange('carbohydrate', Number(food.NUTR_CONT2));
-                        handleFormChange('protein', Number(food.NUTR_CONT3));
-                        handleFormChange('fat', Number(food.NUTR_CONT4));
-                      },
-                    })),
-                  ]
-            }
-            onChange={(e) => {
-              handleFormChange('foodName', e.target.value);
-              debouncedSearchFoods();
-            }}
-          />
-          <EmojiSelector
-            foodType={foodForm['foodType']}
-            handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
-          />
+          <div className="grid grid-cols-[1fr_48px] gap-2">
+            <Input
+              inputType="select"
+              value={foodForm['foodName']}
+              placeholder="음식 이름을 입력해주세요."
+              dropdownOptions={
+                isSearching
+                  ? [{ value: '검색중...', preventClick: true }]
+                  : searchedFoods.length === 0
+                  ? [
+                      { value: foodForm['foodName'] },
+                      { value: `${foodForm['foodName']}의 음식 검색 결과가 없습니다`, preventClick: true },
+                    ]
+                  : [
+                      { value: foodForm['foodName'] },
+                      ...searchedFoods.map((food) => ({
+                        value: `${food.DESC_KOR}`,
+                        text: `${food.SERVING_WT}g당 ${food.NUTR_CONT1}kcal`,
+                        onClick: () => {
+                          handleFormChange('foodName', food.DESC_KOR);
+                          handleFormChange('kcal', Number(food.NUTR_CONT1));
+                          handleFormChange('carbohydrate', Number(food.NUTR_CONT2));
+                          handleFormChange('protein', Number(food.NUTR_CONT3));
+                          handleFormChange('fat', Number(food.NUTR_CONT4));
+                        },
+                      })),
+                    ]
+              }
+              onChange={(e) => {
+                handleFormChange('foodName', e.target.value);
+                debouncedSearchFoods();
+              }}
+            />
+            <EmojiSelector
+              foodType={foodForm['foodType']}
+              handleEmojiChange={(emoji) => handleFormChange('foodType', emoji)}
+            />
+          </div>
         </div>
         <div className="w-full px-4">
           <Input
