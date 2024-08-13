@@ -1,5 +1,6 @@
 import { NotificationWithCategory } from '@/types/notification';
 import NotificationChallengeText from './NotificationChallengeText';
+import NotificationDashboardText from './NotificationDashboardText';
 
 type NotificationTextProps = {
   notification: NotificationWithCategory;
@@ -43,37 +44,8 @@ const NotificationText = ({ notification, id }: NotificationTextProps) => {
   }
 
   // dashboard
-  if (notification.category === 'diet') {
-    return (
-      <div>
-        <div>
-          오늘 아직 <span className="text-primary-100">식단</span>을 등록하지 않으셨군요!
-        </div>
-        <div>오늘 먹은 음식을 등록해주세요!</div>
-      </div>
-    );
-  }
-
-  if (notification.category === 'exercise') {
-    return (
-      <div>
-        <div>
-          오늘 아직 <span className="text-primary-100">운동</span>을 등록하지 않으셨군요!
-        </div>
-        <div>오늘의 운동을 등록해주세요!</div>
-      </div>
-    );
-  }
-
-  if (notification.category === 'weight') {
-    return (
-      <div>
-        <div>
-          오늘 아직 <span className="text-primary-100">체중</span>을 등록하지 않으셨군요!
-        </div>
-        <div>오늘 체중을 등록해주세요!</div>
-      </div>
-    );
+  if (notification.type === 'dashboard') {
+    return <NotificationDashboardText category={notification.category} />;
   }
 };
 
