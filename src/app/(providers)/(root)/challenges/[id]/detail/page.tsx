@@ -2,13 +2,15 @@
 
 import Button from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
-import { createClient } from '@/supabase/client';
+import api from '@/service/service';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
@@ -21,6 +23,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
   const router = useRouter();
+  const modal = useModal();
 
   // const [menuOpen, setMenuOpen] = useState(false);
   // const [isHoveredEdit, setIsHoveredEdit] = useState(false);
@@ -39,7 +42,20 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   //   };
   // }, []);
 
-  if (!challenge) {
+  const { mutate: challengeJoinMutation, isPending: isJoinPending } = useMutation({
+    mutationFn: (id: number) => api.challenge.joinChallenge({ challengeId: id }),
+    onSuccess: (data) => {
+      if (data.status === 200) {
+        modal.alert(['신청이 완료되었습니다']);
+        queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
+        router.replace('/challenges');
+      } else {
+        modal.alert(['신청에 실패했습니다']);
+      }
+    },
+  });
+
+  if (!challenge || isJoinPending) {
     return <Loading />;
   }
 
@@ -56,23 +72,9 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
     .padStart(2, '0')}`;
 
   const handleJoinChallenge = async () => {
-    const supabase = createClient();
-
-    if (confirm('신청하시겠습니까?')) {
-      const { error } = await supabase.from('challengeParticipants').insert({
-        challengeId: id,
-        userId: user?.id,
-      });
-      if (error) {
-        // 에러 처리도 제대루 해야함
-        alert('신청에 실패하였습니다.');
-      } else {
-        // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
-        alert('신청하였습니다.');
-        queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
-        router.replace('/challenges');
-      }
-    }
+    const isOk = await modal.confirm(['챌린지를 신청하시겠습니까?']);
+    if (!isOk) return await modal.alert(['챌린지 신청을 취소하셨습니다']);
+    challengeJoinMutation(id);
   };
   // const handleMenuToggle = () => {
   //   setMenuOpen(!menuOpen);

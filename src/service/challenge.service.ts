@@ -174,6 +174,11 @@ class ChallengeAPI {
     const data = response.data;
     return data;
   };
+  joinChallenge = async ({ challengeId }: { challengeId: number }) => {
+    const response = await axios.post(`${this.baseURL}/participants?challengeId=${challengeId}`);
+    const data = response.data;
+    return data;
+  };
 }
 
 export default ChallengeAPI;
