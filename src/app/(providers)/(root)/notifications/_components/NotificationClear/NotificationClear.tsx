@@ -18,14 +18,16 @@ const NotificationClear = () => {
       const response = await supabase
         .from('notifications')
         .update({ isRead: true })
-        .order('createdAt', { ascending: false })
-        .limit(50)
         .match({ targetUserId: user?.id, isRead: false });
+
       console.log('response___', response);
     },
     onSuccess: () => {
       console.log('SUCCESS___');
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
+    onError: (error) => {
+      console.error('Error clearing notifications:', error);
     },
   });
   const handleClear = async () => {
