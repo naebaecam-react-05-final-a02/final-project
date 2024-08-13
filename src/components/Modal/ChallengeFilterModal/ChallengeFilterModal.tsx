@@ -26,7 +26,7 @@ const ChallengeFilterModal = ({ id, onSuccess, onCancel }: ChallengeFilterModalP
   const [filter, setFilter] = useState<ChallengeFilterTypes>({
     categories: ['all'],
     status: ['all'],
-    order: ['date'],
+    order: ['startDate'],
   });
   const [isVisible, setIsVisible] = useState(true);
 

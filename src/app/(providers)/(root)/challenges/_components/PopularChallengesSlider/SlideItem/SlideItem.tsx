@@ -47,7 +47,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
       <div className="flex flex-col gap-3 items-start">
         <div className="flex gap-2">
           <div className="w-7 h-7 bg-gray-500 rounded-md"></div>
-          <h3 className="text-xl font-semibold">{challenge.title}</h3>
+          <h3 className="text-xl font-semibold truncate w-52">{challenge.title}</h3>
         </div>
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
           <p className="text-primary-100">참여 {challenge.participantsCount}</p>
@@ -57,7 +57,7 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
       <div className="w-full flex flex-col gap-2">
         <div className="flex">
           <Bullet />
-          <p className="text-[16px] font-semibold">{challenge.content}</p>
+          <p className="text-[16px] font-semibold truncate">{challenge.content}</p>
         </div>
 
         <p className="text-[12px] text-white/50 font-light">
