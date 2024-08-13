@@ -20,6 +20,7 @@ const NotificationList = () => {
   const {
     data: notifications,
     error,
+    isLoading,
     isPending,
   } = useQuery({
     queryKey: ['notifications'],
@@ -37,7 +38,7 @@ const NotificationList = () => {
     enabled: !!user,
   });
 
-  if (isPending) {
+  if (isLoading || isPending) {
     return <Loading />;
   }
 
