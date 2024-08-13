@@ -48,6 +48,7 @@ export type ChallengeOrderTypes = 'startDate' | 'endDate' | 'participants' | 've
 export type ChallengeCategoryTypes = 'all' | 'exercise' | 'diet' | 'lifestyle' | 'etc';
 
 export interface ChallengeFilterTypes {
+  searchValue: string;
   categories: ChallengeCategoryTypes[];
   status: ChallengeStatusTypes[];
   order: ChallengeOrderTypes[];

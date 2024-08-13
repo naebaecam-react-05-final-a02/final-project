@@ -120,7 +120,7 @@ class ChallengeAPI {
       const response = await axios.get(
         `${this.baseURL}/all?categories=${filter.categories.join(',')}&status=${filter.status.join(
           ',',
-        )}&order=${filter.order.join(',')}&page=${page}&limit=${limit}`,
+        )}&order=${filter.order.join(',')}&searchValue=${filter.searchValue}&page=${page}&limit=${limit}`,
       );
 
       const data = await response.data;
@@ -157,7 +157,7 @@ class ChallengeAPI {
       const response = await axios.get(
         `${this.baseURL}/all/count?categories=${filter.categories.join(',')}&status=${filter.status.join(
           ',',
-        )}&order=${filter.order.join(',')}`,
+        )}&order=${filter.order.join(',')}&searchValue=${filter.searchValue}`,
       );
       return response.data;
     } catch (error) {

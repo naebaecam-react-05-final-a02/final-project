@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
   const categories = searchParams.get('categories')?.split(',');
   const order = searchParams.get('order');
   const status = searchParams.get('status')?.split(',');
+  const searchValue = searchParams.get('searchValue') ?? '';
   const page = Number(searchParams.get('page'));
   const limit = Number(searchParams.get('limit'));
   const today = dayjs().format('YYYY-MM-DD');
@@ -33,6 +34,7 @@ export async function GET(request: NextRequest) {
     .select(`*`)
     .in('category', categories as Array<ChallengeCategoryTypes>)
     .in('isProgress', status as Array<ChallengeStatusTypes>)
+    .like('title', `%${searchValue}%`)
     .order(order as string, { ascending })
     .gte('endDate', today)
     .range(to, from);

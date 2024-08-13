@@ -24,6 +24,7 @@ const ChallengeFilterModal = ({ id, onSuccess, onCancel }: ChallengeFilterModalP
   const modal = useModal();
   const existingFilter = useChallengeFilterStore((state) => state.filter);
   const [filter, setFilter] = useState<ChallengeFilterTypes>({
+    searchValue: '',
     categories: ['all'],
     status: ['all'],
     order: ['startDate'],

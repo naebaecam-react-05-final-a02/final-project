@@ -27,7 +27,6 @@
 
   .input-bg {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
-    backdrop-filter: blur(5px);
   }
 
   .button-icon {

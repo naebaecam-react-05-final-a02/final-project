@@ -24,10 +24,10 @@ const initialValue: TInitialValue = {
   confirm: async () => true,
   custom: {
     filter: async () => ({
-      categories: ['all'],
-      status: ['recruiting'],
-      order: ['date'],
-      isOk: false,
+      searchValue: '',
+      categories: [],
+      status: [],
+      order: [],
     }),
   },
   open: () => {},
