@@ -98,11 +98,13 @@ export type Database = {
           endDate: string
           id: number
           imageURL: string
-          isProgress: boolean
+          isProgress: string
+          participants: number
           rating: number | null
           startDate: string
           tags: string | null
           title: string
+          verifications: number
         }
         Insert: {
           category?: string
@@ -111,11 +113,13 @@ export type Database = {
           endDate: string
           id?: number
           imageURL: string
-          isProgress?: boolean
+          isProgress?: string
+          participants?: number
           rating?: number | null
           startDate: string
           tags?: string | null
           title: string
+          verifications?: number
         }
         Update: {
           category?: string
@@ -124,11 +128,13 @@ export type Database = {
           endDate?: string
           id?: number
           imageURL?: string
-          isProgress?: boolean
+          isProgress?: string
+          participants?: number
           rating?: number | null
           startDate?: string
           tags?: string | null
           title?: string
+          verifications?: number
         }
         Relationships: [
           {
@@ -160,6 +166,13 @@ export type Database = {
           verificationId?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "challengeVerificationLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "challengeVerificationLikes_verificationId_fkey"
             columns: ["verificationId"]
@@ -211,6 +224,35 @@ export type Database = {
           },
         ]
       }
+      communityAnswer: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: number
+          questionId: number | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          questionId?: number | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          questionId?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityAnswer_questionId_fkey"
+            columns: ["questionId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       communityPosts: {
         Row: {
           category: string
@@ -220,6 +262,7 @@ export type Database = {
           tags: string[] | null
           title: string
           userId: string | null
+          views: number | null
         }
         Insert: {
           category: string
@@ -229,6 +272,7 @@ export type Database = {
           tags?: string[] | null
           title: string
           userId?: string | null
+          views?: number | null
         }
         Update: {
           category?: string
@@ -238,11 +282,48 @@ export type Database = {
           tags?: string[] | null
           title?: string
           userId?: string | null
+          views?: number | null
         }
         Relationships: [
           {
             foreignKeyName: "communityPosts_userId_fkey"
             columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityQa: {
+        Row: {
+          answerId: number | null
+          isAccepted: boolean
+          questionId: number
+          questionUserId: string | null
+        }
+        Insert: {
+          answerId?: number | null
+          isAccepted?: boolean
+          questionId?: number
+          questionUserId?: string | null
+        }
+        Update: {
+          answerId?: number | null
+          isAccepted?: boolean
+          questionId?: number
+          questionUserId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityQa_questionId_fkey"
+            columns: ["questionId"]
+            isOneToOne: true
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityQa_questionUserId_fkey"
+            columns: ["questionUserId"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -492,6 +573,39 @@ export type Database = {
           {
             foreignKeyName: "alarm_targetUserId_fkey"
             columns: ["targetUserId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      postsviews: {
+        Row: {
+          createdat: string
+          postid: number
+          userid: string
+        }
+        Insert: {
+          createdat?: string
+          postid: number
+          userid: string
+        }
+        Update: {
+          createdat?: string
+          postid?: number
+          userid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "postsviews_postid_fkey"
+            columns: ["postid"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "postsviews_userid_fkey"
+            columns: ["userid"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
