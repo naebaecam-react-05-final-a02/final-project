@@ -7,6 +7,7 @@ import { useCreateCommunityPost } from '@/hooks/community/useCommunity';
 import Mobile from '@/layouts/Mobile';
 import { CommunityPostCreateData } from '@/types/community';
 import { Editor } from '@tiptap/react';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import validateCommunityPost, { ValidationResult } from '../../../_utils/validateCommunityPost';
 import CommunityPostEditor from '../CommunityPostEditor';
@@ -19,8 +20,8 @@ const CommunityPostForm = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [validationErrors, setValidationErrors] = useState<ValidationResult['errors']>({});
   const editorRef = useRef<Editor | null>(null);
-
   const { mutate: createPost, isPending, error } = useCreateCommunityPost();
+  const route = useRouter();
 
   const categories = [{ value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }, { value: '투표' }];
 
@@ -52,6 +53,7 @@ const CommunityPostForm = () => {
         onSuccess: () => {
           console.log('게시글이 성공적으로 등록되었습니다.');
           resetForm();
+          route.push('/community');
         },
         onError: (error) => {
           console.error('게시글 등록 실패:', error);
@@ -73,9 +75,14 @@ const CommunityPostForm = () => {
     setValidationErrors((prev) => ({ ...prev, category: undefined }));
   };
 
-  const handleTagToggle = (tag: string) => {
+  const handleTagToggle = (tag: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // 기본 이벤트 동작 방지
     // setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
-    setSelectedTags([tag]);
+    setSelectedTags((prev) => {
+      const newTags = prev.includes(tag) ? [] : [tag];
+      setValidationErrors((prevErrors) => ({ ...prevErrors, tags: undefined }));
+      return newTags;
+    });
   };
 
   const handleContentChange = (newContent: string, isValid: boolean, editor: Editor) => {
@@ -117,7 +124,7 @@ const CommunityPostForm = () => {
                   key={tag}
                   label={tag}
                   isSelected={selectedTags.includes(tag)}
-                  onClick={() => handleTagToggle(tag)}
+                  onClick={(e) => handleTagToggle(tag, e)}
                 />
               ))}
             </div>
