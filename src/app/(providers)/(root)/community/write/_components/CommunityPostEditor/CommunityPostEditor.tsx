@@ -13,9 +13,10 @@ const MAX_CHARACTERS = 2000;
 
 interface CommunityPostEditorProps {
   onContentChange: (content: string, isValid: boolean, editor: Editor) => void;
+  initialContent?: string;
 }
 
-const CommunityPostEditor = ({ onContentChange }: CommunityPostEditorProps) => {
+const CommunityPostEditor = ({ onContentChange, initialContent = '' }: CommunityPostEditorProps) => {
   const handleUpdate = useCallback(
     async ({ editor }: { editor: any }) => {
       let content = editor.getHTML();
@@ -30,6 +31,7 @@ const CommunityPostEditor = ({ onContentChange }: CommunityPostEditorProps) => {
   );
 
   const editor = useEditor({
+    content: initialContent,
     immediatelyRender: false,
     extensions: [
       StarterKit,
