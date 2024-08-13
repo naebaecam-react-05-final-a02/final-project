@@ -1,3 +1,5 @@
+'use client';
+
 import { Notification } from '@/types/notification';
 import Link from 'next/link';
 import { RxCross2 } from 'react-icons/rx';

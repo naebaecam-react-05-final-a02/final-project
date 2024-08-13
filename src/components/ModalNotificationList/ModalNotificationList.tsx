@@ -23,14 +23,8 @@ const ModalNotificationList = ({ notifications }: { notifications: Notification[
   });
 
   const handleRoute = (id: number, notification: NotificationWithCategory, idForURL: string | null) => {
-    updateIsRead(id, {
-      onSuccess: () => {
-        router.push(makeNotificationLink(notification, idForURL));
-      },
-      onError: () => {
-        modal.alert(['알 수 없는 에러 발생']);
-      },
-    });
+    updateIsRead(id);
+    router.push(makeNotificationLink(notification, idForURL));
   };
 
   return (

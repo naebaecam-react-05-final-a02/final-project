@@ -12,6 +12,7 @@ import ExerciseTodoList from './_components/ExerciseTodoList';
 import DashBoardJoinedChallenges from './_components/JoinedChallenges';
 import WeightChart from './_components/WeightChart';
 
+//TODO 챌린지 데이터 isProgress 변경됨에따른 코드변경 필수
 const RootPage = async ({ searchParams: { query } }: { searchParams: { query: string } }) => {
   const supabase = createClient();
   const queryClient = new QueryClient();
