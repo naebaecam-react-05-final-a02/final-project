@@ -122,7 +122,6 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
                             text-center
                             text-base
                             font-normal
-                            leading-6
                             ${isToday ? 'font-semibold' : ''}
                             ${dayjs(date).isSame(selectedDate, 'day') ? 'text-primary-100' : ''}
                           `}

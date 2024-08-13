@@ -75,7 +75,7 @@ input.exerciseInput[type='number'] {
   -moz-appearance: textfield;
 }
 body {
-  @apply font-sans leading-140 tracking-tighter;
+  @apply font-sans leading-140 tracking-[-0.4px];
 }
 
 .my-masonry-grid {

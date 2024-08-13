@@ -18,8 +18,8 @@ const Chip = ({ food, isActive, handleDelete, onClick }: ChipProps & ComponentPr
     >
       <div className="p-2 text-2xl leading-none">{food.foodType}</div>
       <div className="flex flex-col justify-center items-start">
-        <span className="text-sm whitespace-nowrap leading-tight pr-1">{food.foodName || '-'}</span>
-        <span className="text-[10px] opacity-30 whitespace-nowrap leading-tight">{food.kcal || 0} Kcal</span>
+        <span className="text-sm whitespace-nowrap pr-1">{food.foodName || '-'}</span>
+        <span className="text-[10px] opacity-30 whitespace-nowrap">{food.kcal || 0} Kcal</span>
       </div>
       {handleDelete && (
         <CloseIcon
