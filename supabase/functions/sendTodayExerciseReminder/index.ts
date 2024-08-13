@@ -6,6 +6,9 @@ const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
 
 Deno.serve(async () => {
   try {
+    const today = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    // today.setDate(today.getDate() + 1);
+    const todayStr = today.toISOString().split('T')[0];
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { data: users } = await supabase.from('users').select('id');
@@ -16,13 +19,13 @@ Deno.serve(async () => {
     }
 
     const exercisesPromises = users.map((user: any) =>
-      supabase.from('exercises').select('*').eq('userId', user.id).gte('date', new Date().toISOString()),
+      supabase.from('exercises').select('*').eq('userId', user.id).gte('date', todayStr),
     );
     const results = await Promise.all(exercisesPromises);
 
-    console.log('DietsPromises Results___', results);
+    console.log('ExercisesPromises Results___', results);
 
-    const insertDietNotifications = users
+    const insertExerciseNotifications = users
       .filter((_: any, idx: number) => !results[idx]?.data?.length)
       .map((user: any) =>
         supabase.from('notifications').insert({
@@ -35,8 +38,8 @@ Deno.serve(async () => {
         }),
       );
 
-    const insertDietNotificationsResults = await Promise.all(insertDietNotifications);
-    console.log('InsertDietNotifications Results___', insertDietNotificationsResults);
+    const insertExerciseNotificationsResults = await Promise.all(insertExerciseNotifications);
+    console.log('Insert Exercise Notifications Results___', insertExerciseNotificationsResults);
 
     return new Response(JSON.stringify({ message: 'Challenges updated successfully', results }), {
       headers: { 'Content-Type': 'application/json' },

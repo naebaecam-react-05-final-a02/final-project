@@ -6,6 +6,10 @@ const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
 
 Deno.serve(async () => {
   try {
+    const today = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    // today.setDate(today.getDate() + 1);
+    const todayStr = today.toISOString().split('T')[0];
+    console.log('TODAY___', todayStr);
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { data: users } = await supabase.from('users').select('id');
@@ -16,7 +20,7 @@ Deno.serve(async () => {
     }
 
     const dietsPromises = users.map((user: any) =>
-      supabase.from('diets').select('*').eq('userId', user.id).gte('date', new Date().toISOString()),
+      supabase.from('diets').select('*').eq('userId', user.id).gte('date', todayStr),
     );
     const results = await Promise.all(dietsPromises);
 
