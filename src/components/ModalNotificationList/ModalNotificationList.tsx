@@ -19,7 +19,7 @@ const ModalNotificationList = ({ notifications }: { notifications: Notification[
             <NotificationChip type={notificationTypeConverter(type)} />
 
             <div className="flex-1 whitespace-normal ">
-              <NotificationText notification={{ type, category } as NotificationWithCategory} />
+              <NotificationText notification={{ type, category } as NotificationWithCategory} id={idForURL} />
             </div>
             {/* <div className="flex flex-col text-[10px]">
           <div>{format(createdAt, 'yyyy-MM-dd')}</div>

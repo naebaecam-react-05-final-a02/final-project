@@ -5,8 +5,7 @@ import Loading from '@/components/Loading/Loading';
 import NotificationChip from '@/components/NotificationChip';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { createClient } from '@/supabase/client';
-import { NotificationWithCategory } from '@/types/notification';
-import { Tables } from '@/types/supabase';
+import { Notification, NotificationWithCategory } from '@/types/notification';
 import { notificationTypeConverter } from '@/utils/notificationTypeConverter';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -31,7 +30,7 @@ const NotificationList = () => {
         .order('createdAt', { ascending: false })
         .limit(50)
         .match({ targetUserId: user?.id, isRead: false })
-        .returns<Tables<'notifications'>[]>();
+        .returns<Notification[]>();
 
       return response.data;
     },
@@ -54,7 +53,7 @@ const NotificationList = () => {
     <>
       <h6 className="text-white/70 text-xs">최근 50개의 알람까지 보여집니다.</h6>
       <ul className="flex flex-col gap-y-6">
-        {notifications?.map(({ id, type, createdAt, category }) => (
+        {notifications?.map(({ id, type, createdAt, category, idForURL }) => (
           <li key={id} className="flex gap-x-7">
             <div className="flex flex-col items-center gap-y-2 pt-[10px]">
               <div className="rounded-full bg-white/10 size-[7px]" />
@@ -68,7 +67,7 @@ const NotificationList = () => {
                 <div className="text-white/50 text-xs">{dayjs(createdAt).format('YYYY.MM.DD A hh:mm')}</div>
               </div>
               <div className="text-xs">
-                <NotificationText notification={{ type, category } as NotificationWithCategory} />
+                <NotificationText notification={{ type, category } as NotificationWithCategory} id={idForURL} />
               </div>
             </div>
           </li>

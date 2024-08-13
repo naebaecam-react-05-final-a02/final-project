@@ -1,28 +1,14 @@
 import { NotificationWithCategory } from '@/types/notification';
+import NotificationChallengeText from './NotificationChallengeText';
 
 type NotificationTextProps = {
   notification: NotificationWithCategory;
+  id: string | null;
 };
-const NotificationText = ({ notification }: NotificationTextProps) => {
+const NotificationText = ({ notification, id }: NotificationTextProps) => {
   // challenge
-  if (notification.category === 'pre-start') {
-    return (
-      <div>
-        <div>
-          <span className="text-primary-100">OO챌린지</span>가 내일부터 시작됩니다.
-        </div>
-      </div>
-    );
-  }
-
-  if (notification.category === 'verification') {
-    return (
-      <div>
-        <div>
-          오늘 아직 <span className="text-primary-100">OO챌린지</span> 인증을 하지 않았어요.
-        </div>
-      </div>
-    );
+  if (notification.type === 'challenge') {
+    return <NotificationChallengeText category={notification.category} id={id!} />;
   }
 
   // community

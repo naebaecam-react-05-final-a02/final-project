@@ -12,7 +12,7 @@ export const challengesQueryKeys = {
 
 export const queryOptions = {
   getChallengeDetail: (id: number) => ({
-    queryKey: challengesQueryKeys.all,
+    queryKey: ['challenge', { cid: id }],
     queryFn: async () => {
       const data = await api.challenge.getChallengeDetail(id);
 

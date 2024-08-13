@@ -2,9 +2,9 @@ import { Tables } from './supabase';
 
 export type NotificationType = 'challenge' | 'community' | 'dashboard';
 
-type ChallengeNotificationCategory = 'verification' | 'pre-start';
-type CommunityNotificationCategory = 'comment' | 'reply' | 'following';
-type DashboardNotificationCategory = 'diet' | 'exercise' | 'weight';
+export type ChallengeNotificationCategory = 'verification' | 'pre-start';
+export type CommunityNotificationCategory = 'comment' | 'reply' | 'following';
+export type DashboardNotificationCategory = 'diet' | 'exercise' | 'weight';
 
 export type NotificationWithCategory =
   | { type: 'challenge'; category: ChallengeNotificationCategory }

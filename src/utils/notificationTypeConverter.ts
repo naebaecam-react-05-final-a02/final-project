@@ -51,16 +51,15 @@ export const makeNotificationLink = (notification: NotificationWithCategory, id:
       break;
 
     case 'dashboard':
-      url = '/dashboard';
       switch (notification.category) {
         case 'diet':
-          url += '/diets';
+          url = '/diets';
           break;
         case 'exercise':
-          url += '/exercises';
+          url = '/exercises';
           break;
         case 'weight':
-          url += '/weight';
+          url = '/weight';
           break;
         default:
           throw new Error('Invalid dashboard notification category');
