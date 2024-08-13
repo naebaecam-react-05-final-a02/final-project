@@ -22,11 +22,13 @@ class CommunityAPI {
 
   getPosts = async ({
     pageParam = 1,
+    category = '전체',
   }: {
     pageParam?: number;
+    category?: string;
   }): Promise<{ data: CommunityPostData[]; page: number; limit: number }> => {
     const response = await axios.get(`${this.baseURL}/posts`, {
-      params: { page: pageParam, limit: 10 },
+      params: { page: pageParam, limit: 10, category },
     });
     return response.data;
   };

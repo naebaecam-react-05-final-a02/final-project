@@ -15,6 +15,7 @@ export type BaseInputProps = {
   unit?: string;
   className?: string;
   placeholder?: string;
+  noBackground?: boolean;
 };
 
 type InputTextTypeProps =

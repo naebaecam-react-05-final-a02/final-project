@@ -1,7 +1,7 @@
 interface ExerciseChipProps {
   label: string;
   isSelected: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ExerciseChip = ({ label, isSelected, onClick }: ExerciseChipProps) => {
