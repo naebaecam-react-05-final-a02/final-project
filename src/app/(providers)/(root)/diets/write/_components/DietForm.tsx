@@ -226,7 +226,7 @@ const DietForm = () => {
             />
           </div>
         </div>
-        <div className="w-full px-4">
+        <div className="w-full px-4 mt-4">
           <Button type="submit">입력 완료</Button>
         </div>
       </form>
