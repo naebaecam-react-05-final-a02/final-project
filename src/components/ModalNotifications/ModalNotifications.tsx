@@ -1,5 +1,6 @@
 'use client';
 
+import { createClient } from '@/supabase/client';
 import { Notification } from '@/types/notification';
 import Link from 'next/link';
 import { RxCross2 } from 'react-icons/rx';
@@ -11,6 +12,9 @@ type ModalNotificationsProps = {
 };
 
 const ModalNotifications = ({ notifications, onClose }: ModalNotificationsProps) => {
+  const supabase = createClient();
+  const tttt = async () => {};
+
   return (
     <div
       className="fixed top-14 right-4 w-[320px] h-[440px] rounded-3xl border-primary-100/50 border-2 p-4 
@@ -35,6 +39,13 @@ flex flex-col gap-y-5  z-50 backdrop-blur-md select-none bg-white/5"
       >
         알림 더 보기
       </Link>
+      <div
+        onClick={tttt}
+        className="w-full py-[10px] text-center bg-primary-100/10 rounded-lg border-gray-300 border-[1px] text-sm
+  text-primary-100 active:bg-primary-40 cursor-pointer"
+      >
+        TTTT
+      </div>
     </div>
   );
 };

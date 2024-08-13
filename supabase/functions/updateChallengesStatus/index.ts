@@ -6,8 +6,6 @@ const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
 
 Deno.serve(async () => {
   try {
-    let message = '';
-
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const today = new Date(Date.now() + 9 * 60 * 60 * 1000);
