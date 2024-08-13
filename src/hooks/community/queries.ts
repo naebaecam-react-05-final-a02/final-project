@@ -1,5 +1,5 @@
 import api from '@/service/service';
-import { CommunityPostCreateData, CommunityPostData } from '@/types/community';
+import { CommunityPostCreateData, CommunityPostData, CommunityPostUpdateData } from '@/types/community';
 import { QueryClient } from '@tanstack/react-query';
 
 export const communityQueryKeys = {
@@ -33,6 +33,9 @@ export const mutationOptions = {
   },
   delete: {
     mutationFn: (id: string) => api.community.delete(id),
+  },
+  update: {
+    mutationFn: (data: CommunityPostUpdateData) => api.community.update(data),
   },
 };
 

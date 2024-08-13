@@ -45,3 +45,15 @@ export const useDeleteCommunityPost = () => {
     },
   });
 };
+
+// 커뮤니티 글 수정
+export const useUpdateCommunityPost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...mutationOptions.update,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.postDetail(data.id) });
+    },
+  });
+};

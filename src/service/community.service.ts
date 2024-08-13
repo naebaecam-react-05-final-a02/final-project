@@ -1,4 +1,4 @@
-import { CommunityPostCreateData, CommunityPostData } from '@/types/community';
+import { CommunityPostCreateData, CommunityPostData, CommunityPostUpdateData } from '@/types/community';
 import axios from 'axios';
 
 class CommunityAPI {
@@ -23,6 +23,18 @@ class CommunityAPI {
   delete = async (id: string): Promise<void> => {
     try {
       await axios.delete(`${this.baseURL}/posts/${id}`);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  update = async (data: CommunityPostUpdateData): Promise<CommunityPostData> => {
+    try {
+      const response = await axios.patch(`${this.baseURL}/${data.id}`, data);
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || error.message);

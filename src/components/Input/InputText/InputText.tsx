@@ -9,6 +9,7 @@ export type InputTextProps<T extends InputElementType> = BaseInputProps &
   (T extends 'input' ? ComponentProps<'input'> : ComponentProps<'textarea'>) & {
     inputType?: T;
     rows?: number;
+    readOnly?: boolean;
   };
 
 function InputText<T extends InputElementType = 'input'>({
@@ -30,12 +31,12 @@ function InputText<T extends InputElementType = 'input'>({
   const InputComponent = inputType === 'textarea' ? 'textarea' : 'input';
 
   const baseClasses = `w-full rounded-lg text-white placeholder-white/40
-    focus:outline-none transition
-    focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'} ${className}
-    ${icon ? 'pl-11' : 'pl-4'} 
-    ${unit ? 'pr-12' : 'pr-3'} 
-    py-3.5`;
-
+  focus:outline-none transition
+  ${props.readOnly ? '' : `focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'}`}
+  ${className}
+  ${icon ? 'pl-11' : 'pl-4'} 
+  ${unit ? 'pr-12' : 'pr-3'} 
+  py-3.5`;
   const inputSpecificClasses =
     inputType === 'textarea'
       ? 'resize-none bg-transparent backdrop-blur-[10px] bg-input-gradient'

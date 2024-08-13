@@ -15,6 +15,14 @@ export interface CommunityPostCreateData {
   tags: string[];
 }
 
+export interface CommunityPostUpdateData {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  tags: string[];
+}
+
 interface UserData {
   id: string;
   nickname: string;
