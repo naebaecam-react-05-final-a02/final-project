@@ -1,11 +1,11 @@
-type NotificationTextProps = {
-  type?: string;
-  category: string;
-};
+import { NotificationWithCategory } from '@/types/notification';
 
-const NotificationText = ({ type, category }: NotificationTextProps) => {
+type NotificationTextProps = {
+  notification: NotificationWithCategory;
+};
+const NotificationText = ({ notification }: NotificationTextProps) => {
   // challenge
-  if (category === 'pre-start') {
+  if (notification.category === 'pre-start') {
     return (
       <div>
         <div>
@@ -15,7 +15,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
     );
   }
 
-  if (category === 'verification') {
+  if (notification.category === 'verification') {
     return (
       <div>
         <div>
@@ -26,7 +26,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
   }
 
   // community
-  if (category === 'comment') {
+  if (notification.category === 'comment') {
     return (
       <div>
         <div>
@@ -36,7 +36,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
     );
   }
 
-  if (category === 'reply') {
+  if (notification.category === 'reply') {
     return (
       <div>
         <div>
@@ -46,7 +46,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
     );
   }
 
-  if (category === 'following') {
+  if (notification.category === 'following') {
     return (
       <div>
         <div>
@@ -57,7 +57,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
   }
 
   // dashboard
-  if (category === 'diet') {
+  if (notification.category === 'diet') {
     return (
       <div>
         <div>
@@ -68,7 +68,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
     );
   }
 
-  if (category === 'exercise') {
+  if (notification.category === 'exercise') {
     return (
       <div>
         <div>
@@ -79,7 +79,7 @@ const NotificationText = ({ type, category }: NotificationTextProps) => {
     );
   }
 
-  if (category === 'weight') {
+  if (notification.category === 'weight') {
     return (
       <div>
         <div>

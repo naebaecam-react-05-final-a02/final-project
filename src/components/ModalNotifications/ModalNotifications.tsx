@@ -1,10 +1,10 @@
-import { Tables } from '@/types/supabase';
+import { Notification } from '@/types/notification';
 import Link from 'next/link';
 import { RxCross2 } from 'react-icons/rx';
 import ModalNotificationList from '../ModalNotificationList';
 
 type ModalNotificationsProps = {
-  notifications: Tables<'notifications'>[] | null | undefined;
+  notifications: Notification[] | null | undefined;
   onClose: () => void;
 };
 

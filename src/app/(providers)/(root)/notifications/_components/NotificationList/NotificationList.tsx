@@ -1,12 +1,13 @@
 'use client';
 
+import NotificationText from '@/app/(providers)/(root)/notifications/_components/NotificationText';
 import Loading from '@/components/Loading/Loading';
 import NotificationChip from '@/components/NotificationChip';
-import NotificationText from '@/components/NotificationText';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { createClient } from '@/supabase/client';
+import { NotificationWithCategory } from '@/types/notification';
 import { Tables } from '@/types/supabase';
-import { NotificationTypeConverter } from '@/utils/notificationTypeConverter';
+import { notificationTypeConverter } from '@/utils/notificationTypeConverter';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -62,12 +63,12 @@ const NotificationList = () => {
             <div className="w-full pb-[10px] flex flex-col gap-y-2">
               <div className="flex w-full">
                 <div className="flex-1">
-                  <NotificationChip type={NotificationTypeConverter(type)} />
+                  <NotificationChip type={notificationTypeConverter(type)} />
                 </div>
                 <div className="text-white/50 text-xs">{dayjs(createdAt).format('YYYY.MM.DD A hh:mm')}</div>
               </div>
               <div className="text-xs">
-                <NotificationText category={category} />
+                <NotificationText notification={{ type, category } as NotificationWithCategory} />
               </div>
             </div>
           </li>

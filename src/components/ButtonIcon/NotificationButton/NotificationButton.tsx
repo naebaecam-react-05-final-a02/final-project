@@ -30,7 +30,7 @@ const NotificationButton = () => {
     enabled: !!user,
   });
 
-  console.log('NOTIFICATIONS___', notifications);
+  // console.log('NOTIFICATIONS___', notifications);
 
   if (error) {
     return (
