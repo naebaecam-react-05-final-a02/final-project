@@ -20,6 +20,17 @@ class CommunityAPI {
     }
   };
 
+  delete = async (id: string): Promise<void> => {
+    try {
+      await axios.delete(`${this.baseURL}/posts/${id}`);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   getPosts = async ({
     pageParam = 1,
     category = '전체',

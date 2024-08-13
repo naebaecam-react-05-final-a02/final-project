@@ -31,6 +31,9 @@ export const mutationOptions = {
   write: {
     mutationFn: (data: CommunityPostCreateData) => api.community.write(data),
   },
+  delete: {
+    mutationFn: (id: string) => api.community.delete(id),
+  },
 };
 
 export const prefetchCommunityPosts = async (queryClient: QueryClient, categories: string[]) => {

@@ -43,9 +43,19 @@ export async function POST(request: NextRequest) {
         category,
         tags,
       })
-      .select();
+      .select()
+      .single();
 
     if (error) throw error;
+    const postId = data?.id;
+    console.log(category);
+    if (category === 'Q&A 게시판') {
+      const { error } = await supabase.from('communityQa').insert({
+        questionId: postId,
+        questionUserId: user.id,
+      });
+      if (error) throw error;
+    }
 
     return NextResponse.json({ message: '게시글이 성공적으로 등록되었습니다.', data }, { status: 201 });
   } catch (error) {
