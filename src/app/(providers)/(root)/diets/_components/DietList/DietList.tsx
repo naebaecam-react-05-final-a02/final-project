@@ -139,7 +139,7 @@ const DietList = () => {
                   </div>
                 </div>
                 <div className="bg-[#FFFFFF1A] w-[calc(full-16px)] h-[1px] mx-4"></div>
-                <div className="chips flex justify-start gap-3 overflow-x-auto p-3 whitespace-nowrap">
+                <div className="styled-scrollbar flex justify-start gap-3 overflow-x-auto p-3 whitespace-nowrap">
                   <Swiper
                     slidesPerView="auto"
                     spaceBetween={16}

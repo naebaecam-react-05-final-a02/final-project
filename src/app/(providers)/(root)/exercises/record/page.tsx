@@ -161,8 +161,8 @@ const ExerciseRecordPage = () => {
       value: item.exerciseName,
       icon: (
         <Star
-          width={24}
-          height={24}
+          width={20}
+          height={20}
           className="cursor-pointer"
           style={{
             fill: localBookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
@@ -203,8 +203,8 @@ const ExerciseRecordPage = () => {
                 fill: localBookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
               }}
               className="cursor-pointer"
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               onClick={(e) => {
                 e.stopPropagation();
                 if (record.name) {
@@ -243,7 +243,7 @@ const ExerciseRecordPage = () => {
           value={record.memo}
           onChange={handleMemoChange}
           className="p-4 rounded-lg"
-          icon={<Memo />}
+          icon={<Memo width={20} height={20} />}
         />
         <ExerciseRecordForm />
         <Button type="submit" onClick={handleSubmit}>

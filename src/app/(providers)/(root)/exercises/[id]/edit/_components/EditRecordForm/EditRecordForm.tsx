@@ -128,8 +128,8 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     value: item.exerciseName,
     icon: (
       <Star
-        width={24}
-        height={24}
+        width={20}
+        height={20}
         style={{
           fill: bookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
         }}
@@ -155,8 +155,8 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
             style={{
               fill: bookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
             }}
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             onClick={(e) => {
               e.stopPropagation();
               if (record.name) {
