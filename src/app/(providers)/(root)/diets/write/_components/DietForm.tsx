@@ -3,6 +3,7 @@ import Button from '@/components/Button';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { foodsQueryKeys } from '@/hooks/diet/foods/queries';
 import { useSearchFoodInfo } from '@/hooks/diet/foods/useFoods';
 import useDietForm from '@/hooks/diet/useDietForm';
@@ -39,6 +40,7 @@ const DietForm = () => {
   } = useDietForm({ initialValue });
 
   const router = useRouter();
+  const modal = useModal();
 
   // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
   const selectedDate = useDateStore((state) => state.date);
@@ -70,12 +72,12 @@ const DietForm = () => {
       { id: initialValue?.id, date: new Date(date), dietType, foods: foodChips },
       {
         onSuccess: (response) => {
-          alert(response.message);
+          modal.alert([response.message]);
           resetForm();
           router.push('/diets');
         },
         onError: (error) => {
-          console.error('Save-diet error:', error);
+          modal.alert([`식단을 ${initialValue ? '수정' : '저장'}하는 도중 오류가 발생했습니다 :`, error.message]);
         },
       },
     );

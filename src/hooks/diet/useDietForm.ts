@@ -1,3 +1,4 @@
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { initialFoodState } from '@/data/foodInitialState';
 import { DietTableType, FoodType } from '@/types/diet';
 import { useState } from 'react';
@@ -12,6 +13,8 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
   );
   const [activeChipIdx, setActiveChipIdx] = useState<number>(0);
   const [foodForm, setFoodForms] = useState<FoodType>(foodChips[0]);
+
+  const modal = useModal();
 
   const handleChange = (field: keyof FoodType, value: string | number | null) => {
     const updatedValue =
@@ -34,7 +37,7 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
     if (foodChips.length === 1) {
       // setFoodChips([initialFoodState]);
       // setFoodForms(foodChips[0]);
-      alert('최소 1개의 음식이 남아있어야 합니다.');
+      modal.alert(['최소 1개의 음식이 남아있어야 합니다.']);
     } else {
       const deletedFoods = foodChips.filter((food) => food.id !== deleteFoodId);
       setFoodChips(deletedFoods);
@@ -58,9 +61,15 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
 
   const validateFood = (food: FoodType = foodChips[activeChipIdx]) => {
     const { foodName, kcal, carbohydrate, protein, fat } = food;
-    if (!foodName) return alert('음식 이름을 입력해주세요');
+    if (!foodName) {
+      modal.alert(['음식 이름을 입력해주세요']);
+      return false;
+    }
     // TODO: 영양 성분 유효성 검사 로직 다시
-    // if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) return alert('영양 성분을 올바르게 입력해주세요');
+    // if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) {
+    //   modal.alert(['영양 성분을 올바르게 입력해주세요']);
+    //   return false;
+    // }
     return true;
   };
 

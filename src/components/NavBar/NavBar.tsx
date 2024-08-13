@@ -1,5 +1,6 @@
 'use client';
 
+import { useModal } from '@/contexts/modal.context/modal.context';
 import ChallengeIcon from '@/icons/ChallengeIcon';
 import CommunityIcon from '@/icons/CommunityIcon';
 import DashBoardIcon from '@/icons/DashBoardIcon';
@@ -10,6 +11,7 @@ import NavItem from './NavItem';
 
 const NavBar = () => {
   const pathname = usePathname();
+  const modal = useModal();
 
   const navItems = [
     { icon: DashBoardIcon, text: '대시보드', href: '/' },
@@ -20,7 +22,7 @@ const NavBar = () => {
 
   const handleUnimplementedClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    alert('아직 준비중인 기능입니다.');
+    modal.alert(['아직 준비중인 기능입니다.']);
   };
 
   return (

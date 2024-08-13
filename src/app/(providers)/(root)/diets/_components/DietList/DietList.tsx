@@ -1,5 +1,6 @@
 import Chip from '@/components/Chip';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { dietCode } from '@/data/dietTypeCode';
 import { dietsQueryKeys } from '@/hooks/diet/queries';
 import { useDeleteDiets, useGetDiets } from '@/hooks/diet/useDiets';
@@ -19,6 +20,7 @@ import DeleteIcon from '/public/icons/x.svg';
 
 const DietList = () => {
   const router = useRouter();
+  const modal = useModal();
 
   const selectedDate = useDateStore((store) => store.date);
   const setDiet = useDietStore((state) => state.setDiet);
@@ -41,8 +43,9 @@ const DietList = () => {
     router.push('/diets/write?mode=edit');
   };
 
-  const handleDeleteButtonClick = (dietId: number) => {
-    if (!confirm('정말 삭제하시겠습니까?')) return;
+  const handleDeleteButtonClick = async (dietId: number) => {
+    const response = await modal.confirm(['정말 삭제하시겠습니까?']);
+    if (!response) return;
     setDiet(null);
     deleteDiet(
       { id: dietId },
@@ -51,7 +54,7 @@ const DietList = () => {
           queryClient.invalidateQueries({ queryKey: dietsQueryKeys.detail(getFormattedDate(selectedDate)) });
         },
         onError: (e) => {
-          alert(e);
+          modal.alert([e.message]);
         },
       },
     );
