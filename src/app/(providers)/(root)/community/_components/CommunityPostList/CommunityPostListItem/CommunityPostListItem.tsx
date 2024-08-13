@@ -18,7 +18,7 @@ const CommunityPostListItem = ({ post }: CommunityPostListItemProps) => {
   const firstImageUrl = imgMatch ? imgMatch[1] : null;
 
   return (
-    <Card className="p-4 shadow-2xl">
+    <Card className="px-4 rounded-[20px] border-2 border-whiteT-10 bg-black/5 shadow-[-4px_-4px_8px_0px_rgba(255,255,255,0.05),_4px_4px_8px_0px_rgba(0,0,0,0.40)] backdrop-blur-[8px]">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
           <div className="relative w-[18px] h-[18px]">

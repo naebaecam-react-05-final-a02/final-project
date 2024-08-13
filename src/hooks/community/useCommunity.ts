@@ -1,11 +1,35 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { mutationOptions, queryOptions } from './queries';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { communityQueryKeys, mutationOptions, prefetchCommunityPosts, queryOptions } from './queries';
 
 // 커뮤니티 글 목록 조회 훅
-export const useGetCommunityPosts = () => useInfiniteQuery(queryOptions.posts);
+export const useGetCommunityPosts = (category: string, categories: string[]) => {
+  const queryClient = useQueryClient();
+  const query = useInfiniteQuery(queryOptions.posts(category));
 
+  const prefetchAllCategories = async () => {
+    const prefetchedCategories = queryClient.getQueryData(['prefetchedCategories']);
+    if (!prefetchedCategories) {
+      await prefetchCommunityPosts(queryClient, categories);
+      queryClient.setQueryData(['prefetchedCategories'], true);
+    }
+  };
+
+  return {
+    ...query,
+    prefetchAllCategories,
+  };
+};
 // 커뮤니티 글 상세 조회 훅
 export const useGetCommunityPostDetail = (id: string) => useQuery(queryOptions.postDetail(id));
 
 // 커뮤니티 글 등록 훅
-export const useCreateCommunityPost = () => useMutation(mutationOptions.write);
+export const useCreateCommunityPost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...mutationOptions.write,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
+    },
+  });
+};
