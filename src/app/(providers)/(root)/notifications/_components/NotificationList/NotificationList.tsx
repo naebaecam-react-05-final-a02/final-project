@@ -3,11 +3,10 @@
 import NotificationText from '@/app/(providers)/(root)/notifications/_components/NotificationText';
 import Loading from '@/components/Loading/Loading';
 import NotificationChip from '@/components/NotificationChip';
-import { useGetUser } from '@/hooks/auth/useUsers';
+import { useGetNotifications } from '@/hooks/notifications/useNotifications';
 import { createClient } from '@/supabase/client';
-import { Notification, NotificationWithCategory } from '@/types/notification';
+import { NotificationWithCategory } from '@/types/notification';
 import { notificationTypeConverter } from '@/utils/notificationTypeConverter';
-import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
@@ -15,28 +14,8 @@ dayjs.locale('ko');
 
 const NotificationList = () => {
   const supabase = createClient();
-  const { data: user } = useGetUser();
 
-  const {
-    data: notifications,
-    error,
-    isLoading,
-    isPending,
-  } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: async () => {
-      const response = await supabase
-        .from('notifications')
-        .select('*')
-        .order('createdAt', { ascending: false })
-        .limit(50)
-        .match({ targetUserId: user?.id, isRead: false })
-        .returns<Notification[]>();
-
-      return response.data;
-    },
-    enabled: !!user,
-  });
+  const { data: notifications, error, isLoading, isPending } = useGetNotifications(supabase);
 
   if (isLoading || isPending) {
     return <Loading />;

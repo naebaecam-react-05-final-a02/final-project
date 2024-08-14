@@ -5,6 +5,7 @@ import DashBoardAPI from './dashboard.service';
 import DietAPI from './diet.service';
 import ExerciseAPI from './exercise.service';
 import ImageAPI from './image.service';
+import NotificationsAPI from './notifications.service';
 import UsersAPI from './users.service';
 
 class API {
@@ -15,8 +16,8 @@ class API {
   diet: DietAPI;
   exercise: ExerciseAPI;
   users: UsersAPI;
-
   dashboard: DashBoardAPI;
+  notifications: NotificationsAPI;
 
   constructor() {
     this.auth = new AuthAPI();
@@ -27,6 +28,7 @@ class API {
     this.exercise = new ExerciseAPI();
     this.users = new UsersAPI();
     this.dashboard = new DashBoardAPI();
+    this.notifications = new NotificationsAPI();
   }
 }
 
