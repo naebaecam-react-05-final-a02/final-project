@@ -57,9 +57,10 @@ const ExercisePage = () => {
           </div>
         </>
       )}
-      <div className="flex flex-col">
-        <span className="w-10 mt-2" aria-hidden="true" role="presentation"></span>
-        <Week />
+      <div className="flex flex-col gap-2 -mt-4">
+        <div className="sticky -top-4 z-10 bg-blackT-10 py-2 rounded-b-2xl backdrop-blur-lg">
+          <Week />
+        </div>
         <ExerciseList />
       </div>
     </Mobile>

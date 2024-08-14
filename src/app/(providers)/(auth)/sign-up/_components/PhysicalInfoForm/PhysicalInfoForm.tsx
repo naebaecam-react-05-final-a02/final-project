@@ -37,7 +37,7 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
     <div className="flex flex-col gap-4 items-center justify-center w-full px-4">
       <div className="flex flex-col items-center w-full">
         <div className="w-full mb-4">
-          <h3 className="text-18 font-semibold leading-140 tracking-tighter mt-8 mb-6">키, 몸무게를 알려주세요!</h3>
+          <h3 className="text-18 font-semibold mt-8 mb-6">키, 몸무게를 알려주세요!</h3>
           <Input
             label="키"
             type="number"
@@ -66,7 +66,7 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
           />
         </div>
       </div>
-      <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal leading-[18px]">
+      <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal">
         <li>키, 몸무게는 마이페이지에서 변경 가능합니다.</li>
       </ul>
     </div>

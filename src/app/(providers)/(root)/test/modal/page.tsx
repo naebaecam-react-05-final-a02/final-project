@@ -5,6 +5,7 @@ import Mobile from '@/layouts/Mobile';
 
 const ModalTestPage = () => {
   const modal = useModal();
+
   const openConfirmModal = async () => {
     const yes = await modal.confirm(['confirm 테스트 모달입니다.']);
     if (!yes) return await modal.alert(['false가 반환되었습니다']);

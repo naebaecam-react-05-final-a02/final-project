@@ -31,12 +31,16 @@ function InputText<T extends InputElementType = 'input'>({
   const InputComponent = inputType === 'textarea' ? 'textarea' : 'input';
 
   const baseClasses = `w-full rounded-lg text-white placeholder-white/40
-  focus:outline-none transition
-  ${props.readOnly ? '' : `focus:border-b-[2px] ${error ? 'border-error-gradient' : 'focus:border-gradient'}`}
+  focus:outline-none transition text-sm
+  ${
+    props.readOnly
+      ? ''
+      : `focus:border-b-[2px] border-gradient-light ${error ? 'border-error-gradient' : 'focus:border-gradient'}`
+  }
   ${className}
   ${icon ? 'pl-11' : 'pl-4'} 
   ${unit ? 'pr-12' : 'pr-3'} 
-  py-3.5`;
+  py-[13.5px]`;
   const inputSpecificClasses =
     inputType === 'textarea'
       ? 'resize-none bg-transparent backdrop-blur-[10px] bg-input-gradient'
@@ -57,7 +61,7 @@ function InputText<T extends InputElementType = 'input'>({
   return (
     <div className="flex flex-col w-full justify-between">
       {label && (
-        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-[12px]">
+        <label htmlFor={inputId} className="text-white/70 pl-1 pb-1 text-sm">
           <span>{label}</span>
         </label>
       )}

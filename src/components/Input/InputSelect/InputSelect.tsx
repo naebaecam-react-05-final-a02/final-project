@@ -7,8 +7,10 @@ import { BaseInputProps } from '../Input';
 type DropdownOption = {
   id?: string | number;
   value: string;
+  text?: string;
   icon?: ReactNode;
   onClick?: (e: React.MouseEvent) => void;
+  preventClick?: boolean;
 };
 
 export type InputSelectProps = Omit<BaseInputProps & ComponentProps<'input'>, 'inputType'> & {
@@ -17,6 +19,7 @@ export type InputSelectProps = Omit<BaseInputProps & ComponentProps<'input'>, 'i
   textAlign?: 'left' | 'right';
   listIcon?: ReactNode;
   placeholder?: string;
+  maxHeight?: number;
 };
 
 const InputSelect = ({
@@ -30,6 +33,7 @@ const InputSelect = ({
   className = '',
   textAlign = 'left',
   placeholder = '운동 이름을 입력해주세요.',
+  maxHeight,
   readOnly,
   ...props
 }: InputSelectProps) => {
@@ -85,7 +89,7 @@ const InputSelect = ({
   return (
     <div className="flex flex-col w-full">
       {label && (
-        <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
+        <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-sm ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
         </label>
       )}
@@ -94,9 +98,9 @@ const InputSelect = ({
           <input
             type="text"
             id={inputId}
-            className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition pr-10 py-[14px]
-              ${isOpen ? 'z-20' : ''}
+            className={`w-full bg-transparent rounded-lg text-white placeholder-white/40  text-sm
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition pr-10 py-[13.5px]
+              ${isOpen ? 'z-20 border-gradient' : 'border-gradient-light'}
               ${className}
               ${icon ? 'pl-11' : 'pl-3'} 
               ${textAlign === 'left' ? 'text-left' : 'text-right'}
@@ -138,9 +142,13 @@ const InputSelect = ({
                   hover:bg-primary-10 hover:text-primary-100 cursor-pointer animate-dropdown-item
                   ${icon ? 'pl-9' : ''} 
                   ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
-                  ${inputValue === option.value ? 'bg-primary-20 text-primary-100' : 'text-white/50'}`}
+                  ${
+                    inputValue === option.value
+                      ? 'bg-primary-5 bg-select-input-hover-gradient text-primary-100 border-b border-gradient'
+                      : 'text-white/50'
+                  }`}
                   onClick={(e: React.MouseEvent<HTMLLIElement>) => {
-                    handleOptionSelect(option.value, option.id);
+                    if (!option.preventClick) handleOptionSelect(option.value, option.id);
                     if (option.onClick) {
                       option.onClick(e);
                     }
@@ -149,7 +157,8 @@ const InputSelect = ({
                   {option.icon && (
                     <div className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 text-xl">{option.icon}</div>
                   )}
-                  {option.value}
+                  <div className="text-sm font-semibold">{option.value || '-'}</div>
+                  <div className="text-xs">{option.text}</div>
                 </li>
               ))}
             </ul>

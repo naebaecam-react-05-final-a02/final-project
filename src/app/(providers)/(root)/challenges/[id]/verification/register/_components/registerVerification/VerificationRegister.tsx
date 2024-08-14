@@ -4,6 +4,7 @@ import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/F
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { initialChallengeVerificationError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
@@ -25,6 +26,7 @@ type VerificationRegisterProps = {
 //TODO 유저 데이터 가져오기전까지 헬린이로 표시되는거 주의
 const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationRegisterProps) => {
   const router = useRouter();
+  const modal = useModal();
   const [err, setErr] = useState(initialChallengeVerificationError);
 
   const { data: user } = useGetUser();
@@ -68,7 +70,8 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
 
     // console.log(Array.from(form.keys()).length);
     // console.log(Array.from(form.keys()));
-    if (confirm('등록하시겠습니까?')) {
+    const response = await modal.confirm(['등록하시겠습니까?']);
+    if (response) {
       upload(
         { storage: 'challengeVerify', form },
         {
@@ -84,19 +87,19 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
 
             verify(verifyData, {
               onSuccess: () => {
-                alert('등록되었습니다.');
+                modal.alert(['등록되었습니다.']);
                 console.log('Challenge Verify Successfully');
                 queryClient.invalidateQueries({ queryKey: ['verifications', { cid: cid }] });
                 router.push(`/challenges/${cid}/verification/list`);
               },
               onError: (error) => {
-                alert('등록에 실패하였습니다.');
+                modal.alert(['등록에 실패하였습니다.']);
                 console.error('Chaalenge Verify Failed', error);
               },
             });
           },
           onError: (error) => {
-            alert('이미지 업로드에 실패하였습니다.');
+            modal.alert(['이미지 업로드에 실패하였습니다.']);
             console.error('UPLOAD FAILED', error);
           },
         },
