@@ -3,12 +3,13 @@
 import Button from '@/components/Button';
 import ExerciseChip from '@/components/ExerciesChip/ExerciesChip';
 import Input from '@/components/Input';
+import { useGetUser } from '@/hooks/auth/useUsers';
 import { useCreateCommunityPost } from '@/hooks/community/useCommunity';
 import Mobile from '@/layouts/Mobile';
 import { CommunityPostCreateData } from '@/types/community';
 import { Editor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react';
 import validateCommunityPost, { ValidationResult } from '../../../_utils/validateCommunityPost';
 import CommunityPostEditor from '../CommunityPostEditor';
 
@@ -22,8 +23,17 @@ const CommunityPostForm = () => {
   const editorRef = useRef<Editor | null>(null);
   const { mutate: createPost, isPending, error } = useCreateCommunityPost();
   const route = useRouter();
+  const { data: user } = useGetUser();
 
-  const categories = [{ value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }, { value: '투표' }];
+  const categories = useMemo(() => {
+    const baseCategories = [{ value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }];
+
+    if (user?.user_metadata?.role === 'admin') {
+      baseCategories.push({ value: '투표' });
+    }
+
+    return baseCategories;
+  }, [user]);
 
   const tagOptions = {
     '자유 게시판': ['오운완', '식단', '동기부여'],
