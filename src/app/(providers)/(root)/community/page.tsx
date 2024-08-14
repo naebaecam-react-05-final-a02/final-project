@@ -1,6 +1,7 @@
 import React from 'react';
 
-const CommunityPage = () => {
+const CommunityPage = ({ params }: { params: { id: string } }) => {
+  const id = params.id;
   return <div>CommunityPage</div>;
 };
 
