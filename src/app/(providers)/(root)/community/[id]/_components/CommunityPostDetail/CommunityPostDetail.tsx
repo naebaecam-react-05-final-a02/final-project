@@ -159,7 +159,7 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
           boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0.10), 0px -2px 4px 0px rgba(0, 0, 0, 0.70)',
         }}
       />
-      <CommunityComment postId={post.id} />
+      <CommunityComment postId={post.id} postUserId={post.user.id} />
     </Mobile>
   );
 };

@@ -31,13 +31,11 @@ export const makeNotificationLink = ({ type, category }: NotificationWithCategor
           throw new Error('Invalid challenge notification category');
       }
 
-    //TODO 커뮤니티쪽 url은 나중에 변경해야함
     case 'community':
       switch (category) {
         case 'comment':
-          return `${baseURLs[type]}/${id}/comment`;
         case 'reply':
-          return `${baseURLs[type]}/${id}/comment`;
+          return `${baseURLs[type]}/${id}`;
         case 'following':
           return `/mypage`;
         default:
