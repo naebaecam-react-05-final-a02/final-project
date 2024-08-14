@@ -2,6 +2,7 @@
 
 import Button from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
@@ -21,6 +22,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
   const router = useRouter();
+  const modal = useModal();
 
   // const [menuOpen, setMenuOpen] = useState(false);
   // const [isHoveredEdit, setIsHoveredEdit] = useState(false);
@@ -57,18 +59,18 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
 
   const handleJoinChallenge = async () => {
     const supabase = createClient();
-
-    if (confirm('신청하시겠습니까?')) {
+    const response = await modal.confirm(['신청하시겠습니까?']);
+    if (response) {
       const { error } = await supabase.from('challengeParticipants').insert({
         challengeId: id,
         userId: user?.id,
       });
       if (error) {
         // 에러 처리도 제대루 해야함
-        alert('신청에 실패하였습니다.');
+        modal.alert(['신청에 실패하였습니다.']);
       } else {
         // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
-        alert('신청하였습니다.');
+        modal.alert(['신청하였습니다.']);
         queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
         router.replace('/challenges');
       }
@@ -111,14 +113,14 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
               <article className="px-4 py-3 border-b-[1px] border-white/70 header-gradient">
                 <div className="flex flex-row justify-between">
                   <UserProfile challengeAuthor={challengeAuthor} />
-                  <div className="text-[12px] font-normal leading-4">
+                  <div className="text-[12px] font-normal">
                     {startDateStr} ~ {endDateStr}
                   </div>
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="flex flex-row gap-1">
                     <span>🚶‍♂️</span>
-                    <div className="font-semibold text-[16px] leading-6">{challenge.title}</div>
+                    <div className="font-semibold text-[16px]">{challenge.title}</div>
                   </div>
                   <span className="py-[2px] px-2 border-[0.8px] border-[#12F287] rounded-lg text-[12px] font-medium text-[#12F287]">
                     {categoryItemsENGtoKOR[challenge.category]}

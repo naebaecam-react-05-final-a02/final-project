@@ -193,7 +193,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
             </div>
           </div>
         </div>
-        <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal leading-[18px]">
+        <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal">
           <li>대문자, 특수문자 반드시 1회 포함되어야 합니다.</li>
         </ul>
       </div>

@@ -94,9 +94,7 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
       <div className="flex flex-col w-full justify-between content-between">
         <div className="flex flex-col items-center w-full px-4">
           <div className="w-full">
-            <h3 className="text-18 font-semibold leading-140 tracking-tighter mt-8 mb-6">
-              사용하실 닉네임을 알려주세요!
-            </h3>
+            <h3 className="text-18 font-semibold mt-8 mb-6">사용하실 닉네임을 알려주세요!</h3>
             <div className="flex flex-col w-full items-start pb-10">
               <div className="flex w-full ">
                 <Input
@@ -122,7 +120,7 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
                 <p className="text-primary-100 text-[12px] ml-1 mt-1">{formState.nickname.successMessage}</p>
               )}
             </div>
-            <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal leading-[18px]">
+            <ul className="list-disc w-full px-4 text-white/50 text-xs font-normal">
               <li>최대 10자 이내</li>
               <li>특수문자, 띄어쓰기 사용 불가합니다.</li>
             </ul>

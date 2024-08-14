@@ -3,6 +3,7 @@ import Button from '@/components/Button';
 import Chip from '@/components/Chip';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { foodsQueryKeys } from '@/hooks/diet/foods/queries';
 import { useSearchFoodInfo } from '@/hooks/diet/foods/useFoods';
 import useDietForm from '@/hooks/diet/useDietForm';
@@ -39,6 +40,7 @@ const DietForm = () => {
   } = useDietForm({ initialValue });
 
   const router = useRouter();
+  const modal = useModal();
 
   // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
   const selectedDate = useDateStore((state) => state.date);
@@ -70,12 +72,12 @@ const DietForm = () => {
       { id: initialValue?.id, date: new Date(date), dietType, foods: foodChips },
       {
         onSuccess: (response) => {
-          alert(response.message);
+          modal.alert([response.message]);
           resetForm();
           router.push('/diets');
         },
         onError: (error) => {
-          console.error('Save-diet error:', error);
+          modal.alert([`식단을 ${initialValue ? '수정' : '저장'}하는 도중 오류가 발생했습니다 :`, error.message]);
         },
       },
     );
@@ -95,7 +97,7 @@ const DietForm = () => {
       {isSubmitting && <Loading />}
       <div className="grid grid-cols-[48px_1fr] gap-3 px-4 mb-8">
         <AddButton onClick={addNewChip} />
-        <div className="chips flex overflow-x-scroll scale">
+        <div className="styled-scrollbar flex overflow-x-scroll scale">
           <Swiper
             slidesPerView="auto"
             spaceBetween={16}
@@ -123,9 +125,9 @@ const DietForm = () => {
       </div>
       <form className="flex flex-col justify-center items-center gap-4" onSubmit={handleSubmit}>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm mb-1">날짜 선택</h2>
-          <div className="grid grid-cols-2 items-center gap-2">
+          <div className="grid grid-cols-2 items-end gap-2">
             <Input
+              label="날짜 선택"
               inputType="date"
               name="date"
               showMonth
@@ -143,12 +145,13 @@ const DietForm = () => {
           </div>
         </div>
         <div className="w-full px-4">
-          <h2 className="opacity-70 text-sm mb-1">음식 이름</h2>
-          <div className="grid grid-cols-[1fr_48px] gap-2">
+          <div className="grid grid-cols-[1fr_48px] items-end gap-2">
             <Input
+              label="음식 이름"
               inputType="select"
               value={foodForm['foodName']}
               placeholder="음식 이름을 입력해주세요."
+              maxHeight={300}
               dropdownOptions={
                 isSearching
                   ? [{ value: '검색중...', preventClick: true }]
@@ -225,7 +228,7 @@ const DietForm = () => {
             />
           </div>
         </div>
-        <div className="w-full px-4">
+        <div className="w-full px-4 mt-4">
           <Button type="submit">입력 완료</Button>
         </div>
       </form>
