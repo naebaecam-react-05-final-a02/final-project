@@ -36,6 +36,16 @@ const VotePage = () => {
           items: parsedItems,
         };
         setVoteData(parsedData);
+
+        // 투표 여부 확인
+        const voteCheckResponse = await fetch(`/api/community/vote/voter?id=${result.data.id}`);
+        const voteCheckResult = await voteCheckResponse.json();
+
+        if (voteCheckResult.voted) {
+          setIsVoting(false); // 이미 투표한 경우
+        } else {
+          setIsVoting(true); // 투표 가능한 경우
+        }
       } catch (error) {
         console.error('데이터 가져오는 중 오류 발생:', error);
       }
@@ -105,84 +115,97 @@ const VotePage = () => {
   };
 
   return (
-    <div className="p-4 bg-black min-h-screen text-white flex flex-col items-center">
-      <h1 className="text-xl font-semibold mb-4">총 {totalVotes}명이 참여했어요!</h1>
-      <div className="w-full max-w-md p-4 rounded-lg bg-black/5 border-white/10 text-white border-2 flex flex-col gap-4">
-        {voteData.items.map((item: VoteItem, index: number) => {
-          const percentage = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
+    <div className="bg-black">
+      <article
+        className="p-4 rounded-lg bg-black/5 border-2 border-white/10 min-h-screen text-white flex flex-col items-center"
+        style={{ boxShadow: '-4px -4px 8px 0px rgba(255, 255, 255, 0.05), 4px 4px 8px 0px rgba(0, 0, 0, 0.40)' }}
+      >
+        <h1 className="text-xl font-semibold mb-4">총 {totalVotes}명이 참여했어요!</h1>
+        <div className="w-full max-w-md p-4 rounded-lg bg-black/5 border-white/10 text-white border-2 flex flex-col gap-4">
+          {voteData.items.map((item: VoteItem, index: number) => {
+            const percentage = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
 
-          return (
-            <div key={index} className="mb-4">
-              <div className="flex flex-row gap-4 items-end">
-                {isVoting && (
-                  <input
-                    type="radio"
-                    name="voteOption"
-                    value={item.text}
-                    checked={selectedOption === item.text}
-                    onChange={() => handleOptionChange(item.text)}
-                    className="appearance-none rounded-full w-5 h-5"
-                    style={{
-                      border: '2px solid #12F287',
-                      borderRadius: '50%',
-                      width: '22px',
-                      height: '22px',
-                      cursor: 'pointer',
-                      backgroundColor: 'rgba(255, 255, 255, 0.10)',
-                      backdropFilter: 'blur(4.285714149475098px)',
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.border = '5px solid #12f287';
-                      e.currentTarget.style.backgroundColor = 'white';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.border = '2px solid #12F287';
-                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.10)';
-                    }}
-                  />
-                )}
-                <div className="flex-auto">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="ml-2 text-[14px] font-medium leading-5">{item.text}</h3>
-                    <span className="text-[12px] font-medium">{item.votes}명</span>
-                  </div>
-                  <div
-                    className="w-full bg-gray-700 rounded-md h-6"
-                    style={{
-                      background: 'linear-gradient(180deg, rgba(18, 242, 135, 0.30) 0%, rgba(18, 242, 135, 0.15) 100%)',
-                    }}
-                  >
+            return (
+              <div key={index} className="mb-4">
+                <div className="flex flex-row gap-4 items-end">
+                  {isVoting && (
+                    <input
+                      type="radio"
+                      name="voteOption"
+                      value={item.text}
+                      checked={selectedOption === item.text}
+                      onChange={() => handleOptionChange(item.text)}
+                      className="appearance-none rounded-full w-5 h-5"
+                      style={{
+                        border: '2px solid #12F287',
+                        borderRadius: '50%',
+                        width: '22px',
+                        height: '22px',
+                        cursor: 'pointer',
+                        backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                        backdropFilter: 'blur(4.285714149475098px)',
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.border = '5px solid #12f287';
+                        e.currentTarget.style.backgroundColor = 'white';
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.border = '2px solid #12F287';
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.10)';
+                      }}
+                    />
+                  )}
+                  <div className="flex-auto">
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="ml-2 text-[14px] font-medium leading-5">{item.text}</h3>
+                      <span className="text-[12px] font-medium">{item.votes}명</span>
+                    </div>
                     <div
-                      className="flex items-center justify-end py-[2px] px-[6px] bg-green-500 h-6 rounded-md text-white/70 text-right text-[12px]"
-                      style={{ width: `${Math.max(percentage, 10)}%` }}
+                      className="w-full bg-gray-700 rounded-md h-6"
+                      style={{
+                        background:
+                          'linear-gradient(180deg, rgba(18, 242, 135, 0.30) 0%, rgba(18, 242, 135, 0.15) 100%)',
+                      }}
                     >
-                      {percentage}%
+                      <div
+                        className="flex items-center justify-end py-[2px] px-[6px] bg-green-500 h-6 rounded-md text-white/70 text-right text-[12px]"
+                        style={{ width: `${Math.max(percentage, 10)}%` }}
+                      >
+                        {percentage}%
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-        {isVoting ? (
-          <Button
-            onClick={handleVote}
-            className={`mt-6 w-full px-4 py-2 ${
-              selectedOption ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600'
-            } rounded text-white`}
-            disabled={!selectedOption}
-          >
-            {selectedOption ? '선택 완료' : '투표할 항목을 선택해주세요'}
-          </Button>
-        ) : (
-          <Button
-            onClick={handleStartVoting}
-            className="mt-6 w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-white"
-          >
-            투표하기
-          </Button>
-        )}
-      </div>
+            );
+          })}
+          {isVoting ? (
+            <Button
+              onClick={handleVote}
+              className={`${selectedOption ? '' : 'border-white/10 text-white/40'} mt-8`}
+              style={{
+                background: selectedOption
+                  ? ''
+                  : 'radial-gradient(50% 50% at 49.54% 100%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(18, 242, 135, 0.15)',
+              }}
+              disabled={!selectedOption}
+            >
+              {selectedOption ? '선택 완료' : '투표할 항목을 선택해주세요'}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleStartVoting}
+              className="mt-8 w-full px-6 py-[10px] border border-white/30 rounded-lg text-[#12F287]"
+              style={{
+                background:
+                  'radial-gradient(50% 50% at 49.54% 100%, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(18, 242, 135, 0.10)',
+              }}
+            >
+              투표하기
+            </Button>
+          )}
+        </div>
+      </article>
     </div>
   );
 };
