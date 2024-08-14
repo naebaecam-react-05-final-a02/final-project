@@ -116,11 +116,10 @@ const InputDate = ({
           <input
             type="text"
             id={inputId}
-            className={`w-full bg-transparent rounded-lg text-sm font-medium cursor-pointer
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition pr-10 py-[13.5px] pl-11
-              border-b-2 hover:border-gradient
-              ${isOpen ? 'z-20 text-white border-gradient' : 'text-whiteT-50 border-gradient-light'}
-              ${error ? 'border-error-gradient' : ''}
+            className={`w-full bg-transparent rounded-lg text-[15px] font-medium cursor-pointer
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-[13.5px] pl-11
+              hover:border-gradient border-b-2
+               ${isOpen ? 'z-20 text-white border-gradient' : 'text-whiteT-50 border-gradient-light'}              
                ${textAlign === 'right' ? 'text-right' : 'text-left'}
               ${className}
               `}

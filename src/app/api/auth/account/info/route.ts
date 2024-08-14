@@ -10,7 +10,6 @@ export async function GET() {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
-
     if (authError && authError.message === 'Auth session missing!') {
       return new Response(null, { status: 204 });
     }
@@ -34,7 +33,12 @@ export async function GET() {
         return NextResponse.json({ error: queryError.message }, { status: 404 });
       }
 
-      return NextResponse.json(data);
+      const combinedUserData = {
+        ...data,
+        user_metadata: user?.user_metadata,
+      };
+
+      return NextResponse.json(combinedUserData);
     } catch (queryError) {
       console.error('Unexpected query error:', queryError);
       return NextResponse.json({ error: 'Failed to fetch user data' }, { status: 500 });

@@ -41,7 +41,7 @@ const VerifyCodeForm = ({ email, onSuccess, setError }: VerifyCodeFormProps) => 
     <form onSubmit={handleVerifyCode}>
       <div className="mb-4">
         <div className="flex gap-2">
-          <div className="flex items-start w-full gap-2">
+          <div className={`flex w-full gap-2 ${errorMessage ? 'items-center' : 'items-end'}`}>
             <Input
               label="인증번호"
               name="verify-code"
@@ -53,7 +53,7 @@ const VerifyCodeForm = ({ email, onSuccess, setError }: VerifyCodeFormProps) => 
               required
             />
 
-            <Button type="submit" className="!w-16 h-10 mt-8 text-nowrap px-2 py-3.5" disabled={isVerifying}>
+            <Button type="submit" className="!w-16 h-10 text-nowrap px-2 py-3.5" disabled={isVerifying}>
               {isVerifying ? '요청 중...' : '확인'}
             </Button>
           </div>
