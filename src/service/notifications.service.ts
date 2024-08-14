@@ -61,17 +61,6 @@ class NotificationsAPI {
     }
   };
 
-  /**
-   * 
-   * {
-            createdAt: new Date(),
-            idForURL: challenge.id,
-            targetUserId: participant.userId,
-            isRead: false,
-            type: 'challenge',
-            category: 'pre-start',
-          }
-   */
   // 알림 생성
   createNotification = async (notificationData: InsertNotification) => {
     try {

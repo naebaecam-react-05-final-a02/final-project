@@ -15,62 +15,49 @@ export const notificationTypeConverter = (type: string) => {
 };
 
 export const makeNotificationLink = ({ type, category }: NotificationWithCategory, id: string | null): string => {
-  let url = '';
+  const baseURLs = {
+    challenge: '/challenges',
+    community: '/community',
+  };
 
   switch (type) {
     case 'challenge':
-      url = '/challenges';
       switch (category) {
         case 'verification':
-          url += `/${id}/verification/list`;
-          break;
+          return `${baseURLs[type]}/${id}/verification/list`;
         case 'pre-start':
-          url += `/${id}/detail`;
-          break;
+          return `${baseURLs[type]}/${id}/detail`;
         default:
           throw new Error('Invalid challenge notification category');
       }
-      break;
 
     //TODO 커뮤니티쪽 url은 나중에 변경해야함
     case 'community':
-      url = '/community';
       switch (category) {
         case 'comment':
-          url += '/comment';
-          break;
+          return `${baseURLs[type]}/${id}/comment`;
         case 'reply':
-          url += '/reply';
-          break;
+          return `${baseURLs[type]}/${id}/comment`;
         case 'following':
-          url = '/mypage';
-          break;
+          return `/mypage`;
         default:
           throw new Error('Invalid community notification category');
       }
-      break;
 
     case 'dashboard':
       switch (category) {
         case 'diet':
-          url = '/diets';
-          break;
+          return '/diets';
         case 'exercise':
-          url = '/exercises';
-          break;
+          return '/exercises';
         case 'weight':
-          url = '/weight';
-          break;
+          return '/weight';
         default:
           throw new Error('Invalid dashboard notification category');
       }
-      break;
-
     default:
       throw new Error('Invalid notification type');
   }
-
-  return url;
 };
 
 export const makeNotificationData = (
