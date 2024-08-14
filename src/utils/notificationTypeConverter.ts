@@ -1,4 +1,4 @@
-import { NotificationWithCategory } from '@/types/notification';
+import { InsertNotification, NotificationWithCategory } from '@/types/notification';
 
 const korNotificationTypeItems: { [key: string]: string } = {
   챌린지: 'challenge',
@@ -14,13 +14,13 @@ export const notificationTypeConverter = (type: string) => {
   return korNotificationTypeItems[type] ?? engNotificationTypeItems[type];
 };
 
-export const makeNotificationLink = (notification: NotificationWithCategory, id: string | null): string => {
+export const makeNotificationLink = ({ type, category }: NotificationWithCategory, id: string | null): string => {
   let url = '';
 
-  switch (notification.type) {
+  switch (type) {
     case 'challenge':
       url = '/challenges';
-      switch (notification.category) {
+      switch (category) {
         case 'verification':
           url += `/${id}/verification/list`;
           break;
@@ -35,7 +35,7 @@ export const makeNotificationLink = (notification: NotificationWithCategory, id:
     //TODO 커뮤니티쪽 url은 나중에 변경해야함
     case 'community':
       url = '/community';
-      switch (notification.category) {
+      switch (category) {
         case 'comment':
           url += '/comment';
           break;
@@ -51,7 +51,7 @@ export const makeNotificationLink = (notification: NotificationWithCategory, id:
       break;
 
     case 'dashboard':
-      switch (notification.category) {
+      switch (category) {
         case 'diet':
           url = '/diets';
           break;
@@ -71,4 +71,30 @@ export const makeNotificationLink = (notification: NotificationWithCategory, id:
   }
 
   return url;
+};
+
+export const makeNotificationData = (
+  { type, category }: NotificationWithCategory,
+  targetUserId: string,
+  idForURL: string | null,
+): InsertNotification => {
+  const commonData = {
+    createdAt: new Date().toISOString(),
+    targetUserId,
+    type,
+    category,
+    isRead: false,
+  };
+
+  if (['following', 'diet', 'exercise', 'weight'].includes(category)) {
+    return {
+      ...commonData,
+      idForURL: null,
+    };
+  }
+
+  return {
+    ...commonData,
+    idForURL,
+  };
 };

@@ -32,4 +32,9 @@ export const useNotificationsIsRead = () =>
     },
   });
 
-export const useCreateNotification = () => useMutation(notificationsMutationOptions.createNotification);
+// 알림 생성
+export const useCreateNotification = () =>
+  useMutation({
+    ...notificationsMutationOptions.createNotification,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: notificationsQueryKeys.all }),
+  });

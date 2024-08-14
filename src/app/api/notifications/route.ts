@@ -1,6 +1,8 @@
 import { createClient } from '@/supabase/server';
-import { NextResponse } from 'next/server';
+import { Notification } from '@/types/notification';
+import { NextRequest, NextResponse } from 'next/server';
 
+// 알림 읽음 처리
 export async function PATCH() {
   const supabase = createClient();
 
@@ -29,4 +31,21 @@ export async function PATCH() {
     console.error('Unexpected update error:', error);
     return NextResponse.json({ error: 'Notifications Update Failed' }, { status: 500 });
   }
+}
+
+// 알림 생성
+export async function POST(req: NextRequest) {
+  const supabase = createClient();
+
+  try {
+    const notificationsData: Notification = await req.json();
+    const { data, error } = await supabase.from('notifications').insert(notificationsData);
+
+    if (error) {
+      console.error('Supabase notifications insert error:', error);
+      return NextResponse.json({ error: 'Failed to Insert Notifications', details: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: 'Notifications Insert Successfully', data }, { status: 201 });
+  } catch (error) {}
 }
