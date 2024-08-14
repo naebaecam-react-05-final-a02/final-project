@@ -2,41 +2,23 @@
 
 import GlassButton from '@/components/ButtonIcon/GlassButton';
 import { useModal } from '@/contexts/modal.context/modal.context';
-import { useGetUser } from '@/hooks/auth/useUsers';
-import { queryClient } from '@/providers/QueryProvider';
-import { createClient } from '@/supabase/client';
-import { useMutation } from '@tanstack/react-query';
+import { useNotificationsIsRead } from '@/hooks/notifications/useNotifications';
 import { HiOutlineTrash } from 'react-icons/hi';
 
 const NotificationClear = () => {
-  const { data: user } = useGetUser();
   const modal = useModal();
-  const supabase = createClient();
 
-  const { mutate: notificationClear } = useMutation({
-    mutationFn: async () => {
-      const response = await supabase
-        .from('notifications')
-        .update({ isRead: true })
-        .match({ targetUserId: user?.id, isRead: false });
+  const { mutate: notificationsIsRead } = useNotificationsIsRead();
 
-      console.log('response___', response);
-    },
-    onSuccess: () => {
-      console.log('SUCCESS___');
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
-    },
-    onError: (error) => {
-      console.error('Error clearing notifications:', error);
-    },
-  });
   const handleClear = async () => {
-    console.log('CLEAR___');
     const yes = await modal.confirm(['전체 알림을 삭제하시겠습니까?']);
     if (!yes) return null;
 
-    await modal.alert(['전체 알림이 삭제 되었습니다.']);
-    notificationClear();
+    notificationsIsRead(undefined, {
+      onSuccess: async () => {
+        await modal.alert(['전체 알림이 삭제 되었습니다.']);
+      },
+    });
   };
 
   return (

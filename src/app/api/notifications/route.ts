@@ -1,13 +1,23 @@
 import { createClient } from '@/supabase/server';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH() {
   const supabase = createClient();
-  const { searchParams } = new URL(req.url);
-  const nid = searchParams.get('nid');
 
   try {
-    const { data, error } = await supabase.from('notifications').update({ isRead: true }).eq('id', nid);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      console.error('Supabase user not found:');
+      return NextResponse.json({ error: 'Failed to Found User' }, { status: 400 });
+    }
+
+    const { data, error } = await supabase
+      .from('notifications')
+      .update({ isRead: true })
+      .match({ targetUserId: user?.id, isRead: false });
 
     if (error) {
       console.error('Supabase notifications update error:', error);

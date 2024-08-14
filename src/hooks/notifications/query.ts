@@ -14,7 +14,10 @@ export const notificationsQueryOptions = {
 };
 
 export const notificationsMutationOptions = {
-  noticiationIsRead: {
+  notificationIsRead: {
     mutationFn: (nid: number) => api.notifications.updateNotificationIsRead(nid),
+  },
+  notificationsIsRead: {
+    mutationFn: () => api.notifications.updateNotificationsIsRead(),
   },
 };

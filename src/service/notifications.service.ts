@@ -10,6 +10,7 @@ class NotificationsAPI {
     this.baseURL = '/api/notifications';
   }
 
+  // 알림 정보 가져오기
   getNotifications = async (client: SupabaseClient<Database>) => {
     try {
       const {
@@ -36,9 +37,22 @@ class NotificationsAPI {
     }
   };
 
+  // 개별 알림 읽음 처리
   updateNotificationIsRead = async (nid: number) => {
     try {
-      const response = await axios.patch(`${this.baseURL}?nid=${nid}`);
+      const response = await axios.patch(`${this.baseURL}/${nid}`);
+      return response.data;
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw err;
+    }
+  };
+
+  // 전체 알림 읽음 처리
+  updateNotificationsIsRead = async () => {
+    try {
+      const response = await axios.patch(`${this.baseURL}`);
       return response.data;
     } catch (error) {
       const err = error as Error;
