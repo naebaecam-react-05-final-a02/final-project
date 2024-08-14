@@ -20,7 +20,6 @@ const NavBar = () => {
 
   const handleUnimplementedClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    alert('아직 준비중인 기능입니다.');
   };
 
   return (

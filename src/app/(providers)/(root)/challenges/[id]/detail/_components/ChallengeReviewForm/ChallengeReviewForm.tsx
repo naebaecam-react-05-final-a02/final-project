@@ -1,6 +1,7 @@
 'use client';
 
 import Input from '@/components/Input';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { useRegisterReview } from '@/hooks/review/useReview';
 import { useParams } from 'next/navigation';
 import React, { useRef, useState } from 'react';
@@ -16,6 +17,7 @@ export type ReviewFormData = {
 
 const ChallengeReviewForm = () => {
   const params = useParams();
+  const modal = useModal();
   const challengeId = params.id as string;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -58,7 +60,7 @@ const ChallengeReviewForm = () => {
 
     register(formData, {
       onSuccess: () => {
-        alert('등록되었습니다!');
+        modal.alert(['등록되었습니다!']);
         //router push 추가
       },
     });

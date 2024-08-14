@@ -1,5 +1,6 @@
 import Checkbox from '@/components/Checkbox';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { useDeleteExercises, useToggleCompleted } from '@/hooks/exercises/useExercise';
 import { queryClient } from '@/providers/QueryProvider';
@@ -13,6 +14,7 @@ import DeleteIcon from '/public/icons/x.svg';
 
 const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   const router = useRouter();
+  const modal = useModal();
 
   const date = useDateStore((store) => store.date);
   const formattedDate = getFormattedDate(date);
@@ -20,7 +22,6 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
   const [set, data1, data2] = calculateTodoData(exercise);
 
   const { mutate: toggleCompleted } = useToggleCompleted();
-  // const { mutate: changeComplete, isPending } = useToggleComplete();
   const { mutate: deleteExercise, isPending: isDeleting } = useDeleteExercises();
 
   if (isDeleting) return <Loading />;
@@ -61,8 +62,9 @@ const Exercise = ({ exercise }: { exercise: ExerciseTodoItemType }) => {
     router.push(`/exercises/${exercise.id}/edit`);
   };
 
-  const handleDeleteButtonClick = (exerciseId: number) => {
-    if (!confirm('정말 삭제하시겠습니까?')) return;
+  const handleDeleteButtonClick = async (exerciseId: number) => {
+    const response = await modal.confirm(['정말 삭제하시겠습니까?']);
+    if (!response) return;
     deleteExercise(
       { id: exerciseId },
       {
