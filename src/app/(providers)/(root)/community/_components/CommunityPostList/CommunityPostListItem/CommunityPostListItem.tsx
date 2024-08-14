@@ -1,8 +1,12 @@
+'use client';
+
 import Card from '@/components/Card';
 import ExerciseChip from '@/components/ExerciesChip/ExerciesChip';
+import { useGetPostLikes, useTogglePostLike } from '@/hooks/community/useCommunity';
 import { CommunityPostData } from '@/types/community';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { FaCommentAlt } from 'react-icons/fa';
 import { FaEye, FaHeart } from 'react-icons/fa6';
 import { htmlToPlainText } from '../../../_utils/htmlToPlainText';
@@ -15,8 +19,38 @@ const CommunityPostListItem = ({ post }: CommunityPostListItemProps) => {
   const plainTextContent = htmlToPlainText(post.content);
   const imgMatch = post.content.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/);
 
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  useEffect(() => {
+    if (post) {
+      setIsLiked(post.isLiked);
+      setLikeCount(post.likes);
+    }
+  }, [post]);
+
   const firstImageUrl = imgMatch ? imgMatch[1] : null;
 
+  const { data: likeData, isPending: isLikeDataPending } = useGetPostLikes(post.id);
+  const { mutate: toggleLike, isPending: isToggleLikePending } = useTogglePostLike();
+
+  const handleLikeToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isToggleLikePending) {
+      setIsLiked((prev) => !prev);
+      setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+
+      toggleLike(post.id, {
+        onError: () => {
+          setIsLiked((prev) => !prev);
+          setLikeCount((prev) => (isLiked ? prev + 1 : prev - 1));
+        },
+      });
+    }
+  };
+
+  console.log(post);
   return (
     <Card className="px-4 rounded-[20px] border-2 border-whiteT-10 bg-black/5 shadow-[-4px_-4px_8px_0px_rgba(255,255,255,0.05),_4px_4px_8px_0px_rgba(0,0,0,0.40)] backdrop-blur-[8px]">
       <div className="flex w-full items-center justify-between">
@@ -51,17 +85,21 @@ const CommunityPostListItem = ({ post }: CommunityPostListItemProps) => {
       <hr className="w-full h-px bg-white/30 border-0" />
       <div className="w-full flex justify-between">
         <div className="flex gap-2">
+          <button
+            onClick={handleLikeToggle}
+            disabled={isLikeDataPending || isToggleLikePending}
+            className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center"
+          >
+            <FaHeart className={`w-[14px] h-[14px] ${isLiked ? 'text-red-500 ' : ''}`} />
+            <span>{likeCount}</span>
+          </button>
           <div className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center">
-            <FaHeart />
-            <span>999</span>
+            <FaCommentAlt className="w-[14px] h-[14px]" />
+            <span>{post.commentCount}</span>
           </div>
           <div className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center">
-            <FaCommentAlt />
-            <span>999</span>
-          </div>
-          <div className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center">
-            <FaEye />
-            <span>999</span>
+            <FaEye className="w-[14px] h-[14px]" />
+            <span>{post.views}</span>
           </div>
         </div>
         <div className="flex flex-wrap gap-1">
