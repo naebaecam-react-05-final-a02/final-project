@@ -14,6 +14,7 @@ const DetailMenu = ({ onEdit, onDelete, onOpenChange, iconClassName = '' }: Deta
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<'bottom' | 'top'>('bottom');
   const containerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -35,12 +36,18 @@ const DetailMenu = ({ onEdit, onDelete, onOpenChange, iconClassName = '' }: Deta
   }, [isMenuOpen, onOpenChange]);
 
   useEffect(() => {
-    if (isMenuOpen && containerRef.current) {
+    if (isMenuOpen && containerRef.current && menuRef.current) {
       const containerRect = containerRef.current.getBoundingClientRect();
+      const menuRect = menuRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
       const distanceFromBottom = windowHeight - containerRect.bottom;
 
-      if (distanceFromBottom < 120) {
+      const isFullWidth = windowWidth >= 1024;
+      const threshold = isFullWidth ? 220 : 50;
+
+      if (distanceFromBottom < menuRect.height + threshold) {
+        console.log(1);
         setMenuPosition('top');
       } else {
         setMenuPosition('bottom');
@@ -58,6 +65,7 @@ const DetailMenu = ({ onEdit, onDelete, onOpenChange, iconClassName = '' }: Deta
       />
       {isMenuOpen && (
         <div
+          ref={menuRef}
           className={`absolute right-0 w-24 rounded-lg shadow-lg bg-white/10 backdrop-blur-[20px] border-2 border-primary-50 z-[10001] ${menuPositionClass}`}
         >
           <ul
