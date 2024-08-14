@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import VoteItems from '@/app/(providers)/(root)/community/[id]/vote/_components/VoteItems';
 import VoteTitle from '@/app/(providers)/(root)/community/[id]/vote/_components/VoteTitle';
+import { usePostVote } from '@/hooks/community/useCommunity';
+import { useRouter } from 'next/navigation';
+import { useModal } from '@/contexts/modal.context/modal.context';
 
 export type VoteItem = {
   text: string;
@@ -10,12 +13,15 @@ export type VoteItem = {
 
 const VoteRegisterPage = ({ params }: { params: { id: string } }) => {
   const id = params.id;
+  const { mutate: postVote } = usePostVote();
   const [title, setTitle] = useState('');
   const [items, setItems] = useState<VoteItem[]>([
     { text: '', votes: 0 },
     { text: '', votes: 0 },
   ]);
 
+  const router = useRouter();
+  const modal = useModal();
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -25,20 +31,12 @@ const VoteRegisterPage = ({ params }: { params: { id: string } }) => {
     };
 
     try {
-      const response = await fetch('/api/community/vote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      postVote(formData, {
+        onSuccess: () => {
+          modal.alert(['등록되었습니다.']);
+          router.push('/community');
         },
-        body: JSON.stringify(formData),
       });
-
-      const result = await response.json();
-      if (response.ok) {
-        console.log('투표 등록 성공:', result);
-      } else {
-        console.error('투표 등록 실패:', result.message);
-      }
     } catch (error) {
       console.error('투표 등록 중 오류 발생:', error);
     }

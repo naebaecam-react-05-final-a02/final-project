@@ -1,64 +1,42 @@
 'use client';
 import Button from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
+import { useGetVoters, useGetVotes as useGetVote, useUpdateVote } from '@/hooks/community/useCommunity';
 import { useEffect, useState } from 'react';
-
 interface VoteItem {
   text: string;
   votes: number;
 }
+const VotePage = ({ params }: { params: { id: string } }) => {
+  console.log('@@params.id', params.id);
 
-const VotePage = () => {
-  const [voteData, setVoteData] = useState<{ id: number; items: VoteItem[] } | null>(null);
   const [isVoting, setIsVoting] = useState<boolean>(false);
+  const [isVotingStarted, setIsVotingStarted] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedInitialOption, setSelectedInitialOption] = useState<string | null>(null);
+
+  const { data: voteData, isPending: voteLoading } = useGetVote();
+
+  const { data: voterData, isPending: voterLoading } = useGetVoters(params.id);
+  console.log('@@^^ ', voteData?.id);
+  const { mutate: updateVote, isPending: updatingVote } = useUpdateVote();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/community/vote', {
-          method: 'GET',
-        });
+    const selectedOption = voterData?.data.selectedOption;
 
-        if (!response.ok) {
-          throw new Error('데이터 가져오기 실패');
-        }
+    if (selectedOption) {
+      setSelectedOption(selectedOption);
+      setSelectedInitialOption(selectedOption);
+    }
+    setIsVoting(voterData?.available);
+    setIsVotingStarted(false);
+  }, [voterData]);
 
-        const result = await response.json();
-
-        const parsedItems = JSON.parse(result.data.items).map((item: VoteItem) => ({
-          text: item.text,
-          votes: item.votes,
-        }));
-
-        const parsedData = {
-          id: result.data.id,
-          items: parsedItems,
-        };
-        setVoteData(parsedData);
-
-        // 투표 여부 확인
-        const voteCheckResponse = await fetch(`/api/community/vote/voter?id=${result.data.id}`);
-        const voteCheckResult = await voteCheckResponse.json();
-
-        if (voteCheckResult.voted) {
-          setIsVoting(false); // 이미 투표한 경우
-        } else {
-          setIsVoting(true); // 투표 가능한 경우
-        }
-      } catch (error) {
-        console.error('데이터 가져오는 중 오류 발생:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-  console.log('@@voteData', voteData);
-  if (!voteData) {
+  if (voteLoading || voterLoading) {
     return <Loading />;
   }
-
-  const totalVotes = voteData.items.reduce((sum: number, item: VoteItem) => sum + (item.votes || 0), 0);
+  const itemsArray = JSON.parse(voteData.items);
+  const totalVotes = itemsArray.reduce((sum: number, item: VoteItem) => sum + (item.votes || 0), 0);
 
   const handleVote = async () => {
     if (!selectedOption) {
@@ -66,52 +44,36 @@ const VotePage = () => {
       return;
     }
 
-    console.log('선택한 항목:', selectedOption);
-
-    try {
-      const updatedItems = voteData.items.map((item: VoteItem) =>
-        item.text === selectedOption ? { ...item, votes: item.votes + 1 } : item,
-      );
-      console.log('@@updatedItems', updatedItems);
-
-      const response = await fetch(`/api/community/vote`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: voteData.id, items: updatedItems }),
-      });
-
-      if (!response.ok) {
-        throw new Error('투표 등록 실패');
+    const updatedItems = itemsArray.map((item: VoteItem) => {
+      if (item.text === selectedOption && selectedOption !== selectedInitialOption) {
+        return { ...item, votes: item.votes + 1 };
+      } else if (item.text === selectedInitialOption) {
+        return { ...item, votes: Math.max(0, item.votes - 1) };
       }
+      return item;
+    });
 
-      const updatedData = await response.json();
-      console.log('입력된 값:', updatedItems);
-
-      setVoteData({
-        id: updatedData.id,
-        items: JSON.parse(updatedData.data.items),
-      });
-      setIsVoting(false);
-      setSelectedOption(null);
-    } catch (error) {
-      console.error('투표 중 오류 발생:', error);
-    }
+    updateVote(
+      { id: voteData.id, items: updatedItems, selectedOption },
+      {
+        onSuccess: () => {
+          setIsVotingStarted(false);
+          setSelectedOption(null);
+          setSelectedInitialOption(selectedOption);
+        },
+        onError: (error: Error) => {
+          console.error('투표 중 오류 발생:', error as Error);
+        },
+      },
+    );
   };
 
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
-    console.log('선택한 항목:', option);
   };
-
+  console.log('@@isVoting', isVoting);
   const handleStartVoting = () => {
-    setIsVoting(true);
-  };
-
-  const handleResetVote = () => {
-    setIsVoting(false);
-    setSelectedOption(null);
+    setIsVotingStarted(true);
   };
 
   return (
@@ -122,36 +84,27 @@ const VotePage = () => {
       >
         <h1 className="text-xl font-semibold mb-4">총 {totalVotes}명이 참여했어요!</h1>
         <div className="w-full max-w-md p-4 rounded-lg bg-black/5 border-white/10 text-white border-2 flex flex-col gap-4">
-          {voteData.items.map((item: VoteItem, index: number) => {
+          {itemsArray.map((item: VoteItem, index: number) => {
             const percentage = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
 
             return (
               <div key={index} className="mb-4">
                 <div className="flex flex-row gap-4 items-end">
-                  {isVoting && (
+                  {isVotingStarted && (
                     <input
                       type="radio"
                       name="voteOption"
                       value={item.text}
                       checked={selectedOption === item.text}
                       onChange={() => handleOptionChange(item.text)}
-                      className="appearance-none rounded-full w-5 h-5"
+                      className={`appearance-none rounded-full w-5 h-5 border-2 border-[#12F287] bg-white/10
+                      checked:border-[5px] checked:border-primary-100 checked:bg-white`}
                       style={{
-                        border: '2px solid #12F287',
-                        borderRadius: '50%',
                         width: '22px',
                         height: '22px',
                         cursor: 'pointer',
-                        backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                        borderRadius: '50%',
                         backdropFilter: 'blur(4.285714149475098px)',
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.border = '5px solid #12f287';
-                        e.currentTarget.style.backgroundColor = 'white';
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.border = '2px solid #12F287';
-                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.10)';
                       }}
                     />
                   )}
@@ -179,7 +132,7 @@ const VotePage = () => {
               </div>
             );
           })}
-          {isVoting ? (
+          {isVotingStarted ? (
             <Button
               onClick={handleVote}
               className={`${selectedOption ? '' : 'border-white/10 text-white/40'} mt-8`}
@@ -188,7 +141,7 @@ const VotePage = () => {
                   ? ''
                   : 'radial-gradient(50% 50% at 49.54% 100%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(18, 242, 135, 0.15)',
               }}
-              disabled={!selectedOption}
+              disabled={!selectedOption || updatingVote}
             >
               {selectedOption ? '선택 완료' : '투표할 항목을 선택해주세요'}
             </Button>
@@ -196,12 +149,13 @@ const VotePage = () => {
             <Button
               onClick={handleStartVoting}
               className="mt-8 w-full px-6 py-[10px] border border-white/30 rounded-lg text-[#12F287]"
+              disabled={voteLoading || voterLoading}
               style={{
                 background:
                   'radial-gradient(50% 50% at 49.54% 100%, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(18, 242, 135, 0.10)',
               }}
             >
-              투표하기
+              {isVoting ? '투표하기' : '다시 투표하기'}
             </Button>
           )}
         </div>
