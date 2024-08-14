@@ -74,6 +74,15 @@ const config: Config = {
           100: '#12f287',
         },
       },
+      keyframes: {
+        'dropdown-item': {
+          '0%': { opacity: '0', transform: 'translateY(-10px) scale(1)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+      },
+      animation: {
+        'dropdown-item': 'dropdown-item 0.3s ease-out forwards',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
@@ -90,11 +99,18 @@ const config: Config = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.border-gradient': {
           'border-image':
             'linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(18, 242, 135, 1) 50%, rgba(0, 0, 0, 0.3) 100%) 1',
+          'border-image-slice': '1',
+          'border-width': '0 0 1px 0',
+        },
+        '.border-gradient-noti': {
+          'border-image':
+            'linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%) 1',
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },

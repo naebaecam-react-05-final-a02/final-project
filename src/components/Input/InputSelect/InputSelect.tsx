@@ -98,11 +98,9 @@ const InputSelect = ({
           <input
             type="text"
             id={inputId}
-            className={`w-full bg-transparent rounded-lg text-white placeholder-white/40 text-sm bg-input-gradient backdrop-blur-[10px] focus:outline-none transition border-b-2 ${
-              isOpen ? ' border-gradient' : 'border-gradient-light'
-            } pr-10 py-[13.5px]
-              ${isOpen ? 'z-20' : ''}
-              ${error ? 'border-error-gradient' : ''} 
+            className={`w-full bg-transparent rounded-lg text-white placeholder-white/40  text-sm
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition pr-10 py-[13.5px]
+              ${isOpen ? 'z-20 border-gradient' : 'border-gradient-light'}
               ${className}
               ${icon ? 'pl-11' : 'pl-3'} 
               ${textAlign === 'left' ? 'text-left' : 'text-right'}
@@ -121,11 +119,8 @@ const InputSelect = ({
           )}
           <button
             type="button"
-            className={`absolute right-3 top-1/2 transform -translate-y-1/2 
-              flex flex-col justify-center items-center ${isOpen ? 'z-20' : ''}
-              p-[2px] gap-[10px] rounded-[4px] 
-              transition-all duration-300 ease-in-out
-              ${isOpen ? 'bg-primary-10 rotate-180' : 'bg-[rgba(255,255,255,0.05)]'}`}
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col justify-center items-center p-[2px] gap-[10px] rounded-[4px] transition-all duration-300 ease-in-out
+              ${isOpen ? 'bg-primary-10 rotate-180 z-20' : 'bg-[rgba(255,255,255,0.05)]'}`}
             onClick={toggleDropdown}
             disabled={!dropdownOptions || dropdownOptions.length === 0}
           >
@@ -136,14 +131,15 @@ const InputSelect = ({
           <>
             <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
             <ul
-              style={{ maxHeight: maxHeight }}
-              className="absolute left-0 flex flex-col gap-2 w-full mt-2 p-3 bg-white/10 backdrop-blur-[20px] rounded-md border-2 border-primary-50 shadow-lg z-20 overflow-y-auto styled-scrollbar"
+              className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden
+            transform origin-top transition-all duration-300 ease-in-out scale-100 opacity-100"
             >
               {dropdownOptions.map((option, index) => (
                 <li
                   key={index}
-                  className={`relative w-full rounded-md p-1.5
-                  hover:bg-primary-5 hover:bg-select-input-hover-gradient hover:text-primary-100 cursor-pointer transition
+                  style={{ animationDelay: `${index * 50}ms` }}
+                  className={`relative w-full rounded-md bg-transparent p-[6px] transform transition-all duration-300 ease-in-out opacity-0 translate-y-2 scale-95
+                  hover:bg-primary-10 hover:text-primary-100 cursor-pointer animate-dropdown-item
                   ${icon ? 'pl-9' : ''} 
                   ${textAlign === 'left' ? 'text-left' : 'text-right pr-8'}
                   ${

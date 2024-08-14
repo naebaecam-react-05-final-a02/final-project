@@ -13,7 +13,6 @@ export const calculateTodoData = (exercise: ExerciseTodoItemType) => {
     );
 
     const setsString = `${exercise.record.length}세트 `;
-    //TODO 60분 넘어가도 분으로표시? ex) 70분 vs 1시간 10분
     const minutesString = data.minutes > 0 ? `${data.minutes}분 ` : '';
     const distanceString = data.distance > 0 ? `${data.distance}km ` : '';
 

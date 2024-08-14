@@ -1,21 +1,22 @@
 'use client';
 import Button from '@/components/Button';
+import Header from '@/components/Header';
 import Input from '@/components/Input';
 import { exerciseInitialState } from '@/data/exerciseInitialState';
 import { useGetExerciseBookmarks, useRegisterExercise, useToggleBookmark } from '@/hooks/exercises/useExercise';
+import Memo from '@/icons/Memo';
 import Star from '@/icons/Star';
 import Mobile from '@/layouts/Mobile';
 import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 
-import Header from '@/components/Header';
 import { useModal } from '@/contexts/modal.context/modal.context';
-import Memo from '@/icons/Memo';
 import { CardioInput, WeightInput } from '@/types/exercises';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
+import DownIcon from '/public/icons/chevron-down.svg';
 
 const ExerciseRecordPage = () => {
   const queryClient = useQueryClient();
@@ -30,7 +31,7 @@ const ExerciseRecordPage = () => {
   const modal = useModal();
   const [localBookmarkedExercises, setLocalBookmarkedExercises] = useState<string[]>([]);
 
-  const { mutate: register } = useRegisterExercise();
+  const { mutate: register, isPending } = useRegisterExercise();
   const { data: bookmarkData } = useGetExerciseBookmarks();
   const { mutate: toggleBookmark } = useToggleBookmark();
 
@@ -181,16 +182,11 @@ const ExerciseRecordPage = () => {
       },
     };
   });
-
+  const handleClickdown = () => {
+    console.log('나 찍힘');
+  };
   return (
-    <Mobile
-      headerLayout={
-        <Header
-          title={`투두 추가하기`}
-          // titleIcon={<DownIcon />}
-        />
-      }
-    >
+    <Mobile headerLayout={<Header title={`투두 추가하기`} titleIcon={<DownIcon onClick={handleClickdown} />} />}>
       <div className="max-h-screen flex flex-col gap-4 p-5">
         <Input
           label="운동 이름"
@@ -199,6 +195,7 @@ const ExerciseRecordPage = () => {
           onChange={handleNameChange}
           inputType="select"
           dropdownOptions={bookmarkListOptions}
+          autoComplete="off"
           icon={
             <Star
               style={{
