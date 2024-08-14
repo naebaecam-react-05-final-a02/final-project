@@ -46,14 +46,6 @@ flex flex-col gap-y-5  z-50 backdrop-blur-md select-none bg-white/5"
       >
         알림 더 보기
       </Link>
-      {/* 테스트 용 */}
-      <div
-        onClick={tttt}
-        className="w-full py-[10px] text-center bg-primary-100/10 rounded-lg border-gray-300 border-[1px] text-sm
-  text-primary-100 active:bg-primary-40 cursor-pointer"
-      >
-        댓글 알림 생성
-      </div>
     </div>
   );
 };
