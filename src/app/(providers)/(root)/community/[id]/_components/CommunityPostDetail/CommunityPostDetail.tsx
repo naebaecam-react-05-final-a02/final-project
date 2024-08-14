@@ -5,7 +5,12 @@ import Header from '@/components/Header';
 import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { useDeleteCommunityPost, useGetCommunityPostDetail } from '@/hooks/community/useCommunity';
+import {
+  useDeleteCommunityPost,
+  useGetCommunityPostDetail,
+  useGetPostLikes,
+  useTogglePostLike,
+} from '@/hooks/community/useCommunity';
 import Mobile from '@/layouts/Mobile';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -13,7 +18,8 @@ import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
 import { FaCommentAlt } from 'react-icons/fa';
-import { FaBookmark, FaEye, FaHeart } from 'react-icons/fa6';
+import { FaEye, FaHeart } from 'react-icons/fa6';
+import CommunityComment from './CommunityComment';
 import DetailMenu from './DetailMenu';
 
 interface CommunityPostDetailProps {
@@ -25,9 +31,15 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
   const { data: user } = useGetUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { mutateAsync: deletePost } = useDeleteCommunityPost();
+  const { mutate: togglePostLike, isPending: isLikeLoading } = useTogglePostLike();
+  const { data: likeData, isPending: isLikeDataPending } = useGetPostLikes(postId);
+
+  console.log(post?.isLiked);
+
   const router = useRouter();
   const modal = useModal();
   if (isLoading) return <Loading />;
+
   if (error) return <div className="text-center py-10 text-red-500">게시글을 불러오는데 실패했습니다.</div>;
   if (!post) return <div className="text-center py-10">게시글을 찾을 수 없습니다.</div>;
 
@@ -36,7 +48,6 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
   const handleEdit = () => {
     router.push(`/community/${postId}/edit`);
   };
-
   const handleDelete = async () => {
     const yes = await modal.confirm(['정말로 이 게시글을 삭제하시겠습니까?']);
     if (yes) {
@@ -49,13 +60,32 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
       }
     }
   };
+  console.log(post.commentCount);
+  const handleClickBack = () => {
+    router.push('/community');
+  };
 
+  const handleLikeToggle = () => {
+    if (!isLikeLoading) {
+      togglePostLike(postId);
+    }
+  };
   return (
     <Mobile
       headerLayout={
         <Header
           title={`${post.category}`}
-          icon={isAuthor && <DetailMenu onEdit={handleEdit} onDelete={handleDelete} onOpenChange={setIsMenuOpen} />}
+          customBackAction={handleClickBack}
+          icon={
+            isAuthor && (
+              <DetailMenu
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onOpenChange={setIsMenuOpen}
+                iconClassName="w-6 h-6"
+              />
+            )
+          }
         />
       }
     >
@@ -80,12 +110,11 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
                 <div className="w-px h-2 bg-whiteT-10" aria-hidden="true" />
                 <div className="flex gap-1">
                   <span>조회수</span>
-                  <span>{999}</span>
+                  <span>{post.views}</span>
                 </div>
               </div>
             </figcaption>
           </div>
-          <FaBookmark className="text-whiteT-30 m-2" />
         </header>
 
         <h1 className="rounded-[0px_16px_16px_16px] border-2 border-whiteT-10 my-page-intro-bg to-white/6 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.40)] px-4 py-2 text-whiteT-70 text-[16px] font-semibold mb-6">
@@ -105,21 +134,32 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
 
         <div className="flex justify-between items-center mt-8 px-2 py-4">
           <div className="flex gap-4">
+            <button
+              onClick={handleLikeToggle}
+              disabled={isLikeLoading || isLikeDataPending}
+              className="flex items-center gap-2 text-whiteT-50"
+            >
+              <FaHeart className={`w-[14px] h-[14px] ${post.isLiked ? 'text-red-500' : ''}`} />
+              <span>{post.likes}</span>
+            </button>
             <div className="flex items-center gap-2 text-whiteT-50">
-              <FaHeart />
-              <span>{999}</span>
+              <FaCommentAlt className="w-[14px] h-[14px]" />
+              <span>{post.commentCount}</span>
             </div>
             <div className="flex items-center gap-2 text-whiteT-50">
-              <FaCommentAlt />
-              <span>{999}</span>
-            </div>
-            <div className="flex items-center gap-2 text-whiteT-50">
-              <FaEye />
-              <span>{999}</span>
+              <FaEye className="w-[14px] h-[14px]" />
+              <span>{post.views}</span>
             </div>
           </div>
         </div>
       </article>
+      <div
+        className="h-[1px] bg-whiteT-20  mx-4"
+        style={{
+          boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0.10), 0px -2px 4px 0px rgba(0, 0, 0, 0.70)',
+        }}
+      />
+      <CommunityComment postId={post.id} />
     </Mobile>
   );
 };
