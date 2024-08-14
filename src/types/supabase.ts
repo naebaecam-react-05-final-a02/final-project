@@ -98,11 +98,13 @@ export type Database = {
           endDate: string
           id: number
           imageURL: string
-          isProgress: boolean
+          isProgress: string
+          participants: number
           rating: number | null
           startDate: string
           tags: string | null
           title: string
+          verifications: number
         }
         Insert: {
           category?: string
@@ -111,11 +113,13 @@ export type Database = {
           endDate: string
           id?: number
           imageURL: string
-          isProgress?: boolean
+          isProgress?: string
+          participants?: number
           rating?: number | null
           startDate: string
           tags?: string | null
           title: string
+          verifications?: number
         }
         Update: {
           category?: string
@@ -124,11 +128,13 @@ export type Database = {
           endDate?: string
           id?: number
           imageURL?: string
-          isProgress?: boolean
+          isProgress?: string
+          participants?: number
           rating?: number | null
           startDate?: string
           tags?: string | null
           title?: string
+          verifications?: number
         }
         Relationships: [
           {
@@ -160,6 +166,13 @@ export type Database = {
           verificationId?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "challengeVerificationLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "challengeVerificationLikes_verificationId_fkey"
             columns: ["verificationId"]
@@ -211,33 +224,146 @@ export type Database = {
           },
         ]
       }
+      communityAnswer: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: number
+          questionId: number | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          questionId?: number | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          questionId?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityAnswer_questionId_fkey"
+            columns: ["questionId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityComment: {
+        Row: {
+          content: string
+          createdAt: string
+          id: number
+          likes: number | null
+          postId: number | null
+          userId: string | null
+        }
+        Insert: {
+          content: string
+          createdAt?: string
+          id?: number
+          likes?: number | null
+          postId?: number | null
+          userId?: string | null
+        }
+        Update: {
+          content?: string
+          createdAt?: string
+          id?: number
+          likes?: number | null
+          postId?: number | null
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityComment_postId_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityComment_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityCommentLikes: {
+        Row: {
+          commentId: number
+          created_at: string
+          id: number
+          userId: string
+        }
+        Insert: {
+          commentId: number
+          created_at?: string
+          id?: number
+          userId: string
+        }
+        Update: {
+          commentId?: number
+          created_at?: string
+          id?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityCommentLikes_commentId_fkey"
+            columns: ["commentId"]
+            isOneToOne: true
+            referencedRelation: "communityComment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityCommentLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       communityPosts: {
         Row: {
           category: string
           content: string
           createdAt: string
           id: number
+          likes: number | null
           tags: string[] | null
           title: string
           userId: string | null
+          views: number | null
         }
         Insert: {
           category: string
           content: string
           createdAt?: string
           id?: number
+          likes?: number | null
           tags?: string[] | null
           title: string
           userId?: string | null
+          views?: number | null
         }
         Update: {
           category?: string
           content?: string
           createdAt?: string
           id?: number
+          likes?: number | null
           tags?: string[] | null
           title?: string
           userId?: string | null
+          views?: number | null
         }
         Relationships: [
           {
@@ -249,34 +375,206 @@ export type Database = {
           },
         ]
       }
-      comunityVotes: {
+      communityPostsLikes: {
+        Row: {
+          created_at: string
+          id: number
+          postId: number
+          userId: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          postId: number
+          userId: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          postId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityPostsLikes_postId_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityPostsLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityQa: {
+        Row: {
+          answerId: number | null
+          isAccepted: boolean
+          questionId: number
+          questionUserId: string | null
+        }
+        Insert: {
+          answerId?: number | null
+          isAccepted?: boolean
+          questionId?: number
+          questionUserId?: string | null
+        }
+        Update: {
+          answerId?: number | null
+          isAccepted?: boolean
+          questionId?: number
+          questionUserId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityQa_questionId_fkey"
+            columns: ["questionId"]
+            isOneToOne: true
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityQa_questionUserId_fkey"
+            columns: ["questionUserId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityReply: {
+        Row: {
+          commentId: number | null
+          content: string
+          createdAt: string
+          id: number
+          likes: number | null
+          userId: string | null
+        }
+        Insert: {
+          commentId?: number | null
+          content: string
+          createdAt?: string
+          id?: number
+          likes?: number | null
+          userId?: string | null
+        }
+        Update: {
+          commentId?: number | null
+          content?: string
+          createdAt?: string
+          id?: number
+          likes?: number | null
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityReply_commentId_fkey"
+            columns: ["commentId"]
+            isOneToOne: false
+            referencedRelation: "communityComment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityReply_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityReplyLikes: {
+        Row: {
+          createdAt: string
+          id: number
+          replyId: number
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          id?: number
+          replyId: number
+          userId: string
+        }
+        Update: {
+          createdAt?: string
+          id?: number
+          replyId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityReplyLikes_replyId_fkey"
+            columns: ["replyId"]
+            isOneToOne: true
+            referencedRelation: "communityReply"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityReplyLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityVoter: {
+        Row: {
+          created_at: string
+          id: number
+          userId: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          userId?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityVoter_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "communityVotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityVoter_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityVotes: {
         Row: {
           id: number
           items: Json | null
           title: string | null
-          userId: string
         }
         Insert: {
           id?: number
           items?: Json | null
           title?: string | null
-          userId: string
         }
         Update: {
           id?: number
           items?: Json | null
           title?: string | null
-          userId?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "comunityVotes_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       diets: {
         Row: {
@@ -422,6 +720,33 @@ export type Database = {
           },
         ]
       }
+      foods: {
+        Row: {
+          carbohydrate: number | null
+          fat: number | null
+          kcal: number | null
+          name: string
+          protein: number | null
+          serving: string | null
+        }
+        Insert: {
+          carbohydrate?: number | null
+          fat?: number | null
+          kcal?: number | null
+          name: string
+          protein?: number | null
+          serving?: string | null
+        }
+        Update: {
+          carbohydrate?: number | null
+          fat?: number | null
+          kcal?: number | null
+          name?: string
+          protein?: number | null
+          serving?: string | null
+        }
+        Relationships: []
+      }
       goals: {
         Row: {
           completedDate: string | null
@@ -492,6 +817,39 @@ export type Database = {
           {
             foreignKeyName: "alarm_targetUserId_fkey"
             columns: ["targetUserId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      postsViews: {
+        Row: {
+          createdAt: string
+          postId: number
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          postId: number
+          userId: string
+        }
+        Update: {
+          createdAt?: string
+          postId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "postsviews_postid_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "postsviews_userid_fkey"
+            columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -576,7 +934,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      incrementViewCount: {
+        Args: {
+          p_post_id: number
+          p_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

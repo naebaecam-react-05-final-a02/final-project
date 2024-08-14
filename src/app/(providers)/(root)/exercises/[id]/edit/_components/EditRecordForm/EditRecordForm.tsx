@@ -1,6 +1,7 @@
 'use client';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import {
   useGetExerciseBookmarks,
@@ -23,6 +24,7 @@ type EditRecordFormProps = {
 
 const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const router = useRouter();
+  const modal = useModal();
   const queryClient = useQueryClient();
   const { record, setRecord } = useExerciseStore();
   const [bookmarkedExercises, setBookmarkedExercises] = useState<string[]>([]);
@@ -83,7 +85,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     });
 
     if (!record.date || !isValidRecord) {
-      alert('운동 이름, 날짜, 세트는 필수 입력 사항입니다.');
+      modal.alert(['운동 이름, 날짜, 세트는 필수 입력 사항입니다.']);
       return;
     }
 
@@ -95,7 +97,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         { exerciseData, exerciseId },
         {
           onSuccess: () => {
-            alert('수정에 성공했습니다');
+            modal.alert(['수정에 성공했습니다']);
             router.push('/exercises');
           },
           onError: (error: any) => {
@@ -128,8 +130,8 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     value: item.exerciseName,
     icon: (
       <Star
-        width={24}
-        height={24}
+        width={20}
+        height={20}
         style={{
           fill: bookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
         }}
@@ -150,13 +152,14 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         onChange={handleNameChange}
         inputType="select"
         dropdownOptions={bookmarkListOptions}
+        autoComplete="off"
         icon={
           <Star
             style={{
               fill: bookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
             }}
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             onClick={(e) => {
               e.stopPropagation();
               if (record.name) {

@@ -17,7 +17,7 @@ const Button = ({ children, className = '', ...props }: ButtonProps) => {
       {...props}
     >
       <div className="absolute inset-0  bg-gradient-to-b from-blackT-30 to-transparent"></div>
-      <div className="text-white text-15 font-semibold font-sans leading-[21px] relative z-10">{children}</div>
+      <div className="text-white text-15 font-semibold font-sans relative">{children}</div>
     </button>
   );
 };

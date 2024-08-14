@@ -1,7 +1,6 @@
 import CheckCircle from '@/icons/CheckCircle/CheckCircle';
-import React from 'react';
-import Title from '../Title';
 import Image from 'next/image';
+import Title from '../Title';
 
 interface Challenge {
   content: string;
@@ -40,7 +39,7 @@ const ChallengeInfoMethod = ({ id, challenge, challengeAuthor }: ChallengeInfoMe
           />
         </div>
         <p
-          className="mt-[10px] py-2 px-4 border-2 border-white/[0.1] rounded-2xl rounded-tl-none w-full text-[14px] leading-5"
+          className="mt-[10px] py-2 px-4 border-2 border-white/[0.1] rounded-2xl rounded-tl-none w-full text-[14px]"
           style={{
             background: 'linear-gradient(95deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%)',
           }}

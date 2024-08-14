@@ -1,8 +1,7 @@
-import React from 'react';
+import CommunityPostList from './_components/CommunityPostList';
 
-const CommunityPage = ({ params }: { params: { id: string } }) => {
-  const id = params.id;
-  return <div>CommunityPage</div>;
+const CommunityPage = () => {
+  return <CommunityPostList />;
 };
 
 export default CommunityPage;

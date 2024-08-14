@@ -3,6 +3,7 @@
 import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
 import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
 import Button from '@/components/Button';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import {
   useChallengeVerificationDelete,
   useChallengeVerificationUpdate,
@@ -29,6 +30,7 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
+  const modal = useModal();
 
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: updateVerification } = useChallengeVerificationUpdate();
@@ -68,7 +70,7 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
       );
     } catch (error) {
       console.error(error);
-      alert('모종의 이유로 실패!');
+      modal.alert(['모종의 이유로 실패!']);
     }
   };
 

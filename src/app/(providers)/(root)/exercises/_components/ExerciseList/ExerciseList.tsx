@@ -32,7 +32,7 @@ const ExerciseList = () => {
 
   if (!exercises || isFetchError) {
     return (
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-1">
         <span>데이터를 불러오는 도중 에러가 발생했습니다!</span>
       </div>
     );
@@ -44,7 +44,7 @@ const ExerciseList = () => {
 
   if (!exercises.data || !exercises.data.length) {
     return (
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-1">
         <span>운동 기록이 없습니다</span>
         <button className="text-sm text-primary-100 underline underline-offset-2" onClick={handleAddButtonClick}>
           추가하러 가기
