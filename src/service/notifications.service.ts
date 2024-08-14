@@ -1,9 +1,14 @@
 import { Notification } from '@/types/notification';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
+import axios from 'axios';
 
 class NotificationsAPI {
-  constructor() {}
+  private baseURL: string;
+
+  constructor() {
+    this.baseURL = '/api/notifications';
+  }
 
   getNotifications = async (client: SupabaseClient<Database>) => {
     try {
@@ -23,6 +28,17 @@ class NotificationsAPI {
         .match({ targetUserId: user.id, isRead: false })
         .returns<Notification[]>();
 
+      return response.data;
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw err;
+    }
+  };
+
+  updateNotificationIsRead = async (nid: number) => {
+    try {
+      const response = await axios.patch(`${this.baseURL}?nid=${nid}`);
       return response.data;
     } catch (error) {
       const err = error as Error;

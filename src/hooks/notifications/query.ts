@@ -12,3 +12,9 @@ export const notificationsQueryOptions = {
     queryFn: () => api.notifications.getNotifications(client),
   }),
 };
+
+export const notificationsMutationOptions = {
+  noticiationIsRead: {
+    mutationFn: (nid: number) => api.notifications.updateNotificationIsRead(nid),
+  },
+};

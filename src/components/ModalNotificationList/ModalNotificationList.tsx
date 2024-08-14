@@ -1,29 +1,18 @@
 'use client';
 
-import { useModal } from '@/contexts/modal.context/modal.context';
-import { createClient } from '@/supabase/client';
+import { useNotificationIsRead } from '@/hooks/notifications/useNotifications';
 import { Notification, NotificationWithCategory } from '@/types/notification';
 import { makeNotificationLink, notificationTypeConverter } from '@/utils/notificationTypeConverter';
-import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import NotificationText from '../../app/(providers)/(root)/notifications/_components/NotificationText';
 import NotificationChip from '../NotificationChip';
 
 const ModalNotificationList = ({ notifications }: { notifications: Notification[] }) => {
-  const supabase = createClient();
   const router = useRouter();
-  const modal = useModal();
-  console.log('notifications', notifications);
+  const { mutate: notificationIsRead } = useNotificationIsRead();
 
-  const { mutate: updateIsRead } = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await supabase.from('notifications').update({ isRead: true }).eq('id', id);
-      // console.log('update isRead', response);
-    },
-  });
-
-  const handleRoute = (id: number, notification: NotificationWithCategory, idForURL: string | null) => {
-    updateIsRead(id);
+  const handleRoute = async (nid: number, notification: NotificationWithCategory, idForURL: string | null) => {
+    notificationIsRead(nid);
     router.push(makeNotificationLink(notification, idForURL));
   };
 
