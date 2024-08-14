@@ -1,8 +1,6 @@
 'use client';
 
-import { useCreateNotification } from '@/hooks/notifications/useNotifications';
 import { Notification } from '@/types/notification';
-import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import Link from 'next/link';
 import { RxCross2 } from 'react-icons/rx';
 import ModalNotificationList from '../ModalNotificationList';
@@ -13,15 +11,6 @@ type ModalNotificationsProps = {
 };
 
 const ModalNotifications = ({ notifications, onClose }: ModalNotificationsProps) => {
-  const { mutate: createNotification } = useCreateNotification();
-
-  const tttt = () => {
-    console.log('TTTT CLICK___');
-    createNotification(
-      makeNotificationData({ type: 'community', category: 'comment' }, '0f15cea5-f25e-436b-a1f7-e0dbbc888f37', '32'),
-    );
-  };
-
   return (
     <div
       className="fixed top-14 right-4 w-[320px] h-[440px] rounded-3xl border-primary-100/50 border-2 p-4 
