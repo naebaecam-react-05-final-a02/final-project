@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         .insert([
           {
             title,
-            items: JSON.stringify(items), // items 배열을 JSON 문자열로 변환하여 저장
+            items: JSON.stringify(items),
           },
         ])
         .select()
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
         .from('communityVotes')
         .update([
           {
-            items: JSON.stringify(items), // items 배열을 JSON 문자열로 변환하여 저장
+            items: JSON.stringify(items),
           },
         ])
         .eq('id', id)
@@ -78,7 +78,6 @@ export async function GET(request: NextRequest) {
   const supabase = createClient();
 
   try {
-    // 데이터베이스에서 투표 데이터를 가져오기
     const { data, error } = await supabase.from('communityVotes').select('*').single(); // 가장 최근 투표 가져오기 (또는 특정 ID로 변경 가능)
 
     if (error) {
