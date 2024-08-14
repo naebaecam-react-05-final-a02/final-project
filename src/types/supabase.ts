@@ -337,6 +337,7 @@ export type Database = {
           content: string
           createdAt: string
           id: number
+          likes: number | null
           tags: string[] | null
           title: string
           userId: string | null
@@ -347,6 +348,7 @@ export type Database = {
           content: string
           createdAt?: string
           id?: number
+          likes?: number | null
           tags?: string[] | null
           title: string
           userId?: string | null
@@ -357,6 +359,7 @@ export type Database = {
           content?: string
           createdAt?: string
           id?: number
+          likes?: number | null
           tags?: string[] | null
           title?: string
           userId?: string | null
@@ -365,6 +368,42 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "communityPosts_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityPostsLikes: {
+        Row: {
+          created_at: string
+          id: number
+          postId: number
+          userId: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          postId: number
+          userId: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          postId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityPostsLikes_postId_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityPostsLikes_userId_fkey"
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
@@ -680,6 +719,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      foods: {
+        Row: {
+          carbohydrate: number | null
+          fat: number | null
+          kcal: number | null
+          name: string
+          protein: number | null
+          serving: string | null
+        }
+        Insert: {
+          carbohydrate?: number | null
+          fat?: number | null
+          kcal?: number | null
+          name: string
+          protein?: number | null
+          serving?: string | null
+        }
+        Update: {
+          carbohydrate?: number | null
+          fat?: number | null
+          kcal?: number | null
+          name?: string
+          protein?: number | null
+          serving?: string | null
+        }
+        Relationships: []
       }
       goals: {
         Row: {
