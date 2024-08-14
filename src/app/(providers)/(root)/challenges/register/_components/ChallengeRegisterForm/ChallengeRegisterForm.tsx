@@ -8,6 +8,7 @@ import { initialChallengeError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
+import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
@@ -25,6 +26,7 @@ export interface FormFields {
 }
 
 const ChallengeRegisterForm = () => {
+  const supabase = createClient();
   const router = useRouter();
   const modal = useModal();
   const [cate, setCate] = useState<string>('운동');
@@ -83,13 +85,14 @@ const ChallengeRegisterForm = () => {
               content,
               startDate,
               endDate,
-              isProgress: today == startDate,
+              isProgress: today == startDate ? 'RUN' : 'LF',
               createdBy: user?.id!,
               imageURL: response.imageURLs[0],
-
               tags: null,
               rating: 0,
               category,
+              participants: 0,
+              verifications: 0,
             };
             // console.log('registerData', registerData);
             challengeRegister(registerData, {

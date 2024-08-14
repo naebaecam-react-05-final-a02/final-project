@@ -23,7 +23,7 @@ export type joinedChallengesDataType =
         userId: string;
         challenges: {
           title: string;
-          isProgress: boolean;
+          isProgress: 'LF' | 'RUN' | 'END';
         } | null;
       }[];
       error: null;
