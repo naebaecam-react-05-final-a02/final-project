@@ -12,3 +12,4 @@ export type NotificationWithCategory =
   | { type: 'dashboard'; category: DashboardNotificationCategory };
 
 export type Notification = Omit<Tables<'notifications'>, 'type' | 'category'> & NotificationWithCategory;
+export type InsertNotification = Omit<Notification, 'id'>;

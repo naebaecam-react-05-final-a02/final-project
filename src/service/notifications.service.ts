@@ -1,4 +1,4 @@
-import { Notification } from '@/types/notification';
+import { InsertNotification, Notification } from '@/types/notification';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import axios from 'axios';
@@ -53,6 +53,29 @@ class NotificationsAPI {
   updateNotificationsIsRead = async () => {
     try {
       const response = await axios.patch(`${this.baseURL}`);
+      return response.data;
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw err;
+    }
+  };
+
+  /**
+   * 
+   * {
+            createdAt: new Date(),
+            idForURL: challenge.id,
+            targetUserId: participant.userId,
+            isRead: false,
+            type: 'challenge',
+            category: 'pre-start',
+          }
+   */
+  // 알림 생성
+  createNotification = async (notificationData: InsertNotification) => {
+    try {
+      const response = await axios.post(`${this.baseURL}`, notificationData);
       return response.data;
     } catch (error) {
       const err = error as Error;

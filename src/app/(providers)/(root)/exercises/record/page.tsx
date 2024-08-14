@@ -9,6 +9,7 @@ import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Header from '@/components/Header';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import Memo from '@/icons/Memo';
 import { CardioInput, WeightInput } from '@/types/exercises';
 import { getFormattedDate } from '@/utils/dateFormatter';
@@ -26,6 +27,7 @@ const ExerciseRecordPage = () => {
   const [customWorkout, setCustomWorkout] = useState('');
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
   const router = useRouter();
+  const modal = useModal();
   const [localBookmarkedExercises, setLocalBookmarkedExercises] = useState<string[]>([]);
 
   const { mutate: register } = useRegisterExercise();
@@ -105,7 +107,7 @@ const ExerciseRecordPage = () => {
     // 데이터가 없는 경우 빠르게 반환
     if (!record.date || !isValidRecord) {
       console.error('필수 입력 사항 누락:', { workoutToSave, date: record.date, recordLength: record.record.length });
-      alert('운동 이름, 날짜, 세트는 필수 입력 사항입니다.');
+      modal.alert(['운동 이름, 날짜, 세트는 필수 입력 사항입니다.']);
       return;
     }
 
@@ -126,7 +128,7 @@ const ExerciseRecordPage = () => {
           setSearchTerm('');
           setSelectedWorkout('');
           setCustomWorkout('');
-          alert('작성이 완료되었습니다');
+          modal.alert(['작성이 완료되었습니다']);
           //TODO: 추후 수정 반영
 
           router.push('/exercises');
@@ -161,8 +163,8 @@ const ExerciseRecordPage = () => {
       value: item.exerciseName,
       icon: (
         <Star
-          width={24}
-          height={24}
+          width={20}
+          height={20}
           className="cursor-pointer"
           style={{
             fill: localBookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
@@ -203,8 +205,8 @@ const ExerciseRecordPage = () => {
                 fill: localBookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
               }}
               className="cursor-pointer"
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               onClick={(e) => {
                 e.stopPropagation();
                 if (record.name) {
@@ -243,10 +245,10 @@ const ExerciseRecordPage = () => {
           value={record.memo}
           onChange={handleMemoChange}
           className="p-4 rounded-lg"
-          icon={<Memo />}
+          icon={<Memo width={20} height={20} />}
         />
         <ExerciseRecordForm />
-        <Button type="submit" onClick={handleSubmit}>
+        <Button className="mt-4" type="submit" onClick={handleSubmit}>
           등록하기
         </Button>
       </div>

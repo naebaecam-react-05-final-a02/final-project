@@ -84,6 +84,8 @@ const config: Config = {
         'button-hover-gradient': 'linear-gradient(180deg, rgba(15, 205, 115, 0.9) 0%, rgba(15, 205, 115, 1) 100%)',
         'radial-gradient-button':
           'radial-gradient(50% 50% at 49.54% 100%, rgba(255, 255, 255, 0.50)0%, rgba(255, 255, 255, 0.00)100%)',
+        'select-input-hover-gradient':
+          'radial-gradient(50% 50% at 49.54% 100%, rgba(18, 242, 135, 0.10) 0%, rgba(18, 242, 135, 0.00) 100%)',
       },
     },
   },
@@ -96,9 +98,15 @@ const config: Config = {
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },
+<<<<<<< HEAD
         '.border-gradient-noti': {
           'border-image':
             'linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%) 1',
+=======
+        '.border-gradient-light': {
+          'border-image':
+            'linear-gradient(to right, rgba(0, 0, 0, 0.06) 0%, rgba(18, 242, 135, 0.21) 50%, rgba(0, 0, 0, 0.06) 100%) 1',
+>>>>>>> 1b9ea47907e0bae88de0de072ec513bbdcf7e39b
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },

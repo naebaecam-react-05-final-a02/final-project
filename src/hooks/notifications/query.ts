@@ -1,4 +1,5 @@
 import api from '@/service/service';
+import { InsertNotification } from '@/types/notification';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -19,5 +20,8 @@ export const notificationsMutationOptions = {
   },
   notificationsIsRead: {
     mutationFn: () => api.notifications.updateNotificationsIsRead(),
+  },
+  createNotification: {
+    mutationFn: (notificationData: InsertNotification) => api.notifications.createNotification(notificationData),
   },
 };

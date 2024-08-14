@@ -31,3 +31,5 @@ export const useNotificationsIsRead = () =>
       queryClient.invalidateQueries({ queryKey: notificationsQueryKeys.all });
     },
   });
+
+export const useCreateNotification = () => useMutation(notificationsMutationOptions.createNotification);
