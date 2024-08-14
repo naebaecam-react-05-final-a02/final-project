@@ -1,6 +1,7 @@
 'use client';
 
 import Loading from '@/components/Loading/Loading';
+import NavBar from '@/components/NavBar';
 import { useGetCommunityPosts } from '@/hooks/community/useCommunity';
 import { CommunityPostData } from '@/types/community';
 import Link from 'next/link';
@@ -77,13 +78,16 @@ const CommunityPostList = () => {
             ) : null}
           </div>
         )}
-        <div className="fixed px-4 bottom-20 right-6 md:right-10 left-6 max-w-[900px] mx-auto pointer-events-none">
+        <div className="fixed px-4 bottom-20 right-6 md:right-10 left-6 max-w-[900px] mx-auto z-10">
           <div className="relative w-full flex justify-end">
-            <FloatingWriteButton inView={buttonVisibilityInView} />
+            <Link href="/community/write" className="group">
+              <FloatingWriteButton inView={buttonVisibilityInView} />
+            </Link>
           </div>
         </div>
       </div>
-      <div ref={buttonVisibilityRef} className="h-20 relative" />
+      <div ref={buttonVisibilityRef} className="h-20 relative -z-10" />
+      <NavBar />
     </div>
   );
 };
