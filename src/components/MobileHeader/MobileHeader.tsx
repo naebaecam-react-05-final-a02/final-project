@@ -1,37 +1,10 @@
 'use client';
 
-import { useGetUser } from '@/hooks/auth/useUsers';
-import { queryClient } from '@/providers/QueryProvider';
-import { createClient } from '@/supabase/client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import NotificationButton from '../ButtonIcon/NotificationButton';
 import UserProfile from '../UserProfile/UserProfile';
 
 const DefaultHeader = () => {
-  const { data: user } = useGetUser();
-
-  useEffect(() => {
-    if (!user) return;
-
-    const supabase = createClient();
-    const channels = supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'notifications', filter: `targetUserId=eq.${user.id}` },
-        (payload) => {
-          console.log('PAYLOAD___', payload);
-          queryClient.invalidateQueries({ queryKey: ['notifications'] });
-        },
-      )
-      .subscribe((status) => {
-        console.log('STATUS___', status);
-      });
-    return () => {
-      channels.unsubscribe();
-    };
-  }, [user]);
-
   return (
     <div className="flex justify-between header-gradient">
       {/* 다른 사용자 정보 표시 */}

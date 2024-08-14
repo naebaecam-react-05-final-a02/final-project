@@ -2,9 +2,11 @@
 import NotificationSVG from '@/assets/nav/notification.svg';
 import ModalNotifications from '@/components/ModalNotifications';
 import ModalPortalLayout from '@/components/ModalPortal/ModalPortalLayout';
+import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetNotifications } from '@/hooks/notifications/useNotifications';
+import { queryClient } from '@/providers/QueryProvider';
 import { createClient } from '@/supabase/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TiCancel } from 'react-icons/ti';
 import IconButton from '../IconButton/IconButton';
 
@@ -14,6 +16,28 @@ const NotificationButton = () => {
   const supabase = createClient();
 
   const { data: notifications, error } = useGetNotifications(supabase);
+  const { data: user } = useGetUser();
+
+  useEffect(() => {
+    if (!user) return;
+
+    const channels = supabase
+      .channel('notifications')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'notifications', filter: `targetUserId=eq.${user.id}` },
+        (payload) => {
+          console.log('PAYLOAD___', payload);
+          queryClient.invalidateQueries({ queryKey: ['notifications'] });
+        },
+      )
+      .subscribe((status) => {
+        console.log('STATUS___', status);
+      });
+    return () => {
+      channels.unsubscribe();
+    };
+  }, [user, supabase]);
 
   if (error) {
     return (
