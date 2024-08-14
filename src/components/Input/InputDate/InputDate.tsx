@@ -107,7 +107,7 @@ const InputDate = ({
   return (
     <div className="flex flex-col w-full">
       {label && (
-        <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-[12px] ${isOpen ? 'z-20' : ''}`}>
+        <label htmlFor={inputId} className={`text-white/70 pl-1 pb-1 text-sm ${isOpen ? 'z-20' : ''}`}>
           <span>{label}</span>
         </label>
       )}
@@ -117,11 +117,9 @@ const InputDate = ({
             type="text"
             id={inputId}
             className={`w-full bg-transparent rounded-lg text-[15px] font-medium cursor-pointer
-              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-3 pl-11
-              border-b-2
-              ${isOpen ? 'z-20' : ''}
-              ${isOpen ? 'text-white' : 'text-whiteT-50 '}
-              ${error ? 'border-error-gradient' : 'border-gradient'}
+              bg-input-gradient backdrop-blur-[10px] focus:outline-none transition  pr-10 py-[13.5px] pl-11
+              hover:border-gradient border-b-2
+               ${isOpen ? 'z-20 text-white border-gradient' : 'text-whiteT-50 border-gradient-light'}              
                ${textAlign === 'right' ? 'text-right' : 'text-left'}
               ${className}
               `}

@@ -74,6 +74,15 @@ const config: Config = {
           100: '#12f287',
         },
       },
+      keyframes: {
+        'dropdown-item': {
+          '0%': { opacity: '0', transform: 'translateY(-10px) scale(1)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+      },
+      animation: {
+        'dropdown-item': 'dropdown-item 0.3s ease-out forwards',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
@@ -84,15 +93,30 @@ const config: Config = {
         'button-hover-gradient': 'linear-gradient(180deg, rgba(15, 205, 115, 0.9) 0%, rgba(15, 205, 115, 1) 100%)',
         'radial-gradient-button':
           'radial-gradient(50% 50% at 49.54% 100%, rgba(255, 255, 255, 0.50)0%, rgba(255, 255, 255, 0.00)100%)',
+        'select-input-hover-gradient':
+          'radial-gradient(50% 50% at 49.54% 100%, rgba(18, 242, 135, 0.10) 0%, rgba(18, 242, 135, 0.00) 100%)',
       },
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.border-gradient': {
           'border-image':
             'linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(18, 242, 135, 1) 50%, rgba(0, 0, 0, 0.3) 100%) 1',
+          'border-image-slice': '1',
+          'border-width': '0 0 1px 0',
+        },
+        '.border-gradient-noti': {
+          'border-image':
+            'linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%) 1',
+          'border-image-slice': '1',
+          'border-width': '0 0 1px 0',
+        },
+        '.border-gradient-light': {
+          'border-image':
+            'linear-gradient(to right, rgba(0, 0, 0, 0.06) 0%, rgba(18, 242, 135, 0.21) 50%, rgba(0, 0, 0, 0.06) 100%) 1',
           'border-image-slice': '1',
           'border-width': '0 0 1px 0',
         },

@@ -3,10 +3,12 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { initialChallengeError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
+import { createClient } from '@/supabase/client';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
@@ -24,7 +26,9 @@ export interface FormFields {
 }
 
 const ChallengeRegisterForm = () => {
+  const supabase = createClient();
   const router = useRouter();
+  const modal = useModal();
   const [cate, setCate] = useState<string>('운동');
   const [err, setErr] = useState(initialChallengeError);
 
@@ -69,7 +73,8 @@ const ChallengeRegisterForm = () => {
       form.append(`file[${i}]`, filee);
     });
 
-    if (confirm('등록하시겠습니까?')) {
+    const response = await modal.confirm(['등록하시겠습니까?']);
+    if (response) {
       upload(
         { storage: 'challengeRegister', form },
         {
@@ -80,29 +85,29 @@ const ChallengeRegisterForm = () => {
               content,
               startDate,
               endDate,
-              isProgress: today == startDate,
+              isProgress: today == startDate ? 'RUN' : 'LF',
               createdBy: user?.id!,
               imageURL: response.imageURLs[0],
-
               tags: null,
               rating: 0,
               category,
+              participants: 0,
+              verifications: 0,
             };
             // console.log('registerData', registerData);
             challengeRegister(registerData, {
               onSuccess: () => {
-                alert('등록되었습니다.');
-
+                modal.alert(['등록되었습니다.']);
                 router.push('/challenges');
               },
               onError: (error) => {
-                alert('등록에 실패하였습니다.');
-                console.error('Chaalenge Register Failed', error);
+                modal.alert(['등록에 실패하였습니다.']);
+                console.error('Challenge Register Failed', error);
               },
             });
           },
           onError: (error) => {
-            alert('이미지 업로드에 실패하였습니다.');
+            modal.alert(['이미지 업로드에 실패하였습니다.']);
             console.error('UPLOAD FAILED', error);
           },
         },

@@ -3,6 +3,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { categoryItemsENGtoKOR, initialChallengeError } from '@/data/challenges';
 import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
@@ -23,6 +24,7 @@ type ChallengeUpdateProps = {
 const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const modal = useModal();
   const [err, setErr] = useState(initialChallengeError);
 
   const [cate, setCate] = useState<string>(categoryItemsENGtoKOR[challenge.category]);
@@ -32,11 +34,12 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
   // console.log('challenge___', challenge);
 
-  const handleDelete = () => {
-    if (confirm('삭제하시겠습니까?')) {
+  const handleDelete = async () => {
+    const response = await modal.confirm(['삭제하시겠습니까?']);
+    if (response) {
       challengeDelete(challenge.id, {
         onSuccess: () => {
-          alert('삭제하였습니다.');
+          modal.alert(['삭제하였습니다.']);
           queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
           router.replace('/challenges');
         },
@@ -44,7 +47,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErr(initialChallengeError);
     const files = inputRef?.current?.files;
@@ -71,7 +74,8 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
     const { title, content, startDate, endDate, category } = formFields as FormFields;
 
-    if (confirm('수정하시겠습니까?')) {
+    const response = await modal.confirm(['수정하시겠습니까?']);
+    if (response) {
       if (files) {
         const form = new FormData();
         Array.from(files).forEach((filee, i) => {
@@ -93,12 +97,14 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
                 tags: null,
                 rating: 0,
                 category,
+                participants: challenge.participants,
+                verifications: challenge.verifications,
               };
               challengeUpdate(
                 { updateData, cid: challenge.id },
                 {
                   onSuccess: () => {
-                    alert('수정하였습니다.');
+                    modal.alert(['수정하였습니다.']);
                     queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
                     router.replace(`/challenges`);
                   },
@@ -119,12 +125,14 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           tags: null,
           rating: 0,
           category,
+          participants: challenge.participants,
+          verifications: challenge.verifications,
         };
         challengeUpdate(
           { updateData, cid: challenge.id },
           {
             onSuccess: () => {
-              alert('수정하였습니다.');
+              modal.alert(['수정하였습니다.']);
               queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
               router.replace(`/challenges`);
             },
