@@ -8,6 +8,8 @@ import {
   ReplyCreateData,
   ReplyData,
   ReplyUpdateData,
+  VoteData,
+  VoteUpdateData,
 } from '@/types/community';
 import axios from 'axios';
 
@@ -136,6 +138,23 @@ class CommunityAPI {
 
   getReplyLikes = async (replyId: string): Promise<string[]> => {
     const response = await axios.get(`${this.baseURL}/replies/${replyId}/likes`);
+    return response.data;
+  };
+  updateVote = async (data: VoteUpdateData) => {
+    const response = await axios.patch(`${this.baseURL}/vote`, data);
+    return response.data;
+  };
+  postVote = async (data: VoteData) => {
+    const response = await axios.post(`${this.baseURL}/vote`, data);
+    return response.data;
+  };
+  getVote = async () => {
+    const response = await axios.get(`${this.baseURL}/vote`);
+    return response.data.data;
+  };
+  getVoter = async (voteId: string) => {
+    console.log('@@voteIdvoteId', voteId);
+    const response = await axios.get(`${this.baseURL}/voter/${voteId}`);
     return response.data;
   };
 }
