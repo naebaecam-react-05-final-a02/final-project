@@ -1,6 +1,7 @@
 import ReviewAPI from '@/service/review.service';
 import AuthAPI from './auth.service';
 import ChallengeAPI from './challenge.service';
+import CommunityAPI from './community.service';
 import DashBoardAPI from './dashboard.service';
 import DietAPI from './diet.service';
 import ExerciseAPI from './exercise.service';
@@ -15,6 +16,7 @@ class API {
   diet: DietAPI;
   exercise: ExerciseAPI;
   users: UsersAPI;
+  community: CommunityAPI;
 
   dashboard: DashBoardAPI;
 
@@ -27,6 +29,7 @@ class API {
     this.exercise = new ExerciseAPI();
     this.users = new UsersAPI();
     this.dashboard = new DashBoardAPI();
+    this.community = new CommunityAPI();
   }
 }
 
