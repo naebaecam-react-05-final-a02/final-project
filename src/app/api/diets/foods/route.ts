@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
@@ -6,15 +6,13 @@ export const GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const foodName = searchParams.get('foodName') as string;
 
-    const response = await axios.get(
-      `https://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1?ServiceKey=${process.env.NUTRITION_INFO_SERVICE_KEY}&type=json&desc_kor=${foodName}`,
-    );
+    const supabase = createClient();
+    const { data, error } = await supabase.from('foods').select().ilike('name', `%${foodName}%`);
 
-    if (response.data.body.totalCount === 0) {
-      return NextResponse.json([]);
-    }
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+    if (!data) return NextResponse.json([]);
 
-    return NextResponse.json(response.data.body.items);
+    return NextResponse.json(data);
   } catch (e) {
     console.log(e);
     return NextResponse.json({ message: '식단 조회에 실패했습니다' }, { status: 400 });

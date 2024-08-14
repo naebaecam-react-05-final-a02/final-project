@@ -1,4 +1,4 @@
-import { DietTableType, DietType, SearchFoodResponseType } from '@/types/diet';
+import { DietTableType, DietType, FoodTableType } from '@/types/diet';
 import axios from 'axios';
 
 class DietAPI {
@@ -56,7 +56,7 @@ class DietAPI {
     }
   };
 
-  getFoodInfoByFoodName = async (foodName: string): Promise<SearchFoodResponseType[]> => {
+  getFoodInfoByFoodName = async (foodName: string): Promise<FoodTableType[]> => {
     try {
       const response = await axios.get(`${this.baseUrl}/foods?foodName=${foodName}`);
       return response.data;

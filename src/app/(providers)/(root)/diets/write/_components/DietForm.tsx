@@ -163,14 +163,14 @@ const DietForm = () => {
                   : [
                       { value: foodForm['foodName'] },
                       ...searchedFoods.map((food) => ({
-                        value: `${food.DESC_KOR}`,
-                        text: `${food.SERVING_WT}g당 ${food.NUTR_CONT1}kcal`,
+                        value: `${food.name}`,
+                        text: `${food.serving}g당 ${food.kcal}kcal`,
                         onClick: () => {
-                          handleFormChange('foodName', food.DESC_KOR);
-                          handleFormChange('kcal', Number(food.NUTR_CONT1));
-                          handleFormChange('carbohydrate', Number(food.NUTR_CONT2));
-                          handleFormChange('protein', Number(food.NUTR_CONT3));
-                          handleFormChange('fat', Number(food.NUTR_CONT4));
+                          handleFormChange('foodName', food.name);
+                          handleFormChange('kcal', Number(food.kcal));
+                          handleFormChange('carbohydrate', Number(food.carbohydrate));
+                          handleFormChange('protein', Number(food.protein));
+                          handleFormChange('fat', Number(food.fat));
                         },
                       })),
                     ]
