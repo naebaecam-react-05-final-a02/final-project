@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       });
       if (error) throw error;
     }
-
+    console.log('@@@@@@@', data);
     return NextResponse.json({ message: '게시글이 성공적으로 등록되었습니다.', data }, { status: 201 });
   } catch (error) {
     console.error('Error creating post:', error);

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import NotificationButton from '../ButtonIcon/NotificationButton';
 import UserProfile from '../UserProfile/UserProfile';
 
@@ -15,4 +16,4 @@ const DefaultHeader = () => {
   );
 };
 
-export default DefaultHeader;
+export default React.memo(DefaultHeader);

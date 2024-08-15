@@ -229,3 +229,28 @@ export const useToggleReplyLike = () => {
     },
   });
 };
+
+// 투표 목록 조회
+export const useGetVotes = (postId: string) => useQuery(queryOptions.vote(postId));
+// 투표자 조회
+export const useGetVoters = (postId: string) => useQuery(queryOptions.voter(postId));
+// 투표 등록
+export const usePostVote = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.postVote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.votes() });
+    },
+  });
+};
+// 투표 업데이트
+export const useUpdateVote = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.updateVote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.votes() });
+    },
+  });
+};

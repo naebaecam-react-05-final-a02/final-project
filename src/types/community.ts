@@ -12,6 +12,19 @@ export interface CommunityPostData {
   user: UserData;
 }
 
+export interface CommunityVotePostData {
+  id: string;
+  title: string;
+  category: string;
+  tags: string[];
+  createdAt: string;
+  views: number;
+  likes: number;
+  commentCount: number;
+  isLiked: boolean;
+  user?: UserData;
+}
+
 export interface CommunityPostCreateData {
   title: string;
   content: string;
@@ -75,4 +88,18 @@ export interface ReplyUpdateData {
   id: string;
   commentId: string;
   content: string;
+}
+
+export interface VoteItem {
+  text: string;
+  votes: number;
+}
+export interface VoteUpdateData {
+  postId: string;
+  items: VoteItem[];
+  selectedOption: string;
+}
+export interface VoteData {
+  title: string;
+  items: VoteItem[];
 }

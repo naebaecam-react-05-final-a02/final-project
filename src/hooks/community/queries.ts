@@ -7,6 +7,8 @@ import {
   CommunityPostUpdateData,
   ReplyCreateData,
   ReplyUpdateData,
+  VoteData,
+  VoteUpdateData,
 } from '@/types/community';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -19,6 +21,8 @@ export const communityQueryKeys = {
   postLikes: (postId: string) => ['community', 'postLikes', postId] as const,
   commentLikes: (commentId: string) => ['community', 'commentLikes', commentId] as const,
   replyLikes: (replyId: string) => ['community', 'replyLikes', replyId] as const,
+  votes: () => ['community', 'vote'] as const,
+  voters: () => ['community', 'voter', 'vote'] as const,
 };
 
 export const queryOptions = {
@@ -57,6 +61,14 @@ export const queryOptions = {
   replyLikes: (replyId: string) => ({
     queryKey: communityQueryKeys.replyLikes(replyId),
     queryFn: () => api.community.getReplyLikes(replyId),
+  }),
+  vote: (postId: string) => ({
+    queryKey: communityQueryKeys.votes(),
+    queryFn: () => api.community.getVote(postId),
+  }),
+  voter: (postId: string) => ({
+    queryKey: communityQueryKeys.voters(),
+    queryFn: () => api.community.getVoter(postId),
   }),
 };
 
@@ -99,6 +111,12 @@ export const mutationOptions = {
   },
   toggleReplyLike: {
     mutationFn: (replyId: string) => api.community.toggleReplyLike(replyId),
+  },
+  postVote: {
+    mutationFn: (data: VoteData) => api.community.postVote(data),
+  },
+  updateVote: {
+    mutationFn: (data: VoteUpdateData) => api.community.updateVote(data),
   },
 };
 

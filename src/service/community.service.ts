@@ -5,9 +5,12 @@ import {
   CommunityPostCreateData,
   CommunityPostData,
   CommunityPostUpdateData,
+  CommunityVotePostData,
   ReplyCreateData,
   ReplyData,
   ReplyUpdateData,
+  VoteData,
+  VoteUpdateData,
 } from '@/types/community';
 import axios from 'axios';
 
@@ -59,7 +62,7 @@ class CommunityAPI {
   }: {
     pageParam?: number;
     category?: string;
-  }): Promise<{ data: CommunityPostData[]; page: number; limit: number }> => {
+  }): Promise<{ data: CommunityPostData[]; page: number; limit: number; latestVotePost: CommunityVotePostData }> => {
     const response = await axios.get(`${this.baseURL}/posts`, {
       params: { page: pageParam, limit: 10, category },
     });
@@ -136,6 +139,22 @@ class CommunityAPI {
 
   getReplyLikes = async (replyId: string): Promise<string[]> => {
     const response = await axios.get(`${this.baseURL}/replies/${replyId}/likes`);
+    return response.data;
+  };
+  updateVote = async (data: VoteUpdateData) => {
+    const response = await axios.patch(`${this.baseURL}/vote`, data);
+    return response.data;
+  };
+  postVote = async (data: VoteData) => {
+    const response = await axios.post(`${this.baseURL}/vote`, data);
+    return response.data;
+  };
+  getVote = async (postId: string) => {
+    const response = await axios.get(`${this.baseURL}/vote`, { params: { id: postId } });
+    return response.data.data;
+  };
+  getVoter = async (postId: string) => {
+    const response = await axios.get(`${this.baseURL}/voter/${postId}`);
     return response.data;
   };
 }
