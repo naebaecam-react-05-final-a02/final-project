@@ -8,11 +8,12 @@ import AnimatedModalFrame from './AnimatedModalFrame';
 
 interface ModalProps {
   onSuccess: () => void;
+  title?: string;
   contents: string[];
   id: string;
 }
 
-const AlertModal = ({ id, onSuccess, contents }: ModalProps) => {
+const AlertModal = ({ id, onSuccess, title, contents }: ModalProps) => {
   const modal = useModal();
   const [isVisible, setIsVisible] = useState(true);
 
@@ -31,6 +32,7 @@ const AlertModal = ({ id, onSuccess, contents }: ModalProps) => {
           <AlertSVG />
         </div>
         <div className="w-full">
+          {title && <h3 className="text-xl mb-2 font-bold flex justify-center items-center text-white">{title}</h3>}
           {contents.map((content, index) => (
             <p key={index} className="w-full flex justify-center items-center text-white">
               {content}
