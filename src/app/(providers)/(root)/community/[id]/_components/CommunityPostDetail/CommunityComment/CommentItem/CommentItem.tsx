@@ -6,7 +6,6 @@ import { CommentData } from '@/types/community';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FaCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa6';
 import DetailMenu from '../../DetailMenu';
 
@@ -103,11 +102,7 @@ const CommentItem = ({ comment, postId, onEdit, onDelete }: CommentItemProps) =>
       ) : (
         <>
           <p className="text-[14px] font-normal leading-5 mb-4">{comment.content}</p>
-          <div className="flex items-center justify-between">
-            <button className="flex gap-[2px] items-center">
-              <FaCommentAlt className="w-[14px] h-[14px] text-whiteT-30" />
-              <span className="text-whiteT-50 text-[12px] font-semibold leading-4">답글쓰기</span>
-            </button>
+          <div className="flex items-center justify-end">
             <button className="flex gap-[2px] items-center" onClick={handleToggleLike} disabled={isLikeLoading}>
               <FaHeart className={`w-[14px] h-[14px] ${comment.isLiked ? 'text-red-500' : 'text-whiteT-50'}`} />
               <span className="text-whiteT-50 text-[12px] font-semibold leading-4">{comment.likes}</span>

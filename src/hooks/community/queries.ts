@@ -62,13 +62,13 @@ export const queryOptions = {
     queryKey: communityQueryKeys.replyLikes(replyId),
     queryFn: () => api.community.getReplyLikes(replyId),
   }),
-  vote: () => ({
+  vote: (postId: string) => ({
     queryKey: communityQueryKeys.votes(),
-    queryFn: () => api.community.getVote(),
+    queryFn: () => api.community.getVote(postId),
   }),
-  voter: (voteId: string) => ({
+  voter: (postId: string) => ({
     queryKey: communityQueryKeys.voters(),
-    queryFn: () => api.community.getVoter(voteId),
+    queryFn: () => api.community.getVoter(postId),
   }),
 };
 

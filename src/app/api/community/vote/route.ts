@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   const supabase = createClient();
   try {
-    const { title, items } = await request.json();
+    const { title, items, postId } = await request.json();
+    console.log(postId);
     // 사용자 인증 가져오기
     const {
       data: { user },
@@ -22,7 +23,8 @@ export async function POST(request: NextRequest) {
       .insert([
         {
           title,
-          items: JSON.stringify(items),
+          postId,
+          items: items,
         },
       ])
       .select()
@@ -42,11 +44,22 @@ export async function POST(request: NextRequest) {
 // 투표 결과 가져오기
 export async function GET(request: NextRequest) {
   const supabase = createClient();
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id');
+
+  console.log('Received id:', id);
+
+  if (!id) {
+    return NextResponse.json({ message: 'ID is required' }, { status: 400 });
+  }
+
   try {
-    const { data, error } = await supabase.from('communityVotes').select('*').single(); // 가장 최근 투표 가져오기 (또는 특정 ID로 변경 가능)
+    const { data, error } = await supabase.from('communityVotes').select('*').eq('postId', id).single();
+
     if (error) {
       throw error;
     }
+
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     console.error('데이터 가져오는 중 오류 발생:', error);
@@ -60,7 +73,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const supabase = createClient();
   try {
-    const { title, items, id, selectedOption } = await request.json();
+    const { title, items, postId, selectedOption } = await request.json();
     console.log('@@selectedOption', selectedOption);
     // 사용자 인증 가져오기
     const {
@@ -77,10 +90,10 @@ export async function PATCH(request: NextRequest) {
       .from('communityVotes')
       .update([
         {
-          items: JSON.stringify(items),
+          items: items,
         },
       ])
-      .eq('id', id)
+      .eq('postId', postId)
       .select()
       .single();
     if (voteError) {
@@ -89,7 +102,7 @@ export async function PATCH(request: NextRequest) {
     const { data: existingVote, error: existingVoteError } = await supabase
       .from('communityVoter')
       .select('*')
-      .eq('id', id)
+      .eq('postId', postId)
       .eq('userId', userId)
       .single();
 
@@ -101,14 +114,14 @@ export async function PATCH(request: NextRequest) {
       const { error: updateError } = await supabase
         .from('communityVoter')
         .update({ selectedOption })
-        .eq('id', id)
+        .eq('postId', postId)
         .eq('userId', userId);
 
       if (updateError) {
         throw updateError;
       }
     } else {
-      const { error: insertError } = await supabase.from('communityVoter').insert({ id, userId, selectedOption });
+      const { error: insertError } = await supabase.from('communityVoter').insert({ postId, userId, selectedOption });
 
       if (insertError) {
         throw insertError;
