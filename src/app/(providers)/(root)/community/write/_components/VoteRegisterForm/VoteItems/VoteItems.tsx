@@ -1,5 +1,4 @@
-import React from 'react';
-import { VoteItem } from '../../register/page';
+import { VoteItem } from '../VoteRegisterForm';
 
 type voteItemsProps = {
   items: VoteItem[];
