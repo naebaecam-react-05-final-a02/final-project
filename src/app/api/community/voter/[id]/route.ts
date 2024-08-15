@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // 투표 결과 가져오기
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
-  console.log('@@ID', id);
-  console.log('@@PARAMS', params);
+  const postId = params.id;
+
+  console.log('@@@@@@@@', postId);
   const supabase = createClient();
   // 사용자 인증 가져오기
   const {
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const { data, error } = await supabase
       .from('communityVoter')
       .select('*')
-      .eq('id', id)
+      .eq('postId', postId)
       .eq('userId', user.id)
       .single();
 
@@ -29,7 +29,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         return NextResponse.json({ available: true, data });
       }
     }
-    console.log('@@routeData', data, error);
 
     return NextResponse.json({ available: false, data });
   } catch (error) {

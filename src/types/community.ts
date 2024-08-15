@@ -1,5 +1,3 @@
-import { VoteItem } from '@/app/(providers)/(root)/community/[id]/vote/register/page';
-
 export interface CommunityPostData {
   id: string;
   title: string;
@@ -12,6 +10,19 @@ export interface CommunityPostData {
   commentCount: number;
   isLiked: boolean;
   user: UserData;
+}
+
+export interface CommunityVotePostData {
+  id: string;
+  title: string;
+  category: string;
+  tags: string[];
+  createdAt: string;
+  views: number;
+  likes: number;
+  commentCount: number;
+  isLiked: boolean;
+  user?: UserData;
 }
 
 export interface CommunityPostCreateData {
@@ -79,8 +90,12 @@ export interface ReplyUpdateData {
   content: string;
 }
 
+export interface VoteItem {
+  text: string;
+  votes: number;
+}
 export interface VoteUpdateData {
-  id: number;
+  postId: string;
   items: VoteItem[];
   selectedOption: string;
 }

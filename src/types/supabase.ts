@@ -529,23 +529,26 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          userId: string | null
+          selectedOption: string | null
+          userId: string
         }
         Insert: {
           created_at?: string
           id?: number
-          userId?: string | null
+          selectedOption?: string | null
+          userId: string
         }
         Update: {
           created_at?: string
           id?: number
-          userId?: string | null
+          selectedOption?: string | null
+          userId?: string
         }
         Relationships: [
           {
             foreignKeyName: "communityVoter_id_fkey"
             columns: ["id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "communityVotes"
             referencedColumns: ["id"]
           },
@@ -562,19 +565,30 @@ export type Database = {
         Row: {
           id: number
           items: Json | null
+          postId: number | null
           title: string | null
         }
         Insert: {
           id?: number
           items?: Json | null
+          postId?: number | null
           title?: string | null
         }
         Update: {
           id?: number
           items?: Json | null
+          postId?: number | null
           title?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "communityVotes_postId_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       diets: {
         Row: {
@@ -582,7 +596,6 @@ export type Database = {
           date: string
           dietType: number
           foods: Json[]
-          id: number
           userId: string
         }
         Insert: {
@@ -590,7 +603,6 @@ export type Database = {
           date: string
           dietType: number
           foods: Json[]
-          id?: number
           userId: string
         }
         Update: {
@@ -598,7 +610,6 @@ export type Database = {
           date?: string
           dietType?: number
           foods?: Json[]
-          id?: number
           userId?: string
         }
         Relationships: [

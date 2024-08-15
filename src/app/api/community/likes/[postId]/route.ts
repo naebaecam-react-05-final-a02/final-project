@@ -55,7 +55,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { postId
       .eq('postId', postId);
 
     if (countError) throw countError;
-
+    console.log(count, postId);
     // 4. communityPosts 테이블 업데이트
     const { error: updateError } = await supabase.from('communityPosts').update({ likes: count }).eq('id', postId);
 

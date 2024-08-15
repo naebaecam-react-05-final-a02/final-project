@@ -5,6 +5,7 @@ import {
   CommunityPostCreateData,
   CommunityPostData,
   CommunityPostUpdateData,
+  CommunityVotePostData,
   ReplyCreateData,
   ReplyData,
   ReplyUpdateData,
@@ -61,7 +62,7 @@ class CommunityAPI {
   }: {
     pageParam?: number;
     category?: string;
-  }): Promise<{ data: CommunityPostData[]; page: number; limit: number }> => {
+  }): Promise<{ data: CommunityPostData[]; page: number; limit: number; latestVotePost: CommunityVotePostData }> => {
     const response = await axios.get(`${this.baseURL}/posts`, {
       params: { page: pageParam, limit: 10, category },
     });
@@ -148,13 +149,12 @@ class CommunityAPI {
     const response = await axios.post(`${this.baseURL}/vote`, data);
     return response.data;
   };
-  getVote = async () => {
-    const response = await axios.get(`${this.baseURL}/vote`);
+  getVote = async (postId: string) => {
+    const response = await axios.get(`${this.baseURL}/vote`, { params: { id: postId } });
     return response.data.data;
   };
-  getVoter = async (voteId: string) => {
-    console.log('@@voteIdvoteId', voteId);
-    const response = await axios.get(`${this.baseURL}/voter/${voteId}`);
+  getVoter = async (postId: string) => {
+    const response = await axios.get(`${this.baseURL}/voter/${postId}`);
     return response.data;
   };
 }

@@ -231,9 +231,9 @@ export const useToggleReplyLike = () => {
 };
 
 // 투표 목록 조회
-export const useGetVotes = () => useQuery(queryOptions.vote());
+export const useGetVotes = (postId: string) => useQuery(queryOptions.vote(postId));
 // 투표자 조회
-export const useGetVoters = (voteId: string) => useQuery(queryOptions.voter(voteId));
+export const useGetVoters = (postId: string) => useQuery(queryOptions.voter(postId));
 // 투표 등록
 export const usePostVote = () => {
   const queryClient = useQueryClient();

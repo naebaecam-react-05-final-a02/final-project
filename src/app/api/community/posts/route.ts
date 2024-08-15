@@ -21,7 +21,20 @@ export async function GET(request: NextRequest) {
   }
 
   const userId = user?.id;
+  // 투표 카테고리의 최신 게시글 가져오기
+  const { data: latestVotePost, error: voteError } = await supabase
+    .from('communityPosts')
+    .select('*')
+    .eq('category', '투표')
+    .order('createdAt', { ascending: false })
+    .limit(1)
+    .single();
 
+  if (voteError && voteError.code !== 'PGRST116') {
+    return NextResponse.json({ error: voteError.message }, { status: 400 });
+  }
+
+  // 일반 게시글
   let query = supabase.from('communityPosts').select(
     `
       *,
@@ -39,6 +52,8 @@ export async function GET(request: NextRequest) {
   if (category && category !== '전체') {
     query = query.eq('category', category);
   }
+
+  query = query.neq('category', '투표');
 
   const {
     data: posts,
@@ -58,6 +73,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     data: processedData,
+    latestVotePost,
     page,
     limit,
     totalCount: count,
