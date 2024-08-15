@@ -1,3 +1,5 @@
+import { VoteItem } from '@/app/(providers)/(root)/community/[id]/vote/register/page';
+
 export interface CommunityPostData {
   id: string;
   title: string;
@@ -75,4 +77,14 @@ export interface ReplyUpdateData {
   id: string;
   commentId: string;
   content: string;
+}
+
+export interface VoteUpdateData {
+  id: number;
+  items: VoteItem[];
+  selectedOption: string;
+}
+export interface VoteData {
+  title: string;
+  items: VoteItem[];
 }

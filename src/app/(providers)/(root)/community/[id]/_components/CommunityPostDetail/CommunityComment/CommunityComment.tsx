@@ -2,24 +2,30 @@
 
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useAddComment, useDeleteComment, useGetComments, useUpdateComment } from '@/hooks/community/useCommunity';
+import { useCreateNotification } from '@/hooks/notifications/useNotifications';
+import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import CommentInput from './CommentInput';
 import CommentItem from './CommentItem';
 
 interface CommunityCommentProps {
   postId: string;
+  postUserId: string;
 }
 
-const CommunityComment = ({ postId }: CommunityCommentProps) => {
+const CommunityComment = ({ postId, postUserId }: CommunityCommentProps) => {
   const { data: comments } = useGetComments(postId);
   const { mutate: addComment } = useAddComment();
   const { mutate: updateComment } = useUpdateComment();
   const { mutateAsync: deleteComment } = useDeleteComment();
+
+  const { mutate: createNotification } = useCreateNotification();
 
   const modal = useModal();
 
   const handleAddComment = (content: string) => {
     if (content.trim()) {
       addComment({ postId, content });
+      createNotification(makeNotificationData({ type: 'community', category: 'comment' }, postUserId, postId));
     }
   };
 

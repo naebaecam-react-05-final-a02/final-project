@@ -97,6 +97,8 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
                 tags: null,
                 rating: 0,
                 category,
+                participants: challenge.participants,
+                verifications: challenge.verifications,
               };
               challengeUpdate(
                 { updateData, cid: challenge.id },
@@ -123,6 +125,8 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
           tags: null,
           rating: 0,
           category,
+          participants: challenge.participants,
+          verifications: challenge.verifications,
         };
         challengeUpdate(
           { updateData, cid: challenge.id },

@@ -54,15 +54,19 @@ const JoinedChallenges = () => {
   return (
     <JoinedChallengesLayout>
       <ul className="w-full text-sm text-white grid gap-y-4">
-        {joinedChallenges.data.slice(0, 3).map(({ id, challenges, challengeId }) => (
-          <Link
-            className="w-full line-clamp-1 h-5 break-words hover:shadow-md hover:font-bold"
-            key={id}
-            href={`/challenges/${challengeId}/detail`}
-          >
-            <li>{challenges?.title || '제목 없음'}</li>
-          </Link>
-        ))}
+        {joinedChallenges.data.slice(0, 3).map(({ id, challenges, challengeId }) => {
+          if (challenges?.isProgress === 'RUN') {
+            return (
+              <Link
+                className="w-full line-clamp-1 h-5 break-words hover:shadow-md hover:font-bold"
+                key={id}
+                href={`/challenges/${challengeId}/detail`}
+              >
+                <li>{challenges?.title || '제목 없음'}</li>
+              </Link>
+            );
+          }
+        })}
       </ul>
     </JoinedChallengesLayout>
   );
