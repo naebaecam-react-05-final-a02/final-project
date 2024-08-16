@@ -8,3 +8,13 @@ export type PopularChallengesTypes = TChallenge & {
   challengeParticipants: { count: number }[];
   challengeVerify: { count: number }[];
 };
+
+export type challengeFormFields = 'title' | 'content' | 'startDate' | 'endDate' | 'category';
+
+export type FormFields = {
+  title: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+  category: string;
+};

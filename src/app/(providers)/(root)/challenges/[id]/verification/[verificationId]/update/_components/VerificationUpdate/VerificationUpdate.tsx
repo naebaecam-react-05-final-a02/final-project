@@ -1,7 +1,7 @@
 'use client';
 
+import ChallengeTextArea from '@/app/(providers)/(root)/challenges/_components/ChallengeTextArea/ChallengeTextArea';
 import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
-import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
 import Button from '@/components/Button';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import {
@@ -166,7 +166,7 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
             <div className=" text-primary-100">헬리니뇨속</div>
             <div className="text-white">수정을 시작해볼까요?</div>
           </div>
-          <FormTextArea
+          <ChallengeTextArea
             label="느낀점을 수정해보아요"
             maxLength={100}
             name="impression"
