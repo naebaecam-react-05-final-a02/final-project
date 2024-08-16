@@ -34,6 +34,7 @@ const QASection = ({
       ) : (
         <h3 className="text-[14px] font-medium mb-2">아직 채택 받은 답변이 없습니다.</h3>
       )}
+
       {answers &&
         answers.map((answer, index) => (
           <div key={answer.id} className={index === answers.length - 1 ? 'mb-[70px]' : ''}>

@@ -1,4 +1,4 @@
-import { AnswerResponse, CommentData, CommunityPostData, ReplyData } from '@/types/community';
+import { Answer, AnswerResponse, CommentData, CommunityPostData, ReplyData } from '@/types/community';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { communityQueryKeys, mutationOptions, prefetchCommunityPosts, queryOptions } from './queries';
 
@@ -260,6 +260,11 @@ export const useGetAnswers = (questionId: string) => useQuery(queryOptions.answe
 // 채택된 답변 조회
 export const useGetAcceptedAnswer = (questionId: string) => useQuery(queryOptions.acceptedAnswer(questionId));
 
+// 답변 항목 조회
+export const useGetAnswer = (answerId: string) => {
+  return useQuery<Answer, Error>(queryOptions.answer(answerId));
+};
+
 // 답변 생성
 export const useCreateAnswer = () => {
   const queryClient = useQueryClient();
@@ -277,11 +282,11 @@ export const useUpdateAnswer = () => {
   return useMutation({
     ...mutationOptions.updateAnswer,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answer(variables.answerId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(data.questionId) });
     },
   });
 };
-
 // 답변 삭제
 export const useDeleteAnswer = () => {
   const queryClient = useQueryClient();

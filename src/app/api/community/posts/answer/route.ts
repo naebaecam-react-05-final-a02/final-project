@@ -66,6 +66,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: '데이터를 가져오는데 실패했습니다.' }, { status: 500 });
   }
 }
+
 export async function POST(request: NextRequest) {
   const supabase = createClient();
 
@@ -164,8 +165,6 @@ export async function DELETE(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const answerId = searchParams.get('answerId');
     const questionId = searchParams.get('questionId');
-
-    console.log(questionId, answerId);
 
     if (!answerId || !questionId) {
       return NextResponse.json({ error: '답변 ID와 질문 ID가 필요합니다.' }, { status: 400 });

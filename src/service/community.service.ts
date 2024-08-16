@@ -1,4 +1,5 @@
 import {
+  Answer,
   AnswerResponse,
   CommentCreateData,
   CommentData,
@@ -308,6 +309,18 @@ class CommunityAPI {
       const response = await axios.get(`${this.baseURL}/posts/answer`, {
         params: { questionId },
       });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  getAnswer = async (answerId: string): Promise<Answer> => {
+    try {
+      const response = await axios.get(`${this.baseURL}/posts/answer/${answerId}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

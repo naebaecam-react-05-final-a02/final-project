@@ -60,8 +60,6 @@ export async function PATCH(request: NextRequest) {
 
     const { questionId, answerId } = await request.json();
 
-    console.log(questionId, answerId, user.id);
-
     if (!questionId || !answerId) {
       return NextResponse.json({ error: '질문 ID와 답변 ID가 필요합니다.' }, { status: 400 });
     }

@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function PATCH(request: NextRequest, { params }: { params: { postId: string } }) {
   const supabase = createClient();
   const postId = params.postId;
-  console.log(postId);
   try {
     const {
       data: { user },
@@ -61,7 +60,6 @@ export async function PATCH(request: NextRequest, { params }: { params: { postId
         .eq('postId', postId);
 
       if (countError) throw countError;
-      console.log(count, postId);
       // 4. communityPosts 테이블 업데이트
       const { error: updateError } = await supabase.from('communityPosts').update({ likes: count }).eq('id', postId);
 

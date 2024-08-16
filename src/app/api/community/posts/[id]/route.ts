@@ -58,7 +58,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     responseCount = postData.answerCount?.[0]?.count || 0;
 
     const likeInfo = isLike.find((like) => like.postId === postData.id);
-    console.log(likeInfo);
     const postWithLikes = {
       ...postData,
       isLiked: likeInfo ? likeInfo.isLike : null,

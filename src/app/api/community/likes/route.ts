@@ -60,8 +60,6 @@ export async function PATCH(request: NextRequest) {
     const likes = likeCounts.filter((v) => v.isLike === true).length;
     const dislikes = likeCounts.filter((v) => v.isLike === false).length;
     const score = likes - dislikes;
-    console.log(likeType === 'like');
-    console.log(likes, dislikes, score, id);
     // 테이블 업데이트
     await supabase.from(table).update({ likes, dislikes, score }).eq('id', id);
 

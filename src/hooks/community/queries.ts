@@ -23,6 +23,7 @@ export const communityQueryKeys = {
   replyLikes: (replyId: string) => ['community', 'replyLikes', replyId] as const,
   votes: () => ['community', 'vote'] as const,
   voters: () => ['community', 'voter', 'vote'] as const,
+  answer: (answerId: string) => ['community', 'answer', answerId] as const,
   answers: (questionId: string) => ['community', 'answers', questionId] as const,
   acceptedAnswer: (questionId: string) => ['community', 'acceptedAnswer', questionId] as const,
   qaPostLikes: (postId: string) => ['community', 'post', postId] as const,
@@ -73,6 +74,10 @@ export const queryOptions = {
   voter: (postId: string) => ({
     queryKey: communityQueryKeys.voters(),
     queryFn: () => api.community.getVoter(postId),
+  }),
+  answer: (answerId: string) => ({
+    queryKey: communityQueryKeys.answer(answerId),
+    queryFn: () => api.community.getAnswer(answerId),
   }),
   answers: (questionId: string) => ({
     queryKey: communityQueryKeys.answers(questionId),
