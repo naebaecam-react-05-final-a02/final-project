@@ -54,12 +54,17 @@ const ChallengeRegisterForm = () => {
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState);
-    window.addEventListener('beforeunload', beforeUnloadHandler);
     return () => {
       window.removeEventListener('popstate', handlePopState);
+    };
+  }, [handlePopState]);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+    return () => {
       window.removeEventListener('beforeunload', beforeUnloadHandler);
     };
-  }, [handlePopState, beforeUnloadHandler]);
+  }, [beforeUnloadHandler]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
