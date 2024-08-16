@@ -9,7 +9,7 @@ const ModalPortalLayout = ({ children, onClose }: ModalPortalLayoutProps) => {
   return (
     <ModalPortal>
       <section
-        className="fixed size-full z-40"
+        className="fixed size-full z-40 bg-black/30 bg-opacity-50"
         onClick={(e) => {
           if (e.target === e.currentTarget) {
             onClose();
