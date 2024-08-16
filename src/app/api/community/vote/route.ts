@@ -4,8 +4,7 @@ export async function POST(request: NextRequest) {
   const supabase = createClient();
   try {
     const { title, items, postId } = await request.json();
-    console.log(postId);
-    // 사용자 인증 가져오기
+
     const {
       data: { user },
       error: authError,
@@ -15,7 +14,6 @@ export async function POST(request: NextRequest) {
     }
     // 필수 필드 검증
     if (!title || !Array.isArray(items) || items.length < 2) {
-      console.log('@@1', 1);
       return NextResponse.json({ message: '제목과 최소 두 개의 항목을 입력해야 합니다.' }, { status: 400 });
     }
     const { data, error } = await supabase
@@ -47,8 +45,6 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
 
-  console.log('Received id:', id);
-
   if (!id) {
     return NextResponse.json({ message: 'ID is required' }, { status: 400 });
   }
@@ -74,7 +70,6 @@ export async function PATCH(request: NextRequest) {
   const supabase = createClient();
   try {
     const { title, items, postId, selectedOption } = await request.json();
-    console.log('@@selectedOption', selectedOption);
     // 사용자 인증 가져오기
     const {
       data: { user },
@@ -84,7 +79,6 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ message: '인증 오류.' }, { status: 401 });
     }
     const userId = user.id;
-    console.log('@@title', title);
     // 데이터베이스에 투표 데이터 추가
     const { data, error: voteError } = await supabase
       .from('communityVotes')

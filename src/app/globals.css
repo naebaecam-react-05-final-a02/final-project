@@ -209,7 +209,7 @@ textarea:-webkit-autofill:active {
 }
 
 .ProseMirror img {
-  margin: 0;
+  margin: 16px 0 16px 0;
   max-width: 100%;
   height: auto;
 }
@@ -271,4 +271,8 @@ textarea:-webkit-autofill:active {
 .modal-shadow {
   box-shadow: -4px -4px 8px 0px rgba(18, 242, 135, 0.1), 4px 4px 8px 0px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
+}
+
+p img {
+  margin: 16px 0 16px 0;
 }

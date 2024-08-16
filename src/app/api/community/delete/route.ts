@@ -15,7 +15,6 @@ export async function DELETE(request: NextRequest) {
   }
   try {
     const { id } = await request.json();
-    console.log('Server side id:', id);
 
     // 게시물 존재 여부 및 사용자 권한 확인
     const { data: post, error: fetchError } = await supabase

@@ -10,8 +10,8 @@ import { CommunityPostUpdateData } from '@/types/community';
 import { Editor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import validateCommunityPost, { ValidationResult } from '../../../_utils/validateCommunityPost';
-import CommunityPostEditor from '../../../write/_components/CommunityPostEditor';
+import validateCommunityPost, { ValidationResult } from '../../../../_utils/validateCommunityPost';
+import CommunityPostEditor from '../../../../write/_components/CommunityPostEditor';
 
 interface CommunityPostEditFormProps {
   postId: string;
@@ -139,6 +139,9 @@ const CommunityPostEditForm = ({ postId }: CommunityPostEditFormProps) => {
           </div>
         )}
 
+        <div className="text-white/70 pl-1 pb-1 text-[12px]">
+          <span>게시글 내용</span>
+        </div>
         <CommunityPostEditor onContentChange={handleContentChange} initialContent={post?.content || ''} />
         {validationErrors.content && <div className="text-red-500 text-sm">{validationErrors.content}</div>}
         <Button type="submit" disabled={!isContentValid || isUpdating}>
