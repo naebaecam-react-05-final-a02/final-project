@@ -77,7 +77,7 @@ const DietForm = () => {
           router.push('/diets');
         },
         onError: (error) => {
-          modal.alert([`식단을 ${initialValue ? '수정' : '저장'}하는 도중 오류가 발생했습니다 :`, error.message]);
+          modal.alert([...error.message.split('\n')], `식단 ${initialValue ? '수정' : '저장'} 오류`);
         },
       },
     );
