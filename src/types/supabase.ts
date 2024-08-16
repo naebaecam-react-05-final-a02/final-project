@@ -529,27 +529,30 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          postId: number | null
           selectedOption: string | null
           userId: string
         }
         Insert: {
           created_at?: string
           id?: number
+          postId?: number | null
           selectedOption?: string | null
           userId: string
         }
         Update: {
           created_at?: string
           id?: number
+          postId?: number | null
           selectedOption?: string | null
           userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "communityVoter_id_fkey"
-            columns: ["id"]
+            foreignKeyName: "communityVoter_postId_fkey"
+            columns: ["postId"]
             isOneToOne: false
-            referencedRelation: "communityVotes"
+            referencedRelation: "communityPosts"
             referencedColumns: ["id"]
           },
           {
