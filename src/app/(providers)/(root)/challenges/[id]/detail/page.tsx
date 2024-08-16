@@ -10,7 +10,6 @@ import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
 import ThumbnailSection from './_components/Thumbnail.tsx';
 import UserProfile from './_components/UserProfile';
@@ -22,7 +21,6 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: challenge } = useGetChallengeDetail(id);
   const { mutate: joinChallenge } = useChallengeJoin();
 
-  const router = useRouter();
   const modal = useModal();
 
   // const [menuOpen, setMenuOpen] = useState(false);
@@ -87,11 +85,6 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
       ) : (
         <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
           <Button type="button">챌린지 인증하기</Button>
-        </Link>
-      )}
-      {user?.id === challenge.createdBy && (
-        <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
-          <Button>수정 및 삭제</Button>
         </Link>
       )}
     </div>

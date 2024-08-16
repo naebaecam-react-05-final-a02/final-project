@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { initialChallengeError } from '@/data/challenges';
-import { useChallengeDelete, useChallengeUpdate } from '@/hooks/challenge/useChallenge';
+import { useChallengeUpdate } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { queryClient } from '@/providers/QueryProvider';
 import { Tables } from '@/types/supabase';
@@ -30,23 +30,9 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   const [isImageDel, setIsImageDel] = useState<boolean>(false);
 
   const { mutate: imageUpload, isPending: uploading } = useImageUpload();
-  const { mutate: challengeDelete, isPending: deleting } = useChallengeDelete();
   const { mutate: challengeUpdate, isPending: updating } = useChallengeUpdate();
 
   // console.log('challenge___', challenge);
-
-  const handleDelete = async () => {
-    const response = await modal.confirm(['삭제하시겠습니까?']);
-    if (response) {
-      challengeDelete(challenge.id, {
-        onSuccess: () => {
-          modal.alert(['삭제하였습니다.']);
-          queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
-          router.replace('/challenges');
-        },
-      });
-    }
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -145,7 +131,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
-      {(uploading || updating || deleting) && <Loading />}
+      {(uploading || updating) && <Loading />}
       <CallengeCategory defaultValue={challenge.category} />
 
       <ChallengeInput
@@ -184,12 +170,9 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
         </div>
       </div>
 
-      <div className="flex gap-x-2">
+      <div className="flex-1 ">
         <Button type="submit" className="select-none">
           수정하기
-        </Button>
-        <Button onClick={() => handleDelete()} type="button" className="select-none">
-          삭제하기
         </Button>
       </div>
     </form>
