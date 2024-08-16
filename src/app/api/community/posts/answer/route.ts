@@ -32,7 +32,8 @@ export async function GET(request: NextRequest) {
         )
       `,
       )
-      .eq('questionId', questionId);
+      .eq('questionId', questionId)
+      .order('createdAt', { ascending: true });
 
     if (answerError) throw answerError;
 
