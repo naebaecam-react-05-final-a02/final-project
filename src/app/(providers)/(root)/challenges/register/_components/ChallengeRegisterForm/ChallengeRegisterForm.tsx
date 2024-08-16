@@ -98,7 +98,7 @@ const ChallengeRegisterForm = () => {
                     modal.alert(['등록하였으나 신청에 실패하였습니다.']);
                   },
                   onSettled: () => {
-                    router.push(`/challenges/${cid}/detail`);
+                    router.replace(`/challenges/${cid}/detail`);
                   },
                 });
               },
