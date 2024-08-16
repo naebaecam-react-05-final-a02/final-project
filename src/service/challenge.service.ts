@@ -51,6 +51,19 @@ class ChallengeAPI {
     }
   };
 
+  joinChallenge = async (cid: number) => {
+    try {
+      const response = await axios.post(`${this.baseURL}/join?cid=${cid}`);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
   registerVerification = async (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) => {
     try {
       const response = await axios.post(`${this.baseURL}/verification`, verifyData);

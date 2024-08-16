@@ -5,7 +5,7 @@ import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { initialChallengeError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { useChallengeRegister } from '@/hooks/challenge/useChallenge';
+import { useChallengeJoin, useChallengeRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
@@ -27,6 +27,7 @@ const ChallengeRegisterForm = () => {
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: challengeRegister, isPending } = useChallengeRegister();
+  const { mutate: joinChallenge } = useChallengeJoin();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -85,9 +86,21 @@ const ChallengeRegisterForm = () => {
             };
             // console.log('registerData', registerData);
             challengeRegister(registerData, {
-              onSuccess: () => {
-                modal.alert(['등록되었습니다.']);
-                router.push('/challenges');
+              onSuccess: (response) => {
+                const cid = response.data[0].id;
+                // console.log('CID___', cid);
+                joinChallenge(cid, {
+                  onSuccess: () => {
+                    modal.alert(['등록 및 신청되었습니다.']);
+                  },
+                  onError: (error) => {
+                    console.error(error);
+                    modal.alert(['등록하였으나 신청에 실패하였습니다.']);
+                  },
+                  onSettled: () => {
+                    router.push(`/challenges/${cid}/detail`);
+                  },
+                });
               },
               onError: (error) => {
                 modal.alert(['등록에 실패하였습니다.']);

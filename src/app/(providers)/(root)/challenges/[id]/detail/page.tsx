@@ -5,11 +5,10 @@ import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
+import { useChallengeJoin, useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
-import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
@@ -21,6 +20,8 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
+  const { mutate: joinChallenge } = useChallengeJoin();
+
   const router = useRouter();
   const modal = useModal();
 
@@ -58,22 +59,16 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
     .padStart(2, '0')}`;
 
   const handleJoinChallenge = async () => {
-    const supabase = createClient();
     const response = await modal.confirm(['신청하시겠습니까?']);
     if (response) {
-      const { error } = await supabase.from('challengeParticipants').insert({
-        challengeId: id,
-        userId: user?.id,
+      joinChallenge(id, {
+        onSuccess: () => {
+          modal.alert(['신청하였습니다.']);
+          queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
+          queryClient.invalidateQueries({ queryKey: ['challenge', { cid: id }] });
+        },
+        onError: () => modal.alert(['신청에 실패하였습니다.']),
       });
-      if (error) {
-        // 에러 처리도 제대루 해야함
-        modal.alert(['신청에 실패하였습니다.']);
-      } else {
-        // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
-        modal.alert(['신청하였습니다.']);
-        queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
-        router.replace('/challenges');
-      }
     }
   };
   // const handleMenuToggle = () => {
