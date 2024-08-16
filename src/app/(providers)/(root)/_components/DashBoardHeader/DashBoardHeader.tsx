@@ -28,7 +28,7 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
           <IoMdArrowDropleft />
         </div>
 
-        <div className="cursor-pointer w-6 text-center">{format(date, 'M/d')}</div>
+        <div className="cursor-pointer w-8 text-center">{format(date, 'M/dd')}</div>
 
         <div className="text-base cursor-pointer" onClick={handleNextDay}>
           <IoMdArrowDropright />
