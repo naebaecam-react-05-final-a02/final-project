@@ -9,7 +9,7 @@ import { useChallengeJoin, useChallengeRegister } from '@/hooks/challenge/useCha
 import { useImageUpload } from '@/hooks/image/useImage';
 import { Tables } from '@/types/supabase';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import CallengeCategory from '../../../_components/CallengeCategory';
 import ChallengeInput from '../../../_components/ChallengeInput';
@@ -30,6 +30,36 @@ const ChallengeRegisterForm = () => {
   const { mutate: joinChallenge } = useChallengeJoin();
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const isClickedFirst = useRef(false);
+
+  const beforeUnloadHandler = useCallback((e: BeforeUnloadEvent) => {
+    e.preventDefault();
+  }, []);
+
+  const handlePopState = useCallback(async () => {
+    const res = await modal.confirm(['뒤로 가시겠습니까?', '작성한 내용이 저장되지 않습니다..!']);
+    if (!res) {
+      history.pushState(null, '', '');
+      return;
+    }
+    history.back();
+  }, [modal]);
+
+  useEffect(() => {
+    if (!isClickedFirst.current) {
+      history.pushState(null, '', '');
+      isClickedFirst.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('beforeunload', beforeUnloadHandler);
+    };
+  }, [handlePopState, beforeUnloadHandler]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
