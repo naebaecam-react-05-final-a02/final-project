@@ -7,9 +7,25 @@ export interface CommunityPostData {
   createdAt: string;
   views: number;
   likes: number;
+  dislikes: number;
+  score: number;
+  commentCount?: number;
+  responseCount?: number;
+  isLiked: boolean | null;
+  user: UserData;
+}
+
+export interface CommunityVotePostData {
+  id: string;
+  title: string;
+  category: string;
+  tags: string[];
+  createdAt: string;
+  views: number;
+  likes: number;
   commentCount: number;
   isLiked: boolean;
-  user: UserData;
+  user?: UserData;
 }
 
 export interface CommunityPostCreateData {
@@ -75,4 +91,56 @@ export interface ReplyUpdateData {
   id: string;
   commentId: string;
   content: string;
+}
+
+export interface VoteItem {
+  text: string;
+  votes: number;
+}
+export interface VoteUpdateData {
+  postId: string;
+  items: VoteItem[];
+  selectedOption: string;
+}
+export interface VoteData {
+  title: string;
+  items: VoteItem[];
+}
+
+export interface Answer {
+  id: string;
+  questionId: string;
+  content: string;
+  createdAt: string;
+  user: UserData;
+  userId: string;
+  likes: number;
+  dislikes: number;
+  score: number;
+  isLiked: boolean | null;
+}
+
+export interface AnswerResponse {
+  answers: Answer[];
+  hasUserAnswered: boolean;
+}
+
+export interface Answer {
+  id: string;
+  questionId: string;
+  content: string;
+  createdAt: string;
+  user: UserData;
+  userId: string;
+  likes: number;
+  dislikes: number;
+  score: number;
+  isLiked: boolean | null;
+}
+
+export interface LikeResponse {
+  likes: number;
+  dislikes: number;
+  score: number;
+  likeType: 'like' | 'dislike' | null;
 }

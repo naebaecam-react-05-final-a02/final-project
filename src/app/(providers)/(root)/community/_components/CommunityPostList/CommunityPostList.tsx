@@ -6,7 +6,7 @@ import { useGetCommunityPosts } from '@/hooks/community/useCommunity';
 import { CommunityPostData } from '@/types/community';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FaRegCommentDots } from 'react-icons/fa6';
+import { FaChevronRight, FaRegCommentDots } from 'react-icons/fa6';
 import { useInView } from 'react-intersection-observer';
 import CommunityListHeader from './CommunityListHeader';
 import CommunityPostListItem from './CommunityPostListItem';
@@ -46,6 +46,7 @@ const CommunityPostList = () => {
   };
 
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
+  const latestVotePost = data?.pages[0]?.latestVotePost;
 
   if (isLoading) return <Loading />;
   if (error) return <div className="text-center py-10 text-red-500">게시글을 불러오는데 실패했습니다.</div>;
@@ -57,6 +58,19 @@ const CommunityPostList = () => {
         <div className="w-[340px] h-[105px] absolute bottom-[110px] right-[-24px] blur-[90px] bg-white/40 rounded-full"></div>
       </div>
       <CommunityListHeader categories={categories} onCategoryChange={handleCategoryChange} />
+      <div className="px-4 mb-4">
+        {latestVotePost && (
+          <Link href={`/community/${latestVotePost.id}`} key={latestVotePost.id}>
+            <div className="relative flex bg-whiteT-10 border border-whiteT-20 rounded-lg items-center justify-between px-4 py-3 pr-20">
+              <h2 className="text-white  overflow-hidden truncate ">{latestVotePost.title}</h2>
+              <button className="absolute right-4 top-1/2 transform -translate-y-1/2 text-primary-70 font-semibold text-[12px] flex items-center underline underline-offset-2">
+                투표하기
+                <FaChevronRight className="ml-1 flex justify-center items-center" />
+              </button>
+            </div>
+          </Link>
+        )}
+      </div>
       <div className="relative z-0 flex-grow overflow-y-auto ">
         {posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-gray-400">
@@ -64,8 +78,7 @@ const CommunityPostList = () => {
             <p className="text-lg font-semibold mb-2">아직 게시글이 없습니다</p>
           </div>
         ) : (
-          <div className="flex flex-col px-4 gap-4 ">
-            {' '}
+          <div className="flex flex-col gap-4 px-4">
             {posts.map((post: CommunityPostData) => (
               <Link href={`/community/${post.id}`} key={post.id}>
                 <CommunityPostListItem post={post} />

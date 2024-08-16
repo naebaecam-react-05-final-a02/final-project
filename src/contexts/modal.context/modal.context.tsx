@@ -10,7 +10,7 @@ import { ChallengeFilterTypes } from '@/types/challenge';
 import { PropsWithChildren, createContext, useContext, useRef, useState } from 'react';
 
 interface TInitialValue {
-  alert: (contents: string[]) => Promise<boolean>;
+  alert: (contents: string[], title?: string) => Promise<boolean>;
   confirm: (contents: string[]) => Promise<boolean>;
   custom: {
     filter: () => Promise<ChallengeFilterTypes | false>;
@@ -50,11 +50,11 @@ export function ModalProvider({ children }: PropsWithChildren) {
   console.log(resolveRef);
 
   const value = {
-    alert: async (contents: string[]) => {
+    alert: async (contents: string[], title?: string) => {
       return new Promise<boolean>((resolve) => {
         resolveRef.current = resolve;
         const modalId = uuidv4();
-        const modal = <AlertModal id={modalId} contents={contents} onSuccess={() => resolve(true)} />;
+        const modal = <AlertModal id={modalId} title={title} contents={contents} onSuccess={() => resolve(true)} />;
         addModal({ id: modalId, modal });
       });
     },
