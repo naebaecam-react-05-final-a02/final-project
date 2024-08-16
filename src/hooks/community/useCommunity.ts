@@ -328,26 +328,42 @@ export const useToggleQAPostLike = () => {
 
         if (likeType === 'like') {
           if (updatedIsLiked === true) {
-            // 이미 좋아요 상태면 취소
+            // 좋아요 취소
             updatedLikes -= 1;
             updatedIsLiked = null;
+          } else if (updatedIsLiked === false) {
+            // 싫어요에서 좋아요로 전환
+            updatedLikes += 1;
+            updatedDislikes -= 1;
+            updatedIsLiked = true;
           } else {
             // 좋아요 추가
             updatedLikes += 1;
-            if (updatedIsLiked === false) updatedDislikes -= 1;
             updatedIsLiked = true;
           }
         } else if (likeType === 'dislike') {
           if (updatedIsLiked === false) {
-            // 이미 싫어요 상태면 취소
+            // 싫어요 취소
             updatedDislikes -= 1;
             updatedIsLiked = null;
+          } else if (updatedIsLiked === true) {
+            // 좋아요에서 싫어요로 전환
+            updatedLikes -= 1;
+            updatedDislikes += 1;
+            updatedIsLiked = false;
           } else {
             // 싫어요 추가
             updatedDislikes += 1;
-            if (updatedIsLiked === true) updatedLikes -= 1;
             updatedIsLiked = false;
           }
+        } else if (likeType === null) {
+          // 현재 상태에 따라 취소
+          if (updatedIsLiked === true) {
+            updatedLikes -= 1;
+          } else if (updatedIsLiked === false) {
+            updatedDislikes -= 1;
+          }
+          updatedIsLiked = null;
         }
 
         const updatedScore = updatedLikes - updatedDislikes;
@@ -401,26 +417,42 @@ export const useToggleQAAnswerLike = () => {
 
             if (likeType === 'like') {
               if (updatedIsLiked === true) {
-                // 이미 좋아요 상태면 취소
+                // 좋아요 취소
                 updatedLikes -= 1;
                 updatedIsLiked = null;
+              } else if (updatedIsLiked === false) {
+                // 싫어요에서 좋아요로 전환
+                updatedLikes += 1;
+                updatedDislikes -= 1;
+                updatedIsLiked = true;
               } else {
                 // 좋아요 추가
                 updatedLikes += 1;
-                if (updatedIsLiked === false) updatedDislikes -= 1;
                 updatedIsLiked = true;
               }
             } else if (likeType === 'dislike') {
               if (updatedIsLiked === false) {
-                // 이미 싫어요 상태면 취소
+                // 싫어요 취소
                 updatedDislikes -= 1;
                 updatedIsLiked = null;
+              } else if (updatedIsLiked === true) {
+                // 좋아요에서 싫어요로 전환
+                updatedLikes -= 1;
+                updatedDislikes += 1;
+                updatedIsLiked = false;
               } else {
                 // 싫어요 추가
                 updatedDislikes += 1;
-                if (updatedIsLiked === true) updatedLikes -= 1;
                 updatedIsLiked = false;
               }
+            } else if (likeType === null) {
+              // 현재 상태에 따라 취소
+              if (updatedIsLiked === true) {
+                updatedLikes -= 1;
+              } else if (updatedIsLiked === false) {
+                updatedDislikes -= 1;
+              }
+              updatedIsLiked = null;
             }
 
             const updatedScore = updatedLikes - updatedDislikes;
