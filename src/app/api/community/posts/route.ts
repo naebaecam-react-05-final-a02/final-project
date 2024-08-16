@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
   }
 
   const userId = user?.id;
+
   // 투표 카테고리의 최신 게시글 가져오기
   const { data: latestVotePost, error: voteError } = await supabase
     .from('communityPosts')
@@ -44,6 +45,7 @@ export async function GET(request: NextRequest) {
         profileURL
       ),
       commentCount:communityComment(count),
+      answerCount:communityAnswer(count),
       isLiked:communityPostsLikes!left(id)
     `,
     { count: 'exact' },
@@ -67,10 +69,9 @@ export async function GET(request: NextRequest) {
 
   const processedData = posts.map((post) => ({
     ...post,
-    commentCount: post.commentCount[0]?.count || 0,
+    commentCount: post.category === 'Q&A 게시판' ? post.answerCount[0]?.count || 0 : post.commentCount[0]?.count || 0,
     isLiked: post.isLiked.length > 0,
   }));
-
   return NextResponse.json({
     data: processedData,
     latestVotePost,

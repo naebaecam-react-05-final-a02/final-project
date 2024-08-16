@@ -15,53 +15,60 @@ export async function PATCH(request: NextRequest, { params }: { params: { postId
       return NextResponse.json({ message: '인증 오류입니다.' }, { status: 401 });
     }
 
-    // 1. 현재 좋아요 상태 확인
-    const { data: existingLike, error: likeCheckError } = await supabase
-      .from('communityPostsLikes')
-      .select()
-      .eq('postId', postId)
-      .eq('userId', user.id)
-      .single();
+    const { data: post, error: postError } = await supabase.from('communityPosts').select().eq('id', postId).single();
 
-    if (likeCheckError && likeCheckError.code !== 'PGRST116') {
-      throw likeCheckError;
+    if (postError) {
+      throw postError;
     }
-
-    let isLiked;
-
-    // 2. 좋아요 토글
-    if (existingLike) {
-      const { error: deleteError } = await supabase
+    if (post.category !== 'Q&A 게시판') {
+      // 1. 현재 좋아요 상태 확인
+      const { data: existingLike, error: likeCheckError } = await supabase
         .from('communityPostsLikes')
-        .delete()
-        .eq('postId', postId)
-        .eq('userId', user.id);
+        .select()
+        .eq('postId', post.id)
+        .eq('userId', user.id)
+        .single();
 
-      if (deleteError) throw deleteError;
-      isLiked = false;
-    } else {
-      const { error: insertError } = await supabase
+      if (likeCheckError && likeCheckError.code !== 'PGRST116') {
+        throw likeCheckError;
+      }
+
+      let isLiked;
+
+      // 2. 좋아요 토글
+      if (existingLike) {
+        const { error: deleteError } = await supabase
+          .from('communityPostsLikes')
+          .delete()
+          .eq('postId', postId)
+          .eq('userId', user.id);
+
+        if (deleteError) throw deleteError;
+        isLiked = false;
+      } else {
+        const { error: insertError } = await supabase
+          .from('communityPostsLikes')
+          .insert({ postId: postId, userId: user.id });
+
+        if (insertError) throw insertError;
+        isLiked = true;
+      }
+
+      // 3. 좋아요 수 계산
+      const { count, error: countError } = await supabase
         .from('communityPostsLikes')
-        .insert({ postId: postId, userId: user.id });
+        .select('*', { count: 'exact', head: true })
+        .eq('postId', postId);
 
-      if (insertError) throw insertError;
-      isLiked = true;
+      if (countError) throw countError;
+      console.log(count, postId);
+      // 4. communityPosts 테이블 업데이트
+      const { error: updateError } = await supabase.from('communityPosts').update({ likes: count }).eq('id', postId);
+
+      if (updateError) throw updateError;
+
+      return NextResponse.json({ isLiked, likes: count }, { status: 200 });
     }
-
-    // 3. 좋아요 수 계산
-    const { count, error: countError } = await supabase
-      .from('communityPostsLikes')
-      .select('*', { count: 'exact', head: true })
-      .eq('postId', postId);
-
-    if (countError) throw countError;
-    console.log(count, postId);
-    // 4. communityPosts 테이블 업데이트
-    const { error: updateError } = await supabase.from('communityPosts').update({ likes: count }).eq('id', postId);
-
-    if (updateError) throw updateError;
-
-    return NextResponse.json({ isLiked, likes: count }, { status: 200 });
   } catch (error) {
     console.error('@@ error', error);
     return NextResponse.json(

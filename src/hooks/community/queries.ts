@@ -15,7 +15,7 @@ import { QueryClient } from '@tanstack/react-query';
 export const communityQueryKeys = {
   all: ['community'] as const,
   posts: (category: string) => ['community', 'posts', category] as const,
-  postDetail: (id: string) => ['community', 'post', id] as const,
+  postDetail: (postId: string) => ['community', 'post', postId] as const,
   comments: (postId: string) => ['community', 'comments', postId] as const,
   replies: (commentId: string) => ['community', 'replies', commentId] as const,
   postLikes: (postId: string) => ['community', 'postLikes', postId] as const,
@@ -23,6 +23,10 @@ export const communityQueryKeys = {
   replyLikes: (replyId: string) => ['community', 'replyLikes', replyId] as const,
   votes: () => ['community', 'vote'] as const,
   voters: () => ['community', 'voter', 'vote'] as const,
+  answers: (questionId: string) => ['community', 'answers', questionId] as const,
+  acceptedAnswer: (questionId: string) => ['community', 'acceptedAnswer', questionId] as const,
+  qaPostLikes: (postId: string) => ['community', 'post', postId] as const,
+  qaAnswerLikes: (postId: string) => ['community', 'answers', postId] as const,
 };
 
 export const queryOptions = {
@@ -38,9 +42,9 @@ export const queryOptions = {
     },
     staleTime: Infinity,
   }),
-  postDetail: (id: string) => ({
-    queryKey: communityQueryKeys.postDetail(id),
-    queryFn: () => api.community.getPostDetail(id),
+  postDetail: (postId: string) => ({
+    queryKey: communityQueryKeys.postDetail(postId),
+    queryFn: () => api.community.getPostDetail(postId),
   }),
   comments: (postId: string) => ({
     queryKey: communityQueryKeys.comments(postId),
@@ -69,6 +73,14 @@ export const queryOptions = {
   voter: (postId: string) => ({
     queryKey: communityQueryKeys.voters(),
     queryFn: () => api.community.getVoter(postId),
+  }),
+  answers: (questionId: string) => ({
+    queryKey: communityQueryKeys.answers(questionId),
+    queryFn: () => api.community.getAnswers(questionId),
+  }),
+  acceptedAnswer: (questionId: string) => ({
+    queryKey: communityQueryKeys.acceptedAnswer(questionId),
+    queryFn: () => api.community.getAcceptedAnswer(questionId),
   }),
 };
 
@@ -117,6 +129,27 @@ export const mutationOptions = {
   },
   updateVote: {
     mutationFn: (data: VoteUpdateData) => api.community.updateVote(data),
+  },
+  createAnswer: {
+    mutationFn: (data: { questionId: string; content: string }) => api.community.createAnswer(data),
+  },
+  updateAnswer: {
+    mutationFn: (data: { answerId: string; content: string }) => api.community.updateAnswer(data),
+  },
+  deleteAnswer: {
+    mutationFn: ({ answerId, questionId }: { answerId: string; questionId: string }) =>
+      api.community.deleteAnswer(answerId, questionId),
+  },
+  acceptAnswer: {
+    mutationFn: (data: { questionId: string; answerId: string }) => api.community.acceptAnswer(data),
+  },
+  toggleQaPostLike: {
+    mutationFn: ({ postId, likeType }: { postId: string; likeType: 'like' | 'dislike' | null }) =>
+      api.community.toggleQAPostLike(postId, likeType),
+  },
+  toggleQaAnswerLike: {
+    mutationFn: ({ id, postId, likeType }: { id: string; postId: string; likeType: 'like' | 'dislike' | null }) =>
+      api.community.toggleQAAnswerLike(id, postId, likeType),
   },
 };
 

@@ -26,7 +26,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         profileURL
       ),
       isLiked:communityPostsLikes!left(id),
-      commentCount:communityComment(count)
+      commentCount:communityComment(count),
+      answerCount:communityAnswer(count)
     `,
     )
     .eq('id', postId)
@@ -45,13 +46,41 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   if (viewError) {
     console.error('Error incrementing view count:', viewError);
   }
+  let responseCount;
+  let isLiked;
+  if (postData.category === 'Q&A 게시판') {
+    const { data: isLike, error: isLikeError } = await supabase
+      .from('communityPostsLikes')
+      .select('*')
+      .eq('userId', user?.id);
 
-  const commentCount = postData?.commentCount?.[0]?.count || 0;
-  const isLiked = postData.isLiked.length > 0;
+    if (isLikeError) throw isLikeError;
+    responseCount = postData.answerCount?.[0]?.count || 0;
 
-  return NextResponse.json({ ...postData, commentCount, isLiked, views: viewData?.views || postData.views });
+    const likeInfo = isLike.find((like) => like.postId === postData.id);
+    console.log(likeInfo);
+    const postWithLikes = {
+      ...postData,
+      isLiked: likeInfo ? likeInfo.isLike : null,
+    };
+
+    return NextResponse.json({
+      ...postWithLikes,
+      responseCount,
+      views: viewData?.views || postData.views,
+    });
+  } else {
+    responseCount = postData.commentCount?.[0]?.count || 0;
+    isLiked = postData.isLiked.length > 0;
+  }
+
+  return NextResponse.json({
+    ...postData,
+    responseCount,
+    isLiked,
+    views: viewData?.views || postData.views,
+  });
 }
-
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const supabase = createClient();
   const { id } = params;
