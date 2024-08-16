@@ -103,3 +103,27 @@ export const getVerification = async (
     return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
   }
 };
+
+export const getChallengeWithParticipants = async (client: SupabaseClient<Database>, challengeId: string) => {
+  const {
+    data: { user },
+  } = await client.auth.getUser();
+
+  if (!user) {
+    console.error('user not found');
+    return;
+  }
+
+  const { data, error } = await client
+    .from('challenges')
+    .select(`title,content,participants:challengeParticipants(userId)`)
+    .eq('id', challengeId)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  return { ...data, isParticipant: Boolean(data.participants.find((participant) => participant.userId === user.id)) };
+};

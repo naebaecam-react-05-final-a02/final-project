@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 import {
   fetchDataByInfinityQuery,
   fetchVerificationTotalData,
+  getChallengeWithParticipants,
 } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import Button from '@/components/Button';
 import TitleHeader from '@/components/PrevButtonAndTitleHeader/PrevButtonAndTitleHeader';
@@ -30,6 +31,8 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
   });
 
   const counts = await fetchVerificationTotalData(supabase, params.id);
+  const cData = await getChallengeWithParticipants(supabase, params.id);
+
   const bottomButton = (
     <Link className="flex-1" href={`/challenges/${params.id}/verification/register`}>
       <Button>인증하기</Button>
@@ -42,9 +45,9 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
         <Mobile
           headerLayout={<TitleHeader>챌린지 인증 목록</TitleHeader>}
           showFooter={false}
-          bottomButton={bottomButton}
+          bottomButton={cData?.isParticipant && bottomButton}
         >
-          <VerificationList counts={counts} />
+          <VerificationList counts={counts} title={cData?.title ?? '챌린지 이름을 불러오지 못했어요..'} />
         </Mobile>
       </HydrationBoundary>
     </div>
