@@ -14,6 +14,7 @@ import { queryClient } from '@/providers/QueryProvider';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
 import { DietTimeType } from '@/types/diet';
+import { formatCalory } from '@/utils/calculateDiet';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
@@ -193,7 +194,7 @@ const DietForm = () => {
             value={foodForm['kcal'] === null ? '' : foodForm['kcal']}
             placeholder="0"
             unit="kcal"
-            onChange={(e) => handleFormChange('kcal', Number.parseInt(e.target.value))}
+            onChange={(e) => handleFormChange('kcal', formatCalory(e.target.value))}
           />
         </div>
         <div className="grid grid-cols-3 gap-2 px-4">
@@ -204,7 +205,7 @@ const DietForm = () => {
               value={foodForm['carbohydrate'] === null ? '' : foodForm['carbohydrate']}
               placeholder="0"
               unit="g"
-              onChange={(e) => handleFormChange('carbohydrate', Number.parseInt(e.target.value))}
+              onChange={(e) => handleFormChange('carbohydrate', formatCalory(e.target.value))}
             />
           </div>
           <div className="w-full">
@@ -214,7 +215,7 @@ const DietForm = () => {
               value={foodForm['protein'] === null ? '' : foodForm['protein']}
               placeholder="0"
               unit="g"
-              onChange={(e) => handleFormChange('protein', Number.parseInt(e.target.value))}
+              onChange={(e) => handleFormChange('protein', formatCalory(e.target.value))}
             />
           </div>
           <div className="w-full">
@@ -224,7 +225,7 @@ const DietForm = () => {
               value={foodForm['fat'] === null ? '' : foodForm['fat']}
               placeholder="0"
               unit="g"
-              onChange={(e) => handleFormChange('fat', Number.parseInt(e.target.value))}
+              onChange={(e) => handleFormChange('fat', formatCalory(e.target.value))}
             />
           </div>
         </div>
