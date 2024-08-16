@@ -47,7 +47,6 @@ export function ModalProvider({ children }: PropsWithChildren) {
   const addModal = (modal: ModalTypes) => setModals((prev) => [...prev, modal]);
   const deleteModal = (id: string) => setModals((prev) => prev.filter((modal) => modal.id !== id));
   const resolveRef = useRef<Function>(() => {});
-  console.log(resolveRef);
 
   const value = {
     alert: async (contents: string[]) => {
