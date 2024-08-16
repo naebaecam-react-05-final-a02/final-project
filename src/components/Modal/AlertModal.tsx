@@ -27,14 +27,14 @@ const AlertModal = ({ id, onSuccess, title, contents }: ModalProps) => {
 
   return (
     <AnimatedModalFrame isVisible={isVisible}>
-      <div className="w-full h-full flex flex-col gap-6 justify-between">
-        <div className="w-full flex justify-center items-center">
+      <div className="w-full h-full flex flex-col gap-4 justify-between">
+        <div className="w-full flex flex-col justify-center items-center gap-2">
           <AlertSVG />
+          {title && <h3 className="text-18 font-semibold flex justify-center items-center text-white">{title}</h3>}
         </div>
         <div className="w-full">
-          {title && <h3 className="text-xl mb-2 font-bold flex justify-center items-center text-white">{title}</h3>}
           {contents.map((content, index) => (
-            <p key={index} className="w-full flex justify-center items-center text-white">
+            <p key={index} className="w-full flex justify-center items-center text-white text-sm">
               {content}
             </p>
           ))}
