@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const postId = params.id;
 
-  console.log('@@@@@@@@', postId);
   const supabase = createClient();
   // 사용자 인증 가져오기
   const {

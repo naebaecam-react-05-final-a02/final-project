@@ -1,4 +1,4 @@
-import CommunityPostEditForm from '../_components/CommunityPostEditForm';
+import CommunityPostEditForm from './_components/CommunityPostEditForm';
 
 const CommunityEditPage = ({ params }: { params: { id: string } }) => {
   console.log(params.id);

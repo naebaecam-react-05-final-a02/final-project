@@ -14,8 +14,7 @@ interface VoteRegisterFormProps {
 
 const VoteRegisterForm = ({ voteItems, onChange }: VoteRegisterFormProps) => {
   return (
-    <div className="p-4  text-white">
-      <h1 className="text-xl font-semibold mb-4">투표</h1>
+    <div className="text-white">
       {/* <VoteTitle title={title} onTitleChange={setTitle} /> */}
       <VoteItems
         items={voteItems}

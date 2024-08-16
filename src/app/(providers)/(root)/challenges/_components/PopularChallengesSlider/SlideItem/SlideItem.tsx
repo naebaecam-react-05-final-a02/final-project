@@ -20,12 +20,8 @@ const SlideItemVariants = cva('border border-white/10 w-[270px] h-[270px] slide-
 });
 
 interface SlideItemProps {
-  challenge: TChallenge & {
-    participantsCount: number;
-    verificationsCount: number;
-    challengeParticipants: { count: number }[];
-    challengeVerify: { count: number }[];
-  };
+  challenge: TChallenge;
+
   index: number;
   activeIndex: number;
 }
@@ -50,8 +46,8 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
           <h3 className="text-xl font-semibold">{challenge.title}</h3>
         </div>
         <div className="flex text-sm gap-3 bg-white/10 px-[8px] py-[3px] rounded-[4px]">
-          <p className="text-primary-100">참여 {challenge.participantsCount}</p>
-          <p>인증 {challenge.verificationsCount}</p>
+          <p className="text-primary-100">참여 {challenge.participants}</p>
+          <p>인증 {challenge.verifications}</p>
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">

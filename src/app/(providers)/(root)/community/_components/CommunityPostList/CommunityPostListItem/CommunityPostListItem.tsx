@@ -24,7 +24,7 @@ const CommunityPostListItem = ({ post }: CommunityPostListItemProps) => {
 
   useEffect(() => {
     if (post) {
-      setIsLiked(post.isLiked);
+      setIsLiked(post.isLiked ?? false);
       setLikeCount(post.likes);
     }
   }, [post]);

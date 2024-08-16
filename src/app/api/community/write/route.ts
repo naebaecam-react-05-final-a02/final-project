@@ -48,7 +48,6 @@ export async function POST(request: NextRequest) {
 
     if (error) throw error;
     const postId = data?.id;
-    console.log(category);
     if (category === 'Q&A 게시판') {
       const { error } = await supabase.from('communityQa').insert({
         questionId: postId,
@@ -56,7 +55,6 @@ export async function POST(request: NextRequest) {
       });
       if (error) throw error;
     }
-    console.log('@@@@@@@', data);
     return NextResponse.json({ message: '게시글이 성공적으로 등록되었습니다.', data }, { status: 201 });
   } catch (error) {
     console.error('Error creating post:', error);

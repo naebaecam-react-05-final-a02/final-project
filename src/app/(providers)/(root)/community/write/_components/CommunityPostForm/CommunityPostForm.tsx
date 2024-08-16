@@ -37,7 +37,12 @@ const CommunityPostForm = () => {
   const { mutateAsync: postVote } = usePostVote();
 
   const categories = useMemo(() => {
-    const baseCategories = [{ value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }];
+    const baseCategories = [
+      { value: '자유 게시판' },
+      { value: '투표' },
+      { value: 'Q&A 게시판' },
+      { value: '정보공유' },
+    ];
 
     if (user?.user_metadata?.role === 'admin') {
       baseCategories.push({ value: '투표' });
@@ -92,7 +97,7 @@ const CommunityPostForm = () => {
         } else {
           modal.alert(['게시글이 등록되었습니다.']);
           resetForm();
-          // route.push('/community');
+          route.push('/community');
         }
       } catch (error) {
         console.error('게시글 등록 실패:', error);

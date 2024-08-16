@@ -1,4 +1,5 @@
 'use client';
+import CheckSVG from '@/assets/modal/check.svg';
 import Button from '@/components/Button';
 import CheckButton from '@/components/ButtonIcon/CheckButton';
 import PrevButton from '@/components/ButtonIcon/PrevButton';
@@ -8,7 +9,7 @@ import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,8 +20,8 @@ import { TInputs } from '../_types/types';
 const MyProfileEditPage = () => {
   const modal = useModal();
   const router = useRouter();
-  const [isNicknameValid, setIsNicknameValid] = useState<boolean | null>(null);
-  const [onValidateNickname, setOnValidateNickname] = useState<boolean>(false);
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
+
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement | null>(null);
@@ -32,6 +33,8 @@ const MyProfileEditPage = () => {
     weight: 0,
   });
   const { data, isPending } = useGetUser();
+  console.log(data?.nickname);
+  console.log(inputs.nickname);
   const queryClient = useQueryClient();
 
   const { mutate: updateProfile } = useMutation({
@@ -53,16 +56,19 @@ const MyProfileEditPage = () => {
     },
   });
 
-  const { data: nicknameValidation, error: nicknameValidationError } = useQuery({
-    queryKey: ['user', 'nickname'],
-    queryFn: () => api.users.validateNickname({ nickname: inputs.nickname }),
-    enabled: onValidateNickname,
-  });
-  console.log(nicknameValidation, nicknameValidationError);
+  const validateNickname = async () => {
+    if (!inputs.nickname) return modal.alert(['닉네임을 입력해주세요']);
+    const { isAvailable } = await api.users.validateNickname({ nickname: inputs.nickname });
+    if (!isAvailable) return await modal.alert(['이미 사용중인 닉네임입니다']);
+    await modal.alert(['사용가능한 닉네임입니다']);
+    return setIsNicknameValid(true);
+  };
 
   const handleUpdateProfile = async () => {
     const yes = await modal.confirm(['수정사항을 저장하시겠습니까?']);
     if (!yes) return;
+
+    if (!isNicknameValid) return modal.alert(['닉네임 중복여부를 확인해주세요']);
 
     const formData = new FormData();
     if (inputs.nickname) formData.append('nickname', inputs.nickname);
@@ -109,6 +115,14 @@ const MyProfileEditPage = () => {
     }
   }, [isPending, data]);
 
+  useEffect(() => {
+    if (data?.nickname === inputs.nickname) {
+      setIsNicknameValid(true);
+    } else {
+      setIsNicknameValid(false);
+    }
+  }, [inputs.nickname]);
+
   if (isPending || !data) return <div>Loading...</div>;
 
   return (
@@ -140,7 +154,7 @@ const MyProfileEditPage = () => {
             name="avatar"
             hidden
           />
-          <button className="text-sm text-primary-100 border-b border-primary-100 mt-2" onClick={handleDeleteAvatar}>
+          <button className="text-[12px] text-gray-300 border-b border-gray-300 mt-2" onClick={handleDeleteAvatar}>
             프로필 삭제
           </button>
         </div>
@@ -150,33 +164,32 @@ const MyProfileEditPage = () => {
               className="w-full"
               label={'닉네임'}
               id={'nickname'}
-              onChange={onChange}
+              onChange={(e) => {
+                onChange(e);
+              }}
               value={inputs.nickname}
               type={'text'}
               name={'nickname'}
             />
 
             <div className="w-[64px] flex items-end">
-              <Button
-                onClick={() => {
-                  setOnValidateNickname(false);
-                  if (!inputs.nickname) {
-                    setIsNicknameValid(false);
-                    setIsNicknameValid(null);
-                    modal.alert(['닉네임을 입력해주세요']);
-                    return;
-                  }
-                  setOnValidateNickname(true);
-                }}
-                className="w-[64px] text-sm"
-              >
-                <p className="w-full">확인</p>
-              </Button>
+              {isNicknameValid ? (
+                <button className="w-full h-[50px] flex py-[13px] justify-center items-center " disabled>
+                  <CheckSVG />
+                </button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    validateNickname();
+                  }}
+                  className="w-[64px] text-sm"
+                >
+                  <p className="w-full">확인</p>
+                </Button>
+              )}
             </div>
           </div>
-          <div>
-            {nicknameValidation?.status === 200 ? <p>사용할 수 있는 닉네임입니다.</p> : <p>닉네임이 중복되었습니다.</p>}
-          </div>
+
           <div className="flex">
             <InputText
               name={'email'}
