@@ -7,6 +7,7 @@ import { createClient } from '@/supabase/client';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useQueries } from '@tanstack/react-query';
 import { addDays, format, subDays } from 'date-fns';
+import Link from 'next/link';
 import { useState } from 'react';
 import DashBoardHeader from '../DashBoardHeader';
 import ExerciseTodoItem from '../ExerciseTodoItem';
@@ -82,6 +83,9 @@ const ExerciseTodoList = () => {
           date,
           'd',
         )}일에는 등록된 운동이 없습니다.`}</div>
+        <div className="flex justify-center w-full text-sm text-primary-100 underline underline-offset-2">
+          <Link href={'/exercises/record'}>추가하러 가기</Link>
+        </div>
       </>
     );
   }
