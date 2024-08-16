@@ -84,7 +84,7 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
       }}
     >
       <h1 className="text-xl font-semibold mb-4">총 {totalVotes}명이 참여했어요!</h1>
-      <div className="w-full max-w-md p-4 rounded-lg bg-black/5  text-white flex flex-col gap-4">
+      <div className="w-full text-white flex flex-col gap-4">
         {itemsArray.map((item: VoteItem, index: number) => {
           const percentage = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
 
@@ -92,27 +92,34 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
             <div key={index} className="mb-4">
               <div className="flex flex-row gap-4 items-end">
                 {isVotingStarted && (
-                  <input
-                    type="radio"
-                    name="voteOption"
-                    value={item.text}
-                    checked={selectedOption === item.text}
-                    onChange={() => handleOptionChange(item.text)}
-                    className={`appearance-none rounded-full w-5 h-5 border-2 border-[#12F287] bg-white/10
+                  <div
+                    className="w-[26px] h-[26px] rounded-full"
+                    style={{ border: ' 2px solid rgba(18, 242, 135, 0.20)' }}
+                  >
+                    <input
+                      type="radio"
+                      name="voteOption"
+                      value={item.text}
+                      checked={selectedOption === item.text}
+                      onChange={() => handleOptionChange(item.text)}
+                      className={`appearance-none rounded-full w-5 h-5 border-2 border-[#12F287] bg-white/10
                       checked:border-[5px] checked:border-primary-100 checked:bg-white`}
-                    style={{
-                      width: '22px',
-                      height: '22px',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      backdropFilter: 'blur(4.285714149475098px)',
-                    }}
-                  />
+                      style={{
+                        width: '22px',
+                        height: '22px',
+                        cursor: 'pointer',
+                        borderRadius: '50%',
+                        backdropFilter: 'blur(4.285714149475098px)',
+                      }}
+                    />
+                  </div>
                 )}
                 <div className="flex-auto">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="ml-2 text-[14px] font-medium leading-5">{item.text}</h3>
-                    <span className="text-[12px] font-medium">{item.votes}명</span>
+                    <h3 className="ml-2 text-[14px] font-medium leading-5" style={{ width: 'calc(100% - 34px)' }}>
+                      {item.text}
+                    </h3>
+                    <span className="text-[12px] font-medium w-6">{item.votes}&nbsp;명</span>
                   </div>
                   <div
                     className="w-full bg-gray-700 rounded-md h-6"
