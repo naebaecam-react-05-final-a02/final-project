@@ -523,19 +523,16 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
-          selectedOption: string | null;
           userId: string | null;
         };
         Insert: {
           created_at?: string;
           id?: number;
-          selectedOption?: string | null;
           userId?: string | null;
         };
         Update: {
           created_at?: string;
           id?: number;
-          selectedOption?: string | null;
           userId?: string | null;
         };
         Relationships: [

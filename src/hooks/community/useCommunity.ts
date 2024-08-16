@@ -1,4 +1,4 @@
-import { CommentData, CommunityPostData, ReplyData } from '@/types/community';
+import { Answer, AnswerResponse, CommentData, CommunityPostData, ReplyData } from '@/types/community';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { communityQueryKeys, mutationOptions, prefetchCommunityPosts, queryOptions } from './queries';
 
@@ -21,7 +21,7 @@ export const useGetCommunityPosts = (category: string, categories: string[]) => 
   };
 };
 // 커뮤니티 글 상세 조회
-export const useGetCommunityPostDetail = (id: string) => useQuery(queryOptions.postDetail(id));
+export const useGetCommunityPostDetail = (postId: string) => useQuery(queryOptions.postDetail(postId));
 
 // 커뮤니티 글 등록
 export const useCreateCommunityPost = () => {
@@ -147,7 +147,6 @@ export const useTogglePostLike = () => {
     onMutate: async (postId: string) => {
       await queryClient.cancelQueries({ queryKey: communityQueryKeys.postDetail(postId) });
       const previousPost = queryClient.getQueryData<CommunityPostData>(communityQueryKeys.postDetail(postId));
-
       if (previousPost) {
         const newIsLiked = !previousPost.isLiked;
         queryClient.setQueryData<CommunityPostData>(communityQueryKeys.postDetail(postId), {
@@ -226,6 +225,269 @@ export const useToggleReplyLike = () => {
     onSettled: (data, error, replyId: string) => {
       queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(replyId) });
       queryClient.invalidateQueries({ queryKey: communityQueryKeys.replyLikes(replyId) });
+    },
+  });
+};
+
+// 투표 목록 조회
+export const useGetVotes = (postId: string) => useQuery(queryOptions.vote(postId));
+// 투표자 조회
+export const useGetVoters = (postId: string) => useQuery(queryOptions.voter(postId));
+// 투표 등록
+export const usePostVote = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.postVote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.votes() });
+    },
+  });
+};
+// 투표 업데이트
+export const useUpdateVote = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.updateVote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.votes() });
+    },
+  });
+};
+
+// 답변 목록 조회
+export const useGetAnswers = (questionId: string) => useQuery(queryOptions.answers(questionId));
+
+// 채택된 답변 조회
+export const useGetAcceptedAnswer = (questionId: string) => useQuery(queryOptions.acceptedAnswer(questionId));
+
+// 답변 항목 조회
+export const useGetAnswer = (answerId: string) => {
+  return useQuery<Answer, Error>(queryOptions.answer(answerId));
+};
+
+// 답변 생성
+export const useCreateAnswer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.createAnswer,
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId) });
+    },
+  });
+};
+
+// 답변 수정
+export const useUpdateAnswer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.updateAnswer,
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answer(variables.answerId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(data.questionId) });
+    },
+  });
+};
+// 답변 삭제
+export const useDeleteAnswer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.deleteAnswer,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
+    },
+  });
+};
+// 답변 채택
+export const useAcceptAnswer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptions.acceptAnswer,
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.acceptedAnswer(variables.questionId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId) });
+    },
+  });
+};
+
+// QA 게시물 좋아요/싫어요 토글 훅
+export const useToggleQAPostLike = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...mutationOptions.toggleQaPostLike,
+    onMutate: async ({ postId, likeType }) => {
+      const queryKey = communityQueryKeys.postDetail(postId.toString());
+      await queryClient.cancelQueries({ queryKey });
+
+      const previousData = queryClient.getQueryData<CommunityPostData>(queryKey);
+
+      if (previousData) {
+        let updatedLikes = previousData.likes;
+        let updatedDislikes = previousData.dislikes || 0;
+        let updatedIsLiked = previousData.isLiked;
+
+        if (likeType === 'like') {
+          if (updatedIsLiked === true) {
+            // 좋아요 취소
+            updatedLikes -= 1;
+            updatedIsLiked = null;
+          } else if (updatedIsLiked === false) {
+            // 싫어요에서 좋아요로 전환
+            updatedLikes += 1;
+            updatedDislikes -= 1;
+            updatedIsLiked = true;
+          } else {
+            // 좋아요 추가
+            updatedLikes += 1;
+            updatedIsLiked = true;
+          }
+        } else if (likeType === 'dislike') {
+          if (updatedIsLiked === false) {
+            // 싫어요 취소
+            updatedDislikes -= 1;
+            updatedIsLiked = null;
+          } else if (updatedIsLiked === true) {
+            // 좋아요에서 싫어요로 전환
+            updatedLikes -= 1;
+            updatedDislikes += 1;
+            updatedIsLiked = false;
+          } else {
+            // 싫어요 추가
+            updatedDislikes += 1;
+            updatedIsLiked = false;
+          }
+        } else if (likeType === null) {
+          // 현재 상태에 따라 취소
+          if (updatedIsLiked === true) {
+            updatedLikes -= 1;
+          } else if (updatedIsLiked === false) {
+            updatedDislikes -= 1;
+          }
+          updatedIsLiked = null;
+        }
+
+        const updatedScore = updatedLikes - updatedDislikes;
+
+        const updatedData = {
+          ...previousData,
+          likes: updatedLikes,
+          dislikes: updatedDislikes,
+          score: updatedScore,
+          isLiked: updatedIsLiked,
+        };
+
+        queryClient.setQueryData<CommunityPostData>(queryKey, updatedData);
+
+        return { previousData };
+      }
+
+      return { previousData: null };
+    },
+    onError: (err, { postId }, context) => {
+      console.error('Error in useToggleQAPostLike:', err);
+      const queryKey = communityQueryKeys.postDetail(postId.toString());
+      if (context?.previousData) {
+        queryClient.setQueryData(queryKey, context.previousData);
+      }
+    },
+    onSettled: (data, error, { postId }) => {
+      const queryKey = communityQueryKeys.postDetail(postId.toString());
+      queryClient.invalidateQueries({ queryKey });
+    },
+  });
+};
+
+// QA 답변 좋아요/싫어요 토글 훅
+export const useToggleQAAnswerLike = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...mutationOptions.toggleQaAnswerLike,
+    onMutate: async ({ id, postId, likeType }) => {
+      await queryClient.cancelQueries({ queryKey: communityQueryKeys.answers(postId) });
+
+      const previousData = queryClient.getQueryData<AnswerResponse>(communityQueryKeys.answers(postId));
+
+      if (previousData && previousData.answers.length > 0) {
+        const updatedAnswers = previousData.answers.map((answer) => {
+          if (answer.id === id) {
+            let updatedLikes = answer.likes;
+            let updatedDislikes = answer.dislikes || 0;
+            let updatedIsLiked = answer.isLiked;
+
+            if (likeType === 'like') {
+              if (updatedIsLiked === true) {
+                // 좋아요 취소
+                updatedLikes -= 1;
+                updatedIsLiked = null;
+              } else if (updatedIsLiked === false) {
+                // 싫어요에서 좋아요로 전환
+                updatedLikes += 1;
+                updatedDislikes -= 1;
+                updatedIsLiked = true;
+              } else {
+                // 좋아요 추가
+                updatedLikes += 1;
+                updatedIsLiked = true;
+              }
+            } else if (likeType === 'dislike') {
+              if (updatedIsLiked === false) {
+                // 싫어요 취소
+                updatedDislikes -= 1;
+                updatedIsLiked = null;
+              } else if (updatedIsLiked === true) {
+                // 좋아요에서 싫어요로 전환
+                updatedLikes -= 1;
+                updatedDislikes += 1;
+                updatedIsLiked = false;
+              } else {
+                // 싫어요 추가
+                updatedDislikes += 1;
+                updatedIsLiked = false;
+              }
+            } else if (likeType === null) {
+              // 현재 상태에 따라 취소
+              if (updatedIsLiked === true) {
+                updatedLikes -= 1;
+              } else if (updatedIsLiked === false) {
+                updatedDislikes -= 1;
+              }
+              updatedIsLiked = null;
+            }
+
+            const updatedScore = updatedLikes - updatedDislikes;
+
+            return {
+              ...answer,
+              likes: updatedLikes,
+              dislikes: updatedDislikes,
+              score: updatedScore,
+              isLiked: updatedIsLiked,
+            };
+          }
+          return answer;
+        });
+
+        const updatedData = {
+          ...previousData,
+          answers: updatedAnswers,
+        };
+
+        queryClient.setQueryData<AnswerResponse>(communityQueryKeys.answers(postId), updatedData);
+
+        return { previousData };
+      }
+
+      return { previousData: null };
+    },
+    onError: (err, { postId }, context) => {
+      console.error('Error in useToggleQAAnswerLike:', err);
+      if (context?.previousData) {
+        queryClient.setQueryData(communityQueryKeys.answers(postId), context.previousData);
+      }
+    },
+    onSettled: (data, error, { postId }) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(postId) });
     },
   });
 };

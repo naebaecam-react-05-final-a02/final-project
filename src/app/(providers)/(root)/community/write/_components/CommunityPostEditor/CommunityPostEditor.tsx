@@ -50,7 +50,7 @@ const CommunityPostEditor = ({ onContentChange, initialContent = '' }: Community
     editorProps: {
       attributes: {
         class:
-          'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[200px] p-2 bg-transparent text-whiteT-100 placeholder-whiteT-40',
+          'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none min-h-[200px] p-4 bg-transparent text-whiteT-100 placeholder-whiteT-40',
       },
     },
     onUpdate: handleUpdate,

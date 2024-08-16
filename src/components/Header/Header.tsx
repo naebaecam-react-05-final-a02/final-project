@@ -39,7 +39,7 @@ const Header = ({
           <Image src="/OOSIE.png" alt="Logo" width={105} height={28} />
         ) : title ? (
           <div className="flex items-center">
-            <h2 className="text-sm font-medium">{title}</h2>
+            <h2 className="text-sm font-medium text-white">{title}</h2>
             {titleIcon && <button className="ml-1">{titleIcon}</button>}
           </div>
         ) : null}
