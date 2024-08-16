@@ -90,11 +90,14 @@ const ExerciseTodoList = () => {
     <>
       <DashBoardHeader date={date} setState={setDate} url={'/exercises'} title={'투두'} />
       <ul className="size-full grid gap-y-5">
-        {exercises.data.slice(0, 5).map((exercise) => (
-          <li key={exercise.id}>
-            <ExerciseTodoItem exercise={exercise} date={date} />
-          </li>
-        ))}
+        {exercises.data
+          .slice(0, 5)
+          .sort((a, b) => Number(a.isCompleted) - Number(b.isCompleted))
+          .map((exercise) => (
+            <li key={exercise.id}>
+              <ExerciseTodoItem exercise={exercise} date={date} />
+            </li>
+          ))}
       </ul>
     </>
   );
