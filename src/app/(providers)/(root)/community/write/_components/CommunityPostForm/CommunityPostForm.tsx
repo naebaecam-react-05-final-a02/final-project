@@ -44,9 +44,9 @@ const CommunityPostForm = () => {
       { value: '정보공유' },
     ];
 
-    // if (user?.user_metadata?.role === 'admin') {
-    //   baseCategories.push({ value: '투표' });
-    // }
+    if (user?.user_metadata?.role === 'admin') {
+      baseCategories.push({ value: '투표' });
+    }
 
     return baseCategories;
   }, [user]);

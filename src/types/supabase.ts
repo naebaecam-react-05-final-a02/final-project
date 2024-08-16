@@ -227,21 +227,33 @@ export type Database = {
       communityAnswer: {
         Row: {
           content: string | null
-          created_at: string
+          createdAt: string
+          dislikes: number | null
           id: number
+          likes: number | null
           questionId: number | null
+          score: number | null
+          userId: string | null
         }
         Insert: {
           content?: string | null
-          created_at?: string
+          createdAt?: string
+          dislikes?: number | null
           id?: number
+          likes?: number | null
           questionId?: number | null
+          score?: number | null
+          userId?: string | null
         }
         Update: {
           content?: string | null
-          created_at?: string
+          createdAt?: string
+          dislikes?: number | null
           id?: number
+          likes?: number | null
           questionId?: number | null
+          score?: number | null
+          userId?: string | null
         }
         Relationships: [
           {
@@ -249,6 +261,49 @@ export type Database = {
             columns: ["questionId"]
             isOneToOne: false
             referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityAnswer_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communityAnswerLikes: {
+        Row: {
+          answerId: number | null
+          id: number
+          isLike: boolean | null
+          userId: string | null
+        }
+        Insert: {
+          answerId?: number | null
+          id?: number
+          isLike?: boolean | null
+          userId?: string | null
+        }
+        Update: {
+          answerId?: number | null
+          id?: number
+          isLike?: boolean | null
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communityAnswerLikes_answerId_fkey"
+            columns: ["answerId"]
+            isOneToOne: false
+            referencedRelation: "communityAnswer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityAnswerLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -336,8 +391,10 @@ export type Database = {
           category: string
           content: string
           createdAt: string
+          dislikes: number | null
           id: number
           likes: number | null
+          score: number | null
           tags: string[] | null
           title: string
           userId: string | null
@@ -347,8 +404,10 @@ export type Database = {
           category: string
           content: string
           createdAt?: string
+          dislikes?: number | null
           id?: number
           likes?: number | null
+          score?: number | null
           tags?: string[] | null
           title: string
           userId?: string | null
@@ -358,8 +417,10 @@ export type Database = {
           category?: string
           content?: string
           createdAt?: string
+          dislikes?: number | null
           id?: number
           likes?: number | null
+          score?: number | null
           tags?: string[] | null
           title?: string
           userId?: string | null
@@ -379,18 +440,21 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          isLike: boolean | null
           postId: number
           userId: string
         }
         Insert: {
           created_at?: string
           id?: number
+          isLike?: boolean | null
           postId: number
           userId: string
         }
         Update: {
           created_at?: string
           id?: number
+          isLike?: boolean | null
           postId?: number
           userId?: string
         }
@@ -416,25 +480,25 @@ export type Database = {
           answerId: number | null
           isAccepted: boolean
           questionId: number
-          questionUserId: string | null
+          questionUserId: string
         }
         Insert: {
           answerId?: number | null
           isAccepted?: boolean
           questionId?: number
-          questionUserId?: string | null
+          questionUserId: string
         }
         Update: {
           answerId?: number | null
           isAccepted?: boolean
           questionId?: number
-          questionUserId?: string | null
+          questionUserId?: string
         }
         Relationships: [
           {
             foreignKeyName: "communityQa_questionId_fkey"
             columns: ["questionId"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "communityPosts"
             referencedColumns: ["id"]
           },
