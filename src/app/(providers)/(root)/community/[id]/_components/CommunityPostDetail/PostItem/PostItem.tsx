@@ -1,8 +1,12 @@
+'use client';
+
 import ExerciseChip from '@/components/ExerciesChip/ExerciesChip';
+import { useToggleQAPostLike } from '@/hooks/community/useCommunity';
 import { CommunityPostData } from '@/types/community';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { FaCommentAlt, FaEye, FaHeart } from 'react-icons/fa';
+import BigThumbUp from './BigThumbUp/BigThumbUp';
 import VoteSection from './VoteSection';
 
 interface PostItemProps {
@@ -12,6 +16,16 @@ interface PostItemProps {
   isLikeDataPending: boolean;
 }
 const PostItem = ({ post, onLikeToggle, isLikeLoading, isLikeDataPending }: PostItemProps) => {
+  const { mutate: toggleQAPostLike, isPending: isQALikeLoading } = useToggleQAPostLike();
+
+  const handleLike = () => {
+    toggleQAPostLike({ postId: post.id.toString(), likeType: post.isLiked === true ? null : 'like' });
+  };
+
+  const handleDislike = () => {
+    toggleQAPostLike({ postId: post.id.toString(), likeType: post.isLiked === false ? null : 'dislike' });
+  };
+
   return (
     <article className="px-4 pt-6">
       <header className="flex w-full items-center justify-between mb-4">
@@ -53,25 +67,60 @@ const PostItem = ({ post, onLikeToggle, isLikeLoading, isLikeDataPending }: Post
           ))}
         </div>
       </div>
-
+      {post.category === 'Q&A 게시판' && (
+        <div className="flex items-center justify-between gap-7 mt-8 w-[166px] mx-auto">
+          <button
+            onClick={handleLike}
+            disabled={isQALikeLoading}
+            className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
+          >
+            <BigThumbUp className={post.isLiked === true ? 'text-primary-100' : 'text-transparent'} />
+          </button>
+          {post.score}
+          <button
+            onClick={handleDislike}
+            disabled={isQALikeLoading}
+            className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
+          >
+            <BigThumbUp
+              className={post.isLiked === false ? 'text-red-500 scale-y-[-1]' : 'text-transparent scale-y-[-1]'}
+            />
+          </button>
+        </div>
+      )}
       <div className="flex justify-between items-center mt-8 px-2 py-4">
         <div className="flex gap-4">
-          <button
-            onClick={onLikeToggle}
-            disabled={isLikeLoading || isLikeDataPending}
-            className="flex items-center gap-2 text-whiteT-50"
-          >
-            <FaHeart className={`w-[14px] h-[14px] ${post.isLiked ? 'text-red-500' : ''}`} />
-            <span>{post.likes}</span>
-          </button>
-          <div className="flex items-center gap-2 text-whiteT-50">
-            <FaCommentAlt className="w-[14px] h-[14px]" />
-            <span>{post.commentCount}</span>
-          </div>
-          <div className="flex items-center gap-2 text-whiteT-50">
-            <FaEye className="w-[14px] h-[14px]" />
-            <span>{post.views}</span>
-          </div>
+          {post.category === 'Q&A 게시판' ? (
+            <>
+              <div className="flex items-center gap-2 text-whiteT-50">
+                <FaCommentAlt className="w-[14px] h-[14px]" />
+                <span>{post.responseCount}</span>
+              </div>
+              <div className="flex items-center gap-2 text-whiteT-50">
+                <FaEye className="w-[14px] h-[14px]" />
+                <span>{post.views}</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={onLikeToggle}
+                disabled={isLikeLoading || isLikeDataPending}
+                className="flex items-center gap-2 text-whiteT-50"
+              >
+                <FaHeart className={`w-[14px] h-[14px] ${post.isLiked ? 'text-red-500' : ''}`} />
+                <span>{post.likes}</span>
+              </button>
+              <div className="flex items-center gap-2 text-whiteT-50">
+                <FaCommentAlt className="w-[14px] h-[14px]" />
+                <span>{post.responseCount}</span>
+              </div>
+              <div className="flex items-center gap-2 text-whiteT-50">
+                <FaEye className="w-[14px] h-[14px]" />
+                <span>{post.views}</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </article>

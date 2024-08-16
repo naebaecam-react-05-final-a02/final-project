@@ -51,7 +51,6 @@ const CommunityPostList = () => {
   if (isLoading) return <Loading />;
   if (error) return <div className="text-center py-10 text-red-500">게시글을 불러오는데 실패했습니다.</div>;
 
-  console.log(data);
   return (
     <div className="relative min-h-screen overflow-hidden max-w-[900px] flex flex-col mx-auto">
       <div className="fixed inset-0 bg-[#0E0C15] -z-30 overflow-hidden">
