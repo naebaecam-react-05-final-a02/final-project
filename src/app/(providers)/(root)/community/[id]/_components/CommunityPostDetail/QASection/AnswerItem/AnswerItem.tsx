@@ -45,7 +45,7 @@ const AnswerItem = ({
   };
 
   return (
-    <div className={`bg-whiteT-3  border-gradient-noti rounded-lg p-4 pb-6 ${isMenuOpen ? '' : 'backdrop-blur'}`}>
+    <div className={`bg-whiteT-3  border-gradient-noti rounded-lg p-4 pb-6  ${isMenuOpen ? '' : 'backdrop-blur'}`}>
       {isMenuOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setIsMenuOpen(false)} />}
       <div className="flex w-full items-center justify-between mb-4">
         <div className="flex items-center gap-1">

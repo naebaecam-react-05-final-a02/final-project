@@ -37,12 +37,7 @@ const CommunityPostForm = () => {
   const { mutateAsync: postVote } = usePostVote();
 
   const categories = useMemo(() => {
-    const baseCategories = [
-      { value: '자유 게시판' },
-      { value: '투표' },
-      { value: 'Q&A 게시판' },
-      { value: '정보공유' },
-    ];
+    const baseCategories = [{ value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }];
 
     if (user?.user_metadata?.role === 'admin') {
       baseCategories.push({ value: '투표' });
