@@ -11,11 +11,10 @@ import {
   useGetAcceptedAnswer,
   useGetAnswers,
   useGetCommunityPostDetail,
-  useGetPostLikes,
-  useTogglePostLike,
 } from '@/hooks/community/useCommunity';
 import { useRouter } from 'next/navigation';
 
+import { AnswerResponse, CommunityPostData } from '@/types/community';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -27,17 +26,21 @@ import QASection from './QASection';
 
 interface CommunityPostDetailProps {
   postId: string;
+  initialData: {
+    post: CommunityPostData;
+    answers: AnswerResponse;
+  };
 }
 
-const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
-  const { data: post, isLoading, error } = useGetCommunityPostDetail(postId);
+const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) => {
+  const { data: post, isLoading } = useGetCommunityPostDetail(postId, initialData.post);
   const { data: user } = useGetUser();
-  const { mutateAsync: deletePost } = useDeleteCommunityPost();
-  const { mutate: togglePostLike, isPending: isLikeLoading } = useTogglePostLike();
-  const { data: likeData, isPending: isLikeDataPending } = useGetPostLikes(postId);
-  const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId);
-  const { mutate: acceptAnswer } = useAcceptAnswer();
+  const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId, initialData.answers);
   const { data: acceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
+
+  const { mutateAsync: deletePost } = useDeleteCommunityPost();
+
+  const { mutate: acceptAnswer } = useAcceptAnswer();
   const { mutateAsync: deleteAnswer } = useDeleteAnswer();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,7 +53,6 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
   const modal = useModal();
   if (isLoading) return <Loading />;
 
-  if (error) return <div className="text-center py-10 text-red-500">게시글을 불러오는데 실패했습니다.</div>;
   if (!post) return <div className="text-center py-10">게시글을 찾을 수 없습니다.</div>;
 
   const isAuthor = post.user.id === user?.id;
@@ -74,12 +76,6 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
     router.push('/community');
   };
 
-  const handleLikeToggle = () => {
-    if (!isLikeLoading) {
-      togglePostLike(postId);
-    }
-  };
-
   const handleAcceptAnswer = (answerId: string) => {
     acceptAnswer({ questionId: postId, answerId });
   };
@@ -99,17 +95,8 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
     router.push(`/community/${postId}/answer/${answerId}/edit`);
   };
 
-  const handleMenuOpenChange = (isOpen: boolean) => {
-    setIsMenuOpen(isOpen);
-  };
-
   return (
-    <div className="relative min-h-screen overflow-hidden max-w-[900px] flex flex-col mx-auto text-white">
-      <div className="fixed inset-0 bg-[#0E0C15] -z-30 overflow-hidden">
-        <div className="w-[140px] h-[300px] absolute top-[70px] left-[48px] blur-[90px] rounded-full bg-[#52467B]"></div>
-        <div className="w-[340px] h-[105px] absolute bottom-[110px] right-[-24px] blur-[90px] bg-white/40 rounded-full"></div>
-      </div>
-
+    <div className="relative min-h-screen overflow-hidden max-w-[800px] flex flex-col mx-auto text-white">
       <Header
         title={`${post.category}`}
         customBackAction={handleClickBack}
@@ -128,12 +115,7 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
 
       {post.category === 'Q&A 게시판' ? (
         <>
-          <PostItem
-            post={post}
-            onLikeToggle={handleLikeToggle}
-            isLikeLoading={isLikeLoading}
-            isLikeDataPending={isLikeDataPending}
-          />
+          <PostItem post={post} />
           <div
             className="h-[1px] bg-whiteT-20  mx-4"
             style={{
@@ -152,23 +134,20 @@ const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
             onDeleteAnswer={handleDeleteAnswer}
           />
           {!isAuthor && !answers?.hasUserAnswered && (
-            <div className="fixed px-4 bottom-20 right-6 md:right-10 left-6 max-w-max ml-auto z-10">
-              <div className="relative w-full flex justify-end">
-                <Link href={`/community/${post.id}/answer`} className="group">
-                  <FloatingWriteButton buttonType="answer" inView={buttonVisibilityInView} />
-                </Link>
+            <div className="fixed bottom-0 left-0 right-0 pointer-events-none">
+              <div className="max-w-[800px] mx-auto px-4 relative">
+                <div className="absolute bottom-10 right-4 md:right-10 pointer-events-auto">
+                  <Link href={`/community/${post.id}/answer`}>
+                    <FloatingWriteButton buttonType="answer" inView={buttonVisibilityInView} />
+                  </Link>
+                </div>
               </div>
             </div>
           )}
         </>
       ) : (
         <>
-          <PostItem
-            post={post}
-            onLikeToggle={handleLikeToggle}
-            isLikeLoading={isLikeLoading}
-            isLikeDataPending={isLikeDataPending}
-          />
+          <PostItem post={post} />
           <div
             className="h-[1px] bg-whiteT-20  mx-4"
             style={{
