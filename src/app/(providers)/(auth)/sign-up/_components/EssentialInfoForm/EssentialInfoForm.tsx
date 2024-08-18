@@ -140,7 +140,7 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
 
   return (
     <form className="flex flex-col gap-4 items-center justify-center w-full mt-10">
-      <div className="flex flex-col w-full  justify-between content-between px-4">
+      <div className="flex flex-col w-full  justify-between content-between">
         <div className="flex flex-col gap-4 mb-10">
           <div className="flex flex-col items-center w-full">
             <div className="w-full">

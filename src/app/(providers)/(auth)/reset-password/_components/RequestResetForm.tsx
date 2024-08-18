@@ -71,8 +71,8 @@ const RequestResetForm = ({ onSuccess, setError }: RequestResetFormProps) => {
 
   return (
     <div className="w-full h-full">
-      <h2 className="text-18 font-semibold mb-6">가입에 사용하신 이메일을 입력해주세요!</h2>
-      <form onSubmit={handleSubmit} className="w-full max-w-md mb-4">
+      <h2 className="text-18 font-semibold mb-6 text-white">가입에 사용하신 이메일을 입력해주세요!</h2>
+      <form onSubmit={handleSubmit} className="w-full mb-4">
         <div className="w-full mb-4">
           <div className={`flex w-full gap-2 ${emailError ? 'items-center' : 'items-end'}`}>
             <Input

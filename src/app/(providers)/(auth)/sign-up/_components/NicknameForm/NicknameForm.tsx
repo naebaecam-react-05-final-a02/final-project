@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { FormState, NicknameFormProps } from '@/types/auth';
 import { useState } from 'react';
@@ -92,11 +93,11 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
   return (
     <form className="flex flex-col gap-4 items-center justify-center w-full " onSubmit={handleSubmit}>
       <div className="flex flex-col w-full justify-between content-between">
-        <div className="flex flex-col items-center w-full px-4">
+        <div className="flex flex-col items-center w-full">
           <div className="w-full">
-            <h3 className="text-18 font-semibold mt-8 mb-6">사용하실 닉네임을 알려주세요!</h3>
+            <h3 className="text-18 font-semibold mt-8 mb-6 text-white">사용하실 닉네임을 알려주세요!</h3>
             <div className="flex flex-col w-full items-start pb-10">
-              <div className="flex w-full ">
+              <div className={`flex w-full gap-2 ${formState.nickname.error ? 'items-center' : 'items-end'}`}>
                 <Input
                   label="닉네임"
                   name="nickname"
@@ -106,15 +107,15 @@ const NicknameForm = ({ formState, setFormState, checkDuplicate }: NicknameFormP
                   onChange={handleChange}
                   required
                 />
-                <button
+                <Button
                   type="button"
                   onClick={handleCheckDuplicate}
                   disabled={isCheckingDuplicate}
-                  className="bg-primary-70 w-20 h-full text-nowrap rounded-md px-2.5 py-3.5 ml-2 mt-8 hover:brightness-90"
+                  className="bg-primary-70 !w-16 h-10 text-nowrap px-2 py-3.5"
                   aria-label="닉네임 중복 확인"
                 >
                   {isCheckingDuplicate ? '확인 중' : '확인'}
-                </button>
+                </Button>
               </div>
               {formState.nickname.successMessage && (
                 <p className="text-primary-100 text-[12px] ml-1 mt-1">{formState.nickname.successMessage}</p>
