@@ -3,14 +3,19 @@ import {
   CommentCreateData,
   CommentUpdateData,
   CommunityPostCreateData,
-  CommunityPostData,
   CommunityPostUpdateData,
+  PostsResponse,
   ReplyCreateData,
   ReplyUpdateData,
   VoteData,
   VoteUpdateData,
 } from '@/types/community';
-import { QueryClient } from '@tanstack/react-query';
+import { InfiniteData, UseInfiniteQueryOptions } from '@tanstack/react-query';
+
+interface PostsProps {
+  pageParam?: number;
+  category?: string;
+}
 
 export const communityQueryKeys = {
   all: ['community'] as const,
@@ -31,18 +36,22 @@ export const communityQueryKeys = {
 };
 
 export const queryOptions = {
-  posts: (category: string) => ({
+  posts: (category: string): UseInfiniteQueryOptions<PostsResponse, Error, InfiniteData<PostsResponse, number>> => ({
     queryKey: communityQueryKeys.posts(category),
-    queryFn: ({ pageParam = 1 }) => api.community.getPosts({ pageParam, category }),
+    queryFn: ({ pageParam = 1 }) => {
+      const page = typeof pageParam === 'number' ? pageParam : 1;
+      return api.community.getPosts({ pageParam: page, category });
+    },
     initialPageParam: 1,
-    getNextPageParam: (lastPage: { data: CommunityPostData[]; page: number; limit: number }) => {
-      if (lastPage.data.length < lastPage.limit) {
+    getNextPageParam: (lastPage: PostsResponse, allPages) => {
+      if (lastPage.data.length < lastPage.limit || allPages.length * lastPage.limit >= lastPage.totalCount) {
         return undefined;
       }
-      return lastPage.page + 1;
+      return allPages.length + 1;
     },
     staleTime: Infinity,
   }),
+
   postDetail: (postId: string) => ({
     queryKey: communityQueryKeys.postDetail(postId),
     queryFn: () => api.community.getPostDetail(postId),
@@ -156,11 +165,4 @@ export const mutationOptions = {
     mutationFn: ({ id, postId, likeType }: { id: string; postId: string; likeType: 'like' | 'dislike' | null }) =>
       api.community.toggleQAAnswerLike(id, postId, likeType),
   },
-};
-
-export const prefetchCommunityPosts = async (queryClient: QueryClient, categories: string[]) => {
-  const prefetchPromises = categories.map((category) =>
-    queryClient.prefetchInfiniteQuery(queryOptions.posts(category)),
-  );
-  await Promise.all(prefetchPromises);
 };

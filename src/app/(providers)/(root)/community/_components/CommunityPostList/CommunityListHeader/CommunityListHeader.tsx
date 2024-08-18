@@ -46,7 +46,7 @@ const CommunityListHeader = ({
   };
 
   return (
-    <header className="flex w-full justify-between items-center header-gradient px-4 py-2 mb-6">
+    <header className="flex w-full justify-between items-center header-gradient px-4 py-2 mb-6 sm:py-5">
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
