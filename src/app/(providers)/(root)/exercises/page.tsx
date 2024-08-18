@@ -16,10 +16,8 @@ const ExercisePage = () => {
 
   const selectedDate = useDateStore((store) => store.date);
   const setSelectedDate = useDateStore((store) => store.setDate);
-  // const setDiet = useDietStore((state) => state.setDiet);
 
   const handleAddButtonClick = () => {
-    // setDiet(null);
     router.push('/exercises/record');
   };
 
