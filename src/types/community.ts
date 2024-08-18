@@ -43,7 +43,7 @@ export interface CommunityPostUpdateData {
   tags: string[];
 }
 
-interface UserData {
+export interface UserData {
   id: string;
   nickname: string;
   profileURL?: string;
@@ -118,6 +118,19 @@ export interface Answer {
   dislikes: number;
   score: number;
   isLiked: boolean | null;
+}
+
+export interface PostsResponse {
+  data: CommunityPostData[];
+  page: number;
+  limit: number;
+  latestVotePost?: CommunityVotePostData;
+  totalCount: number;
+}
+
+export interface UseGetCommunityPostsProps {
+  category: string;
+  categories: string[];
 }
 
 export interface AnswerResponse {
