@@ -33,7 +33,7 @@ export const ToastProvider = ({ children }: PropsWithChildren) => {
     <ToastContext.Provider value={value}>
       {children}
 
-      <div className="absolute top-10 right-2">
+      <div className="absolute top-4 right-4 pt-10">
         {toasts && toasts.map((toast) => <Toast id={toast.id} key={toast.id} content={toast.content} />)}
       </div>
     </ToastContext.Provider>
