@@ -1,9 +1,10 @@
 'use client';
 import { VoteItem } from '@/app/(providers)/(root)/community/write/_components/VoteRegisterForm/VoteRegisterForm';
-import Button from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
 import { useGetVotes as useGetVote, useGetVoters, useUpdateVote } from '@/hooks/community/useCommunity';
 import { useEffect, useState } from 'react';
+import VoteControllerButton from '../../../VoteControllerButton';
+import VoteResult from '../../../VoteResult';
 
 interface VoteComponentProps {
   postId: string;
@@ -69,7 +70,7 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
   };
-  console.log('@@isVoting', isVoting);
+
   const handleStartVoting = () => {
     setIsVotingStarted(true);
   };
@@ -84,7 +85,24 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
       }}
     >
       <h1 className="text-xl font-semibold mb-4">총 {totalVotes}명이 참여했어요!</h1>
-      <div className="w-full text-white flex flex-col gap-4">
+      <VoteResult
+        totalVotes={totalVotes}
+        itemsArray={itemsArray}
+        isVotingStarted={isVotingStarted}
+        selectedOption={selectedOption}
+        handleOptionChange={handleOptionChange}
+      />
+      <VoteControllerButton
+        isVoting={isVoting}
+        isVotingStarted={isVotingStarted}
+        selectedOption={selectedOption}
+        startVoting={handleStartVoting}
+        submitVote={handleVote}
+        voteLoading={voteLoading}
+        voterLoading={voterLoading}
+        updatingVote={updatingVote}
+      />
+      {/* <div className="w-full text-white flex flex-col gap-4">
         {itemsArray.map((item: VoteItem, index: number) => {
           const percentage = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
 
@@ -165,7 +183,7 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
             {isVoting ? '투표하기' : '다시 투표하기'}
           </Button>
         )}
-      </div>
+      </div> */}
     </article>
   );
 };
