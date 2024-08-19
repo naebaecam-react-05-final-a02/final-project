@@ -10,7 +10,6 @@ const OrderTab = () => {
   const modal = useModal();
   const handleClickButton = async () => {
     const filter = await modal.custom.filter();
-    console.log(filter);
     if (!filter) return;
     setFilter(filter);
   };

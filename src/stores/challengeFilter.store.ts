@@ -6,6 +6,6 @@ interface TChallengeFilterStore {
   setFilter: (filter: ChallengeFilterTypes) => void;
 }
 export const useChallengeFilterStore = create<TChallengeFilterStore>((set) => ({
-  filter: { categories: ['all'], status: ['all'], order: ['date'] },
+  filter: { categories: ['all'], status: ['all'], order: ['startDate'], searchValue: '' },
   setFilter: (filter) => set(() => ({ filter })),
 }));

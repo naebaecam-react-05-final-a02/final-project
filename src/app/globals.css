@@ -28,7 +28,6 @@
 
   .input-bg {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
-    backdrop-filter: blur(5px);
   }
 
   .button-icon {
@@ -273,6 +272,11 @@ textarea:-webkit-autofill:active {
   backdrop-filter: blur(10px);
 }
 
+.toast-bg {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: -4px -4px 8px 0px rgba(18, 242, 135, 0.1), 4px 4px 8px 0px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+}
 p img {
   margin: 16px 0 16px 0;
 }
