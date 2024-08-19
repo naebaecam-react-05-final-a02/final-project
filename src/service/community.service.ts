@@ -220,9 +220,9 @@ class CommunityAPI {
     }
   };
 
-  getPostLikes = async (postId: string): Promise<string[]> => {
+  getPostLikes = async () => {
     try {
-      const response = await axios.get(`${this.baseURL}/likes/${postId}`);
+      const response = await axios.get(`${this.baseURL}/likes`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

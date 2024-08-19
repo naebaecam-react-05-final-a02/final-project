@@ -79,7 +79,7 @@ export const useUpdateCommunityPost = () => {
 };
 
 // 게시글 좋아요 목록 조회
-export const useGetPostLikes = (postId: string) => useQuery(queryOptions.postLikes(postId));
+export const useGetPostLikes = () => useQuery(queryOptions.postLikes());
 
 // 댓글 조회
 export const useGetComments = (postId: string) => useQuery(queryOptions.comments(postId));

@@ -1,4 +1,5 @@
 import { createClient } from '@/supabase/server';
+import dayjs from 'dayjs';
 import { NextResponse } from 'next/server';
 interface ExerciseData {
   date: string;
@@ -11,7 +12,7 @@ interface ExerciseData {
 
 export async function GET() {
   const supabase = createClient();
-
+  const formattedDate = dayjs(date).tz().format('YYYY-MM-DD');
   try {
     const {
       data: { user },
@@ -23,7 +24,7 @@ export async function GET() {
 
     const userId = user.id;
 
-    const { data, error } = await supabase.from('exercisesBookmarks').select('exerciseName').eq('userId', userId);
+    const { data, error } = await supabase.from('exercisesBookmarks').select('*').eq('userId', userId);
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }

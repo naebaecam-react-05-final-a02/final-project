@@ -75,23 +75,3 @@ export async function PATCH(request: NextRequest, { params }: { params: { postId
     );
   }
 }
-
-export async function GET(request: NextRequest, { params }: { params: { postId: string } }) {
-  const supabase = createClient();
-  const postId = params.postId;
-
-  try {
-    const { data, error } = await supabase.from('communityPostsLikes').select('userId').eq('postId', postId);
-
-    if (error) throw error;
-
-    const likedUserIds = data.map((like) => like.userId);
-    return NextResponse.json(likedUserIds, { status: 200 });
-  } catch (error) {
-    console.error('@@ error', error);
-    return NextResponse.json(
-      { message: '좋아요 목록 조회에 실패했습니다.', error: (error as Error).message },
-      { status: 500 },
-    );
-  }
-}

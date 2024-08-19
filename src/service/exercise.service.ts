@@ -1,10 +1,6 @@
 import { ExerciseRecord, ExerciseTodoItemType, RecordData } from '@/types/exercises';
 import axios from 'axios';
 
-export type BookmarkData = {
-  exerciseName: string;
-}[];
-
 class ExerciseAPI {
   private baseUrl: string;
 
@@ -33,7 +29,7 @@ class ExerciseAPI {
       throw error;
     }
   };
-  getBookmarks = async (): Promise<BookmarkData> => {
+  getBookmarks = async (): Promise<RecordData[]> => {
     try {
       const response = await axios.get(`${this.baseUrl}/bookmarks`);
       return response.data;
@@ -45,9 +41,9 @@ class ExerciseAPI {
     }
   };
 
-  toggleBookmark = async (exerciseName: string): Promise<{ isBookmarked: boolean }> => {
+  toggleBookmark = async (record: RecordData): Promise<{ isBookmarked: boolean }> => {
     try {
-      const response = await axios.patch(`${this.baseUrl}/bookmarks/toggle`, { exerciseName });
+      const response = await axios.patch(`${this.baseUrl}/bookmarks/toggle`, { record });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

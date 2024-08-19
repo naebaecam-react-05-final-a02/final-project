@@ -69,3 +69,40 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ message: '좋아요 처리에 실패했습니다.' }, { status: 500 });
   }
 }
+
+export async function GET(request: NextRequest) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return NextResponse.json({ message: '인증 오류입니다.' }, { status: 401 });
+  }
+
+  try {
+    // 사용자가 좋아요한 게시물 ID 목록 가져오기
+    const { data: likedPosts, error: likeError } = await supabase
+      .from('communityPostsLikes')
+      .select('postId')
+      .eq('userId', user.id);
+
+    if (likeError) throw likeError;
+
+    // postId만 추출하여 배열로 반환
+    const likedPostIds = likedPosts.map((item) => item.postId);
+
+    return NextResponse.json({
+      data: likedPostIds,
+      message: '좋아요한 게시물 ID 목록을 성공적으로 가져왔습니다.',
+    });
+  } catch (error) {
+    console.error('@@ error', error);
+    return NextResponse.json(
+      { message: '좋아요한 게시물 ID 목록 조회에 실패했습니다.', error: (error as Error).message },
+      { status: 500 },
+    );
+  }
+}

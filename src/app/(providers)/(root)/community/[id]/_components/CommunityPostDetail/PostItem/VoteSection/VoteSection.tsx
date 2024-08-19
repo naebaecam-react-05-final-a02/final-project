@@ -34,6 +34,7 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
     return <Loading />;
   }
   const itemsArray = voteData?.items;
+
   const totalVotes = itemsArray.reduce((sum: number, item: VoteItem) => sum + (item.votes || 0), 0);
 
   const handleVote = async () => {
