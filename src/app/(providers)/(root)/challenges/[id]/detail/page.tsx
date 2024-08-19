@@ -18,7 +18,7 @@ import VerificationRecordList from './_components/VerificationRecordList';
 const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
   const { data: user } = useGetUser();
-  const { data: challenge } = useGetChallengeDetail(id);
+  const { data: challenge, isPending } = useGetChallengeDetail(id);
   const { mutate: joinChallenge, isPending: isJoining } = useChallengeJoin();
   const { mutate: leaveChallenge, isPending: isLeaving } = useChallengeLeave();
 
@@ -41,6 +41,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   //   };
   // }, []);
 
+  if (!challenge || isPending) return <Loading />;
   // 날짜 포맷팅
   const startDate = new Date(challenge.startDate);
   const endDate = new Date(challenge.endDate);
