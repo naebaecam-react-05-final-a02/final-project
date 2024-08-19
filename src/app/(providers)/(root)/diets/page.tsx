@@ -1,7 +1,7 @@
 'use client';
-import Week from '@/components/Calendar/Week';
 import Header from '@/components/Header';
 import InputCalendar from '@/components/Input/InputDate/InputCalendar';
+import Week from '@/components/Week';
 import Mobile from '@/layouts/Mobile';
 import useDateStore from '@/stores/date.store';
 import useDietStore from '@/stores/diet.store';
