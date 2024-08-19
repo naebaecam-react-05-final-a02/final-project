@@ -1,8 +1,7 @@
 'use client';
 
-import { useGetLevel, useLevelUp } from '@/hooks/level/useLevel';
+import { useGetLevel } from '@/hooks/level/useLevel';
 import { createClient } from '@/supabase/client';
-import { levelUpHelper } from '@/utils/levelUpHelper';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import LevelProgress from '../LevelProgress';
@@ -12,7 +11,6 @@ const DashBoardLevel = () => {
   const supabase = createClient();
   const [loading, setLoading] = useState<boolean>(true);
   const { data: levelData, isLoading, isError } = useGetLevel(supabase);
-  const { mutate: updateLevel } = useLevelUp();
 
   useEffect(() => {
     setLoading(false);
@@ -25,11 +23,6 @@ const DashBoardLevel = () => {
   const { level: curLevel, experience: requiredExperience } = levelData.level;
   const curExperience = levelData.experience;
 
-  const tttt = async () => {
-    const { level, experience } = levelUpHelper(100);
-    updateLevel({ client: supabase, level, experience });
-  };
-
   return (
     <>
       {(loading || isLoading) && (
@@ -39,9 +32,6 @@ const DashBoardLevel = () => {
       )}
       {!loading && !isLoading && (
         <>
-          <button className="text-[8px] p-1 py-px bg-black rounded-md" onClick={tttt}>
-            Exp+10
-          </button>
           <div className="w-8 h-full absolute bg-gradient-to-r from-[#12121266] to-[#12121201] top-0 left-0"></div>
           <div className="w-8 h-full absolute bg-gradient-to-l from-[#12121266] to-[#12121201] top-0 right-0"></div>
           <div className="absolute left-4 top-4 gap-y-1 grid">

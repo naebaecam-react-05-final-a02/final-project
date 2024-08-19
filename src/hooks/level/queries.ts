@@ -22,14 +22,6 @@ export const levelQueryOptions = {
 
 export const levelMutationOptions = {
   levelUp: {
-    mutationFn: ({
-      client,
-      level,
-      experience,
-    }: {
-      client: SupabaseClient<Database>;
-      level: number;
-      experience: number;
-    }) => api.level.levelUp({ client, level, experience }),
+    mutationFn: ({ uid, exp }: { uid?: string; exp: number }) => api.level.levelUp({ uid, exp }),
   },
 };

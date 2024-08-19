@@ -18,7 +18,6 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(levelQueryOptions.getExperience(supabase)),
     queryClient.prefetchQuery(levelQueryOptions.getLevel(supabase)),
 
     queryClient.prefetchQuery({
