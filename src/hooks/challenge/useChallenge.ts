@@ -17,7 +17,7 @@ export const useChallengeDelete = () => useMutation(mutationOptions.deleteChalle
 export const useChallengeJoin = () => useMutation(mutationOptions.joinChallenge);
 
 // 챌린지 하차
-export const useChallnegeLeave = () => useMutation(mutationOptions.leaveChallenge);
+export const useChallengeLeave = () => useMutation(mutationOptions.leaveChallenge);
 
 // 챌린지 인증 등록(생성)
 export const useChallengeVerificationRegister = () => useMutation(mutationOptions.registerVerification);
