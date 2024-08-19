@@ -13,8 +13,6 @@ type CommunityListHeaderProps = {
   categories: Category[];
   onCategoryChange: (category: string) => void;
   onSearchSubmit: (searchValue: string) => void;
-  isSearchOpen: boolean;
-  onSearchOpenChange: (isOpen: boolean) => void;
   onNotificationClick?: () => void;
 };
 
@@ -23,13 +21,12 @@ const CommunityListHeader = ({
   onCategoryChange,
   onSearchSubmit,
   onNotificationClick,
-  isSearchOpen,
-  onSearchOpenChange,
 }: CommunityListHeaderProps) => {
   const modal = useModal();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -38,8 +35,8 @@ const CommunityListHeader = ({
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-      if (isSearchOpen && inputRef.current && !inputRef.current.contains(event.target as Node)) {
-        onSearchOpenChange(false);
+      if (isFocused && inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setIsFocused(false);
       }
     };
 
@@ -47,7 +44,7 @@ const CommunityListHeader = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isSearchOpen, onSearchOpenChange]);
+  }, [isFocused]);
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
@@ -60,29 +57,26 @@ const CommunityListHeader = ({
     const trimmedSearchValue = searchValue.trim();
     if (trimmedSearchValue.length < 2) {
       modal.alert(['검색어는 최소 2글자 이상이어야 합니다.']);
-      onSearchOpenChange(false);
-      setSearchValue('');
+      setIsFocused(false);
+      onSearchSubmit(trimmedSearchValue);
       return;
     }
-    onSearchSubmit(trimmedSearchValue);
-    setSearchValue('');
-    onSearchOpenChange(false);
   };
 
   const handleSearchFocus = () => {
-    onSearchOpenChange(true);
+    setIsFocused(true);
     inputRef.current?.focus();
   };
 
   return (
     <header
       className={`flex w-full transition-all duration-300 justify-between items-center header-gradient px-4 py-2 mb-6 sm:py-5 ${
-        isSearchOpen ? 'gap-10' : 'gap-0'
+        isFocused ? 'gap-10' : 'gap-0'
       }`}
     >
       <div
         ref={dropdownRef}
-        className={`relative transition-all duration-300 ${isSearchOpen ? 'hidden' : 'w-32 opacity-100'}`}
+        className={`relative transition-all duration-300 ${isFocused ? 'hidden' : 'w-32 opacity-100'}`}
       >
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -116,14 +110,14 @@ const CommunityListHeader = ({
         <label
           htmlFor="searchInput"
           className={`h-10 flex justify-center items-center transition-all duration-300 rounded-xl relative z-30 text-white ${
-            isSearchOpen
+            isFocused
               ? 'w-full input-bg'
               : 'w-10 shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25),-2px_-2px_4px_0px_rgba(255,255,255,0.10)] backdrop-blur-[5px] cursor-pointer'
           }`}
         >
           <form
             onSubmit={handleSearchSubmit}
-            className={`min-w-10 px-2 transition-all duration-300 box-border flex justify-end w-full`}
+            className={`min-w-10 px-2 transition-all duration-300 box-border flex justify-end w-full `}
           >
             <input
               id="searchInput"
@@ -134,27 +128,38 @@ const CommunityListHeader = ({
               placeholder="검색할 단어를 입력해주세요"
               onFocus={handleSearchFocus}
               className={`flex-1 placeholder:text-white/40 transition-all duration-300 bg-transparent outline-none ${
-                isSearchOpen ? 'w-full opacity-100 px-2' : 'hidden w-0 opacity-0 px-0'
+                isFocused ? 'w-full opacity-100 px-2' : 'hidden w-0 opacity-0 px-0'
               }`}
             />
-            {isSearchOpen ? (
+            {isFocused ? (
               <button type="submit">
-                <SearchSVG className="transition-all" width="24" height="24" opacity={searchValue ? 1 : 0.4} />
+                <SearchSVG
+                  className="transition-all"
+                  width="24"
+                  height="24"
+                  opacity={isFocused ? (searchValue ? 1 : 0.4) : 1}
+                />
               </button>
             ) : (
-              <SearchSVG className="transition-all" width="24" height="24" onClick={handleSearchFocus} opacity={1} />
+              <SearchSVG
+                className="transition-all"
+                width="24"
+                height="24"
+                onClick={handleSearchFocus}
+                opacity={isFocused ? (searchValue ? 1 : 0.4) : 1}
+              />
             )}
           </form>
         </label>
         <button
           onClick={onNotificationClick}
-          className={`transition-opacity duration-300 ${isSearchOpen ? 'opacity-0' : 'opacity-100'}`}
+          className={`transition-opacity duration-300 ${isFocused ? 'opacity-0' : 'opacity-100'}`}
         >
           <NotificationButton />
         </button>
       </div>
 
-      {isSearchOpen && <div onClick={() => onSearchOpenChange(false)} className="fixed inset-0 bg-black/70 z-20"></div>}
+      {isFocused && <div onClick={() => setIsFocused(false)} className="fixed inset-0 bg-black/70 z-20"></div>}
     </header>
   );
 };

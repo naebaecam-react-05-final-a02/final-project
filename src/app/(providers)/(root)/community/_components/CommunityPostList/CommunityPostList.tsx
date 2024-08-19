@@ -27,7 +27,6 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<CommunityPostData[]>([]);
   const { data: user, error: userError } = useGetUser();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error, fetchCategoryData } =
     useGetCommunityPosts({
@@ -76,13 +75,7 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
       }
     } catch (error) {
       console.error('Search failed:', error);
-    } finally {
-      setIsSearching(false);
     }
-  };
-
-  const handleSearchOpenChange = (isOpen: boolean) => {
-    setIsSearchOpen(isOpen);
   };
 
   const posts = isSearching ? searchResults : data?.pages.flatMap((page) => page.data) ?? [];
@@ -97,8 +90,6 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
         categories={categories}
         onCategoryChange={handleCategoryChange}
         onSearchSubmit={handleSearchSubmit}
-        isSearchOpen={isSearchOpen}
-        onSearchOpenChange={handleSearchOpenChange}
       />
       {!isSearching && (
         <div className="px-4 mb-4">{latestVotePost && <VotePostPreview latestVotePost={latestVotePost} />}</div>
