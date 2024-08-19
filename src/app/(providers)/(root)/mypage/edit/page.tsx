@@ -33,8 +33,6 @@ const MyProfileEditPage = () => {
     weight: 0,
   });
   const { data, isPending } = useGetUser();
-  console.log(data?.nickname);
-  console.log(inputs.nickname);
   const queryClient = useQueryClient();
 
   const { mutate: updateProfile } = useMutation({
