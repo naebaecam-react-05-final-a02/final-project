@@ -33,6 +33,7 @@ export const PATCH = async (req: NextRequest) => {
     // 경험치 테이블
     const { data: experiencesTable, error: experiencesTableError } = await client.from('level').select('*');
     // 대상 경험치 가져오기
+    //LEVEL 유저테이블에 경험치 들어가면 변경할 곳
     const { data: userExperience, error: userExperienceError } = await client
       .from('userLevel')
       .select('*,level(*)')
@@ -66,6 +67,7 @@ export const PATCH = async (req: NextRequest) => {
       requiredExp = experiencesTable[curLevel - 1].experience;
     }
 
+    //LEVEL 유저테이블에 경험치 들어가면 변경할 곳
     const { data, error } = await client
       .from('userLevel')
       .update({ level: curLevel, experience: newExp })
