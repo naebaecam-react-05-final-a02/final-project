@@ -16,7 +16,6 @@ import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
-import DownIcon from '/public/icons/chevron-down.svg';
 
 const ExerciseRecordPage = () => {
   const queryClient = useQueryClient();
@@ -186,7 +185,7 @@ const ExerciseRecordPage = () => {
     console.log('나 찍힘');
   };
   return (
-    <Mobile headerLayout={<Header title={`투두 추가하기`} titleIcon={<DownIcon onClick={handleClickdown} />} />}>
+    <Mobile headerLayout={<Header title={`투두 추가하기`} />}>
       <div className="max-h-screen flex flex-col gap-4 p-5">
         <Input
           label="운동 이름"
