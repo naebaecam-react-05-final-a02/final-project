@@ -3,17 +3,16 @@ import Header from '@/components/Header';
 import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import Link from 'next/link';
-import { fetchVerificationTotalData } from '../_hooks/useVerification';
+import { fetchVerificationTotalData, getChallengeWithParticipants } from '../_hooks/useVerification';
 import VerificationRegister from './_components/registerVerification/VerificationRegister';
 
 const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
 
-  const response = await supabase.from('challenges').select('title', { count: 'exact' }).eq('id', params.id).single();
+  const response = await getChallengeWithParticipants(supabase, params.id);
 
-  // console.log('해당 챌린지 있는지 확인 COUNT___', data, count);
-  // 챌린지가 없을 경우
-  if (!response.count) {
+  // 챌린지가 없거나 신청안한사람 접근
+  if (!response || !response.isParticipant) {
     return (
       <Mobile
         footerLayout={
@@ -54,7 +53,7 @@ const ChallengeVerificationRegisterPage = async ({ params }: { params: { id: str
       <VerificationRegister
         cid={params.id}
         userInfo={userInfo}
-        challengeTitle={response.data.title}
+        challengeTitle={response.title}
         verifications={vData.verifications}
       />
     </Mobile>
