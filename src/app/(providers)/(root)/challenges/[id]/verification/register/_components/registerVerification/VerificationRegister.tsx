@@ -93,6 +93,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
             verify(verifyData, {
               onSuccess: () => {
                 modal.alert(['등록되었습니다.']);
+                //LEVEL
                 levelUp({ exp: 10 });
                 queryClient.invalidateQueries({ queryKey: ['verifications', { cid: cid }] });
                 router.replace(`/challenges/${cid}/verification/list`);
