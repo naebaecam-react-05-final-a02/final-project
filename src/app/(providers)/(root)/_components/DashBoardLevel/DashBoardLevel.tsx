@@ -28,8 +28,6 @@ const DashBoardLevel = () => {
   const { level: curLevel, experience: curExperience } = levelData;
   const { experience: requiredExperience } = levelData.expInfo;
 
-  console.log(curLevel, curExperience, requiredExperience);
-
   return (
     <>
       {(loading || isLoading) && (
