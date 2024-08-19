@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { create } from 'zustand';
+import useDateStore from './date.store';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -30,6 +31,13 @@ interface ExerciseStore {
   deleteInput: (index: number) => void;
   clearRecord: () => void;
 }
+const getInitialState = (): ExerciseRecord => ({
+  date: useDateStore.getState().date,
+  name: '',
+  memo: '',
+  record: [{ weight: 0, reps: 0 }],
+  exerciseType: 'weight',
+});
 
 export const useExerciseStore = create<ExerciseStore>((set) => ({
   record: exerciseInitialState,
@@ -90,19 +98,7 @@ export const useExerciseStore = create<ExerciseStore>((set) => ({
     }),
   clearRecord: () =>
     set((state) => {
-      const newRecord: ExerciseRecord =
-        state.exerciseType === 'cardio'
-          ? {
-              ...exerciseInitialState,
-              exerciseType: 'cardio',
-              record: [{ minutes: null, distance: null }],
-            }
-          : {
-              ...exerciseInitialState,
-              exerciseType: 'weight',
-              record: [{ weight: null, reps: null }],
-            };
-
+      const newRecord = getInitialState();
       return {
         record: newRecord,
         cardioInputs: [{ minutes: null, distance: null }],

@@ -11,6 +11,7 @@ import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useModal } from '@/contexts/modal.context/modal.context';
+import useDateStore from '@/stores/date.store';
 import { CardioInput, WeightInput } from '@/types/exercises';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
@@ -35,6 +36,10 @@ const ExerciseRecordPage = () => {
   const { mutate: toggleBookmark } = useToggleBookmark();
 
   const [isFirstChange, setIsFirstChange] = useState(false);
+
+  console.log('나는 날짜', record.date);
+
+  console.log('졸려', useDateStore.getState().date);
 
   useEffect(() => {}, [record.record]);
 
