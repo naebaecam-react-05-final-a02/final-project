@@ -9,6 +9,7 @@ import { initialChallengeVerificationError } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeVerificationRegister } from '@/hooks/challenge/useChallenge';
 import { useImageUpload } from '@/hooks/image/useImage';
+import { useLevelUp } from '@/hooks/level/useLevel';
 import { queryClient } from '@/providers/QueryProvider';
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
@@ -33,6 +34,9 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
   const { mutate: verify, isPending } = useChallengeVerificationRegister();
+
+  const { mutate: levelUp } = useLevelUp();
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -89,7 +93,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
             verify(verifyData, {
               onSuccess: () => {
                 modal.alert(['등록되었습니다.']);
-                console.log('Challenge Verify Successfully');
+                levelUp({ exp: 10 });
                 queryClient.invalidateQueries({ queryKey: ['verifications', { cid: cid }] });
                 router.replace(`/challenges/${cid}/verification/list`);
               },
