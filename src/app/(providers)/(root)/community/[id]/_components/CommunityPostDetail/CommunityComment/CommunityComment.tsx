@@ -2,7 +2,10 @@
 
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useAddComment, useDeleteComment, useGetComments, useUpdateComment } from '@/hooks/community/useCommunity';
+import { useLevelUp } from '@/hooks/level/useLevel';
 import { useCreateNotification } from '@/hooks/notifications/useNotifications';
+import { createClient } from '@/supabase/client';
+import { levelUpHelper } from '@/utils/levelUpHelper';
 import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import CommentInput from './CommentInput';
 import CommentItem from './CommentItem';
@@ -13,18 +16,22 @@ interface CommunityCommentProps {
 }
 
 const CommunityComment = ({ postId, postUserId }: CommunityCommentProps) => {
+  const supabase = createClient();
   const { data: comments } = useGetComments(postId);
   const { mutate: addComment } = useAddComment();
   const { mutate: updateComment } = useUpdateComment();
   const { mutateAsync: deleteComment } = useDeleteComment();
 
   const { mutate: createNotification } = useCreateNotification();
+  const { mutate: updateLevel } = useLevelUp();
 
   const modal = useModal();
 
   const handleAddComment = (content: string) => {
     if (content.trim()) {
       addComment({ postId, content });
+      const { level, experience } = levelUpHelper(1);
+      updateLevel({ client: supabase, level, experience });
       createNotification(makeNotificationData({ type: 'community', category: 'comment' }, postUserId, postId));
     }
   };

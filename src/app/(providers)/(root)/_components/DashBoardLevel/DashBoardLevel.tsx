@@ -24,7 +24,6 @@ const DashBoardLevel = () => {
 
   const { level: curLevel, experience: requiredExperience } = levelData.level;
   const curExperience = levelData.experience;
-  console.log(`현재 레벨:${curLevel} 현재 경험치:${curExperience} 필요 경험치:${requiredExperience}`);
 
   const tttt = async () => {
     const { level, experience } = levelUpHelper(100);
@@ -59,6 +58,9 @@ const DashBoardLevel = () => {
                 />
               </div>
               <LevelProgress experience={(curExperience / requiredExperience) * 100} />
+              {/* <div className="w-full font-bold absolute opacity-0 hover:opacity-100 text-[10px] text-center text-black">
+                {`${((curExperience / requiredExperience) * 100).toFixed(2)}%`}
+              </div> */}
               <div className="absolute -right-2 rounded-full bg-white/10 p-px size-4 z-10 flex justify-center items-center">
                 <div className="size-full rounded-full bg-[#292929] border-[1px] border-white/20" />
               </div>
