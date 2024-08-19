@@ -37,6 +37,7 @@ const DashBoardLevel = () => {
           <div className="absolute left-4 top-4 gap-y-1 grid">
             <h5 className="text-white/50 text-sm">헬린이</h5>
             <h6 className="text-[28px]">{`Lv.${curLevel}`}</h6>
+            <h6 className="text-sm">{`${((curExperience / requiredExperience) * 100).toFixed(1)}%`}</h6>
           </div>
           <div className="absolute bottom-9">
             <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
@@ -48,7 +49,7 @@ const DashBoardLevel = () => {
                 />
               </div>
               <LevelProgress experience={(curExperience / requiredExperience) * 100} />
-              {/* <div className="w-full font-bold absolute opacity-0 hover:opacity-100 text-[10px] text-center text-black">
+              {/* <div className="w-full font-bold absolute opacity-100 hover:opacity-100 text-[10px] text-center text-black">
                 {`${((curExperience / requiredExperience) * 100).toFixed(2)}%`}
               </div> */}
               <div className="absolute -right-2 rounded-full bg-white/10 p-px size-4 z-10 flex justify-center items-center">
