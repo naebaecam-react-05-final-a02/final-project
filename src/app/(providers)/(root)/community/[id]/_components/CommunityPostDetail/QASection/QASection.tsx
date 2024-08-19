@@ -1,4 +1,5 @@
 import { Answer } from '@/types/community';
+import AcceptedAnswerItem from './AcceptedAnswerItem';
 import AnswerItem from './AnswerItem';
 
 interface QASectionProps {
@@ -29,7 +30,7 @@ const QASection = ({
       {acceptedAnswer ? (
         <>
           <h3 className="text-[14px] font-medium mb-2">덤벨점수를 받은 답변입니다.</h3>
-          <div dangerouslySetInnerHTML={{ __html: acceptedAnswer.content }} />
+          <AcceptedAnswerItem answer={acceptedAnswer} postId={postId} />
         </>
       ) : (
         <h3 className="text-[14px] font-medium mb-2">아직 채택 받은 답변이 없습니다.</h3>

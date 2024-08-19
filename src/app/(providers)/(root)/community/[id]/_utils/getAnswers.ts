@@ -10,24 +10,35 @@ export async function getAnswers(questionId: string) {
 
   if (userError) throw userError;
 
+  const { data: qaData, error: qaError } = await supabase
+    .from('communityQa')
+    .select('answerId')
+    .eq('questionId', questionId)
+    .single();
+
+  if (qaError && qaError.code !== 'PGRST116') throw qaError;
+
   const { data: answers, error: answerError } = await supabase
     .from('communityAnswer')
     .select(
       `
-      *,
-      user:userId (
-        id,
-        nickname,
-        profileURL
-      )
-    `,
+    *,
+    user:userId (
+      id,
+      nickname,
+      profileURL
+    )
+  `,
     )
     .eq('questionId', questionId)
     .order('createdAt', { ascending: true });
 
   if (answerError) throw answerError;
 
-  const hasUserAnswered = answers.some((answer) => answer.userId === user?.id);
+  const filteredAnswers =
+    qaData && qaData.answerId ? answers.filter((answer) => answer.id !== qaData.answerId) : answers;
+
+  const hasUserAnswered = filteredAnswers.some((answer) => answer.userId === user?.id);
 
   const { data: isLike, error: isLikeError } = await supabase
     .from('communityAnswerLikes')
@@ -36,9 +47,8 @@ export async function getAnswers(questionId: string) {
 
   if (isLikeError) throw isLikeError;
 
-  const answersWithLikes = answers.map((answer) => {
+  const answersWithLikes = filteredAnswers.map((answer) => {
     const likeInfo = isLike.find((like) => like.answerId === answer.id);
-
     return {
       ...answer,
       isLiked: likeInfo ? likeInfo.isLike : null,

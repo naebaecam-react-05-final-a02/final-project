@@ -31,7 +31,16 @@ export async function GET(request: NextRequest) {
       // 답변 테이블에서 데이터 조회
       const { data: answersData, error: answersError } = await supabase
         .from('communityAnswer')
-        .select('*')
+        .select(
+          `
+        *,
+        user:userId (
+          id,
+          nickname,
+          profileURL
+        )
+      `,
+        )
         .eq('questionId', questionId)
         .eq('id', qaData.answerId)
         .single();
@@ -64,13 +73,25 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: '질문 ID와 답변 ID가 필요합니다.' }, { status: 400 });
     }
 
+    const { data: postExists, error: postCheckError } = await supabase
+      .from('communityPosts')
+      .select('id')
+      .eq('id', questionId)
+      .single();
+
+    if (postCheckError || !postExists) {
+      return NextResponse.json({ error: '해당 질문이 존재하지 않습니다.' }, { status: 404 });
+    }
+
     // QA 테이블 upsert
     const { data, error } = await supabase
       .from('communityQa')
       .upsert(
         {
+          questionId: questionId,
           answerId: answerId,
           isAccepted: true,
+          questionUserId: user.id,
         },
         {
           onConflict: 'questionId,questionUserId',

@@ -91,6 +91,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
     }
   };
 
+  console.log(acceptedAnswer);
   const handleEditAnswer = (answerId: string) => {
     router.push(`/community/${postId}/answer/${answerId}/edit`);
   };
@@ -133,7 +134,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
             onEditAnswer={handleEditAnswer}
             onDeleteAnswer={handleDeleteAnswer}
           />
-          {!isAuthor && !answers?.hasUserAnswered && (
+          {!isAuthor && !answers?.hasUserAnswered && !acceptedAnswer && (
             <div className="fixed bottom-0 left-0 right-0 pointer-events-none">
               <div className="max-w-[800px] mx-auto px-4 relative">
                 <div className="absolute bottom-10 right-4 md:right-10 pointer-events-auto">

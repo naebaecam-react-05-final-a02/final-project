@@ -19,7 +19,14 @@ export async function GET(request: NextRequest) {
 
     if (userError) throw userError;
 
-    // communityAnswer 테이블에서 데이터 조회하고 users 테이블과 조인
+    const { data: qaData, error: qaError } = await supabase
+      .from('communityQa')
+      .select('answerId')
+      .eq('questionId', questionId)
+      .single();
+
+    if (qaError && qaError.code !== 'PGRST116') throw qaError;
+
     const { data: answers, error: answerError } = await supabase
       .from('communityAnswer')
       .select(
@@ -37,7 +44,10 @@ export async function GET(request: NextRequest) {
 
     if (answerError) throw answerError;
 
-    const hasUserAnswered = answers.some((answer) => answer.userId === user?.id);
+    const filteredAnswers =
+      qaData && qaData.answerId ? answers.filter((answer) => answer.id !== qaData.answerId) : answers;
+
+    const hasUserAnswered = filteredAnswers.some((answer) => answer.userId === user?.id);
 
     const { data: isLike, error: isLikeError } = await supabase
       .from('communityAnswerLikes')
@@ -46,9 +56,8 @@ export async function GET(request: NextRequest) {
 
     if (isLikeError) throw isLikeError;
 
-    const answersWithLikes = answers.map((answer) => {
+    const answersWithLikes = filteredAnswers.map((answer) => {
       const likeInfo = isLike.find((like) => like.answerId === answer.id);
-
       return {
         ...answer,
         isLiked: likeInfo ? likeInfo.isLike : null,

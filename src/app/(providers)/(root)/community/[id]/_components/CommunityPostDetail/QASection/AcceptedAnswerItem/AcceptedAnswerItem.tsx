@@ -1,38 +1,18 @@
 'use client';
 
-import Button from '@/components/Button';
 import { useToggleQAAnswerLike } from '@/hooks/community/useCommunity';
 import { Answer } from '@/types/community';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FaChevronRight } from 'react-icons/fa6';
-import DetailMenu from '../../DetailMenu';
 import BigThumbUp from '../../PostItem/BigThumbUp/BigThumbUp';
 
 interface AnswerItemProps {
   answer: Answer;
-  userId: string;
   postId: string;
-  isAuthor: boolean;
-  acceptedAnswer: Answer | null;
-  onAcceptAnswer: (answerId: string) => void;
-  isAcceptedAnswerLoading: boolean;
-  onEditAnswer: (answerId: string) => void;
-  onDeleteAnswer: (answerId: string) => void;
 }
 
-const AnswerItem = ({
-  answer,
-  userId,
-  postId,
-  isAuthor,
-  acceptedAnswer,
-  onAcceptAnswer,
-  isAcceptedAnswerLoading,
-  onEditAnswer,
-  onDeleteAnswer,
-}: AnswerItemProps) => {
+const AcceptedAnswerItem = ({ answer, postId }: AnswerItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { mutate: toggleQAAnswerLike, isPending } = useToggleQAAnswerLike();
 
@@ -44,6 +24,7 @@ const AnswerItem = ({
     toggleQAAnswerLike({ id: answer.id, postId, likeType: answer.isLiked === false ? null : 'dislike' });
   };
 
+  console.log('나 엔설', answer);
   return (
     <div className={`bg-whiteT-3  border-gradient-noti rounded-lg p-4 pb-6  ${isMenuOpen ? '' : 'backdrop-blur'}`}>
       {isMenuOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setIsMenuOpen(false)} />}
@@ -65,14 +46,6 @@ const AnswerItem = ({
               <time className="!text-whiteT-50 text-xs leading-[18px] font-normal">
                 {dayjs(answer.createdAt).format('YYYY. MM. DD')}
               </time>
-            )}
-            {answer.user.id === userId && !acceptedAnswer && (
-              <DetailMenu
-                onEdit={() => onEditAnswer(answer.id)}
-                onDelete={() => onDeleteAnswer(answer.id)}
-                onOpenChange={setIsMenuOpen}
-                iconClassName="text-whiteT-70 w-[18px] h-[18px]"
-              />
             )}
           </div>
         </figcaption>
@@ -97,15 +70,8 @@ const AnswerItem = ({
           />
         </button>
       </div>
-      {isAuthor && !acceptedAnswer && (
-        <Button onClick={() => onAcceptAnswer(answer.id)} disabled={isAcceptedAnswerLoading} className="mt-4">
-          <span className="flex text-center items-center">
-            채택하기 <FaChevronRight className="ml-1" />
-          </span>
-        </Button>
-      )}
     </div>
   );
 };
 
-export default AnswerItem;
+export default AcceptedAnswerItem;
