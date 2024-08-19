@@ -6,6 +6,8 @@ import Header from '@/components/Header';
 import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useCreateAnswer, useGetCommunityPostDetail } from '@/hooks/community/useCommunity';
+import { useCreateNotification } from '@/hooks/notifications/useNotifications';
+import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import { Editor } from '@tiptap/react';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -18,6 +20,7 @@ interface CommunityPostAnswerFormProps {
 }
 
 const CommunityPostAnswerForm = ({ postId }: CommunityPostAnswerFormProps) => {
+  const { mutate: createNotification } = useCreateNotification();
   const { data: post, isLoading, error } = useGetCommunityPostDetail(postId);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [content, setContent] = useState('');
@@ -50,7 +53,9 @@ const CommunityPostAnswerForm = ({ postId }: CommunityPostAnswerFormProps) => {
         questionId: postId,
         content: content,
       });
+      createNotification(makeNotificationData({ type: 'community', category: 'reply' }, post.user.id, postId));
       modal.alert(['답변이 등록되었습니다.']);
+
       router.push(`/community/${postId}`);
     } catch (error) {
       console.error('답변 등록 실패:', error);
