@@ -1,4 +1,4 @@
-import { addDays, endOfDay, format, formatISO, startOfDay, subDays } from 'date-fns';
+import { addDays, endOfDay, format, formatISO, lastDayOfMonth, startOfDay, subDays } from 'date-fns';
 
 export const RANGE_OPTIONS = {
   last_7_days: {
@@ -50,4 +50,8 @@ export const getNextDate = (date: Date | string = new Date(), gap: number = 1) =
 
 export const getNextDateISO = (date: Date | string = new Date(), gap: number = 1) => {
   return formatISO(getNextDate(date, gap));
+};
+
+export const getLastDayOfMonth = (date: Date) => {
+  return lastDayOfMonth(date);
 };

@@ -1,7 +1,7 @@
 'use client';
-import Week from '@/components/Calendar/Week';
 import Header from '@/components/Header';
 import InputCalendar from '@/components/Input/InputDate/InputCalendar';
+import Week from '@/components/Week';
 import Mobile from '@/layouts/Mobile';
 import useDateStore from '@/stores/date.store';
 import { useRouter } from 'next/navigation';
@@ -16,10 +16,8 @@ const ExercisePage = () => {
 
   const selectedDate = useDateStore((store) => store.date);
   const setSelectedDate = useDateStore((store) => store.setDate);
-  // const setDiet = useDietStore((state) => state.setDiet);
 
   const handleAddButtonClick = () => {
-    // setDiet(null);
     router.push('/exercises/record');
   };
 
