@@ -1,5 +1,6 @@
 import { createClient } from '@/supabase/server';
 import { LevelType } from '@/types/level';
+import { Tables } from '@/types/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const PATCH = async (req: NextRequest) => {
@@ -31,13 +32,16 @@ export const PATCH = async (req: NextRequest) => {
     }
 
     // 경험치 테이블
-    const { data: experiencesTable, error: experiencesTableError } = await client.from('level').select('*');
+    const { data: experiencesTable, error: experiencesTableError } = await client
+      .from('level')
+      .select('*')
+      .returns<Tables<'level'>[]>();
     // 대상 경험치 가져오기
     //LEVEL 유저테이블에 경험치 들어가면 변경할 곳
     const { data: userExperience, error: userExperienceError } = await client
-      .from('userLevel')
-      .select('*,level(*)')
-      .eq('userId', uid)
+      .from('users')
+      .select('level,experience')
+      .eq('id', uid)
       .single<LevelType>();
 
     if (experiencesTableError) {
@@ -56,8 +60,8 @@ export const PATCH = async (req: NextRequest) => {
       );
     }
 
-    let curExp = userExperience.experience;
-    let { level: curLevel } = userExperience.level;
+    let { experience: curExp } = userExperience;
+    let { level: curLevel } = userExperience;
     let newExp = curExp + exp;
     let requiredExp = experiencesTable[curLevel - 1].experience;
 
@@ -68,10 +72,7 @@ export const PATCH = async (req: NextRequest) => {
     }
 
     //LEVEL 유저테이블에 경험치 들어가면 변경할 곳
-    const { data, error } = await client
-      .from('userLevel')
-      .update({ level: curLevel, experience: newExp })
-      .eq('userId', uid);
+    const { data, error } = await client.from('users').update({ level: curLevel, experience: newExp }).eq('id', uid);
 
     if (error) {
       console.error('Supabase update error:', error);

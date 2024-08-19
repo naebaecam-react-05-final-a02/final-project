@@ -1,4 +1,4 @@
-import { LevelType } from '@/types/level';
+import { ExpInfoType } from '@/types/level';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import axios from 'axios';
@@ -25,7 +25,12 @@ class LevelAPI {
         console.error('User not found');
         return;
       }
-      const response = await client.from('userLevel').select('*,level(*)').eq('userId', user.id).single<LevelType>();
+      const response = await client
+        .from('users')
+        .select('level,experience,expInfo:level(experience)')
+        .eq('id', user.id)
+        .single<ExpInfoType>();
+
       return response.data;
     } catch (error) {
       const err = error as Error;

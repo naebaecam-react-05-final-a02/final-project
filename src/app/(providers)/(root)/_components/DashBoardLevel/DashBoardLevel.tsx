@@ -16,12 +16,19 @@ const DashBoardLevel = () => {
     setLoading(false);
   }, []);
 
-  if (!levelData || !levelData.level || isError) {
-    return <div>Error</div>;
+  if (!levelData || !levelData.expInfo || isError) {
+    return (
+      <div>
+        <div>Error</div>
+        <div>레벨 정보를 불러오지 못했어요..</div>
+      </div>
+    );
   }
 
-  const { level: curLevel, experience: requiredExperience } = levelData.level;
-  const curExperience = levelData.experience;
+  const { level: curLevel, experience: curExperience } = levelData;
+  const { experience: requiredExperience } = levelData.expInfo;
+
+  console.log(curLevel, curExperience, requiredExperience);
 
   return (
     <>
