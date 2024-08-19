@@ -13,6 +13,12 @@ export const useChallengeUpdate = () => useMutation(mutationOptions.updateChalle
 // 챌린지 삭제
 export const useChallengeDelete = () => useMutation(mutationOptions.deleteChallenge);
 
+// 챌린지 신청
+export const useChallengeJoin = () => useMutation(mutationOptions.joinChallenge);
+
+// 챌린지 하차
+export const useChallnegeLeave = () => useMutation(mutationOptions.leaveChallenge);
+
 // 챌린지 인증 등록(생성)
 export const useChallengeVerificationRegister = () => useMutation(mutationOptions.registerVerification);
 

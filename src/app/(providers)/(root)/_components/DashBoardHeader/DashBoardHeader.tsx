@@ -1,8 +1,10 @@
 'use client';
 
+import InputCalendar from '@/components/Input/InputDate/InputCalendar';
+import ModalPortalLayout from '@/components/ModalPortal/ModalPortalLayout';
 import { addDays, format, subDays } from 'date-fns';
 import Link from 'next/link';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
 import { FaListUl } from 'react-icons/fa6';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
 type DashBoardHeaderType = {
@@ -13,12 +15,25 @@ type DashBoardHeaderType = {
 };
 
 const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) => {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [position, setPosition] = useState<number>(0);
+
+  const handleCalendar = (e: MouseEvent<HTMLDivElement>) => {
+    setPosition(e.clientY);
+    setIsCalendarOpen((prev) => !prev);
+  };
+
   const handleNextDay = () => {
     setState((prev) => addDays(prev, 1));
   };
 
   const handlePrevDay = () => {
     setState((prev) => subDays(prev, 1));
+  };
+
+  const handleDateSelected = (date: Date) => {
+    setState(date);
+    setIsCalendarOpen(false);
   };
 
   return (
@@ -28,7 +43,21 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
           <IoMdArrowDropleft />
         </div>
 
-        <div className="cursor-pointer w-6 text-center">{format(date, 'M/d')}</div>
+        <div onClick={(e) => handleCalendar(e)} className="cursor-pointer w-8 text-center">
+          {format(date, 'M/dd')}
+        </div>
+        {isCalendarOpen && (
+          <ModalPortalLayout onClose={() => setIsCalendarOpen(false)}>
+            <div
+              className={`absolute w-[280px]
+                left-14
+                ${position > 300 ? 'top-[430px]' : 'top-[275px]'}
+                text-white mt-1 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden`}
+            >
+              <InputCalendar selectedDate={date} onSelectDate={handleDateSelected} />
+            </div>
+          </ModalPortalLayout>
+        )}
 
         <div className="text-base cursor-pointer" onClick={handleNextDay}>
           <IoMdArrowDropright />

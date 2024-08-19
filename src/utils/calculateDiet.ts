@@ -41,3 +41,10 @@ export const getFoods = (diets: DietTableType[] | undefined | null) => {
     return [...acc, ...cur.foods];
   }, [] as FoodType[]);
 };
+
+export const formatCalory = (value: string) => {
+  let num = Number.parseInt(value);
+  if (num < 0) return 0;
+  if (num > 5000) return 5000;
+  return num;
+};

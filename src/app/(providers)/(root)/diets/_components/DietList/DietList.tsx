@@ -27,7 +27,8 @@ const DietList = () => {
   const { data: diets, isPending: isFetching, isError: isFetchError } = useGetDiets(getFormattedDate(selectedDate));
   const { mutate: deleteDiet, isPending: isDeleting } = useDeleteDiets();
 
-  if (isFetching || isDeleting) return <Loading />;
+  if (isFetching) return <div className="text-center">로딩중...</div>;
+  if (isDeleting) return <Loading />;
   if (isFetchError) return <div className="text-center">데이터를 불러오는 도중 에러가 발생했습니다!</div>;
 
   const totalCalories = getDietsCalories(diets);
