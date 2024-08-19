@@ -1,7 +1,6 @@
 'use client';
 
-import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
-import FormTextArea from '@/app/(providers)/(root)/challenges/_components/FormTextArea';
+import ChallengeTextArea from '@/app/(providers)/(root)/challenges/_components/ChallengeTextArea/ChallengeTextArea';
 import Button from '@/components/Button';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import {
@@ -166,7 +165,7 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
             <div className=" text-primary-100">헬리니뇨속</div>
             <div className="text-white">수정을 시작해볼까요?</div>
           </div>
-          <FormTextArea
+          <ChallengeTextArea
             label="느낀점을 수정해보아요"
             maxLength={100}
             name="impression"
@@ -178,12 +177,12 @@ const VerificationUpdate = ({ cid, vid, me }: VerificationUpdateProps) => {
         <div className="flex flex-col gap-y-4 w-full">
           <div className="text-base text-white ">챌린지 인증 사진을 새로 업로드 해보아요</div>
           <div className="grid gap-y-4 w-full">
-            <FormImageUploader
+            {/* <FormImageUploader
               ref={inputRef}
               label="챌린지 인증 사진 추가하기"
               src={verification.data.imageURLs}
               maxImage={3}
-            />
+            /> */}
             <div className="text-white/50 flex gap-x-1">
               <AiOutlineExclamationCircle />
               <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>

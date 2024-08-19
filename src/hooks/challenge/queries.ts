@@ -48,6 +48,12 @@ export const mutationOptions = {
   deleteChallenge: {
     mutationFn: (cid: number) => api.challenge.deleteChallenge(cid),
   },
+  joinChallenge: {
+    mutationFn: (cid: number) => api.challenge.joinChallenge(cid),
+  },
+  leaveChallenge: {
+    mutationFn: (cid: number) => api.challenge.leaveChallenge(cid),
+  },
   registerVerification: {
     mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) =>
       api.challenge.registerVerification(verifyData),

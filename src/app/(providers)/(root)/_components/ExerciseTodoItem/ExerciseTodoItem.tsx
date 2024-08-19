@@ -36,9 +36,12 @@ const ExerciseTodoItem = ({ exercise, date }: ExerciseTodoItemProps) => {
   };
 
   return (
-    <div className="select-none border-gradient flex items-center size-full h-[52px] gap-x-3 px-3">
+    <div
+      className={`select-none border-gradient flex items-center size-full h-[52px] gap-x-3 px-3 transition duration-300 ease-in-out ${
+        exercise.isCompleted ? 'brightness-50' : ''
+      }`}
+    >
       <Checkbox checked={exercise.isCompleted!} label="" onChange={handleChange} />
-
       <div className="flex flex-col gap-y-1">
         <div className="text-white text-sm">{exercise.name}</div>
         <div className="flex items-center gap-2 text-white/50 text-xs">

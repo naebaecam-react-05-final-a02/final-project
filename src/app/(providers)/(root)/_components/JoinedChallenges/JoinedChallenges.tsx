@@ -9,7 +9,9 @@ import React from 'react';
 const JoinedChallengesLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <h5 className="text-white/50 text-sm">챌린지</h5>
+      <Link href={'/challenges'}>
+        <h5 className="text-white/50 text-sm hover:shadow-md hover:font-bold">챌린지</h5>
+      </Link>
       {children}
     </>
   );

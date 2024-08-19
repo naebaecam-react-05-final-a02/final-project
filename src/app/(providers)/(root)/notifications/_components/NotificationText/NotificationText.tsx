@@ -17,7 +17,7 @@ const NotificationText = ({ notification, id }: NotificationTextProps) => {
     return (
       <div>
         <div>
-          게시글에 <span className="text-primary-100">댓글</span>이 달렸습니다.
+          새로운 <span className="text-primary-100">댓글</span>이 달렸습니다.
         </div>
       </div>
     );
@@ -27,7 +27,7 @@ const NotificationText = ({ notification, id }: NotificationTextProps) => {
     return (
       <div>
         <div>
-          게시글에 <span className="text-primary-100">답변</span>이 달렸습니다.
+          새로운 <span className="text-primary-100">답변</span>이 등록되었습니다.
         </div>
       </div>
     );
@@ -37,7 +37,7 @@ const NotificationText = ({ notification, id }: NotificationTextProps) => {
     return (
       <div>
         <div>
-          누군가 나를 <span className="text-primary-100">팔로우</span> 하였습니다.
+          누군가 당신을 <span className="text-primary-100">팔로우</span> 했습니다.
         </div>
       </div>
     );

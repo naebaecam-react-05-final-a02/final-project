@@ -1,4 +1,3 @@
-import Loading from '@/components/Loading/Loading';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import api from '@/service/service';
 import useDateStore from '@/stores/date.store';
@@ -28,7 +27,7 @@ const ExerciseList = () => {
     queryFn: () => api.dashboard.getExercises(supabase, selectedDate),
   });
 
-  if (isFetching) return <Loading />;
+  if (isFetching) return <div className="flex flex-col items-center gap-1">로딩중...</div>;
 
   if (!exercises || isFetchError) {
     return (

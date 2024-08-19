@@ -1,23 +1,31 @@
 'use client';
 
 import Image from 'next/image';
-import { ChangeEvent, forwardRef, Ref, useEffect, useState } from 'react';
+import { ChangeEvent, Dispatch, forwardRef, Ref, SetStateAction, useEffect, useState } from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 type FormImageUploaderType = {
   src?: string[];
   label?: string;
   maxImage?: number;
-  error?: string;
+  error: string;
+  errorHandler: Dispatch<
+    SetStateAction<{
+      [key: string]: string;
+    }>
+  >;
+  setIsImageDel: Dispatch<boolean>;
 };
 
 const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
-  ({ src, label, maxImage = 1, error }, ref: Ref<HTMLInputElement>) => {
+  ({ src, label, maxImage = 1, error, errorHandler, setIsImageDel }, ref: Ref<HTMLInputElement>) => {
     const [filefile, setFilefile] = useState<File[]>([]);
     const [fileURLs, setFileURLs] = useState<string[]>(src ?? []);
 
     // const [isDrag, setIsDrag] = useState<boolean>(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+      errorHandler((prev) => ({ ...prev, image: `` }));
+      setIsImageDel(false);
       const file = e.target.files;
       let tmpFileURLs = [...fileURLs];
 
@@ -75,6 +83,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
 
     const handleImageDel = (idx: number) => {
       // console.log('CLICK___', idx);
+      setIsImageDel(true);
       setFileURLs((prev) => prev.filter((_, i) => i !== idx));
       setFilefile((prev) => prev.filter((_, i) => i !== idx));
     };
@@ -141,7 +150,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
             </ul>
           )}
         </div>
-        {error && <div className="text-red-500 text-sm mt-1 ml-1">{error}</div>}
+        {error && error.length > 0 && <div className="text-red-500 text-sm mt-1 ml-1">{error}</div>}
       </div>
     );
   },
