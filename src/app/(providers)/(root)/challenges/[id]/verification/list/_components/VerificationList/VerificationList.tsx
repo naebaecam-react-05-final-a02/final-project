@@ -11,7 +11,7 @@ import LocalBanner from '../LocalBanner';
 import VerificationCardSkeleton from '../VerificationCardSkeleton';
 import VerificationItem from '../VerificationItem';
 
-const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
+const VerificationList = ({ counts, title }: { counts: verificationsCountType; title: string }) => {
   const params = useParams();
 
   const obsRef = useRef<HTMLDivElement>(null);
@@ -61,12 +61,12 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
       {!verifications ||
         (!verifications.length && (
           <div>
-            <LocalBanner users={0} />
+            <LocalBanner users={0} title={title} />
           </div>
         ))}
       {verifications && verifications.length > 0 && (
         <div className="flex flex-col gap-4 px-4">
-          <LocalBanner users={counts.totalUsers} />
+          <LocalBanner users={counts.totalUsers} title={title} />
 
           <ul>
             <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">

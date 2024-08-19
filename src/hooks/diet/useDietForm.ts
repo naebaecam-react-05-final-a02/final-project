@@ -60,16 +60,11 @@ const useDietForm = ({ initialValue }: DietFormProps) => {
   };
 
   const validateFood = (food: FoodType = foodChips[activeChipIdx]) => {
-    const { foodName, kcal, carbohydrate, protein, fat } = food;
+    const { foodName } = food;
     if (!foodName) {
       modal.alert(['음식 이름을 입력해주세요']);
       return false;
     }
-    // TODO: 영양 성분 유효성 검사 로직 다시
-    // if (kcal < carbohydrate * 4 + protein * 4 + fat * 9) {
-    //   modal.alert(['영양 성분을 올바르게 입력해주세요']);
-    //   return false;
-    // }
     return true;
   };
 

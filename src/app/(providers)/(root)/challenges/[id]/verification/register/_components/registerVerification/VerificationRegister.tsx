@@ -1,8 +1,8 @@
 'use client';
 
+import ChallengeInput from '@/app/(providers)/(root)/challenges/_components/ChallengeInput';
 import FormImageUploader from '@/app/(providers)/(root)/challenges/_components/FormImageUploader';
 import Button from '@/components/Button';
-import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { initialChallengeVerificationError } from '@/data/challenges';
@@ -28,6 +28,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
   const router = useRouter();
   const modal = useModal();
   const [err, setErr] = useState(initialChallengeVerificationError);
+  const [isImageDel, setIsImageDel] = useState<boolean>(false);
 
   const { data: user } = useGetUser();
   const { mutate: upload, isPending: uploading } = useImageUpload();
@@ -90,7 +91,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
                 modal.alert(['등록되었습니다.']);
                 console.log('Challenge Verify Successfully');
                 queryClient.invalidateQueries({ queryKey: ['verifications', { cid: cid }] });
-                router.push(`/challenges/${cid}/verification/list`);
+                router.replace(`/challenges/${cid}/verification/list`);
               },
               onError: (error) => {
                 modal.alert(['등록에 실패하였습니다.']);
@@ -151,25 +152,28 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
                 <div className="text-white">님! 오늘 챌린지는 어땠나요?</div>
               </div>
 
-              <Input
+              <ChallengeInput
+                maxLength={200}
+                errorHandler={setErr}
+                rows={6}
                 label="느낀점"
                 name="impression"
                 placeholder="오늘의 챌린지 후기를 알려주세요."
                 error={err['impression']}
               />
-
-              {/* <FormTextArea
-                label="느낀점"
-                maxLength={100}
-                name="impression"
-                placeholder="오늘의 챌린지 후기를 알려주세요."
-              /> */}
             </div>
 
             <div className="flex flex-col gap-y-4 w-full">
               <div className="text-base text-white ">챌린지 인증 사진을 업로드 해주세요!</div>
               <div className="grid gap-y-4 w-full">
-                <FormImageUploader ref={inputRef} label="챌린지 인증 사진 추가하기" maxImage={3} error={err['image']} />
+                <FormImageUploader
+                  ref={inputRef}
+                  label="챌린지 인증 사진 추가하기"
+                  maxImage={3}
+                  error={err['image']}
+                  errorHandler={setErr}
+                  setIsImageDel={setIsImageDel}
+                />
                 <div className="text-white/50 flex gap-x-1">
                   <AiOutlineExclamationCircle />
                   <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>

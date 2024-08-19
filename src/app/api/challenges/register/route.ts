@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const challengeData = await req.json();
-    const { data, error } = await supabase.from('challenges').insert(challengeData);
+    const { data, error } = await supabase.from('challenges').insert(challengeData).select('id');
 
     if (error) {
       console.error('Supabase insert error:', error);

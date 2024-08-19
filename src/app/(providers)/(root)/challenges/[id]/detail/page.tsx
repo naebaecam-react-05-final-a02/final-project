@@ -5,13 +5,11 @@ import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
+import { useChallengeJoin, useChallnegeLeave, useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
-import { createClient } from '@/supabase/client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import ChallengeInfoMethod from './_components/ChallengeInfoMethod';
 import ThumbnailSection from './_components/Thumbnail.tsx';
 import UserProfile from './_components/UserProfile';
@@ -21,7 +19,9 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
   const { data: user } = useGetUser();
   const { data: challenge } = useGetChallengeDetail(id);
-  const router = useRouter();
+  const { mutate: joinChallenge, isPending: isJoining } = useChallengeJoin();
+  const { mutate: leaveChallenge, isPending: isLeaving } = useChallnegeLeave();
+
   const modal = useModal();
 
   // const [menuOpen, setMenuOpen] = useState(false);
@@ -58,27 +58,32 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
     .padStart(2, '0')}`;
 
   const handleJoinChallenge = async () => {
-    const supabase = createClient();
     const response = await modal.confirm(['신청하시겠습니까?']);
     if (response) {
-      const { error } = await supabase.from('challengeParticipants').insert({
-        challengeId: id,
-        userId: user?.id,
+      joinChallenge(id, {
+        onSuccess: () => {
+          modal.alert(['신청하였습니다.']);
+          queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
+          queryClient.invalidateQueries({ queryKey: ['challenge', { cid: id }] });
+        },
+        onError: () => modal.alert(['신청에 실패하였습니다.']),
       });
-      if (error) {
-        // 에러 처리도 제대루 해야함
-        modal.alert(['신청에 실패하였습니다.']);
-      } else {
-        // 성공 후 챌린지 리스트로 이동? 마이페이지로 이동?
-        modal.alert(['신청하였습니다.']);
-        queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
-        router.replace('/challenges');
-      }
     }
   };
-  // const handleMenuToggle = () => {
-  //   setMenuOpen(!menuOpen);
-  // };
+
+  const handleLeaveChallenge = async () => {
+    const res = await modal.confirm(['정말 챌린지를 그만두시겠습니까?']);
+    if (res) {
+      leaveChallenge(id, {
+        onSuccess: () => {
+          modal.alert(['챌린지를 그만두었습니다...']);
+          queryClient.invalidateQueries({ queryKey: ['joinedChallenge'] });
+          queryClient.invalidateQueries({ queryKey: ['challenge', { cid: id }] });
+        },
+        onError: () => modal.alert(['챌린지를 하차하는 도중 문제가 생겼습니다...!']),
+      });
+    }
+  };
 
   // 챌린지 작성자 정보
   const challengeAuthor = challenge.user;
@@ -90,20 +95,25 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
           챌린지 신청하기
         </Button>
       ) : (
-        <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
-          <Button type="button">챌린지 인증하기</Button>
-        </Link>
-      )}
-      {user?.id === challenge.createdBy && (
-        <Link className="flex-1" href={`/challenges/${challenge.id}/update`}>
-          <Button>수정 및 삭제</Button>
-        </Link>
+        <div className="flex gap-x-2 w-full">
+          <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
+            <Button type="button">챌린지 인증하기</Button>
+          </Link>
+          <button
+            className="flex-1 bg-red-600 rounded-lg hover:bg-red-700"
+            onClick={handleLeaveChallenge}
+            type="button"
+          >
+            챌린지 하차하기
+          </button>
+        </div>
       )}
     </div>
   );
 
   return (
     <Mobile isHeaderFixed={false} showHeader={false} showFooter={false} bottomButton={bottomButton}>
+      {(isJoining || isLeaving) && <Loading />}
       <div className="text-white relative -my-4">
         <BackBoard />
         <main className="pb-8">
