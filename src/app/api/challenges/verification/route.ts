@@ -1,15 +1,49 @@
 import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
+interface ChallengeVerifyData {
+  challengeId: string;
+  userId: string;
+  videoUrl: string;
+  status: string;
+}
+
 export async function POST(req: NextRequest) {
   const supabase = createClient();
   try {
-    const ChallengeVerifyData = await req.json();
+    const ChallengeVerifyData: ChallengeVerifyData = await req.json();
     const { data, error } = await supabase.from('challengeVerify').insert(ChallengeVerifyData);
+    console.log(ChallengeVerifyData);
 
     if (error) {
       console.error('Supabase insert error:', error);
       return NextResponse.json({ error: 'Failed To Insert Verify', details: error.message }, { status: 400 });
+    }
+
+    const { count: verificationsCount, error: verificationsCountError } = await supabase
+      .from('challengeVerify')
+      .select('*', { count: 'exact', head: true })
+      .eq('challengeId', ChallengeVerifyData.challengeId);
+
+    if (verificationsCountError) {
+      console.error('Supabase count error:', verificationsCountError);
+      return NextResponse.json(
+        { error: 'Failed To Get Verify Count', details: verificationsCountError.message },
+        { status: 400 },
+      );
+    }
+
+    const { error: verificationsCountUpdateError } = await supabase
+      .from('challenges')
+      .update({ verifications: verificationsCount })
+      .eq('id', Number(ChallengeVerifyData.challengeId));
+
+    if (verificationsCountUpdateError) {
+      console.error('Supabase update error:', verificationsCountUpdateError);
+      return NextResponse.json(
+        { error: 'Failed To Update Verify Count', details: verificationsCountUpdateError.message },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json({ message: 'Challenge Verify Successfully', data }, { status: 201 });
@@ -56,6 +90,32 @@ export async function DELETE(req: NextRequest) {
     if (error) {
       console.error('Supabase delete error:', error);
       return NextResponse.json({ error: 'Failed To Delete Verify', details: error.message }, { status: 400 });
+    }
+
+    const { count: verificationsCount, error: verificationsCountError } = await supabase
+      .from('challengeVerify')
+      .select('*', { count: 'exact', head: true })
+      .eq('challengeId', challengeId);
+
+    if (verificationsCountError) {
+      console.error('Supabase count error:', verificationsCountError);
+      return NextResponse.json(
+        { error: 'Failed To Get Verify Count', details: verificationsCountError.message },
+        { status: 400 },
+      );
+    }
+
+    const { error: verificationsCountUpdateError } = await supabase
+      .from('challenges')
+      .update({ verifications: verificationsCount })
+      .eq('id', Number(challengeId));
+
+    if (verificationsCountUpdateError) {
+      console.error('Supabase update error:', verificationsCountUpdateError);
+      return NextResponse.json(
+        { error: 'Failed To Update Verify Count', details: verificationsCountUpdateError.message },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json({ message: 'Challenge Verify Delete Successfully', data }, { status: 201 });
