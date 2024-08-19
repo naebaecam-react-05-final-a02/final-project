@@ -109,85 +109,81 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
   };
 
   return (
-    <>
-      {
-        <form onSubmit={handleSubmit} className="flex flex-col justify-between size-full p-4 relative">
-          {(uploading || isPending) && <Loading />}
-          <div className="grid place-items-center gap-y-6">
-            <div className="w-full h-24 bg-white/5  text-white flex flex-col items-start justify-center gap-y-4 px-4 rounded-md">
-              <h6 className="text-base font-semibold">{challengeTitle}</h6>
-              <div className="flex text-sm gap-x-2">
-                {userInfo?.length! > 0 && (
-                  <div className="flex">
-                    오늘 벌써 총<p className="text-primary-100">{`${userInfo?.length}명`}</p>이 인증했어요!
-                  </div>
-                )}
-                {!userInfo?.length && <div>아직 아무도 인증하지 않았네요!</div>}
-                <ul className="flex">
-                  {userInfo?.slice(0, 3).map((user) => (
-                    <li className="rounded-full size-5 bg-gray-300 border border-gray-400 -mr-2 relative" key={user.id}>
-                      <Image
-                        src={user.profileURL ?? '/default-profile.png'}
-                        fill
-                        sizes="100"
-                        alt={`${user.id}'s profile`}
-                        className="object-cover rounded-full"
-                      />
-                    </li>
-                  ))}
-                  {userInfo?.length! > 3 && (
-                    <li
-                      className="rounded-full size-5 bg-gray-300 border border-gray-400 -mr-2 relative font-bold text-xs text-black flex items-center
+    <form onSubmit={handleSubmit} className="flex flex-col justify-between size-full p-4 relative">
+      {(uploading || isPending) && <Loading />}
+      <div className="grid place-items-center gap-y-6">
+        <div className="w-full h-24 bg-white/5  text-white flex flex-col items-start justify-center gap-y-4 px-4 rounded-md">
+          <h6 className="text-base font-semibold">{challengeTitle}</h6>
+          <div className="flex text-sm gap-x-2">
+            {userInfo?.length! > 0 && (
+              <div className="flex">
+                오늘 벌써 총<p className="text-primary-100">{`${userInfo?.length}명`}</p>이 인증했어요!
+              </div>
+            )}
+            {!userInfo?.length && <div>아직 아무도 인증하지 않았네요!</div>}
+            <ul className="flex">
+              {userInfo?.slice(0, 3).map((user) => (
+                <li className="rounded-full size-5 bg-gray-300 border border-gray-400 -mr-2 relative" key={user.id}>
+                  <Image
+                    src={user.profileURL ?? '/default-profile.png'}
+                    fill
+                    sizes="100"
+                    alt={`${user.id}'s profile`}
+                    className="object-cover rounded-full"
+                  />
+                </li>
+              ))}
+              {userInfo?.length! > 3 && (
+                <li
+                  className="rounded-full size-5 bg-gray-300 border border-gray-400 -mr-2 relative font-bold text-xs text-black flex items-center
                 justify-center"
-                    >
-                      {`+${userInfo?.length! - 3 > 10 ? '9' : userInfo?.length! - 3}`}
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </div>
-            <div className="w-full flex flex-col gap-y-2">
-              <div className="flex gap-x-px text-base  pl-1">
-                <div className=" text-primary-100">{user?.nickname ?? '헬린이'}</div>
-                <div className="text-white">님! 오늘 챌린지는 어땠나요?</div>
-              </div>
-
-              <ChallengeInput
-                maxLength={200}
-                errorHandler={setErr}
-                rows={6}
-                label="느낀점"
-                name="impression"
-                placeholder="오늘의 챌린지 후기를 알려주세요."
-                error={err['impression']}
-              />
-            </div>
-
-            <div className="flex flex-col gap-y-4 w-full">
-              <div className="text-base text-white ">챌린지 인증 사진을 업로드 해주세요!</div>
-              <div className="grid gap-y-4 w-full">
-                <FormImageUploader
-                  ref={inputRef}
-                  label="챌린지 인증 사진 추가하기"
-                  maxImage={3}
-                  error={err['image']}
-                  errorHandler={setErr}
-                  setIsImageDel={setIsImageDel}
-                />
-                <div className="text-white/50 flex gap-x-1">
-                  <AiOutlineExclamationCircle />
-                  <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>
-                </div>
-              </div>
-            </div>
+                >
+                  {`+${userInfo?.length! - 3 > 10 ? '9' : userInfo?.length! - 3}`}
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+        <div className="w-full flex flex-col gap-y-2">
+          <div className="flex gap-x-px text-base  pl-1">
+            <div className=" text-primary-100">{user?.nickname ?? '헬린이'}</div>
+            <div className="text-white">님! 오늘 챌린지는 어땠나요?</div>
           </div>
 
-          <div className="h-5 mt-10">
-            <Button className="select-none ">제출하기</Button>
+          <ChallengeInput
+            maxLength={200}
+            errorHandler={setErr}
+            rows={6}
+            label="느낀점"
+            name="impression"
+            placeholder="오늘의 챌린지 후기를 알려주세요."
+            error={err['impression']}
+          />
+        </div>
+
+        <div className="flex flex-col gap-y-4 w-full">
+          <div className="text-base text-white ">챌린지 인증 사진을 업로드 해주세요!</div>
+          <div className="grid gap-y-4 w-full">
+            <FormImageUploader
+              ref={inputRef}
+              label="챌린지 인증 사진 추가하기"
+              maxImage={3}
+              error={err['image']}
+              errorHandler={setErr}
+              setIsImageDel={setIsImageDel}
+            />
+            <div className="text-white/50 flex gap-x-1">
+              <AiOutlineExclamationCircle />
+              <p className="text-xs"> 최대 3장까지 업로드 가능합니다.</p>
+            </div>
           </div>
-        </form>
-      }
-    </>
+        </div>
+      </div>
+
+      <div className="h-5 mt-10">
+        <Button className="select-none ">제출하기</Button>
+      </div>
+    </form>
   );
 };
 
