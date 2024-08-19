@@ -2,23 +2,33 @@
 
 import Loading from '@/components/Loading/Loading';
 import NavBar from '@/components/NavBar';
+import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetCommunityPosts } from '@/hooks/community/useCommunity';
 import { CommunityPostData, PostsResponse } from '@/types/community';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import { useInView } from 'react-intersection-observer';
+import { searchCommunityPosts } from '../../_utils/searchCommunityPosts';
 import CommunityListHeader from './CommunityListHeader';
 import CommunityPostListItem from './CommunityPostListItem';
 import FloatingWriteButton from './FloatingWriteButton';
 import VotePostPreview from './VotePostPreview';
 
 const categories = [{ value: '전체' }, { value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }];
+
 interface CommunityPostListProps {
   initialData: PostsResponse | undefined;
 }
+
 const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<CommunityPostData[]>([]);
+  const { data: user, error: userError } = useGetUser();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error, fetchCategoryData } =
     useGetCommunityPosts({
       category: selectedCategory,
@@ -40,32 +50,71 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
   }, [fetchCategoryData]);
 
   useEffect(() => {
-    if (loadMoreInView && hasNextPage && !isFetchingNextPage) {
+    if (loadMoreInView && hasNextPage && !isFetchingNextPage && !isSearching) {
       const currentItemCount = data?.pages.reduce((total, page) => total + page.data.length, 0) || 0;
       if (currentItemCount < data?.pages[0]?.totalCount!) {
         fetchNextPage();
       }
     }
-  }, [loadMoreInView, fetchNextPage, hasNextPage, isFetchingNextPage, data]);
+  }, [loadMoreInView, fetchNextPage, hasNextPage, isFetchingNextPage, data, isSearching]);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+    setIsSearching(false);
+    setSearchTerm('');
   };
 
-  const posts = data?.pages.flatMap((page) => page.data) ?? [];
+  const handleSearchSubmit = async (term: string) => {
+    setSearchTerm(term);
+    setIsSearching(true);
+    try {
+      if (user) {
+        const results = await searchCommunityPosts(term, selectedCategory, user.id);
+        if (results) {
+          setSearchResults(results.data);
+        }
+      }
+    } catch (error) {
+      console.error('Search failed:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearchOpenChange = (isOpen: boolean) => {
+    setIsSearchOpen(isOpen);
+  };
+
+  const posts = isSearching ? searchResults : data?.pages.flatMap((page) => page.data) ?? [];
   const latestVotePost = data?.pages[0]?.latestVotePost;
 
   if (isLoading) return <Loading />;
   if (error) return <div className="text-center py-10 text-red-500">게시글을 불러오는데 실패했습니다.</div>;
+
   return (
     <div className="relative min-h-screen overflow-hidden max-w-[800px] flex flex-col mx-auto">
-      <CommunityListHeader categories={categories} onCategoryChange={handleCategoryChange} />
-      <div className="px-4 mb-4">{latestVotePost && <VotePostPreview latestVotePost={latestVotePost} />}</div>
-      <div className="relative z-0 flex-grow overflow-y-auto ">
+      <CommunityListHeader
+        categories={categories}
+        onCategoryChange={handleCategoryChange}
+        onSearchSubmit={handleSearchSubmit}
+        isSearchOpen={isSearchOpen}
+        onSearchOpenChange={handleSearchOpenChange}
+      />
+      {!isSearching && (
+        <div className="px-4 mb-4">{latestVotePost && <VotePostPreview latestVotePost={latestVotePost} />}</div>
+      )}
+      <div className="relative z-0 flex-grow overflow-y-auto">
+        {isSearching && (
+          <div className="px-4 py-2 mb-4">
+            <h2 className="text-lg text-white font-semibold">'{searchTerm}' 검색 결과</h2>
+          </div>
+        )}
         {posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-gray-400">
             <FaRegCommentDots className="text-6xl mb-4" />
-            <p className="text-lg font-semibold mb-2">아직 게시글이 없습니다</p>
+            <p className="text-lg font-semibold text-white mb-2">
+              {isSearching ? '검색 결과가 없습니다' : '아직 게시글이 없습니다'}
+            </p>
           </div>
         ) : (
           <div className="flex flex-col gap-4 px-4 mb-20">
@@ -74,9 +123,9 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
                 <CommunityPostListItem post={post} />
               </Link>
             ))}
-            {isFetchingNextPage ? (
+            {!isSearching && isFetchingNextPage ? (
               <div className="text-center text-whiteT-30 py-4">더 많은 게시글을 불러오는 중...</div>
-            ) : hasNextPage ? (
+            ) : !isSearching && hasNextPage ? (
               <div ref={loadMoreRef} className="h-10" />
             ) : null}
           </div>
@@ -92,7 +141,7 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
         </div>
       </div>
       <div ref={buttonVisibilityRef} className="h-0 relative -z-10" />
-      <NavBar className="fixed bottom-0 max-w-[800px] " />
+      <NavBar className="fixed bottom-0 max-w-[800px]" />
     </div>
   );
 };

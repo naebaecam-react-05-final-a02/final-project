@@ -1,5 +1,4 @@
 import { createClient } from '@/supabase/server';
-import dayjs from 'dayjs';
 import { NextResponse } from 'next/server';
 interface ExerciseData {
   date: string;
@@ -12,7 +11,7 @@ interface ExerciseData {
 
 export async function GET() {
   const supabase = createClient();
-  const formattedDate = dayjs(date).tz().format('YYYY-MM-DD');
+
   try {
     const {
       data: { user },
