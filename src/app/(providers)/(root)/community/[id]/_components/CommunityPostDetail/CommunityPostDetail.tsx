@@ -36,7 +36,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
   const { data: post, isLoading } = useGetCommunityPostDetail(postId, initialData.post);
   const { data: user } = useGetUser();
   const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId, initialData.answers);
-  const { data: acceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
+  const { data: isAcceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
 
   const { mutateAsync: deletePost } = useDeleteCommunityPost();
 
@@ -91,7 +91,6 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
     }
   };
 
-  console.log(acceptedAnswer);
   const handleEditAnswer = (answerId: string) => {
     router.push(`/community/${postId}/answer/${answerId}/edit`);
   };
@@ -127,14 +126,14 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
             answers={answers?.answers}
             userId={user?.id || ''}
             postId={postId}
-            acceptedAnswer={acceptedAnswer}
+            acceptedAnswer={answers?.acceptedAnswer}
             isAuthor={isAuthor}
             onAcceptAnswer={handleAcceptAnswer}
             isAcceptedAnswerLoading={isAcceptedAnswerLoading}
             onEditAnswer={handleEditAnswer}
             onDeleteAnswer={handleDeleteAnswer}
           />
-          {!isAuthor && !answers?.hasUserAnswered && !acceptedAnswer && (
+          {!isAuthor && !answers?.hasUserAnswered && !answers.acceptedAnswer && (
             <div className="fixed bottom-0 left-0 right-0 pointer-events-none">
               <div className="max-w-[800px] mx-auto px-4 relative">
                 <div className="absolute bottom-10 right-4 md:right-10 pointer-events-auto">

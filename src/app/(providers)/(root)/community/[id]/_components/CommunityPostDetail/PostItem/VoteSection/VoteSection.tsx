@@ -69,7 +69,6 @@ const VoteSection = ({ postId }: VoteComponentProps) => {
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
   };
-  console.log('@@isVoting', isVoting);
   const handleStartVoting = () => {
     setIsVotingStarted(true);
   };

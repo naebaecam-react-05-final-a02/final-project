@@ -135,6 +135,7 @@ export interface UseGetCommunityPostsProps {
 
 export interface AnswerResponse {
   answers: Answer[];
+  acceptedAnswer: Answer | null;
   hasUserAnswered: boolean;
 }
 

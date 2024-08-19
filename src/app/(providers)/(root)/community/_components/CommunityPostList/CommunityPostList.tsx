@@ -57,7 +57,6 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
 
   if (isLoading) return <Loading />;
   if (error) return <div className="text-center py-10 text-red-500">게시글을 불러오는데 실패했습니다.</div>;
-  console.log(1);
   return (
     <div className="relative min-h-screen overflow-hidden max-w-[800px] flex flex-col mx-auto">
       <CommunityListHeader categories={categories} onCategoryChange={handleCategoryChange} />

@@ -1,4 +1,5 @@
 import { createClient } from '@/supabase/server';
+import { Answer } from '@/types/community';
 
 export async function getAnswers(questionId: string) {
   const supabase = createClient();
@@ -22,23 +23,18 @@ export async function getAnswers(questionId: string) {
     .from('communityAnswer')
     .select(
       `
-    *,
-    user:userId (
-      id,
-      nickname,
-      profileURL
-    )
-  `,
+      *,
+      user:userId (
+        id,
+        nickname,
+        profileURL
+      )
+    `,
     )
     .eq('questionId', questionId)
     .order('createdAt', { ascending: true });
 
   if (answerError) throw answerError;
-
-  const filteredAnswers =
-    qaData && qaData.answerId ? answers.filter((answer) => answer.id !== qaData.answerId) : answers;
-
-  const hasUserAnswered = filteredAnswers.some((answer) => answer.userId === user?.id);
 
   const { data: isLike, error: isLikeError } = await supabase
     .from('communityAnswerLikes')
@@ -47,15 +43,29 @@ export async function getAnswers(questionId: string) {
 
   if (isLikeError) throw isLikeError;
 
-  const answersWithLikes = filteredAnswers.map((answer) => {
+  let acceptedAnswer = null;
+  let otherAnswers = answers;
+
+  if (qaData && qaData.answerId) {
+    acceptedAnswer = answers.find((answer) => answer.id === qaData.answerId);
+    otherAnswers = answers.filter((answer) => answer.id !== qaData.answerId);
+  }
+
+  const processAnswer = (answer: Answer) => {
     const likeInfo = isLike.find((like) => like.answerId === answer.id);
     return {
       ...answer,
       isLiked: likeInfo ? likeInfo.isLike : null,
     };
-  });
+  };
+
+  const acceptedAnswerWithLike = acceptedAnswer ? processAnswer(acceptedAnswer) : null;
+  const answersWithLikes = otherAnswers.map(processAnswer);
+
+  const hasUserAnswered = answers.some((answer) => answer.userId === user?.id);
 
   const responseData = {
+    acceptedAnswer: acceptedAnswerWithLike,
     answers: answersWithLikes,
     hasUserAnswered,
   };

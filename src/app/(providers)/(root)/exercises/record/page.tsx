@@ -244,7 +244,7 @@ const ExerciseRecordPage = () => {
           icon={<Memo width={20} height={20} />}
         />
         <ExerciseRecordForm />
-        <Button className="mt-4" type="submit" onClick={handleSubmit}>
+        <Button className="mt-4" type="submit" disabled={isPending} onClick={handleSubmit}>
           등록하기
         </Button>
       </div>

@@ -31,6 +31,12 @@ const QASection = ({
         <>
           <h3 className="text-[14px] font-medium mb-2">덤벨점수를 받은 답변입니다.</h3>
           <AcceptedAnswerItem answer={acceptedAnswer} postId={postId} />
+          <div
+            className="h-[1px] bg-whiteT-20 my-8"
+            style={{
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0.10), 0px -2px 4px 0px rgba(0, 0, 0, 0.70)',
+            }}
+          />
         </>
       ) : (
         <h3 className="text-[14px] font-medium mb-2">아직 채택 받은 답변이 없습니다.</h3>
