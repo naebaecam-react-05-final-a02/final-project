@@ -49,7 +49,7 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
     if (months.length > 0) {
       onChangeMonth(months[currentMonthIndex]);
     }
-  }, [selectedDate, months]);
+  }, [selectedDate, months, currentMonthIndex, onChangeMonth]);
 
   const generateMonthWeeks = (month: Date) => {
     const startOfMonth = dayjs(month).startOf('month');
