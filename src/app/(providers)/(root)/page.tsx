@@ -1,5 +1,6 @@
 import Card from '@/components/Card';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
+import { levelQueryOptions } from '@/hooks/level/queries';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
 import { createClient } from '@/supabase/server';
@@ -17,6 +18,9 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   const queryClient = new QueryClient();
 
   await Promise.all([
+    queryClient.prefetchQuery(levelQueryOptions.getExperience(supabase)),
+    queryClient.prefetchQuery(levelQueryOptions.getLevel(supabase)),
+
     queryClient.prefetchQuery({
       queryKey: ['weights'],
       queryFn: () => api.dashboard.getWeights(supabase, query),
@@ -56,7 +60,9 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
               className="border-[1px] border-white/15  to-97% w-full aspect-square rounded-[20px] 
             flex flex-col gap-y-4 items-center justify-between overflow-hidden relative text-white "
             >
-              <DashBoardLevel />
+              <HydrationBoundary state={dehydrate(queryClient)}>
+                <DashBoardLevel />
+              </HydrationBoundary>
               <div
                 className="absolute w-full h-5 bg-black/30 text-white/60 font-bold  left-0 bottom-0 right-0
             rounded-b-[20px] flex justify-center text-sm"

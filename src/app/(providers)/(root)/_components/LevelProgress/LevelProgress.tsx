@@ -2,9 +2,13 @@
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
-const data = [{ name: 'Progress', value: 50 }];
+type LevelProgressProps = {
+  experience: number;
+};
 
-const LevelProgress = () => {
+const LevelProgress = ({ experience }: LevelProgressProps) => {
+  const data = [{ name: 'Progress', value: experience }];
+
   return (
     <ResponsiveContainer width="100%" height={10}>
       <BarChart layout="vertical" data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
