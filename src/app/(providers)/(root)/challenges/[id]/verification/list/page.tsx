@@ -33,10 +33,18 @@ const ChallengeVerificationListPage = async ({ params }: { params: { id: string 
   const counts = await fetchVerificationTotalData(supabase, params.id);
   const cData = await getChallengeWithParticipants(supabase, params.id);
 
+  console.log(cData?.isProgress);
+
   const bottomButton = (
-    <Link className="flex-1" href={`/challenges/${params.id}/verification/register`}>
-      <Button>인증하기</Button>
-    </Link>
+    <div className="w-full ">
+      {cData?.isProgress === 'RUN' ? (
+        <Link className="flex-1 " href={`/challenges/${params.id}/verification/register`}>
+          <Button>인증하기</Button>
+        </Link>
+      ) : (
+        <Button disabled>아직 시작하지 않았어요!</Button>
+      )}
+    </div>
   );
 
   return (
