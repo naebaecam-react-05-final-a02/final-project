@@ -8,7 +8,6 @@ import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useCreateCommunityPost, usePostVote } from '@/hooks/community/useCommunity';
 import { useLevelUp } from '@/hooks/level/useLevel';
-import { createClient } from '@/supabase/client';
 import { CommunityPostCreateData } from '@/types/community';
 import { Editor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
@@ -19,7 +18,6 @@ import VoteRegisterForm from '../VoteRegisterForm';
 import { VoteItem } from '../VoteRegisterForm/VoteRegisterForm';
 
 const CommunityPostForm = () => {
-  const client = createClient();
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState('');
   const [isContentValid, setIsContentValid] = useState(false);

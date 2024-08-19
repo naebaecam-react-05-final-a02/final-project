@@ -5,7 +5,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export const PATCH = async (req: NextRequest) => {
   const client = createClient();
   try {
-    // 대상 userId = 없으면 나, 얻은 경험치
+    /**
+     * uid: 대상 userId, 없으면 나
+     * exp: 얻은 경험치
+     */
     let { uid, exp } = await req.json();
 
     if (!uid) {
@@ -29,7 +32,7 @@ export const PATCH = async (req: NextRequest) => {
 
     // 경험치 테이블
     const { data: experiencesTable, error: experiencesTableError } = await client.from('level').select('*');
-    // uid 대상 경험치 가져오기
+    // 대상 경험치 가져오기
     const { data: userExperience, error: userExperienceError } = await client
       .from('userLevel')
       .select('*,level(*)')
