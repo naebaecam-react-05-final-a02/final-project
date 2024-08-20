@@ -47,7 +47,7 @@ const VoteItems = ({ item, selectedOption, onChange, isVotingStarted, totalVotes
             }}
           >
             <div
-              className="flex items-center justify-end py-[2px] px-[6px] bg-green-500 h-6 rounded-md text-white/70 text-right text-[12px]"
+              className="flex items-center justify-end py-0.5 px-1.5 bg-green-500 h-6 rounded-md text-white/70 text-right text-xs transition-all"
               style={{ width: `${Math.max(percentage, 10)}%` }}
             >
               {percentage}%
