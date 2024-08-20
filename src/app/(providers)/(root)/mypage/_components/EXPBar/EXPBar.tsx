@@ -19,7 +19,7 @@ const EXPBar = () => {
   return (
     <div className="h-[22px]">
       <div className="w-full h-[6px] rounded-full bg-white/10 overflow-hidden">
-        <div className={`h-full bg-primary-100 w-[${EXPPercent}%] rounded-full `}></div>
+        <div className={`h-full bg-primary-100 rounded-full w-[${EXPPercent.toString()}%]`}></div>
       </div>
       <div className="flex justify-between h-[16px]">
         <p className="text-white text-[10px]">{EXPPercent}%</p>
