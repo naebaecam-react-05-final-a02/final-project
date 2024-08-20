@@ -41,6 +41,7 @@ const DietPage = () => {
           icon={<PlusIcon className="w-6 h-6" onClick={handleAddButtonClick} />}
           titleIcon={
             <DownIcon
+              aria-label="dropdown-button"
               className={`transition-transform ${isCalendarOpen && 'rotate-180'}`}
               onClick={handleDownButtonClick}
             />

@@ -90,6 +90,7 @@ const LikeHateButton = ({ item, postId }: LikeHateButtonProps) => {
     <>
       <button
         onClick={handleLike}
+        aria-label="like-button"
         disabled={isPending}
         className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
       >
@@ -98,6 +99,7 @@ const LikeHateButton = ({ item, postId }: LikeHateButtonProps) => {
       {score}
       <button
         onClick={handleDislike}
+        aria-label="hate-button"
         disabled={isPending}
         className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
       >
