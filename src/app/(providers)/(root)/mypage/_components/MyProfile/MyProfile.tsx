@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import WeightChart from '../../../_components/WeightChart';
 import { userActivitiesTypes } from '../../_types/types';
+import EXPBar from '../EXPBar/EXPBar';
 
 const MyProfile = () => {
   const router = useRouter();
@@ -52,12 +53,13 @@ const MyProfile = () => {
               <Image src={user?.profileURL ?? '/user/default-avatar.png'} alt={'프로필 이미지'} fill />
             )}
           </div>
-          <div className="flex flex-col justify-between">
+          <div className=" flex-1 w-full flex flex-col justify-between">
             <div className="flex gap-2 items-center">
               <div className="text-base font-base font-medium">{user?.nickname ?? `헬린이_${user?.userIndex}`}</div>
               <p className="text-xs font-light text-primary-100">LV.1</p>
             </div>
             <p className="text-xs text-white/50 mb-[5px] font-normal">{user?.email}</p>
+            <EXPBar />
             <div className="flex gap-2 text-sm"></div>
           </div>
         </div>
