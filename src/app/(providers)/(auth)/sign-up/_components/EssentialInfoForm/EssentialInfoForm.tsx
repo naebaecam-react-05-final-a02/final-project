@@ -11,7 +11,8 @@ const EssentialInfoForm = ({ formState, setFormState, checkDuplicate }: Essentia
     () => ({
       email: (value: string) => {
         if (value.length < 3) return '이메일은 3자 이상이어야 합니다.';
-        if (!value.includes('@')) return '유효한 이메일 주소를 입력해주세요.';
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailRegex.test(value)) return '유효한 이메일 주소를 입력해주세요.';
         return null;
       },
       password: validatePassword,
