@@ -28,32 +28,31 @@
 
 ## 개발 환경 💻
 
-<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
 
-- 모듈과 인터페이스를 제공하여, 코드의 재사용성을 높이고 모듈화가 용이해요.
-- 컴파일 시점에 타입 체크를 수행하여 안정적으로 코드 작성을 할 수 있어요.
-- 코드의 가독성을 높이고, 실수를 줄일 수 있어요. </br></br>
+- x </br>
 
-<img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/>
 
-- 더 나은 성능과 SEO가 가능해요.
-- 서버 사이드 렌더링(SSR)과 정적 사이트 생성(SSG)을 지원하여 사용자 경험을 개선할 수 있어요. </br></br>
+- x </br>
 
-<img src="https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwind&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
 
-- 디자인을 쉽고 빠르게 개발할 수 있어요.
-- 일관성이 있는 디자인이 가능해요. <br/><br/>
+- x <br/>
 
-<img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"/>
 
-- 실시간 업데이트를 처리하는 실시간 기능이 제공돼요.
-- 백엔드 시스템 관리가 필요없으므로 프론트 개발 생산성을 높일 수 있어요. <br/><br/>
+- x <br/>
 
-<img src="https://img.shields.io/badge/zustand-F3DF49?style=for-the-badge&logo=zustand&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/zustand-F3DF49?style=for-the-badge&logo=zustand&logoColor=white"/>
 
-- 불필요한 렌더링을 최소화할 수 있어요.
-- 보일러 플레이트가 적어서 효율적으로 코드를 관리할 수 있어요. <br/>
-  <br/>
+- x <br/>
+
+<img src="https://img.shields.io/badge/TANSTACK QUERY-FF4154?style=for-the-badge&logo=react-query&logoColor=white"/>
+
+- Next.js 14 및 Supabase와 함께 사용
+- 서버 상태 관리 최적화
+- 캐싱 등 성능 최적화 기능 제공 </br></br>
 
 ## 주요 기능 🔨
 
