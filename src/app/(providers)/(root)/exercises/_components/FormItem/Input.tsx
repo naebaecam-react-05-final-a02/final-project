@@ -10,10 +10,10 @@ const Input = ({ value, name, onChange }: InputProps) => {
       <div className="box-border absolute inset-0 rounded-xl border-2 border-white/10 -z-10"></div>
       <input
         onChange={onChange}
-        className="flex justify-center items-center w-12 h-10 rounded-xl  exerciseInput input-bg
+        className="flex justify-center items-center w-12 h-10 rounded-xl  exerciseInput input-bg text-center
       focus:outline-none focus:border-[#12F287] text-semibold text-white appearance-none"
         name={name}
-        type="number"
+        type="text"
         value={value ?? ''}
         placeholder="0"
       />

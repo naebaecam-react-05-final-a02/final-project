@@ -132,7 +132,7 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
         </div>
       </div>
       <div ref={buttonVisibilityRef} className="h-0 relative -z-10" />
-      <NavBar className="fixed bottom-0 max-w-[800px]" />
+      <NavBar />
     </div>
   );
 };

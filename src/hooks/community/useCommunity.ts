@@ -1,4 +1,4 @@
-import { Answer, AnswerResponse, CommentData, CommunityPostData, PostsResponse, ReplyData } from '@/types/community';
+import { Answer, AnswerResponse, CommentData, CommunityPostData, PostsResponse } from '@/types/community';
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { communityQueryKeys, mutationOptions, queryOptions } from './queries';
 
@@ -13,6 +13,7 @@ export const useGetCommunityPosts = ({ category, categories, initialData }: UseG
 
   const query = useInfiniteQuery<PostsResponse, Error, InfiniteData<PostsResponse, number>>({
     ...queryOptions.posts(category),
+    queryKey: communityQueryKeys.allPosts,
     initialData: initialData
       ? {
           pages: [initialData],
@@ -85,7 +86,7 @@ export const useUpdateCommunityPost = () => {
 export const useGetPostLikes = () => useQuery(queryOptions.postLikes());
 
 // 댓글 조회
-export const useGetComments = (postId: string) => useQuery(queryOptions.comments(postId));
+export const useGetComments = (postId: string) => useQuery(queryOptions.comments(postId.toString()));
 
 // 댓글 등록
 export const useAddComment = () => {
@@ -93,7 +94,8 @@ export const useAddComment = () => {
   return useMutation({
     ...mutationOptions.addComment,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(variables.postId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(variables.postId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.postDetail(variables.postId.toString()) });
     },
   });
 };
@@ -104,7 +106,7 @@ export const useUpdateComment = () => {
   return useMutation({
     ...mutationOptions.updateComment,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(variables.postId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(variables.postId.toString()) });
     },
   });
 };
@@ -115,51 +117,14 @@ export const useDeleteComment = () => {
   return useMutation({
     ...mutationOptions.deleteComment,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(variables.postId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(variables.postId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.postDetail(variables.postId.toString()) });
     },
   });
 };
 
 // 댓글 좋아요 목록 조회
 export const useGetCommentLikes = (commentId: string) => useQuery(queryOptions.commentLikes(commentId));
-
-// 답글 조회
-export const useGetReplies = (commentId: string) => useQuery(queryOptions.replies(commentId));
-
-// 답글 등록
-export const useAddReply = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.addReply,
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(variables.commentId) });
-    },
-  });
-};
-
-// 답글 업데이트
-export const useUpdateReply = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.updateReply,
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(variables.commentId) });
-    },
-  });
-};
-
-// 답글 삭제
-export const useDeleteReply = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.deleteReply,
-    onSuccess: (data, replyId) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
-    },
-  });
-};
-// 답글 좋아요 목록 조회
-export const useGetReplyLikes = (replyId: string) => useQuery(queryOptions.replyLikes(replyId));
 
 // 게시글 좋아요 토글
 export const useTogglePostLike = () => {
@@ -169,6 +134,7 @@ export const useTogglePostLike = () => {
     onMutate: async (postId: string) => {
       await queryClient.cancelQueries({ queryKey: communityQueryKeys.postDetail(postId) });
       const previousPost = queryClient.getQueryData<CommunityPostData>(communityQueryKeys.postDetail(postId));
+
       if (previousPost) {
         const newIsLiked = !previousPost.isLiked;
         queryClient.setQueryData<CommunityPostData>(communityQueryKeys.postDetail(postId), {
@@ -184,6 +150,10 @@ export const useTogglePostLike = () => {
         queryClient.setQueryData(communityQueryKeys.postDetail(postId), context.previousPost);
       }
     },
+    onSettled: (data, error, postId) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.postDetail(postId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.allPosts });
+    },
   });
 };
 // 댓글 좋아요 토글
@@ -192,7 +162,7 @@ export const useToggleCommentLike = () => {
   return useMutation({
     ...mutationOptions.toggleCommentLike,
     onMutate: async ({ postId, commentId }: { postId: string; commentId: string }) => {
-      await queryClient.cancelQueries({ queryKey: communityQueryKeys.comments(postId) });
+      await queryClient.cancelQueries({ queryKey: communityQueryKeys.comments(postId.toString()) });
       const previousComments = queryClient.getQueryData<CommentData[]>(communityQueryKeys.comments(postId));
 
       if (previousComments) {
@@ -211,47 +181,16 @@ export const useToggleCommentLike = () => {
       }
     },
     onSettled: (data, error, { postId, commentId }) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(postId) });
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.commentLikes(commentId) });
-    },
-  });
-};
-
-// 답글 좋아요 토글
-export const useToggleReplyLike = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.toggleReplyLike,
-    onMutate: async (replyId: string) => {
-      await queryClient.cancelQueries({ queryKey: communityQueryKeys.replies(replyId) });
-      const previousReplies = queryClient.getQueryData<ReplyData[]>(communityQueryKeys.replies(replyId));
-
-      if (previousReplies) {
-        const updatedReplies = previousReplies.map((reply) =>
-          reply.id === replyId
-            ? { ...reply, likes: reply.isLiked ? reply.likes - 1 : reply.likes + 1, isLiked: !reply.isLiked }
-            : reply,
-        );
-        queryClient.setQueryData<ReplyData[]>(communityQueryKeys.replies(replyId), updatedReplies);
-      }
-      return { previousReplies };
-    },
-    onError: (err, replyId: string, context) => {
-      if (context?.previousReplies) {
-        queryClient.setQueryData(communityQueryKeys.replies(replyId), context.previousReplies);
-      }
-    },
-    onSettled: (data, error, replyId: string) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(replyId) });
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replyLikes(replyId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(postId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.commentLikes(commentId.toString()) });
     },
   });
 };
 
 // 투표 목록 조회
-export const useGetVotes = (postId: string) => useQuery(queryOptions.vote(postId));
+export const useGetVotes = (postId: string) => useQuery(queryOptions.vote(postId.toString()));
 // 투표자 조회
-export const useGetVoters = (postId: string) => useQuery(queryOptions.voter(postId));
+export const useGetVoters = (postId: string) => useQuery(queryOptions.voter(postId.toString()));
 // 투표 등록
 export const usePostVote = () => {
   const queryClient = useQueryClient();
@@ -291,7 +230,8 @@ export const useCreateAnswer = () => {
   return useMutation({
     ...mutationOptions.createAnswer,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.postDetail(variables.questionId.toString()) });
     },
   });
 };
@@ -302,8 +242,8 @@ export const useUpdateAnswer = () => {
   return useMutation({
     ...mutationOptions.updateAnswer,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answer(variables.answerId) });
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(data.questionId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answer(variables.answerId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(data.questionId.toString()) });
     },
   });
 };
@@ -312,8 +252,10 @@ export const useDeleteAnswer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     ...mutationOptions.deleteAnswer,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.allPosts });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.postDetail(variables.questionId) });
     },
   });
 };
@@ -323,8 +265,8 @@ export const useAcceptAnswer = () => {
   return useMutation({
     ...mutationOptions.acceptAnswer,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.acceptedAnswer(variables.questionId) });
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.acceptedAnswer(variables.questionId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(variables.questionId.toString()) });
     },
   });
 };
@@ -409,6 +351,9 @@ export const useToggleQAPostLike = () => {
       if (context?.previousData) {
         queryClient.setQueryData(queryKey, context.previousData);
       }
+    },
+    onSettled: (data, error, { postId }) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(postId.toString()) });
     },
   });
 };
@@ -502,8 +447,8 @@ export const useToggleQAAnswerLike = () => {
         queryClient.setQueryData(communityQueryKeys.answers(postId), context.previousData);
       }
     },
-    // onSettled: (data, error, { postId }) => {
-    //   queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(postId) });
-    // },
+    onSettled: (data, error, { postId }) => {
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(postId.toString()) });
+    },
   });
 };

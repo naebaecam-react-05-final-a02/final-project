@@ -23,7 +23,9 @@ const NavBar = ({ className = '' }: NavBarProps) => {
   ];
 
   return (
-    <div className={`flex flex-col w-full backdrop-blur-[20px] bg-black/70 rounded-t-2xl ${className}`}>
+    <div
+      className={`flex flex-col w-full backdrop-blur-[20px] bg-black/70 rounded-t-2xl fixed bottom-0 max-w-[800px] ${className}`}
+    >
       <div className="grid grid-cols-4 gap-1 px-2 ">
         {navItems.map((item) => (
           <Link href={item.href} key={item.href} className="flex justify-center">
