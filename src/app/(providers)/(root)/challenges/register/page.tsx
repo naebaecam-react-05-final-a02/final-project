@@ -2,7 +2,7 @@ import ChallengeRegisterForm from './_components/ChallengeRegisterForm';
 
 const ChallengeRegisterPage = () => {
   return (
-    <main className='className="grid gap-y-11 w-full"'>
+    <main className="grid gap-y-11 w-full">
       <ChallengeRegisterForm />
     </main>
   );
