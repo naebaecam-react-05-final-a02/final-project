@@ -31,7 +31,7 @@ const NotificationButton = () => {
         },
       )
       .subscribe((status) => {
-        console.log('STATUS___', status);
+        // console.log('STATUS___', status);
       });
     return () => {
       channels.unsubscribe();
