@@ -116,7 +116,7 @@ export const getChallengeWithParticipants = async (client: SupabaseClient<Databa
 
   const { data, error } = await client
     .from('challenges')
-    .select(`title,content,participants:challengeParticipants(userId)`, { count: 'exact' })
+    .select(`title,content,isProgress,participants:challengeParticipants(userId)`, { count: 'exact' })
     .eq('id', challengeId)
     .single();
 

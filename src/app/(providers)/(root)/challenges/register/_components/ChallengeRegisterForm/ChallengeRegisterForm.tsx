@@ -156,35 +156,38 @@ const ChallengeRegisterForm = () => {
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4 select-none">
       {(uploading || isPending) && <Loading />}
 
-      <CallengeCategory />
+      <div className="flex flex-col gap-y-4  ">
+        <CallengeCategory />
 
-      <ChallengeInput
-        label="챌린지 이름"
-        name="title"
-        placeholder="최대 12글자로 작성해 주세요."
-        error={err['title']}
-        errorHandler={setErr}
-      />
+        <ChallengeInput
+          label="챌린지 이름"
+          name="title"
+          placeholder="최대 12글자로 작성해 주세요."
+          error={err['title']}
+          errorHandler={setErr}
+        />
 
-      <ChallengeInput
-        maxLength={200}
-        rows={6}
-        label="챌린지 내용 & 인증 방법"
-        name="content"
-        placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
-        error={err['content']}
-        errorHandler={setErr}
-      />
+        <ChallengeInput
+          maxLength={200}
+          rows={6}
+          label="챌린지 내용 & 인증 방법"
+          name="content"
+          placeholder="챌린지 내용과 인증 방법을 작성해 주세요."
+          error={err['content']}
+          errorHandler={setErr}
+        />
 
-      <FormCalendar />
+        <FormCalendar />
 
-      <div className="grid gap-y-4">
-        <FormImageUploader ref={inputRef} error={err['image']} errorHandler={setErr} setIsImageDel={setIsImageDel} />
-        <div className="text-white/50 flex gap-x-1">
-          <AiOutlineExclamationCircle />
-          <p className="text-xs"> 홍보를 위한 썸네일 이미지를 함께 업로드 해주세요!</p>
+        <div className="grid gap-y-4">
+          <FormImageUploader ref={inputRef} error={err['image']} errorHandler={setErr} setIsImageDel={setIsImageDel} />
+          <div className="text-white/50 flex gap-x-1">
+            <AiOutlineExclamationCircle />
+            <p className="text-xs"> 홍보를 위한 썸네일 이미지를 함께 업로드 해주세요!</p>
+          </div>
         </div>
       </div>
+
       <Button type="submit" className="select-none">
         챌린지 등록하기
       </Button>

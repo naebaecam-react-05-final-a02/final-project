@@ -776,6 +776,21 @@ export type Database = {
           },
         ];
       };
+      level: {
+        Row: {
+          experience: number;
+          level: number;
+        };
+        Insert: {
+          experience: number;
+          level?: number;
+        };
+        Update: {
+          experience?: number;
+          level?: number;
+        };
+        Relationships: [];
+      };
       notifications: {
         Row: {
           category: string;
@@ -840,6 +855,42 @@ export type Database = {
           },
           {
             foreignKeyName: 'postsviews_userid_fkey';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      userLevel: {
+        Row: {
+          experience: number;
+          id: number;
+          level: number;
+          userId: string;
+        };
+        Insert: {
+          experience?: number;
+          id?: number;
+          level?: number;
+          userId: string;
+        };
+        Update: {
+          experience?: number;
+          id?: number;
+          level?: number;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'userLevel_level_fkey';
+            columns: ['level'];
+            isOneToOne: false;
+            referencedRelation: 'level';
+            referencedColumns: ['level'];
+          },
+          {
+            foreignKeyName: 'userLevel_userId_fkey';
             columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';

@@ -16,16 +16,18 @@ type WeightChartType = {
 
 // 체중 입력하는 곳이 없으므로 임시 데이터
 let tmp = [];
-for (let i = 0; i <= 7; i++) {
+for (let i = 0; i <= 30; i++) {
   tmp.push({
     id: i + 1,
-    date: format(subDays(new Date(), 7 - i), 'yyyy-MM-dd'),
+    date: format(subDays(new Date(), 30 - i), 'yyyy-MM-dd'),
     weight: Math.floor(Math.random() * 20 + 60),
   });
 }
 
 const WeightChart = ({ query }: WeightChartType) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [length, setLength] = useState<number>(7);
+
   const supabase = createClient();
   const { data: user } = useGetUser();
   const { data: weights, error } = useQuery({
@@ -36,6 +38,27 @@ const WeightChart = ({ query }: WeightChartType) => {
 
   useEffect(() => {
     setIsLoading(false);
+
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 1280) {
+        setLength(16);
+      } else if (width >= 1024) {
+        setLength(13);
+      } else if (width >= 768) {
+        setLength(11);
+      } else if (width >= 640) {
+        setLength(9);
+      } else {
+        setLength(7);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   if (!weights || isLoading) {
@@ -70,12 +93,14 @@ const WeightChart = ({ query }: WeightChartType) => {
   const maxWeight = Math.max(...weightsArray);
   const ticks = Array.from({ length: maxWeight - minWeight + 3 }, (_, i) => minWeight - 1 + i);
 
+  const chartData = tmp.slice(-length);
+  // console.log(length, chartData);
   return (
     <>
       <div className="w-full text-center text-sm text-white/50">나의 체중 변화</div>
       <ResponsiveContainer width="100%" height={'99.5%'} debounce={1} minHeight={100}>
         {/* <LineChart data={weights?.data!} margin={{ right: 10, left: -15, bottom: 10, top: 10 }}> */}
-        <LineChart data={tmp} margin={{ right: 0, left: -40, bottom: 10, top: 10 }}>
+        <LineChart data={chartData} margin={{ right: 0, left: -40, bottom: 10, top: 10 }}>
           <XAxis
             filter="url(#glow)"
             tickLine={false}
@@ -123,10 +148,10 @@ const WeightChart = ({ query }: WeightChartType) => {
             dataKey="weight"
             stroke="url(#gradient)"
             dot={({ cx, cy, index }) => {
-              if (index === tmp.length - 1) {
+              if (index === chartData.length - 1) {
                 return (
                   <circle
-                    key={tmp[index].id}
+                    key={chartData[index].id}
                     cx={cx}
                     cy={cy}
                     r={4}
@@ -137,7 +162,9 @@ const WeightChart = ({ query }: WeightChartType) => {
                   />
                 );
               }
-              return <circle key={tmp[index].id} cx={cx} cy={cy} r={4} fill="gray" stroke="white" strokeWidth={1} />;
+              return (
+                <circle key={chartData[index].id} cx={cx} cy={cy} r={4} fill="gray" stroke="white" strokeWidth={1} />
+              );
             }}
             activeDot={{ r: 16 }}
           />
