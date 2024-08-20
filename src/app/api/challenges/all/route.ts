@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
   const today = dayjs().format('YYYY-MM-DD');
 
   const supabase = createClient();
-  const to = (page - 1) * limit;
-  const from = page * limit;
+  const from = (page - 1) * limit;
+  const to = page * limit;
 
   if (categories?.includes('all')) {
     categories.pop();
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     .like('title', `%${searchValue}%`)
     .order(order as string, { ascending })
     .gte('endDate', today)
-    .range(to, from);
+    .range(from, to);
 
   if (error) {
     return NextResponse.json({ error: error.message, data: null, nextPage: null });
