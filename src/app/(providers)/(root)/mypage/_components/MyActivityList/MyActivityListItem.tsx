@@ -3,7 +3,7 @@
 import Card from '@/components/Card';
 import ExerciseChip from '@/components/ExerciesChip/ExerciesChip';
 import Loading from '@/components/Loading/Loading';
-import { useGetPostLikes, useTogglePostLike } from '@/hooks/community/useCommunity';
+import { useTogglePostLike } from '@/hooks/community/useCommunity';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,6 @@ const MyActivityListItem = ({ post }: MyActivityListItemProps) => {
 
   const firstImageUrl = imgMatch ? imgMatch[1] : null;
 
-  const { data: likeData, isPending: isLikeDataPending } = useGetPostLikes(post.id);
   const { mutate: toggleLike, isPending: isToggleLikePending } = useTogglePostLike();
 
   const handleLikeToggle = (e: React.MouseEvent) => {
@@ -52,7 +51,7 @@ const MyActivityListItem = ({ post }: MyActivityListItemProps) => {
     }
   };
 
-  if (isLikeDataPending || isToggleLikePending) return <Loading />;
+  if (isToggleLikePending) return <Loading />;
 
   return (
     <Card className="px-4 rounded-[20px] border-2 border-whiteT-10 bg-black/5 shadow-[-4px_-4px_8px_0px_rgba(255,255,255,0.05),_4px_4px_8px_0px_rgba(0,0,0,0.40)] backdrop-blur-[8px]">
@@ -90,7 +89,7 @@ const MyActivityListItem = ({ post }: MyActivityListItemProps) => {
         <div className="flex gap-2">
           <button
             onClick={handleLikeToggle}
-            disabled={isLikeDataPending || isToggleLikePending}
+            disabled={isToggleLikePending}
             className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center"
           >
             <FaHeart className={`w-[14px] h-[14px] ${isLiked ? 'text-red-500 ' : ''}`} />
