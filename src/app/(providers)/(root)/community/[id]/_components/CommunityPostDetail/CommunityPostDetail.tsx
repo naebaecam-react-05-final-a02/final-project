@@ -68,7 +68,13 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
 
   const isAuthor = post.user.id === user?.id;
 
-  const handleEdit = () => router.push(`/community/${postId}/edit`);
+  const handleEdit = () => {
+    if (!isAcceptedAnswer) {
+      router.push(`/community/${postId}/edit`);
+    } else {
+      modal.alert(['채택된 답변은 수정할 수 없습니다.']);
+    }
+  };
   const handleDelete = () => {
     modal.confirm(['정말로 이 게시글을 삭제하시겠습니까?']).then((yes) => {
       if (yes) {
