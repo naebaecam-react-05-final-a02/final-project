@@ -24,9 +24,10 @@ export interface userActivitiesTypes {
   myAnswers: myAnswer[];
 }
 
-interface UserData {
+export interface UserData {
   id: string;
   nickname: string;
+  level: string;
   profileURL?: string;
 }
 

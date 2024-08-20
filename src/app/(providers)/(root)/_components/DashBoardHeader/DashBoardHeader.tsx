@@ -16,10 +16,10 @@ type DashBoardHeaderType = {
 
 const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [position, setPosition] = useState<number>(0);
+  const [position, setPosition] = useState<{ clientX: number; clientY: number }>({ clientX: 0, clientY: 0 });
 
   const handleCalendar = (e: MouseEvent<HTMLDivElement>) => {
-    setPosition(e.clientY);
+    setPosition({ clientX: e.clientX, clientY: e.clientY });
     setIsCalendarOpen((prev) => !prev);
   };
 
@@ -49,9 +49,9 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
         {isCalendarOpen && (
           <ModalPortalLayout onClose={() => setIsCalendarOpen(false)}>
             <div
+              style={{ left: `${position.clientX}px` }}
               className={`absolute w-[280px]
-                left-14
-                ${position > 300 ? 'top-[430px]' : 'top-[275px]'}
+                ${position.clientY > 300 ? 'top-[430px]' : 'top-[275px]'}
                 text-white mt-1 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden`}
             >
               <InputCalendar selectedDate={date} onSelectDate={handleDateSelected} />

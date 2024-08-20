@@ -17,7 +17,6 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
   const width = useWindowWidthStore((state) => state.width);
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
-  const breakpointCols = width < 400 ? 2 : width < 640 ? 3 : 4;
 
   const {
     data: verifications,
@@ -58,6 +57,12 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
     };
   }, [verifications, fetchNextPage, hasNextPage]);
 
+  const breakPoint = {
+    default: 4,
+    700: 3,
+    500: 2,
+  };
+
   return (
     <div className="px-4">
       {!verifications ||
@@ -71,11 +76,7 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
           <LocalBanner users={counts.totalUsers} title={title} />
 
           <ul>
-            <Masonry
-              breakpointCols={breakpointCols}
-              className="my-masonry-grid"
-              columnClassName="my-masonry-grid_column"
-            >
+            <Masonry breakpointCols={breakPoint} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
               {verifications?.map((verification, i) => (
                 <li className="list-none" key={verification.id}>
                   <VerificationItem verification={verification} />
@@ -83,7 +84,7 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
               ))}
               {isFetching &&
                 hasNextPage &&
-                Array.from({ length: 5 }).map((_, i) => (
+                Array.from({ length: 6 }).map((_, i) => (
                   <li key={i}>
                     <VerificationCardSkeleton />
                   </li>

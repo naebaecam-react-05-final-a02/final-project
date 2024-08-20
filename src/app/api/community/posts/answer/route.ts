@@ -36,7 +36,8 @@ export async function GET(request: NextRequest) {
         user:userId (
           id,
           nickname,
-          profileURL
+          profileURL,
+          level
         )
       `,
       )

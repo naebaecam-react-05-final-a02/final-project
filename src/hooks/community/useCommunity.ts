@@ -43,29 +43,32 @@ export const useGetCommunityPostDetail = (postId: string, initialData: Community
   });
 
 // 커뮤니티 글 등록
-export const useCreateCommunityPost = () => {
+export const useCreateCommunityPost = (category: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     ...mutationOptions.write,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.posts('전체') });
+
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.posts(category) });
     },
   });
 };
 
 // 커뮤니티 글 삭제
-export const useDeleteCommunityPost = () => {
+export const useDeleteCommunityPost = (category: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     ...mutationOptions.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.posts('전체') });
+
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.posts(category) });
     },
   });
 };
-
 // 커뮤니티 글 수정
 export const useUpdateCommunityPost = () => {
   const queryClient = useQueryClient();

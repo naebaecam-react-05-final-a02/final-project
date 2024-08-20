@@ -70,7 +70,7 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
 
     return monthWeeks;
   };
-  console.log('아아', currentMonthIndex);
+
   return (
     <>
       <table className="w-full">

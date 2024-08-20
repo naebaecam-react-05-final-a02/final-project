@@ -34,7 +34,7 @@ const CommunityPostForm = () => {
   const modal = useModal();
 
   const { data: user } = useGetUser();
-  const { mutateAsync: createPost, isPending, error } = useCreateCommunityPost();
+  const { mutateAsync: createPost, isPending, error } = useCreateCommunityPost(selectedCategory);
   const { mutateAsync: postVote } = usePostVote();
 
   const { mutate: levelUp } = useLevelUp();

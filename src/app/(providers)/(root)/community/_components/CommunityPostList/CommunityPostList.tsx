@@ -68,7 +68,7 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
     setIsSearching(true);
     try {
       if (user) {
-        const results = await searchCommunityPosts(term, selectedCategory, user.id);
+        const results = await searchCommunityPosts(term, '전체', user.id);
         if (results) {
           setSearchResults(results.data);
         }

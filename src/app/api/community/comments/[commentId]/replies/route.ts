@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: { params: { commentI
       .select(
         `
         *,
-        user:users(id, nickname, profileURL),
+        user:users(id, nickname, profileURL, level),
         isLiked:communityReplyLikes!left(id)
       `,
       )
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest, { params }: { params: { comment
     const { data, error } = await supabase
       .from('communityReply')
       .insert({ commentId, userId: user.id, content })
-      .select('*, user:users(id, nickname, profileURL)')
+      .select('*, user:users(id, nickname, profileURL, level)')
       .single();
 
     if (error) throw error;

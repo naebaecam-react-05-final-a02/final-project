@@ -119,7 +119,7 @@ const InputSelect = ({
           )}
           <button
             type="button"
-            className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col justify-center items-center p-[2px] gap-[10px] rounded-[4px] transition-all duration-300 ease-in-out
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col justify-center items-center p-[2px] gap-[10px] rounded-[4px] transition-all duration-300 ease-in-out text-whiteT-40
               ${isOpen ? 'bg-primary-10 rotate-180 z-20' : 'bg-[rgba(255,255,255,0.05)]'}`}
             onClick={toggleDropdown}
             disabled={!dropdownOptions || dropdownOptions.length === 0}

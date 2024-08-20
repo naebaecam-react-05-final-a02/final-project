@@ -124,7 +124,7 @@ const SignUpForm = () => {
 
   const renderHeader = () => {
     const config = headerConfigs[currentStep as keyof typeof headerConfigs] || {};
-    return <Header className="sm:py-5" {...config} />;
+    return <Header {...config} />;
   };
 
   return (
