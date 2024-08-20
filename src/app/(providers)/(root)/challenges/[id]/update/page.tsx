@@ -1,4 +1,3 @@
-import Mobile from '@/layouts/Mobile';
 import { createClient } from '@/supabase/server';
 import { Tables } from '@/types/supabase';
 import { redirect } from 'next/navigation';
@@ -34,11 +33,9 @@ const ChallengeUpdatePage = async ({ params }: ChallengeUpdatePageProp) => {
   }
 
   return (
-    <Mobile>
-      <div className="size-full">
-        <ChallengeUpdate challenge={challenge} />
-      </div>
-    </Mobile>
+    <div className="size-full">
+      <ChallengeUpdate challenge={challenge} />
+    </div>
   );
 };
 

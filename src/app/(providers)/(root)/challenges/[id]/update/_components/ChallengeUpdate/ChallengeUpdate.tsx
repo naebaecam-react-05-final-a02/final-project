@@ -130,7 +130,7 @@ const ChallengeUpdate = ({ challenge }: ChallengeUpdateProps) => {
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full px-4">
+    <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-y-4 w-full ">
       {(uploading || updating) && <Loading />}
       <CallengeCategory defaultValue={challenge.category} />
 
