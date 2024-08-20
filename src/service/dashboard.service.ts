@@ -178,6 +178,8 @@ class DashBoardAPI {
       const { data: challenges, error } = await client
         .from('challengeParticipants')
         .select('*,challenges(*)')
+        .neq('challenges.isProgress', 'END')
+        .order('startDate', { referencedTable: 'challenges', ascending: true })
         .eq('userId', user?.id);
 
       if (error) {

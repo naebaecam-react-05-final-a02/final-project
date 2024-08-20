@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useCreateAnswer, useGetCommunityPostDetail } from '@/hooks/community/useCommunity';
+import { useLevelUp } from '@/hooks/level/useLevel';
 import { useCreateNotification } from '@/hooks/notifications/useNotifications';
 import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import { Editor } from '@tiptap/react';
@@ -27,6 +28,7 @@ const CommunityPostAnswerForm = ({ postId }: CommunityPostAnswerFormProps) => {
   const [isContentValid, setIsContentValid] = useState(false);
   const editorRef = useRef<Editor | null>(null);
   const { mutateAsync: createAnswer, isPending } = useCreateAnswer();
+  const { mutate: levelUp } = useLevelUp();
 
   const router = useRouter();
   const modal = useModal();
@@ -54,6 +56,8 @@ const CommunityPostAnswerForm = ({ postId }: CommunityPostAnswerFormProps) => {
         content: content,
       });
       createNotification(makeNotificationData({ type: 'community', category: 'reply' }, post.user.id, postId));
+      //LEVEL
+      levelUp({ exp: 10 });
       modal.alert(['답변이 등록되었습니다.']);
 
       router.push(`/community/${postId}`);
