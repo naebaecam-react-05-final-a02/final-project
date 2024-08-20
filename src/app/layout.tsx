@@ -14,7 +14,7 @@ export default function HtmlLayout({
 }>) {
   return (
     <html className="w-full h-full" lang="en">
-      <body className="font-sans w-full h-full">{children}</body>
+      <body className="relative font-sans w-full h-full">{children}</body>
     </html>
   );
 }

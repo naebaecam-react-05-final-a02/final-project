@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import AlertModal from '@/components/Modal/AlertModal';
 import Backdrop from '@/components/Modal/BackDrop';
 import ChallengeFilterModal from '@/components/Modal/ChallengeFilterModal';
+import WeightModal from '@/components/Modal/WeightModal';
 import { ChallengeFilterTypes } from '@/types/challenge';
 import { PropsWithChildren, createContext, useContext, useRef, useState } from 'react';
 
@@ -14,6 +15,7 @@ interface TInitialValue {
   confirm: (contents: string[]) => Promise<boolean>;
   custom: {
     filter: () => Promise<ChallengeFilterTypes | false>;
+    weight: () => void;
   };
   open: (el: React.ReactElement) => void;
   close: (id: string) => void;
@@ -24,11 +26,12 @@ const initialValue: TInitialValue = {
   confirm: async () => true,
   custom: {
     filter: async () => ({
-      categories: ['all'],
-      status: ['recruiting'],
-      order: ['date'],
-      isOk: false,
+      searchValue: '',
+      categories: [],
+      status: [],
+      order: [],
     }),
+    weight: () => {},
   },
   open: () => {},
   close: () => {},
@@ -47,7 +50,6 @@ export function ModalProvider({ children }: PropsWithChildren) {
   const addModal = (modal: ModalTypes) => setModals((prev) => [...prev, modal]);
   const deleteModal = (id: string) => setModals((prev) => prev.filter((modal) => modal.id !== id));
   const resolveRef = useRef<Function>(() => {});
-  console.log(resolveRef);
 
   const value = {
     alert: async (contents: string[], title?: string) => {
@@ -73,6 +75,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
         addModal({ id: modalId, modal });
       });
     },
+
     custom: {
       filter: async () => {
         return new Promise<ChallengeFilterTypes | false>((resolve) => {
@@ -87,6 +90,11 @@ export function ModalProvider({ children }: PropsWithChildren) {
           );
           addModal({ id: modalId, modal });
         });
+      },
+      weight: () => {
+        const modalId = uuidv4();
+        const modal = <WeightModal id={modalId} />;
+        addModal({ id: modalId, modal });
       },
     },
     open: (modal: React.ReactElement) => {

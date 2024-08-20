@@ -43,11 +43,12 @@ export type joinedMyChallengesDataType =
       details: null;
     };
 
-export type ChallengeStatusTypes = 'all' | 'recruiting' | 'progressing' | 'ended';
-export type ChallengeOrderTypes = 'date' | 'alphabet' | 'participants' | 'verifications';
+export type ChallengeStatusTypes = 'all' | 'LF' | 'RUN' | 'END';
+export type ChallengeOrderTypes = 'startDate' | 'endDate' | 'participants' | 'verifications';
 export type ChallengeCategoryTypes = 'all' | 'exercise' | 'diet' | 'lifestyle' | 'etc';
 
 export interface ChallengeFilterTypes {
+  searchValue: string;
   categories: ChallengeCategoryTypes[];
   status: ChallengeStatusTypes[];
   order: ChallengeOrderTypes[];

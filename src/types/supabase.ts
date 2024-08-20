@@ -971,49 +971,15 @@ export type Database = {
           },
         ]
       }
-      userLevel: {
-        Row: {
-          experience: number
-          id: number
-          level: number
-          userId: string
-        }
-        Insert: {
-          experience?: number
-          id?: number
-          level?: number
-          userId: string
-        }
-        Update: {
-          experience?: number
-          id?: number
-          level?: number
-          userId?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "userLevel_level_fkey"
-            columns: ["level"]
-            isOneToOne: false
-            referencedRelation: "level"
-            referencedColumns: ["level"]
-          },
-          {
-            foreignKeyName: "userLevel_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       users: {
         Row: {
           createdAt: string
           email: string
+          experience: number | null
           height: number | null
           id: string
           introduction: string
+          level: number | null
           nickname: string | null
           profileURL: string | null
           userIndex: number
@@ -1022,9 +988,11 @@ export type Database = {
         Insert: {
           createdAt?: string
           email: string
+          experience?: number | null
           height?: number | null
           id: string
           introduction?: string
+          level?: number | null
           nickname?: string | null
           profileURL?: string | null
           userIndex?: number
@@ -1033,9 +1001,11 @@ export type Database = {
         Update: {
           createdAt?: string
           email?: string
+          experience?: number | null
           height?: number | null
           id?: string
           introduction?: string
+          level?: number | null
           nickname?: string | null
           profileURL?: string | null
           userIndex?: number
@@ -1048,6 +1018,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_level_fkey"
+            columns: ["level"]
+            isOneToOne: false
+            referencedRelation: "level"
+            referencedColumns: ["level"]
           },
         ]
       }

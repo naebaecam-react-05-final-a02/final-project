@@ -53,7 +53,7 @@ export const mutationOptions = {
       api.exercise.update({ exerciseData, exerciseId }),
   },
   toggleBookmark: {
-    mutationFn: (exerciseName: string) => api.exercise.toggleBookmark(exerciseName),
+    mutationFn: (record: RecordData) => api.exercise.toggleBookmark(record),
   },
   toggleCompleted: {
     mutationFn: (data: { exercise: ExerciseTodoItemType; isCompleted: boolean; date: Date }) =>

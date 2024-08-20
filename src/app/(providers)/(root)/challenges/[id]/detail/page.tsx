@@ -5,7 +5,7 @@ import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { categoryItemsENGtoKOR } from '@/data/challenges';
 import { useGetUser } from '@/hooks/auth/useUsers';
-import { useChallengeJoin, useChallnegeLeave, useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
+import { useChallengeJoin, useChallengeLeave, useGetChallengeDetail } from '@/hooks/challenge/useChallenge';
 import Mobile from '@/layouts/Mobile';
 import BackBoard from '@/layouts/Mobile/BackBoard/BackBoard';
 import { queryClient } from '@/providers/QueryProvider';
@@ -18,9 +18,9 @@ import VerificationRecordList from './_components/VerificationRecordList';
 const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id, 10);
   const { data: user } = useGetUser();
-  const { data: challenge } = useGetChallengeDetail(id);
+  const { data: challenge, isPending } = useGetChallengeDetail(id);
   const { mutate: joinChallenge, isPending: isJoining } = useChallengeJoin();
-  const { mutate: leaveChallenge, isPending: isLeaving } = useChallnegeLeave();
+  const { mutate: leaveChallenge, isPending: isLeaving } = useChallengeLeave();
 
   const modal = useModal();
 
@@ -41,10 +41,7 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
   //   };
   // }, []);
 
-  if (!challenge) {
-    return <Loading />;
-  }
-
+  if (!challenge || isPending) return <Loading />;
   // 날짜 포맷팅
   const startDate = new Date(challenge.startDate);
   const endDate = new Date(challenge.endDate);
@@ -96,9 +93,15 @@ const ChallengeDetailPage = ({ params }: { params: { id: string } }) => {
         </Button>
       ) : (
         <div className="flex gap-x-2 w-full">
-          <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
-            <Button type="button">챌린지 인증하기</Button>
-          </Link>
+          {challenge.isProgress === 'RUN' ? (
+            <Link className="flex-1 w-full" href={`/challenges/${challenge.id}/verification/register`}>
+              <Button type="button">챌린지 인증하기</Button>
+            </Link>
+          ) : (
+            <Button className="flex-1 w-full" disabled>
+              시작하지 않았어요!
+            </Button>
+          )}
           <button
             className="flex-1 bg-red-600 rounded-lg hover:bg-red-700"
             onClick={handleLeaveChallenge}

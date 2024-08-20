@@ -7,6 +7,7 @@ import Input from '@/components/Input';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useCreateCommunityPost, usePostVote } from '@/hooks/community/useCommunity';
+import { useLevelUp } from '@/hooks/level/useLevel';
 import { CommunityPostCreateData } from '@/types/community';
 import { Editor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
@@ -36,13 +37,10 @@ const CommunityPostForm = () => {
   const { mutateAsync: createPost, isPending, error } = useCreateCommunityPost();
   const { mutateAsync: postVote } = usePostVote();
 
+  const { mutate: levelUp } = useLevelUp();
+
   const categories = useMemo(() => {
-    const baseCategories = [
-      { value: '자유 게시판' },
-      { value: '투표' },
-      { value: 'Q&A 게시판' },
-      { value: '정보공유' },
-    ];
+    const baseCategories = [{ value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }];
 
     if (user?.user_metadata?.role === 'admin') {
       baseCategories.push({ value: '투표' });
@@ -84,8 +82,11 @@ const CommunityPostForm = () => {
             items: voteItems,
           };
           await postVote(voteFormData, {
-            onSuccess: () => {
+            onSuccess: async () => {
               modal.alert(['게시글이 등록되었습니다.']);
+              //LEVEL
+              levelUp({ exp: 5 });
+
               resetForm();
               route.push('/community');
             },
@@ -96,6 +97,10 @@ const CommunityPostForm = () => {
           });
         } else {
           modal.alert(['게시글이 등록되었습니다.']);
+          //LEVEL
+
+          levelUp({ exp: 5 });
+
           resetForm();
           route.push('/community');
         }

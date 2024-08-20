@@ -27,6 +27,22 @@ class UsersAPI {
     const data = response.data;
     return data;
   };
+  getUserActivities = async () => {
+    const response = await axios.get(`${this.baseUrl}/activities`);
+    return response.data;
+  };
+  getPaginatedLikesPosts = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseUrl}/activities/likesPosts?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+  getPaginatedMyPosts = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseUrl}/activities/myPosts?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+  getPaginatedMyAnswers = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseUrl}/activities/myAnswers?page=${page}&limit=${limit}`);
+    return response.data;
+  };
 }
 
 export default UsersAPI;

@@ -1,27 +1,46 @@
-import { Answer, AnswerResponse, CommentData, CommunityPostData, ReplyData } from '@/types/community';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { communityQueryKeys, mutationOptions, prefetchCommunityPosts, queryOptions } from './queries';
+import { Answer, AnswerResponse, CommentData, CommunityPostData, PostsResponse, ReplyData } from '@/types/community';
+import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { communityQueryKeys, mutationOptions, queryOptions } from './queries';
 
-// 커뮤니티 글 목록 조회
-export const useGetCommunityPosts = (category: string, categories: string[]) => {
+interface UseGetCommunityPostsProps {
+  category: string;
+  categories: string[];
+  initialData?: PostsResponse;
+}
+// 게시글 목록 불러오기
+export const useGetCommunityPosts = ({ category, categories, initialData }: UseGetCommunityPostsProps) => {
   const queryClient = useQueryClient();
-  const query = useInfiniteQuery(queryOptions.posts(category));
 
-  const prefetchAllCategories = async () => {
+  const query = useInfiniteQuery<PostsResponse, Error, InfiniteData<PostsResponse, number>>({
+    ...queryOptions.posts(category),
+    initialData: initialData
+      ? {
+          pages: [initialData],
+          pageParams: [1],
+        }
+      : undefined,
+  });
+
+  const fetchCategoryData = async () => {
     const prefetchedCategories = queryClient.getQueryData(['prefetchedCategories']);
     if (!prefetchedCategories) {
-      await prefetchCommunityPosts(queryClient, categories);
+      await Promise.all(categories.map((cat) => queryClient.prefetchInfiniteQuery(queryOptions.posts(cat))));
       queryClient.setQueryData(['prefetchedCategories'], true);
     }
   };
 
   return {
     ...query,
-    prefetchAllCategories,
+    fetchCategoryData,
   };
 };
+
 // 커뮤니티 글 상세 조회
-export const useGetCommunityPostDetail = (postId: string) => useQuery(queryOptions.postDetail(postId));
+export const useGetCommunityPostDetail = (postId: string, initialData: CommunityPostData) =>
+  useQuery({
+    ...queryOptions.postDetail(postId),
+    initialData,
+  });
 
 // 커뮤니티 글 등록
 export const useCreateCommunityPost = () => {
@@ -60,7 +79,7 @@ export const useUpdateCommunityPost = () => {
 };
 
 // 게시글 좋아요 목록 조회
-export const useGetPostLikes = (postId: string) => useQuery(queryOptions.postLikes(postId));
+export const useGetPostLikes = () => useQuery(queryOptions.postLikes());
 
 // 댓글 조회
 export const useGetComments = (postId: string) => useQuery(queryOptions.comments(postId));
@@ -162,9 +181,6 @@ export const useTogglePostLike = () => {
         queryClient.setQueryData(communityQueryKeys.postDetail(postId), context.previousPost);
       }
     },
-    onSettled: (data, error, postId: string) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
-    },
   });
 };
 // 댓글 좋아요 토글
@@ -255,7 +271,8 @@ export const useUpdateVote = () => {
 };
 
 // 답변 목록 조회
-export const useGetAnswers = (questionId: string) => useQuery(queryOptions.answers(questionId));
+export const useGetAnswers = (questionId: string, initialData: AnswerResponse) =>
+  useQuery({ ...queryOptions.answers(questionId), initialData });
 
 // 채택된 답변 조회
 export const useGetAcceptedAnswer = (questionId: string) => useQuery(queryOptions.acceptedAnswer(questionId));
@@ -390,10 +407,6 @@ export const useToggleQAPostLike = () => {
         queryClient.setQueryData(queryKey, context.previousData);
       }
     },
-    onSettled: (data, error, { postId }) => {
-      const queryKey = communityQueryKeys.postDetail(postId.toString());
-      queryClient.invalidateQueries({ queryKey });
-    },
   });
 };
 
@@ -486,8 +499,8 @@ export const useToggleQAAnswerLike = () => {
         queryClient.setQueryData(communityQueryKeys.answers(postId), context.previousData);
       }
     },
-    onSettled: (data, error, { postId }) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(postId) });
-    },
+    // onSettled: (data, error, { postId }) => {
+    //   queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(postId) });
+    // },
   });
 };

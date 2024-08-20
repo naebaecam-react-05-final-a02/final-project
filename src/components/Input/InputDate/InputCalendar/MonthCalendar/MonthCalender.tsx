@@ -25,8 +25,17 @@ dayjs.tz.setDefault('Asia/Seoul');
 dayjs.tz.setDefault('Asia/Seoul');
 
 const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth, onNextMonth }: MonthCalendarProps) => {
-  const [months, setMonths] = useState<Date[]>([]);
-  const [currentMonthIndex, setCurrentMonthIndex] = useState(6);
+  const [months, setMonths] = useState<Date[]>(() => {
+    const today = new Date();
+    const monthsList: Date[] = [];
+    for (let i = -6; i <= 6; i++) {
+      const month = new Date(today.getFullYear(), today.getMonth() + i, 1);
+      monthsList.push(month);
+    }
+    return monthsList;
+  });
+  const selectedMonthIndex = months.findIndex((month) => dayjs(month).isSame(dayjs(selectedDate), 'month'));
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(selectedMonthIndex !== -1 ? selectedMonthIndex : 6);
   const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
@@ -37,22 +46,10 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
   }, [onPrevMonth, onNextMonth]);
 
   useEffect(() => {
-    generateMonths();
-  }, []);
-
-  useEffect(() => {
-    onChangeMonth(months[currentMonthIndex]);
-  }, [currentMonthIndex, months, onChangeMonth]);
-
-  const generateMonths = () => {
-    const today = new Date();
-    const monthsList: Date[] = [];
-    for (let i = -6; i <= 6; i++) {
-      const month = new Date(today.getFullYear(), today.getMonth() + i, 1);
-      monthsList.push(month);
+    if (months.length > 0) {
+      onChangeMonth(months[currentMonthIndex]);
     }
-    setMonths(monthsList);
-  };
+  }, [selectedDate, months, currentMonthIndex, onChangeMonth]);
 
   const generateMonthWeeks = (month: Date) => {
     const startOfMonth = dayjs(month).startOf('month');
@@ -73,7 +70,7 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
 
     return monthWeeks;
   };
-
+  console.log('아아', currentMonthIndex);
   return (
     <>
       <table className="w-full">
@@ -96,7 +93,7 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
           setCurrentMonthIndex(swiper.activeIndex);
           onChangeMonth(months[swiper.activeIndex]);
         }}
-        initialSlide={6}
+        initialSlide={currentMonthIndex}
         spaceBetween={50}
         slidesPerView={1}
         className="h-56"

@@ -5,7 +5,7 @@ import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import Bullet from '../Bullet';
 import DDayLabel from '../DDayLabel';
 
-type TChallenges = Tables<'challenges'>;
+type TChallenges = Tables<'challenges'> & { user?: Tables<'users'> };
 
 interface ChallengeItemProps {
   challenge: TChallenges;

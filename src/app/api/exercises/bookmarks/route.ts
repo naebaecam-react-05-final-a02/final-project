@@ -23,7 +23,7 @@ export async function GET() {
 
     const userId = user.id;
 
-    const { data, error } = await supabase.from('exercisesBookmarks').select('exerciseName').eq('userId', userId);
+    const { data, error } = await supabase.from('exercisesBookmarks').select('*').eq('userId', userId);
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }

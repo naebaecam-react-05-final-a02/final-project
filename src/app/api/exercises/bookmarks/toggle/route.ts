@@ -5,7 +5,8 @@ export async function PATCH(request: NextRequest) {
   const supabase = createClient();
 
   try {
-    const { exerciseName } = await request.json();
+    const { record } = await request.json();
+
     const {
       data: { user },
       error: authError,
@@ -15,15 +16,14 @@ export async function PATCH(request: NextRequest) {
     }
 
     const userId = user.id;
-
+    console.log(record);
     // 북마크 존재 여부 확인
     const { data: existingBookmark, error: checkError } = await supabase
       .from('exercisesBookmarks')
       .select('id')
       .eq('userId', userId)
-      .eq('exerciseName', exerciseName)
+      .eq('name', record.name)
       .single();
-
     if (checkError && checkError.code !== 'PGRST116') {
       return NextResponse.json({ error: checkError.message, isBookmarked: false }, { status: 400 });
     }
@@ -39,7 +39,14 @@ export async function PATCH(request: NextRequest) {
       isBookmarked = false;
     } else {
       // 북마크 추가
-      const { error: insertError } = await supabase.from('exercisesBookmarks').insert({ userId, exerciseName });
+      const { error: insertError } = await supabase.from('exercisesBookmarks').insert({
+        userId,
+        name: record.name,
+        exerciseType: record.exerciseType,
+        memo: record.memo,
+        record: record.record,
+        date: record.date,
+      });
       if (insertError) {
         return NextResponse.json({ error: insertError.message, isBookmarked: false }, { status: 400 });
       }

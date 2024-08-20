@@ -12,7 +12,7 @@ import {
 import Memo from '@/icons/Memo';
 import Star from '@/icons/Star';
 import { useExerciseStore } from '@/stores/exercise.store';
-import { CardioInput, ExerciseType, WeightInput } from '@/types/exercises';
+import { CardioInput, ExerciseType, RecordData, WeightInput } from '@/types/exercises';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -27,7 +27,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   const modal = useModal();
   const queryClient = useQueryClient();
   const { record, setRecord } = useExerciseStore();
-  const [bookmarkedExercises, setBookmarkedExercises] = useState<string[]>([]);
+  const [bookmarkedExercises, setBookmarkedExercises] = useState<RecordData[]>([]);
 
   const { mutate: update } = useUpdateExercise();
   const { mutate: toggleBookmark } = useToggleBookmark();
@@ -36,7 +36,7 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
 
   useEffect(() => {
     if (bookmarkData) {
-      setBookmarkedExercises(bookmarkData.map((item) => item.exerciseName));
+      setBookmarkedExercises(bookmarkData);
     }
   }, [bookmarkData]);
 
@@ -110,13 +110,13 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
     }
   };
 
-  const handleToggleBookmark = (exerciseName: string) => {
-    toggleBookmark(exerciseName, {
+  const handleToggleBookmark = (recordToToggle: RecordData) => {
+    toggleBookmark(recordToToggle, {
       onSuccess: (data) => {
         if (data.isBookmarked) {
-          setBookmarkedExercises((prev) => [...prev, exerciseName]);
+          setBookmarkedExercises((prev) => [...prev, recordToToggle]);
         } else {
-          setBookmarkedExercises((prev) => prev.filter((name) => name !== exerciseName));
+          setBookmarkedExercises((prev) => prev.filter((item) => item.name !== recordToToggle.name));
         }
         queryClient.invalidateQueries(ExercisesQueryKeys.bookmark() as any);
       },
@@ -127,20 +127,23 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
   };
 
   const bookmarkListOptions = bookmarkData?.map((item) => ({
-    value: item.exerciseName,
+    value: item.name,
     icon: (
       <Star
         width={20}
         height={20}
         style={{
-          fill: bookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
+          fill: bookmarkedExercises.some((bookmark) => bookmark.name === item.name) ? '#12F287' : 'none',
         }}
         onClick={(e) => {
           e.stopPropagation();
-          handleToggleBookmark(item.exerciseName);
+          handleToggleBookmark(item);
         }}
       />
     ),
+    onClick: (e: React.MouseEvent) => {
+      setRecord(item);
+    },
   }));
 
   return (
@@ -156,14 +159,14 @@ const EditRecordForm = ({ exerciseId }: EditRecordFormProps) => {
         icon={
           <Star
             style={{
-              fill: bookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
+              fill: bookmarkedExercises.some((bookmark) => bookmark.name === record.name) ? '#12F287' : 'none',
             }}
             width={20}
             height={20}
             onClick={(e) => {
               e.stopPropagation();
               if (record.name) {
-                handleToggleBookmark(record.name);
+                handleToggleBookmark(record);
               }
             }}
           />

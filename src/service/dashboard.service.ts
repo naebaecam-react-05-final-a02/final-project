@@ -3,9 +3,14 @@ import { ExerciseTodoItemType } from '@/types/exercises';
 import { Database, Tables } from '@/types/supabase';
 import { getEndOfDayISO, getRangeOption, getStartOfDayISO, RANGE_OPTIONS } from '@/utils/dateFormatter';
 import { SupabaseClient } from '@supabase/supabase-js';
+import axios from 'axios';
 
 class DashBoardAPI {
-  constructor() {}
+  private baseURL: string;
+
+  constructor(baseURL: string = '/api/dashboard') {
+    this.baseURL = baseURL;
+  }
 
   // 식단 데이터
   getDiets = async (client: SupabaseClient<Database>, date: Date) => {
@@ -178,6 +183,8 @@ class DashBoardAPI {
       const { data: challenges, error } = await client
         .from('challengeParticipants')
         .select('*,challenges(*)')
+        .neq('challenges.isProgress', 'END')
+        .order('startDate', { referencedTable: 'challenges', ascending: true })
         .eq('userId', user?.id);
 
       if (error) {
@@ -194,6 +201,14 @@ class DashBoardAPI {
       console.error('Unexpected error:', error);
       return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
     }
+  };
+  postUserWeight = async ({ formData }: { formData: FormData }) => {
+    const response = await axios.post(`${this.baseURL}/weights`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
   };
 }
 
