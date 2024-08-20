@@ -13,7 +13,7 @@ export const useGetCommunityPosts = ({ category, categories, initialData }: UseG
 
   const query = useInfiniteQuery<PostsResponse, Error, InfiniteData<PostsResponse, number>>({
     ...queryOptions.posts(category),
-    queryKey: communityQueryKeys.allPosts,
+    queryKey: communityQueryKeys.posts(category),
     initialData: initialData
       ? {
           pages: [initialData],

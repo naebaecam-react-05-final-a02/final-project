@@ -54,7 +54,7 @@ export async function getInitialPosts(
     { count: 'exact' },
   );
 
-  if (category !== '전체') {
+  if (category && category !== '전체') {
     query = query.eq('category', category);
   }
 
