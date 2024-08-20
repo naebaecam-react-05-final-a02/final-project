@@ -51,7 +51,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   ]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden max-w-[900px] flex flex-col mx-auto ">
+    <div className="min-h-full overflow-hidden max-w-[900px] flex flex-col mx-auto ">
       <div className="w-full px-4 mb-4 text-white">
         <DefaultHeader />
       </div>
@@ -59,7 +59,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
         <div className="w-[140px] h-[300px] absolute top-[70px] left-[48px] blur-[90px] rounded-full bg-[#52467B]"></div>
         <div className="w-[340px] h-[105px] absolute bottom-[110px] right-[-24px] blur-[90px] bg-white/40 rounded-full"></div>
       </div>
-      <main className="flex flex-col gap-y-3 min-h-screen px-4">
+      <main className="flex flex-1 flex-col gap-y-3 min-h-fit px-4 mb-3">
         {/* 등급/투두 진행 상황 */}
         <div className="grid grid-cols-[160px_1fr] gap-x-3 select-none ">
           <Card
@@ -77,7 +77,7 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
               </div> */}
           </Card>
 
-          <Card className=" w-full  flex flex-col items-start ">
+          <Card className=" w-full  flex flex-col items-start h-[160px] overflow-y-hidden">
             <HydrationBoundary state={dehydrate(queryClient)}>
               <DashBoardJoinedChallenges />
             </HydrationBoundary>
@@ -111,7 +111,9 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
           </div>
         </Card>
       </main>
-      <NavBar />
+      <div className="px-4">
+        <NavBar />
+      </div>
     </div>
   );
 };
