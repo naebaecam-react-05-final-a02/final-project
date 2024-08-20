@@ -24,8 +24,12 @@ const ThumbsUpIcon = ({
 }) => {
   return (
     <div className={thumbsUpIconVariants({ isBackground })}>
-      {isLiked ? <BiSolidLike className="h-[18px] w-[18px]" /> : <BiLike className="h-[18px] w-[18px]" />}
-      <p className="text-[12px]">{likesCount}</p>
+      {isLiked ? (
+        <BiSolidLike color="white" className="h-[18px] w-[18px]" />
+      ) : (
+        <BiLike color="white" className="h-[18px] w-[18px]" />
+      )}
+      <p className="text-[12px] text-white">{likesCount}</p>
     </div>
   );
 };

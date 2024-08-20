@@ -53,12 +53,17 @@ const VerificationItem = ({
   });
 
   return (
-    <article className="rounded-3xl bg-white/5 border border-white/10 box-border p-2 flex flex-col gap-3 select-none">
+    <article className="rounded-3xl bg-white/5 border border-white/10 box-border p-2 flex flex-col gap-3 select-none cursor-pointer">
       <div className="w-full aspect-[8/7] bg-gray-500 rounded-2xl relative overflow-hidden">
         {imageURLs && (
           <Image src={imageURLs[0]!} alt={'챌린지 사진'} fill sizes="100" className="object-cover" priority />
         )}
-        <button onClick={() => toggleLike({ verificationId: id, isLiked })}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleLike({ verificationId: id, isLiked });
+          }}
+        >
           <ThumbsUpIcon likesCount={likes_count} isLiked={isLiked} verificationId={id} />
         </button>
       </div>
