@@ -43,7 +43,6 @@ const DietForm = () => {
   const router = useRouter();
   const modal = useModal();
 
-  // TODO: 식단 date 컬럼 타입 timestamp에서 date로 변경해서 split 필요없게 할래용
   const selectedDate = useDateStore((state) => state.date);
   const [date, setDate] = useState(getFormattedDate(selectedDate));
   const { selectedValue: dietType, handleChange: handleRadioChange } = useRadio<DietTimeType>(
@@ -197,8 +196,8 @@ const DietForm = () => {
             onChange={(e) => handleFormChange('kcal', formatCalory(e.target.value))}
           />
         </div>
-        <div className="grid grid-cols-3 gap-2 px-4">
-          <div className="w-full">
+        <div className="w-full grid grid-cols-3 gap-2 px-4">
+          <div>
             <Input
               label="탄수화물"
               type="number"
@@ -208,7 +207,7 @@ const DietForm = () => {
               onChange={(e) => handleFormChange('carbohydrate', formatCalory(e.target.value))}
             />
           </div>
-          <div className="w-full">
+          <div>
             <Input
               label="단백질"
               type="number"
@@ -218,7 +217,7 @@ const DietForm = () => {
               onChange={(e) => handleFormChange('protein', formatCalory(e.target.value))}
             />
           </div>
-          <div className="w-full">
+          <div>
             <Input
               label="지방"
               type="number"
