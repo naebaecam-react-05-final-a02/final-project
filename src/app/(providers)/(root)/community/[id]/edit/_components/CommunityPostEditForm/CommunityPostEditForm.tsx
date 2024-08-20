@@ -25,11 +25,12 @@ const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormPro
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [isContentValid, setIsContentValid] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [validationErrors, setValidationErrors] = useState<ValidationResult['errors']>({});
   const editorRef = useRef<Editor | null>(null);
+
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
   useEffect(() => {
     if (post) {
@@ -39,6 +40,17 @@ const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormPro
       setSelectedTags(post.tags);
     }
   }, [post]);
+
+  useEffect(() => {
+    if (post) {
+      const isChanged =
+        title !== post.title ||
+        content !== post.content ||
+        selectedCategory !== post.category ||
+        JSON.stringify(selectedTags) !== JSON.stringify(post.tags);
+      setIsFormChanged(isChanged);
+    }
+  }, [title, content, selectedCategory, selectedTags, post]);
 
   const tagOptions = {
     '자유 게시판': ['오운완', '식단', '동기부여'],
@@ -83,8 +95,7 @@ const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormPro
   };
 
   const handleTagToggle = (tag: string, e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // 기본 이벤트 동작 방지
-    // setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
+    e.preventDefault();
     setSelectedTags((prev) => {
       const newTags = prev.includes(tag) ? [] : [tag];
       setValidationErrors((prevErrors) => ({ ...prevErrors, tags: undefined }));
@@ -94,7 +105,6 @@ const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormPro
 
   const handleContentChange = (newContent: string, isValid: boolean, editor: Editor) => {
     setContent(newContent);
-    setIsContentValid(isValid);
     setValidationErrors((prev) => ({ ...prev, content: undefined }));
     editorRef.current = editor;
   };
@@ -143,7 +153,7 @@ const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormPro
         </div>
         <CommunityPostEditor onContentChange={handleContentChange} initialContent={post?.content || ''} />
         {validationErrors.content && <div className="text-red-500 text-sm">{validationErrors.content}</div>}
-        <Button type="submit" disabled={!isContentValid || isUpdating}>
+        <Button type="submit" disabled={!isFormChanged || isUpdating}>
           {isUpdating ? '수정 중...' : '수정하기'}
         </Button>
       </form>

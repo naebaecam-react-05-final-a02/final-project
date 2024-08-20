@@ -242,8 +242,8 @@ export const useUpdateAnswer = () => {
   return useMutation({
     ...mutationOptions.updateAnswer,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answer(variables.answerId.toString()) });
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(data.questionId.toString()) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answer(variables.answerId) });
+      queryClient.invalidateQueries({ queryKey: communityQueryKeys.answers(data.questionId) });
     },
   });
 };
