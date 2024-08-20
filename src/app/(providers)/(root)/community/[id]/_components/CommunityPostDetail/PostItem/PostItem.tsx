@@ -1,31 +1,16 @@
-'use client';
-
 import ExerciseChip from '@/components/ExerciesChip/ExerciesChip';
-import { useToggleQAPostLike } from '@/hooks/community/useCommunity';
 import { CommunityPostData } from '@/types/community';
 import dayjs from 'dayjs';
 import Image from 'next/image';
-import { FaCommentAlt, FaEye, FaHeart } from 'react-icons/fa';
-import BigThumbUp from './BigThumbUp/BigThumbUp';
+import { FaCommentAlt, FaEye } from 'react-icons/fa';
+import LikeButton from '../../../../_components/LikeButton';
+import LikeHateButton from '../../LikeHateButton';
 import VoteSection from './VoteSection';
 
 interface PostItemProps {
   post: CommunityPostData;
-  onLikeToggle: () => void;
-  isLikeLoading: boolean;
-  isLikeDataPending: boolean;
 }
-const PostItem = ({ post, onLikeToggle, isLikeLoading, isLikeDataPending }: PostItemProps) => {
-  const { mutate: toggleQAPostLike, isPending: isQALikeLoading } = useToggleQAPostLike();
-
-  const handleLike = () => {
-    toggleQAPostLike({ postId: post.id.toString(), likeType: post.isLiked === true ? null : 'like' });
-  };
-
-  const handleDislike = () => {
-    toggleQAPostLike({ postId: post.id.toString(), likeType: post.isLiked === false ? null : 'dislike' });
-  };
-
+const PostItem = ({ post }: PostItemProps) => {
   return (
     <article className="px-4 pt-6">
       <header className="flex w-full items-center justify-between mb-4">
@@ -39,7 +24,7 @@ const PostItem = ({ post, onLikeToggle, isLikeLoading, isLikeDataPending }: Post
             />
           </figure>
           <figcaption className="flex flex-col pl-2 gap-1">
-            <span className="text-whiteT-70 text-lg font-medium leading-tight">{post.user.nickname}</span>
+            <span className="text-whiteT-70 text-lg font-medium leading-tight  ">{post.user.nickname}</span>
             <div className="flex gap-2 text-whiteT-50 text-sm font-normal items-center">
               {post.createdAt && <time className="leading-[18px]">{dayjs(post.createdAt).format('YYYY. MM. DD')}</time>}
               <div className="w-px h-2 bg-whiteT-10" aria-hidden="true" />
@@ -69,23 +54,7 @@ const PostItem = ({ post, onLikeToggle, isLikeLoading, isLikeDataPending }: Post
       </div>
       {post.category === 'Q&A 게시판' && (
         <div className="flex items-center justify-between gap-7 mt-8 w-[166px] mx-auto">
-          <button
-            onClick={handleLike}
-            disabled={isQALikeLoading}
-            className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
-          >
-            <BigThumbUp className={post.isLiked === true ? 'text-primary-100' : 'text-transparent'} />
-          </button>
-          {post.score}
-          <button
-            onClick={handleDislike}
-            disabled={isQALikeLoading}
-            className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
-          >
-            <BigThumbUp
-              className={post.isLiked === false ? 'text-red-500 scale-y-[-1]' : 'text-transparent scale-y-[-1]'}
-            />
-          </button>
+          <LikeHateButton item={post} />
         </div>
       )}
       <div className="flex justify-between items-center mt-8 px-2 py-4">
@@ -103,14 +72,7 @@ const PostItem = ({ post, onLikeToggle, isLikeLoading, isLikeDataPending }: Post
             </>
           ) : (
             <>
-              <button
-                onClick={onLikeToggle}
-                disabled={isLikeLoading || isLikeDataPending}
-                className="flex items-center gap-2 text-whiteT-50"
-              >
-                <FaHeart className={`w-[14px] h-[14px] ${post.isLiked ? 'text-red-500' : ''}`} />
-                <span>{post.likes}</span>
-              </button>
+              <LikeButton post={post} />
               <div className="flex items-center gap-2 text-whiteT-50">
                 <FaCommentAlt className="w-[14px] h-[14px]" />
                 <span>{post.responseCount}</span>

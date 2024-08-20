@@ -37,7 +37,9 @@ const MyProfile = () => {
       <article className="flex flex-col gap-6">
         <div className="flex gap-4">
           <div className="relative w-16 h-16 rounded-full border border-white overflow-hidden">
-            {user?.profileURL && <Image src={user?.profileURL} alt={'프로필 이미지'} fill />}
+            {user?.profileURL && (
+              <Image src={user?.profileURL ?? '/user/default-avatar.png'} alt={'프로필 이미지'} fill />
+            )}
           </div>
           <div className="flex flex-col justify-between">
             <div className="flex gap-2 items-end">

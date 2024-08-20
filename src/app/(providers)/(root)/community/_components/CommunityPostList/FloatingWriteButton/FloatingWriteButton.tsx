@@ -44,6 +44,7 @@ const FloatingWriteButton = ({ inView, buttonType = 'write' }: FloatingWriteButt
           transition-all duration-300
           ${isExpanded || isHovered ? 'w-auto opacity-100' : 'w-0 opacity-0'}
         `}
+        aria-label="글쓰기 버튼"
       >
         {buttonText}
       </span>

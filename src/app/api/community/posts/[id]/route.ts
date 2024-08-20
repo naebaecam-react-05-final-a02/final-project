@@ -80,6 +80,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     views: viewData?.views || postData.views,
   });
 }
+
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const supabase = createClient();
   const { id } = params;

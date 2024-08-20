@@ -2,7 +2,6 @@ import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  console.log(1);
   const supabase = createClient();
   try {
     const answerId = params.id;

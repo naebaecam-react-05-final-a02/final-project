@@ -34,10 +34,10 @@ const PhysicalInfoForm = ({ formState, setFormState }: PhysicalInfoFormProps) =>
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center w-full px-4">
+    <div className="flex flex-col gap-4 items-center justify-center w-full">
       <div className="flex flex-col items-center w-full">
         <div className="w-full mb-4">
-          <h3 className="text-18 font-semibold mt-8 mb-6">키, 몸무게를 알려주세요!</h3>
+          <h3 className="text-18 font-semibold mt-8 mb-6 text-white">키, 몸무게를 알려주세요!</h3>
           <Input
             label="키"
             type="number"
