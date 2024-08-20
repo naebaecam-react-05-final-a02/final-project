@@ -77,7 +77,7 @@ const VerificationItem = ({
           </div>
           <p className="text-white/70 text-[12px]">{users.nickname}</p>
         </div>
-        <p className="text-[12px] text-white">{impression}</p>
+        <p className="text-[12px] text-white line-clamp-2">{impression}</p>
       </div>
     </article>
   );

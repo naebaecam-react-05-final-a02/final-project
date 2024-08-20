@@ -20,7 +20,8 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
       user:userId (
         id,
         nickname,
-        profileURL
+        profileURL,
+        level
       ),
       isLiked:communityPostsLikes!left(id),
       commentCount:communityComment(count),

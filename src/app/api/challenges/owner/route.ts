@@ -22,6 +22,8 @@ export async function GET(request: NextRequest) {
     .eq('users.id', user?.id)
     .range(from, to);
 
+  console.log(data);
+
   if (!data || data.length < 1) {
     return NextResponse.json({
       error: `${page} Page does not exist`,

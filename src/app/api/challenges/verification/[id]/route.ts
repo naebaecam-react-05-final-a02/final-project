@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   const { data, error: fetchError } = await supabase
     .from('challengeVerify')
     .select(
-      '*,users (id, nickname, email,profileURL),likes:challengeVerificationLikes(userId, verificationId), likes_count:challengeVerificationLikes(count)',
+      '*,users (id, nickname, email,profileURL, level),likes:challengeVerificationLikes(userId, verificationId), likes_count:challengeVerificationLikes(count)',
     )
     .eq('challengeId', challengeId)
     // .gte('date', getStartOfDayISO()) // 인증 오늘꺼만 가져오게?

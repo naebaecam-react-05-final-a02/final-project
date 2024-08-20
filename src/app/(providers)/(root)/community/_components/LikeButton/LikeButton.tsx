@@ -50,11 +50,7 @@ const LikeButton = ({ post }: LikeButtonProps) => {
   };
 
   return (
-    <button
-      onClick={handleLikeToggle}
-      disabled={post.category === 'Q&A 게시판' ? isQALikeLoading : isToggleLikePending}
-      className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center"
-    >
+    <button onClick={handleLikeToggle} className="flex gap-[2px] text-[12px] text-whiteT-50 font-semibold items-center">
       <FaHeart className={`w-[14px] h-[14px] ${isLiked ? 'text-red-500 ' : ''}`} />
       <span>{likeCount}</span>
     </button>

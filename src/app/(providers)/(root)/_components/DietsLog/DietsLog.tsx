@@ -67,7 +67,7 @@ const DietsLog = () => {
       </div>
 
       {foods && foods.length > 0 && (
-        <div className="w-full border-t pt-4  border-white/10">
+        <div className="w-full border-t pt-4  border-white/10 text-white">
           <Swiper
             slidesPerView="auto"
             spaceBetween={16}

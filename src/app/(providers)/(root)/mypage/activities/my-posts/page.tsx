@@ -1,5 +1,6 @@
 'use client';
 
+import MyPageHeader from '@/components/Header/MyPageHeader';
 import Loading from '@/components/Loading/Loading';
 import useIntersect from '@/hooks/useIntersect';
 import Mobile from '@/layouts/Mobile';
@@ -37,7 +38,7 @@ const MyPostsPage = () => {
 
   if (isPending) return <Loading />;
   return (
-    <Mobile>
+    <Mobile headerLayout={<MyPageHeader />}>
       {MyPosts?.pages.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400">
           <FaRegCommentDots className="text-6xl mb-4" />

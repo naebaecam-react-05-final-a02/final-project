@@ -62,7 +62,10 @@ const CommentItem = ({ comment, postId, onEdit, onDelete }: CommentItemProps) =>
               className="object-cover rounded-full"
             />
           </figure>
-          <span className="text-whiteT-70 text-sm font-semibold">{comment.user.nickname}</span>
+          <div className="flex items-center">
+            <span className="text-whiteT-70 text-sm font-semibold">{comment.user.nickname}</span>
+            <span className="ml-1 text-[14px] text-primary-100">Lv. {comment.user.level}</span>
+          </div>
         </div>
         <figcaption className="flex pl-2 gap-1">
           <div className="flex gap-[2px] text-whiteT-70 items-center">

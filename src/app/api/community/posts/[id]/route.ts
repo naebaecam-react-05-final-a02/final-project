@@ -23,7 +23,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       user:userId (
         id,
         nickname,
-        profileURL
+        profileURL,
+        level
       ),
       isLiked:communityPostsLikes!left(id),
       commentCount:communityComment(count),

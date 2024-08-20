@@ -1,9 +1,8 @@
 'use client';
 
-import { CATEGORY_LIST } from '@/constants/challenges';
 import { useChallengeFilterStore } from '@/stores/challengeFilter.store';
 import { ChallengeCategoryTypes } from '@/types/challenge';
-import CategoryButton from '../CategoryButton';
+import CategoryLabel from '../CategoryLabel/CategoryLabel';
 
 const Categories = () => {
   const filter = useChallengeFilterStore((state) => state.filter);
@@ -29,12 +28,32 @@ const Categories = () => {
   };
 
   return (
-    <ul className="flex gap-2">
-      {CATEGORY_LIST.map((button, i) => (
-        <li key={button.value}>
-          <CategoryButton {...button} categories={filter.categories} onClick={handleClickButton} />
-        </li>
-      ))}
+    <ul className="flex flex-wrap gap-2">
+      {filter.categories
+        .filter((item) => item !== 'all')
+        .map((item, i) => {
+          return (
+            <li key={item}>
+              <CategoryLabel label={item} />
+            </li>
+          );
+        })}
+      {filter.status
+        .filter((item) => item !== 'all')
+        .map((item, i) => {
+          return (
+            <li key={item}>
+              <CategoryLabel label={item} />
+            </li>
+          );
+        })}
+      {filter.order.map((item, i) => {
+        return (
+          <li key={item}>
+            <CategoryLabel label={item} />
+          </li>
+        );
+      })}
     </ul>
   );
 };

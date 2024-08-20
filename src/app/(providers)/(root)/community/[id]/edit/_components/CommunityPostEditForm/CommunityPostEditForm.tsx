@@ -31,8 +31,6 @@ const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormPro
   const [validationErrors, setValidationErrors] = useState<ValidationResult['errors']>({});
   const editorRef = useRef<Editor | null>(null);
 
-  console.log(post);
-
   useEffect(() => {
     if (post) {
       setTitle(post.title);

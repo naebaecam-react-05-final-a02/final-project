@@ -23,7 +23,9 @@ export async function GET(request: NextRequest) {
       `*
       , user:users!userId(id,
         nickname,
-        profileURL)
+        profileURL,
+        level
+        )
         ,commentCount:communityComment!id(count),
       answerCount:communityAnswer!id(count),
       isLiked:communityPostsLikes!left(id)`,
