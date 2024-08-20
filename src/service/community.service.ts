@@ -64,7 +64,7 @@ class CommunityAPI {
   }): Promise<PostsResponse> => {
     try {
       const response = await axios.get<PostsResponse>(`${this.baseURL}/posts`, {
-        params: { page: pageParam, limit: 8, category },
+        params: { page: pageParam, limit: 6, category },
       });
       return response.data;
     } catch (error) {

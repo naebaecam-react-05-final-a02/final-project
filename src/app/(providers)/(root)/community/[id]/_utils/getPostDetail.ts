@@ -8,6 +8,7 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
     data: { user },
     error: authError,
   } = await supabase.auth.getUser();
+
   if (authError) throw new Error(authError.message);
 
   const userId = user?.id;
@@ -34,14 +35,14 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
 
   if (postError) throw new Error(postError.message);
 
-  const { data: viewData, error: viewError } = await supabase.rpc('incrementViewCount', {
-    p_post_id: parseInt(postId),
-    p_user_id: userId,
-  });
-
-  if (viewError) {
-    console.error('Error incrementing view count:', viewError);
-  }
+  supabase
+    .rpc('incrementViewCount', {
+      p_post_id: parseInt(postId),
+      p_user_id: userId,
+    })
+    .then(({ error }) => {
+      if (error) console.error('Error incrementing view count:', error);
+    });
 
   let responseCount;
   let isLiked;
@@ -66,6 +67,6 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
     ...postData,
     responseCount,
     isLiked,
-    views: viewData?.views || postData.views,
+    views: postData.views + 1,
   };
 }
