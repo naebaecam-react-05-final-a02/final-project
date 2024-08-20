@@ -103,14 +103,14 @@ const MyProfile = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <Link href="/" className="w-full flex gap-2 justify-center items-center h-6">
+          <Link href="/mypage/challenges/me" className="w-full flex gap-2 justify-center items-center h-6">
             <p className="text-[14px] ">참여한 챌린지</p>
             <div className="w-5 h-5 flex justify-center items-center">
               <ArrowRight />
             </div>
           </Link>
           <div className="bg-white/20 w-[1px] h-3"></div>
-          <Link href="/" className="w-full flex gap-2 justify-center items-center h-6">
+          <Link href="/mypage/challenges/owner" className="w-full flex gap-2 justify-center items-center h-6">
             <p className="text-[14px] ">개최한 챌린지</p>
             <div className="w-5 h-5 flex justify-center items-center">
               <ArrowRight />
