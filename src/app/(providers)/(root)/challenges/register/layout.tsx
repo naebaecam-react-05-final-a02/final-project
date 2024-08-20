@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 const ChallengeRegisterLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="max-w-[800px] mx-auto flex flex-col h-full gap-y-4">
-      <div className="h-16">
+      <div className="h-14">
         <Header title="챌린지 등록" />
       </div>
       <div className="fixed inset-0 bg-[#0E0C15] -z-30 overflow-hidden">
