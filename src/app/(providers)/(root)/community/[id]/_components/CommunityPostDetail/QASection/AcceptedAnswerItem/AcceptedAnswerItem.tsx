@@ -65,7 +65,10 @@ const AcceptedAnswerItem = ({ answer, postId }: AnswerItemProps) => {
               className="object-cover rounded-full"
             />
           </figure>
-          <span className="text-whiteT-70 text-sm font-semibold">{answer.user?.nickname}</span>
+          <div className="flex items-center">
+            <span className="text-whiteT-70 text-sm font-semibold">{answer.user?.nickname}</span>
+            <span className="ml-2 text-[12px] text-primary-100">Lv. {answer.user.level}</span>
+          </div>
         </div>
         <figcaption className="flex pl-2 gap-1">
           <div className="flex gap-[2px] text-whiteT-70 items-center">

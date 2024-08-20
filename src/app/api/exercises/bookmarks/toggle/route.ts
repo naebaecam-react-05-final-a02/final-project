@@ -16,7 +16,6 @@ export async function PATCH(request: NextRequest) {
     }
 
     const userId = user.id;
-    console.log(record);
     // 북마크 존재 여부 확인
     const { data: existingBookmark, error: checkError } = await supabase
       .from('exercisesBookmarks')

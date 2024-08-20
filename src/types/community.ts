@@ -1,3 +1,5 @@
+import { UserData } from '@/app/(providers)/(root)/mypage/_types/types';
+
 export interface CommunityPostData {
   id: string;
   title: string;
@@ -41,12 +43,6 @@ export interface CommunityPostUpdateData {
   content: string;
   category: string;
   tags: string[];
-}
-
-export interface UserData {
-  id: string;
-  nickname: string;
-  profileURL?: string;
 }
 
 export interface CommentData {

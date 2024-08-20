@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     const { data: comments, error: commentsError } = await supabase
       .from('communityComment')
-      .select('*, user:users(id, nickname, profileURL)')
+      .select('*, user:users(id, nickname, profileURL, level)')
       .eq('postId', postId)
       .order('createdAt', { ascending: true });
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     const { data, error } = await supabase
       .from('communityComment')
       .insert({ postId, userId: user.id, content })
-      .select('*, user:users(id, nickname, profileURL)')
+      .select('*, user:users(id, nickname, profileURL, level)')
       .single();
 
     if (error) throw error;
@@ -98,7 +98,7 @@ export async function PATCH(request: NextRequest) {
       .update({ content })
       .eq('id', id)
       .eq('userId', user.id)
-      .select('*, user:users(id, nickname, profileURL)')
+      .select('*, user:users(id, nickname, profileURL, level)')
       .single();
 
     if (error) throw error;

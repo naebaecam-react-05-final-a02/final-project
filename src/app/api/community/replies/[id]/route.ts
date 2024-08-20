@@ -21,7 +21,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       .update({ content })
       .eq('id', replyId)
       .eq('userId', user.id)
-      .select('*, user:users(id, nickname, profileURL)')
+      .select('*, user:users(id, nickname, profileURL, level)')
       .single();
 
     if (error) throw error;

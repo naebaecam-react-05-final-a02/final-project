@@ -42,7 +42,8 @@ export async function GET(request: NextRequest) {
       user:userId (
         id,
         nickname,
-        profileURL
+        profileURL,
+        level
       ),
       commentCount:communityComment(count),
       answerCount:communityAnswer(count),
