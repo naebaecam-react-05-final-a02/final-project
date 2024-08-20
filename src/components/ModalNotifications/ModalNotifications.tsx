@@ -13,7 +13,7 @@ type ModalNotificationsProps = {
 const ModalNotifications = ({ notifications, onClose }: ModalNotificationsProps) => {
   return (
     <div
-      className="fixed top-14 right-4 w-[320px] min-h-[440px] rounded-3xl border-primary-100/50 border-2 p-4
+      className="absolute right-0 top-12 w-[320px] min-h-[440px] rounded-3xl border-primary-100/50 border-2 p-4
 flex flex-col gap-y-5  z-50 backdrop-blur-md select-none bg-white/5"
     >
       <div className="flex justify-between ext-base text-white/70 items-center">
