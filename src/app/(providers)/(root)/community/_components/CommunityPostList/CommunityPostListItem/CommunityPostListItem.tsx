@@ -3,7 +3,6 @@ import ExerciseChip from '@/components/ExerciesChip/ExerciesChip';
 import { CommunityPostData } from '@/types/community';
 import dayjs from 'dayjs';
 import Image from 'next/image';
-import React from 'react';
 import { FaCommentAlt } from 'react-icons/fa';
 import { FaEye } from 'react-icons/fa6';
 import { htmlToPlainText } from '../../../_utils/htmlToPlainText';
@@ -13,7 +12,7 @@ interface CommunityPostListItemProps {
   post: CommunityPostData;
 }
 
-const CommunityPostListItem = React.memo(({ post }: CommunityPostListItemProps) => {
+const CommunityPostListItem = ({ post }: CommunityPostListItemProps) => {
   const plainTextContent = htmlToPlainText(post.content);
   const imgMatch = post.content.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/);
 
@@ -71,8 +70,6 @@ const CommunityPostListItem = React.memo(({ post }: CommunityPostListItemProps) 
       </div>
     </Card>
   );
-});
-
-CommunityPostListItem.displayName = 'CommunityPostListItem';
+};
 
 export default CommunityPostListItem;

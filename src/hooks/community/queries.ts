@@ -17,6 +17,7 @@ interface PostsProps {
 
 export const communityQueryKeys = {
   all: ['community'] as const,
+  allPosts: ['community', 'posts', 'all'] as const,
   posts: (category: string) => ['community', 'posts', category] as const,
   postDetail: (postId: string) => ['community', 'post', postId] as const,
   comments: (postId: string) => ['community', 'comments', postId] as const,

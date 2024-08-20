@@ -89,7 +89,7 @@ const AnswerItem = ({
         >
           <BigThumbUp className={answer.isLiked === true ? 'text-primary-100' : 'text-transparent'} />
         </button>
-        {answer.score}
+        {answer.score || 0}
         <button
           onClick={handleDislike}
           disabled={isPending}
