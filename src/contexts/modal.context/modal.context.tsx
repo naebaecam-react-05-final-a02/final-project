@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import AlertModal from '@/components/Modal/AlertModal';
 import Backdrop from '@/components/Modal/BackDrop';
 import ChallengeFilterModal from '@/components/Modal/ChallengeFilterModal';
+import WeightModal from '@/components/Modal/WeightModal';
 import { ChallengeFilterTypes } from '@/types/challenge';
 import { PropsWithChildren, createContext, useContext, useRef, useState } from 'react';
 
@@ -14,6 +15,7 @@ interface TInitialValue {
   confirm: (contents: string[]) => Promise<boolean>;
   custom: {
     filter: () => Promise<ChallengeFilterTypes | false>;
+    weight: () => void;
   };
   open: (el: React.ReactElement) => void;
   close: (id: string) => void;
@@ -29,6 +31,7 @@ const initialValue: TInitialValue = {
       status: [],
       order: [],
     }),
+    weight: () => {},
   },
   open: () => {},
   close: () => {},
@@ -72,6 +75,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
         addModal({ id: modalId, modal });
       });
     },
+
     custom: {
       filter: async () => {
         return new Promise<ChallengeFilterTypes | false>((resolve) => {
@@ -86,6 +90,11 @@ export function ModalProvider({ children }: PropsWithChildren) {
           );
           addModal({ id: modalId, modal });
         });
+      },
+      weight: () => {
+        const modalId = uuidv4();
+        const modal = <WeightModal id={modalId} />;
+        addModal({ id: modalId, modal });
       },
     },
     open: (modal: React.ReactElement) => {

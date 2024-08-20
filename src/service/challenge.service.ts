@@ -200,6 +200,15 @@ class ChallengeAPI {
     const data = response.data;
     return data;
   };
+
+  getPaginatedMyChallenges = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseURL}/me?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+  getPaginatedOwnerChallenges = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseURL}/owner?page=${page}&limit=${limit}`);
+    return response.data;
+  };
 }
 
 export default ChallengeAPI;

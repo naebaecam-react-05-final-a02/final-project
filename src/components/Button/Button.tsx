@@ -8,7 +8,7 @@ const Button = ({ children, className = '', ...props }: ButtonProps) => {
   return (
     <button
       className={`
-        w-full h-[50px] flex py-[13px] rounded-lg justify-center items-center 
+        w-full h-[48px] flex py-[13px] rounded-lg justify-center items-center 
         relative overflow-hidden transition-colors duration-200 ease-in-out
         bg-button-gradient hover:bg-button-hover-gradient
         shadow-[0_1px_3px_rgba(0,0,0,0.1)]
