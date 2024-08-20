@@ -71,7 +71,7 @@ const Mobile = ({
   return (
     <div className="w-full h-full flex justify-center fixed overflow-hidden text-white">
       <section className="h-full w-full flex flex-col max-w-[800px]">
-        {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
+        {showHeader && isHeaderFixed && <header className="w-full h-14 sm:h-20 px-4">{headerLayout}</header>}
         <div
           ref={customElementRef}
           className={`flex flex-col items-center flex-1 w-full h-full overflow-scroll scroll ${
