@@ -12,7 +12,7 @@ const ModalNotificationList = ({ notifications }: { notifications: Notification[
   const { mutate: notificationIsRead } = useNotificationIsRead();
 
   const handleRoute = async (nid: number, notification: NotificationWithCategory, idForURL: string | null) => {
-    notificationIsRead(nid);
+    await notificationIsRead(nid);
     router.push(makeNotificationLink(notification, idForURL));
   };
 
