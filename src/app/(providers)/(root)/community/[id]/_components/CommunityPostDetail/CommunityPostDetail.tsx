@@ -12,18 +12,27 @@ import {
   useGetAnswers,
   useGetCommunityPostDetail,
 } from '@/hooks/community/useCommunity';
-import { useRouter } from 'next/navigation';
-
 import { useLevelUp } from '@/hooks/level/useLevel';
 import { AnswerResponse, CommunityPostData } from '@/types/community';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import FloatingWriteButton from '../../../_components/CommunityPostList/FloatingWriteButton';
-import CommunityComment from './CommunityComment';
 import DetailMenu from './DetailMenu';
 import PostItem from './PostItem';
-import QASection from './QASection';
+
+const QASection = dynamic(() => import('./QASection'), {
+  loading: () => <Loading />,
+});
+
+const CommunityComment = dynamic(() => import('./CommunityComment'), {
+  loading: () => <Loading />,
+});
+
+const FloatingWriteButton = dynamic(() => import('../../../_components/CommunityPostList/FloatingWriteButton'), {
+  ssr: false,
+});
 
 interface CommunityPostDetailProps {
   postId: string;
@@ -53,15 +62,13 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
 
   const router = useRouter();
   const modal = useModal();
-  if (isLoading) return <Loading />;
 
+  if (isLoading) return <Loading />;
   if (!post) return <div className="text-center py-10">게시글을 찾을 수 없습니다.</div>;
 
   const isAuthor = post.user.id === user?.id;
 
-  const handleEdit = () => {
-    router.push(`/community/${postId}/edit`);
-  };
+  const handleEdit = () => router.push(`/community/${postId}/edit`);
   const handleDelete = async () => {
     const yes = await modal.confirm(['정말로 이 게시글을 삭제하시겠습니까?']);
     if (yes) {
@@ -74,9 +81,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
       }
     }
   };
-  const handleClickBack = () => {
-    router.push('/community');
-  };
+  const handleClickBack = () => router.push('/community');
 
   const handleAcceptAnswer = (answerId: string, answerUserId: string) => {
     acceptAnswer({ questionId: postId, answerId });
@@ -98,6 +103,9 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
     router.push(`/community/${postId}/answer/${answerId}/edit`);
   };
 
+  const showFloatingButton =
+    post.category === 'Q&A 게시판' && !isAuthor && !answers?.hasUserAnswered && !answers?.acceptedAnswer;
+
   return (
     <div className="relative min-h-screen overflow-hidden max-w-[800px] flex flex-col mx-auto text-white">
       <Header
@@ -116,15 +124,16 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
       />
       {isMenuOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={() => setIsMenuOpen(false)} />}
 
-      {post.category === 'Q&A 게시판' ? (
-        <>
-          <PostItem post={post} />
-          <div
-            className="h-[1px] bg-whiteT-20  mx-4"
-            style={{
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0.10), 0px -2px 4px 0px rgba(0, 0, 0, 0.70)',
-            }}
-          />
+      <PostItem post={post} />
+      <div
+        className="h-[1px] bg-whiteT-20  mx-4"
+        style={{
+          boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0.10), 0px -2px 4px 0px rgba(0, 0, 0, 0.70)',
+        }}
+      />
+
+      <Suspense fallback={<Loading />}>
+        {post.category === 'Q&A 게시판' ? (
           <QASection
             answers={answers?.answers}
             userId={user?.id || ''}
@@ -136,29 +145,21 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
             onEditAnswer={handleEditAnswer}
             onDeleteAnswer={handleDeleteAnswer}
           />
-          {!isAuthor && !answers?.hasUserAnswered && !answers.acceptedAnswer && (
-            <div className="fixed bottom-0 left-0 right-0 pointer-events-none">
-              <div className="max-w-[800px] mx-auto px-4 relative">
-                <div className="absolute bottom-10 right-4 md:right-10 pointer-events-auto">
-                  <Link href={`/community/${post.id}/answer`}>
-                    <FloatingWriteButton buttonType="answer" inView={buttonVisibilityInView} />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <>
-          <PostItem post={post} />
-          <div
-            className="h-[1px] bg-whiteT-20  mx-4"
-            style={{
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0.10), 0px -2px 4px 0px rgba(0, 0, 0, 0.70)',
-            }}
-          />
+        ) : (
           <CommunityComment postId={post.id} postUserId={post.user.id} />
-        </>
+        )}
+      </Suspense>
+
+      {showFloatingButton && (
+        <div className="fixed bottom-0 left-0 right-0 pointer-events-none">
+          <div className="max-w-[800px] mx-auto px-4 relative">
+            <div className="absolute bottom-10 right-4 md:right-10 pointer-events-auto">
+              <Link href={`/community/${post.id}/answer`}>
+                <FloatingWriteButton buttonType="answer" inView={buttonVisibilityInView} />
+              </Link>
+            </div>
+          </div>
+        </div>
       )}
       {post.category === 'Q&A 게시판' && <div ref={buttonVisibilityRef} className="h-0 relative -z-10" />}
     </div>

@@ -137,6 +137,7 @@ const CommunityListHeader = ({
                   className="transition-all"
                   width="24"
                   height="24"
+                  aria-label="search-button"
                   opacity={isFocused ? (searchValue ? 1 : 0.4) : 1}
                 />
               </button>
@@ -146,6 +147,7 @@ const CommunityListHeader = ({
                 width="24"
                 height="24"
                 onClick={handleSearchFocus}
+                aria-label="search-button"
                 opacity={isFocused ? (searchValue ? 1 : 0.4) : 1}
               />
             )}
@@ -153,6 +155,7 @@ const CommunityListHeader = ({
         </label>
         <button
           onClick={onNotificationClick}
+          aria-label="notification-button"
           className={`transition-opacity duration-300 ${isFocused ? 'opacity-0' : 'opacity-100'}`}
         >
           <NotificationButton />

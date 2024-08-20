@@ -13,11 +13,13 @@ const CommunityPostDetailPage = async ({ params }: { params: { id: string } }) =
   const answersData = await getAnswers(postId);
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: communityQueryKeys.votes(),
-    queryFn: () => api.community.getVote(postId),
-  });
 
+  if (postData.category === '투표') {
+    await queryClient.prefetchQuery({
+      queryKey: communityQueryKeys.votes(),
+      queryFn: () => api.community.getVote(postId),
+    });
+  }
   return (
     <Suspense fallback={<Loading />}>
       <HydrationBoundary state={dehydrate(queryClient)}>
