@@ -30,23 +30,39 @@
 
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
 
-- x </br>
+- 코드 퀄리티, 가독성 향상
+- 컴파일 에러 예방
+- 손쉬운 디버깅
+- 객체 필드값을 IDE에서 리스트 업 -> 생산성 향상
+  </br>
 
 <img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/>
 
-- x </br>
+- 검색 엔진 최적화(SEO)
+- CSR 뿐만 아니라 SSR, SSG 페이지를 만들 수 있다
+- 이미지 최적화
+- 풍부한 생태계
+  </br>
 
 <img src="https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
 
-- x <br/>
+- 클래스명 고민 필요 X
+- CSS 파일 별도 관리 X
+- 일관된 디자인
+  <br/>
 
 <img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"/>
 
-- x <br/>
+- 다양한 기능을 제공하여 백엔드 인프라를 쉽게 구축할 수 있도록 함
+  <br/>
 
 <img src="https://img.shields.io/badge/zustand-F3DF49?style=for-the-badge&logo=zustand&logoColor=white"/>
 
-- x <br/>
+- 간결성
+- 불필요한 렌더링 최소화
+- SSR과의 호환성
+- 커뮤니티와 생태계
+  <br/>
 
 <img src="https://img.shields.io/badge/TANSTACK QUERY-FF4154?style=for-the-badge&logo=react-query&logoColor=white"/>
 
