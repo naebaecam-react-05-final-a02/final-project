@@ -24,7 +24,10 @@ const PostItem = ({ post }: PostItemProps) => {
             />
           </figure>
           <figcaption className="flex flex-col pl-2 gap-1">
-            <span className="text-whiteT-70 text-lg font-medium leading-tight  ">{post.user.nickname}</span>
+            <div className="flex items-center">
+              <span className="text-whiteT-70 text-lg font-medium leading-tight  ">{post.user.nickname}</span>
+              <span className="ml-1 text-[14px] text-primary-100">Lv. {post.user.level}</span>
+            </div>
             <div className="flex gap-2 text-whiteT-50 text-sm font-normal items-center">
               {post.createdAt && <time className="leading-[18px]">{dayjs(post.createdAt).format('YYYY. MM. DD')}</time>}
               <div className="w-px h-2 bg-whiteT-10" aria-hidden="true" />

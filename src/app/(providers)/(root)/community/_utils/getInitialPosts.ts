@@ -44,7 +44,8 @@ export async function getInitialPosts(
       user:userId (
         id,
         nickname,
-        profileURL
+        profileURL,
+        level
       ),
       commentCount:communityComment(count),
       answerCount:communityAnswer(count),

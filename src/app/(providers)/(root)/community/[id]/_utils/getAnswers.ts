@@ -27,7 +27,8 @@ export async function getAnswers(questionId: string) {
       user:userId (
         id,
         nickname,
-        profileURL
+        profileURL,
+        level
       )
     `,
     )

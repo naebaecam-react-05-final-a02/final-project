@@ -58,9 +58,9 @@ const CommunityListHeader = ({
     if (trimmedSearchValue.length < 2) {
       modal.alert(['검색어는 최소 2글자 이상이어야 합니다.']);
       setIsFocused(false);
-      onSearchSubmit(trimmedSearchValue);
       return;
     }
+    onSearchSubmit(trimmedSearchValue);
   };
 
   const handleSearchFocus = () => {
