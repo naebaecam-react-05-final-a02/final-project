@@ -1,4 +1,4 @@
-import { Answer, AnswerResponse, CommentData, CommunityPostData, PostsResponse, ReplyData } from '@/types/community';
+import { Answer, AnswerResponse, CommentData, CommunityPostData, PostsResponse } from '@/types/community';
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { communityQueryKeys, mutationOptions, queryOptions } from './queries';
 
@@ -123,44 +123,6 @@ export const useDeleteComment = () => {
 // 댓글 좋아요 목록 조회
 export const useGetCommentLikes = (commentId: string) => useQuery(queryOptions.commentLikes(commentId));
 
-// 답글 조회
-export const useGetReplies = (commentId: string) => useQuery(queryOptions.replies(commentId));
-
-// 답글 등록
-export const useAddReply = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.addReply,
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(variables.commentId) });
-    },
-  });
-};
-
-// 답글 업데이트
-export const useUpdateReply = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.updateReply,
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(variables.commentId) });
-    },
-  });
-};
-
-// 답글 삭제
-export const useDeleteReply = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.deleteReply,
-    onSuccess: (data, replyId) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.all });
-    },
-  });
-};
-// 답글 좋아요 목록 조회
-export const useGetReplyLikes = (replyId: string) => useQuery(queryOptions.replyLikes(replyId));
-
 // 게시글 좋아요 토글
 export const useTogglePostLike = () => {
   const queryClient = useQueryClient();
@@ -213,37 +175,6 @@ export const useToggleCommentLike = () => {
     onSettled: (data, error, { postId, commentId }) => {
       queryClient.invalidateQueries({ queryKey: communityQueryKeys.comments(postId) });
       queryClient.invalidateQueries({ queryKey: communityQueryKeys.commentLikes(commentId) });
-    },
-  });
-};
-
-// 답글 좋아요 토글
-export const useToggleReplyLike = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptions.toggleReplyLike,
-    onMutate: async (replyId: string) => {
-      await queryClient.cancelQueries({ queryKey: communityQueryKeys.replies(replyId) });
-      const previousReplies = queryClient.getQueryData<ReplyData[]>(communityQueryKeys.replies(replyId));
-
-      if (previousReplies) {
-        const updatedReplies = previousReplies.map((reply) =>
-          reply.id === replyId
-            ? { ...reply, likes: reply.isLiked ? reply.likes - 1 : reply.likes + 1, isLiked: !reply.isLiked }
-            : reply,
-        );
-        queryClient.setQueryData<ReplyData[]>(communityQueryKeys.replies(replyId), updatedReplies);
-      }
-      return { previousReplies };
-    },
-    onError: (err, replyId: string, context) => {
-      if (context?.previousReplies) {
-        queryClient.setQueryData(communityQueryKeys.replies(replyId), context.previousReplies);
-      }
-    },
-    onSettled: (data, error, replyId: string) => {
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replies(replyId) });
-      queryClient.invalidateQueries({ queryKey: communityQueryKeys.replyLikes(replyId) });
     },
   });
 };
