@@ -23,6 +23,8 @@ const MyProfile = () => {
     enabled: !!user,
   });
 
+  console.log(user);
+
   const handleSignOut = () => {
     const deleteCookie = (name: string) => {
       document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
@@ -51,7 +53,7 @@ const MyProfile = () => {
             )}
           </div>
           <div className="flex flex-col justify-between">
-            <div className="flex gap-2 items-end">
+            <div className="flex gap-2 items-center">
               <div className="text-base font-base font-medium">{user?.nickname ?? `헬린이_${user?.userIndex}`}</div>
               <p className="text-xs font-light text-primary-100">LV.1</p>
             </div>

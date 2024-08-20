@@ -1,10 +1,10 @@
 import Mobile from '@/layouts/Mobile';
-import MyChallengeList from '../_components/MyChallengeList';
+import OwnerChallengeList from '../_components/OwnerChallengeList';
 
 const AttemptingChallengesPage = () => {
   return (
     <Mobile>
-      <MyChallengeList />
+      <OwnerChallengeList />
     </Mobile>
   );
 };

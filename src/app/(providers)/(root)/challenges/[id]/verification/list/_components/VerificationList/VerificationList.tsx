@@ -1,6 +1,7 @@
 'use client';
 
 import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
+import { useWindowWidthStore } from '@/stores/windowWidth.store';
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -13,9 +14,10 @@ import VerificationItem from '../VerificationItem';
 
 const VerificationList = ({ counts, title }: { counts: verificationsCountType; title: string }) => {
   const params = useParams();
-
+  const width = useWindowWidthStore((state) => state.width);
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
+  const breakpointCols = width < 400 ? 2 : width < 640 ? 3 : 4;
 
   const {
     data: verifications,
@@ -69,7 +71,11 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
           <LocalBanner users={counts.totalUsers} title={title} />
 
           <ul>
-            <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
+            <Masonry
+              breakpointCols={breakpointCols}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
               {verifications?.map((verification, i) => (
                 <li className="list-none" key={verification.id}>
                   <VerificationItem verification={verification} />

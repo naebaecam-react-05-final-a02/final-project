@@ -54,7 +54,7 @@ class ChallengeAPI {
   joinChallenge = async (cid: number) => {
     try {
       const response = await axios.post(`${this.baseURL}/join?cid=${cid}`);
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -67,7 +67,7 @@ class ChallengeAPI {
   leaveChallenge = async (cid: number) => {
     try {
       const response = await axios.delete(`${this.baseURL}/join?cid=${cid}`);
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

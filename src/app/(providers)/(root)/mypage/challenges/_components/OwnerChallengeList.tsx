@@ -33,7 +33,6 @@ const OwnerChallengeList = () => {
   });
   return (
     <>
-      <p className="text-white/50 text-[12px]">총 {0}개의 챌린지가 있습니다.</p>
       <div className="w-full h-full">
         <ul className="flex flex-col gap-2 overflow-scroll scroll">
           {!challenges?.pages || isPending ? (

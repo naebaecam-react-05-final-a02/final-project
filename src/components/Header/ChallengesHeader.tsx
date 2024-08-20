@@ -38,8 +38,6 @@ const ChallengesHeader = ({
   const setFilter = useChallengeFilterStore((state) => state.setFilter);
   const filter = useChallengeFilterStore((state) => state.filter);
 
-  console.log(isFocused);
-
   const onSubmitSearchValue: () => void = () => {
     if (!isFocused) return;
     if (!searchValue) return modal.alert(['검색어를 입력해주세요']);

@@ -33,6 +33,7 @@ const MyActivityListItem = ({ post }: MyActivityListItemProps) => {
 
   const firstImageUrl = imgMatch ? imgMatch[1] : null;
 
+  // const { data: likeData, isPending: isLikeDataPending } = useGetPostLikes(post.id);
   const { mutate: toggleLike, isPending: isToggleLikePending } = useTogglePostLike();
 
   const handleLikeToggle = (e: React.MouseEvent) => {
