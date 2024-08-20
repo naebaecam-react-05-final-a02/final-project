@@ -1,17 +1,24 @@
 import { verificationsType } from '@/types/challenge';
-import { Database } from '@/types/supabase';
+import { Database, Tables } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
+import _ from 'lodash';
 import { getEndOfDayISO, getStartOfDayISO } from '../../../../../../../utils/dateFormatter';
 
-const DATA_PER_PAGE = 5;
+const DATA_PER_PAGE = 6;
 
 export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>, id: string, offset?: number) => {
+  const {
+    data: { user },
+    error,
+  } = await client.auth.getUser();
   const query = client
     .from('challengeVerify')
-    .select('*,users (id, nickname, email,profileURL)')
+    .select(
+      '*,users (id, nickname, email,profileURL),likes:challengeVerificationLikes(userId, verificationId), likes_count:challengeVerificationLikes(count)',
+    )
     .eq('challengeId', id)
-    .gte('date', getStartOfDayISO()) // 인증 오늘꺼만 가져오게?
-    .lte('date', getEndOfDayISO())
+    // .gte('date', getStartOfDayISO()) // 인증 오늘꺼만 가져오게?
+    // .lte('date', getEndOfDayISO())
     .order('date', { ascending: false });
 
   if (offset) {
@@ -20,19 +27,40 @@ export const fetchDataByInfinityQuery = async (client: SupabaseClient<Database>,
 
     query.range(from, to);
   } else {
-    query.limit(5);
+    query.limit(6);
   }
 
   const response = await query;
-  console.log(response);
 
-  return response.data as verificationsType[];
+  const data = response.data;
+
+  const verifications = data?.map((item) => {
+    // Ensure likes is an array and has the expected structure
+    const isLiked = Array.isArray(item.likes)
+      ? !_.isEmpty(item.likes.find((like: any) => like.userId === user?.id))
+      : [];
+
+    return {
+      ...item,
+      likes_count: item.likes_count.length !== 0 ? item.likes_count[0]?.count : 0,
+      isLiked,
+    };
+  });
+
+  return verifications as verificationsType[];
 };
 
 export const fetchVerificationTotalData = async (client: SupabaseClient<Database>, id: string) => {
-  const response = await client.from('challengeVerify').select('*').eq('challengeId', id);
+  const response = await client
+    .from('challengeVerify')
+    .select('*,user:users(id)')
+    .eq('challengeId', id)
+    .gte('date', getStartOfDayISO(new Date()))
+    .lte('date', getEndOfDayISO(new Date()))
+    .returns<(Tables<'challengeVerify'> & { user: { id: string } })[]>();
 
   const data = {
+    verifications: response.data,
     totalVerifications: response.data?.length,
     totalUsers: new Set(response.data?.map((d) => d.userId)).size,
   };
@@ -74,4 +102,28 @@ export const getVerification = async (
     console.error('Unexpected error:', error);
     return { data: null, error: 'Unexpected error occurred', details: (error as Error).message };
   }
+};
+
+export const getChallengeWithParticipants = async (client: SupabaseClient<Database>, challengeId: string) => {
+  const {
+    data: { user },
+  } = await client.auth.getUser();
+
+  if (!user) {
+    console.error('user not found');
+    return;
+  }
+
+  const { data, error } = await client
+    .from('challenges')
+    .select(`title,content,isProgress,participants:challengeParticipants(userId)`, { count: 'exact' })
+    .eq('id', challengeId)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  return { ...data, isParticipant: Boolean(data.participants.find((participant) => participant.userId === user.id)) };
 };

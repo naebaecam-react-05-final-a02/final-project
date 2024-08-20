@@ -20,7 +20,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["use-sync-external-store"]
   },
   "include": [
     "svgr.d.ts",
@@ -30,5 +31,5 @@
     ".next/types/**/*.ts",
     "src/icons/ArrowDropDown/ArrowDropDown"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "supabase"]
 }

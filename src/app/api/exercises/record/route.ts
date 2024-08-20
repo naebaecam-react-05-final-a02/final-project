@@ -1,6 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
-import { ExerciseRecord } from '@/types/exercises';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import { NextRequest, NextResponse } from 'next/server';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Seoul');
+
 interface ExerciseData {
   date: string;
   userId: string;
@@ -15,7 +22,9 @@ export async function POST(request: NextRequest) {
   const supabase = createClient();
 
   try {
-    const { date, exerciseType, name, memo, record, isBookMark } = await request.json();
+    const { date, exerciseType, name, memo, record } = await request.json();
+
+    const formattedDate = dayjs(date).tz().format('YYYY-MM-DD');
 
     const {
       data: { user },
@@ -28,7 +37,7 @@ export async function POST(request: NextRequest) {
     const userId = user.id;
 
     // 필수 필드 검증
-    if (!date || !exerciseType || !name || !record) {
+    if (!formattedDate || !exerciseType || !name || !record) {
       return NextResponse.json({ message: '모든 필드를 채워주겐니!!!' }, { status: 400 });
     }
 
@@ -42,7 +51,7 @@ export async function POST(request: NextRequest) {
       .from('exercises')
       .insert([
         {
-          date,
+          date: formattedDate,
           userId,
           exerciseType,
           name,
@@ -55,15 +64,6 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       throw error;
-    }
-
-    if (isBookMark) {
-      const { id } = data;
-      console.log('@@ID', id);
-      const { error } = await supabase.from('exercisesBookmarks').insert({ userId, exerciseId: id });
-      if (error) {
-        return NextResponse.json({ error: error.message }, { status: 400 });
-      }
     }
 
     return NextResponse.json({ message: '운동 기록이 성공적으로 등록되었지 뭐람?', data }, { status: 200 });

@@ -1,16 +1,18 @@
 import { getVerification } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
 import api from '@/service/service';
+import { ChallengeFilterTypes } from '@/types/challenge';
 import { Database, Tables } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const challengesQueryKeys = {
   all: ['challenge'] as const,
-  popular: ({ category }: { category: string }) => [...challengesQueryKeys.all, 'coming', category] as const,
+  popular: () => [...challengesQueryKeys.all, 'coming'] as const,
+  count: ({ filter }: { filter: ChallengeFilterTypes }) => [...challengesQueryKeys.all, 'filter', filter],
 };
 
 export const queryOptions = {
   getChallengeDetail: (id: number) => ({
-    queryKey: challengesQueryKeys.all,
+    queryKey: ['challenge', { cid: id }],
     queryFn: async () => {
       const data = await api.challenge.getChallengeDetail(id);
 
@@ -25,9 +27,13 @@ export const queryOptions = {
     queryFn: () => getVerification(client, cid, vid),
     staleTime: Infinity,
   }),
-  popular: ({ category }: { category: string }) => ({
-    queryKey: challengesQueryKeys.popular({ category }),
-    queryFn: () => fetch(`/api/challenges/coming?category=${category}`).then((res) => res.json()),
+  popular: () => ({
+    queryKey: challengesQueryKeys.popular(),
+    queryFn: () => fetch(`/api/challenges/coming?category=all`).then((res) => res.json()),
+  }),
+  count: ({ filter }: { filter: ChallengeFilterTypes }) => ({
+    queryKey: challengesQueryKeys.count({ filter }),
+    queryFn: () => api.challenge.getChallengeCount({ filter }),
   }),
 };
 
@@ -41,6 +47,12 @@ export const mutationOptions = {
   },
   deleteChallenge: {
     mutationFn: (cid: number) => api.challenge.deleteChallenge(cid),
+  },
+  joinChallenge: {
+    mutationFn: (cid: number) => api.challenge.joinChallenge(cid),
+  },
+  leaveChallenge: {
+    mutationFn: (cid: number) => api.challenge.leaveChallenge(cid),
   },
   registerVerification: {
     mutationFn: (verifyData: Omit<Tables<'challengeVerify'>, 'id' | 'date'>) =>

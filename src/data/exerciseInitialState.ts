@@ -1,10 +1,10 @@
+import useDateStore from '@/stores/date.store';
 import { ExerciseRecord } from '@/types/exercises';
-import React from 'react';
 
 export const exerciseInitialState: ExerciseRecord = {
-  date: '',
+  date: useDateStore.getState().date,
   name: '',
   memo: '',
-  record: [],
+  record: [{ weight: 0, reps: 0 }],
   exerciseType: 'weight',
-};
+} as ExerciseRecord;

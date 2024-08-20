@@ -10,10 +10,12 @@ import { InputTextProps } from './InputText/InputText';
 export type BaseInputProps = {
   label?: string;
   error?: string | null;
+  success?: string | null;
   icon?: ReactNode;
   unit?: string;
   className?: string;
   placeholder?: string;
+  noBackground?: boolean;
 };
 
 type InputTextTypeProps =
@@ -26,7 +28,7 @@ type InputProps =
       inputType: 'select';
       dropdownOptions: InputSelectProps['dropdownOptions'];
     })
-  | (InputDateProps & { inputType: 'date' });
+  | (Omit<InputDateProps, 'inputType'> & { inputType: 'date' });
 
 const Input = (props: InputProps) => {
   const { inputType, ...restProps } = props;

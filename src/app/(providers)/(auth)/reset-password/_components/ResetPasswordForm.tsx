@@ -1,10 +1,11 @@
 'use client';
 
 import Button from '@/components/Button';
-import Input from '@/components/Input';
+import { useModal } from '@/contexts/modal.context/modal.context';
 import { useResetPassword } from '@/hooks/auth/useUsers';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { FormEvent, MouseEvent, useState } from 'react';
+import PasswordField from '../../_components/PasswordField';
 import { validatePassword } from '../../_utils/validatePassword';
 
 interface ResetPasswordFormProps {
@@ -12,13 +13,14 @@ interface ResetPasswordFormProps {
   setError: (error: string | null) => void;
 }
 
-const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
+const ResetPasswordForm = ({ setError }: ResetPasswordFormProps) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
   const { mutate: resetPassword, isPending: isResetting } = useResetPassword();
   const router = useRouter();
+  const modal = useModal();
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -37,7 +39,7 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       setError('비밀번호가 일치하지 않습니다.');
@@ -47,15 +49,11 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
       setError(passwordError);
       return;
     }
-    if (newPassword !== confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
     resetPassword(
       { newPassword },
       {
         onSuccess: () => {
-          alert('비밀번호가 성공적으로 변경되었습니다.');
+          modal.alert(['비밀번호가 성공적으로 변경되었습니다.']);
           router.push('/');
         },
         onError: (error) => {
@@ -66,32 +64,28 @@ const ResetPasswordForm = ({ email, setError }: ResetPasswordFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md">
-      <div className="mb-4">
-        <Input
-          label="새 비밀번호"
-          name="password"
-          value={newPassword}
-          onChange={handleNewPasswordChange}
-          error={passwordError}
-          required
-        />
+    <div className="flex flex-col w-full h-full justify-between md:min-h-[700px] ">
+      <div>
+        <h2 className="text-18 font-semibold mb-6 text-white">새로운 비밀번호를 설정해 주세요!</h2>
+        <form className="flex flex-col gap-4">
+          <PasswordField value={newPassword} onChange={handleNewPasswordChange} error={passwordError} />
+          <PasswordField
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            error={confirmPasswordError}
+            isConfirmPassword
+          />
+        </form>
       </div>
-      <div className="mb-4">
-        <Input
-          label="새 비밀번호 확인"
-          name="confirm-password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          error={confirmPasswordError}
-          required
-        />
-      </div>
-
-      <Button type="submit" disabled={isResetting || !!passwordError || !!confirmPasswordError}>
-        {isResetting ? '변경 중...' : '비밀번호 변경'}
+      <Button
+        onClick={handleSubmit}
+        type="submit"
+        className="mb-10"
+        disabled={isResetting || !!passwordError || !!confirmPasswordError}
+      >
+        {isResetting ? '변경 중...' : '확인'}
       </Button>
-    </form>
+    </div>
   );
 };
 

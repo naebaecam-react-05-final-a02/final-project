@@ -37,8 +37,6 @@ export async function POST(request: NextRequest) {
 
   const { email, nickname, password, height, weight, profileImage } = formFields as SignUpFields;
 
-  console.log('Received data:', { email, nickname, password, height, weight, profileImage });
-
   // 1. 사용자 가입
   const {
     data: { user },

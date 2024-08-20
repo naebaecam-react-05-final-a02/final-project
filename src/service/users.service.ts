@@ -13,13 +13,35 @@ class UsersAPI {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response);
+
     return response;
   };
 
   deleteUserAvatar = async () => {
     const response = await axios.delete(`${this.baseUrl}/profile/avatar`);
     return response;
+  };
+
+  validateNickname = async ({ nickname }: { nickname: string }) => {
+    const response = await axios.get(`${this.baseUrl}/nickname?nickname=${nickname}`);
+    const data = response.data;
+    return data;
+  };
+  getUserActivities = async () => {
+    const response = await axios.get(`${this.baseUrl}/activities`);
+    return response.data;
+  };
+  getPaginatedLikesPosts = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseUrl}/activities/likesPosts?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+  getPaginatedMyPosts = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseUrl}/activities/myPosts?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+  getPaginatedMyAnswers = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseUrl}/activities/myAnswers?page=${page}&limit=${limit}`);
+    return response.data;
   };
 }
 

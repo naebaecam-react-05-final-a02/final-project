@@ -1,4 +1,4 @@
-import { DietTableType, DietType } from '@/types/diet';
+import { DietTableType, DietType, FoodTableType } from '@/types/diet';
 import axios from 'axios';
 
 class DietAPI {
@@ -47,6 +47,18 @@ class DietAPI {
   deleteDiet = async ({ id }: Pick<DietTableType, 'id'>): Promise<{ message: string }> => {
     try {
       const response = await axios.delete(`${this.baseUrl}?id=${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  getFoodInfoByFoodName = async (foodName: string): Promise<FoodTableType[]> => {
+    try {
+      const response = await axios.get(`${this.baseUrl}/foods?foodName=${foodName}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

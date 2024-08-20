@@ -9,13 +9,10 @@ type FormCategoryType = {
 };
 
 const categoryItems = [
-  { label: 'All', value: 'all' },
-  { label: 'Exercise', value: 'exercise' },
-  { label: 'Diet', value: 'diet' },
-  { label: 'Eco', value: 'eco' },
-  { label: 'LifeStyle', value: 'lifestyle' },
-  { label: 'Feeling', value: 'feeling' },
-  { label: 'Habit', value: 'habit' },
+  { label: '운동', value: 'exercise' },
+  { label: '식단', value: 'diet' },
+  { label: '생활', value: 'lifestyle' },
+  { label: '기타', value: 'etc' },
 ];
 
 const FormCategory = ({ label, name, defaultValue }: FormCategoryType) => {

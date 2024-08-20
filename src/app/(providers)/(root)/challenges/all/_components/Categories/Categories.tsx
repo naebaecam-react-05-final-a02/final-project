@@ -1,25 +1,59 @@
 'use client';
 
-import { useChallengeCategoryStore } from '@/stores/stores';
-
-import { CATEGORIES } from '../../_constants/constants';
-import CategoryButton from '../CategoryButton';
+import { useChallengeFilterStore } from '@/stores/challengeFilter.store';
+import { ChallengeCategoryTypes } from '@/types/challenge';
+import CategoryLabel from '../CategoryLabel/CategoryLabel';
 
 const Categories = () => {
-  const category = useChallengeCategoryStore((state) => state.category);
-  const setCategory = useChallengeCategoryStore((state) => state.setCategory);
+  const filter = useChallengeFilterStore((state) => state.filter);
+  const setFilter = useChallengeFilterStore((state) => state.setFilter);
 
-  const handleClickButton = (value: string) => {
-    setCategory(value);
+  const handleClickButton = (value: ChallengeCategoryTypes) => {
+    const prev = structuredClone(filter);
+    if (value === 'all') {
+      setFilter({
+        ...prev,
+        categories: ['all'],
+      });
+    } else {
+      const categories: ChallengeCategoryTypes[] = prev.categories.filter((category) => category !== 'all');
+      const newCategories = categories.includes(value as ChallengeCategoryTypes)
+        ? categories.filter((category) => category !== value)
+        : [...categories, value as ChallengeCategoryTypes];
+      setFilter({
+        ...prev,
+        categories: newCategories.length > 0 ? newCategories : ['all'],
+      });
+    }
   };
 
   return (
-    <ul className="flex gap-2">
-      {CATEGORIES.map((button, i) => (
-        <li key={i}>
-          <CategoryButton {...button} category={category} onClick={handleClickButton} />
-        </li>
-      ))}
+    <ul className="flex flex-wrap gap-2">
+      {filter.categories
+        .filter((item) => item !== 'all')
+        .map((item, i) => {
+          return (
+            <li key={item}>
+              <CategoryLabel label={item} />
+            </li>
+          );
+        })}
+      {filter.status
+        .filter((item) => item !== 'all')
+        .map((item, i) => {
+          return (
+            <li key={item}>
+              <CategoryLabel label={item} />
+            </li>
+          );
+        })}
+      {filter.order.map((item, i) => {
+        return (
+          <li key={item}>
+            <CategoryLabel label={item} />
+          </li>
+        );
+      })}
     </ul>
   );
 };

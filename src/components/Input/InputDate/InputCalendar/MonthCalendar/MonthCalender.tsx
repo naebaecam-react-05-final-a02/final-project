@@ -1,6 +1,8 @@
 'use client';
 
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useEffect, useRef, useState } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
@@ -14,9 +16,26 @@ interface MonthCalendarProps {
   onNextMonth: (callback: () => void) => void;
 }
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+dayjs.tz.setDefault('Asia/Seoul');
+
+// 한국 시간대 설정
+dayjs.tz.setDefault('Asia/Seoul');
+
 const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth, onNextMonth }: MonthCalendarProps) => {
-  const [months, setMonths] = useState<Date[]>([]);
-  const [currentMonthIndex, setCurrentMonthIndex] = useState(6);
+  const [months, setMonths] = useState<Date[]>(() => {
+    const today = new Date();
+    const monthsList: Date[] = [];
+    for (let i = -6; i <= 6; i++) {
+      const month = new Date(today.getFullYear(), today.getMonth() + i, 1);
+      monthsList.push(month);
+    }
+    return monthsList;
+  });
+  const selectedMonthIndex = months.findIndex((month) => dayjs(month).isSame(dayjs(selectedDate), 'month'));
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(selectedMonthIndex !== -1 ? selectedMonthIndex : 6);
   const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
@@ -27,22 +46,10 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
   }, [onPrevMonth, onNextMonth]);
 
   useEffect(() => {
-    generateMonths();
-  }, []);
-
-  useEffect(() => {
-    onChangeMonth(months[currentMonthIndex]);
-  }, [currentMonthIndex, months, onChangeMonth]);
-
-  const generateMonths = () => {
-    const today = new Date();
-    const monthsList: Date[] = [];
-    for (let i = -6; i <= 6; i++) {
-      const month = new Date(today.getFullYear(), today.getMonth() + i, 1);
-      monthsList.push(month);
+    if (months.length > 0) {
+      onChangeMonth(months[currentMonthIndex]);
     }
-    setMonths(monthsList);
-  };
+  }, [selectedDate, months, currentMonthIndex, onChangeMonth]);
 
   const generateMonthWeeks = (month: Date) => {
     const startOfMonth = dayjs(month).startOf('month');
@@ -86,7 +93,7 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
           setCurrentMonthIndex(swiper.activeIndex);
           onChangeMonth(months[swiper.activeIndex]);
         }}
-        initialSlide={6}
+        initialSlide={currentMonthIndex}
         spaceBetween={50}
         slidesPerView={1}
         className="h-56"
@@ -105,14 +112,13 @@ const MonthCalender = ({ selectedDate, onSelectDate, onChangeMonth, onPrevMonth,
                           ${dayjs(date).isSame(selectedDate, 'day') ? 'bg-primary-10' : ''}
                           ${date.getMonth() !== month.getMonth() ? 'text-gray-400' : ''}
                           ${isToday ? 'text-primary-100' : ''}`}
-                        onClick={() => onSelectDate(date)}
+                        onClick={() => onSelectDate(dayjs(date).tz().toDate())}
                       >
                         <span
                           className={`
                             text-center
                             text-base
                             font-normal
-                            leading-6
                             ${isToday ? 'font-semibold' : ''}
                             ${dayjs(date).isSame(selectedDate, 'day') ? 'text-primary-100' : ''}
                           `}

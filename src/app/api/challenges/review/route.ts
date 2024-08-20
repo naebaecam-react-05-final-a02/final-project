@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const supabase = createClient();
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = user.id;
-    console.log('@@ userId', userId);
+
     if (!userId) {
       return;
     }
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/challengeReviewImages/${fileName}`,
       );
     }
-    console.log('@@ imageUrls', imageUrls);
+
     // 리뷰 정보와 이미지 URL을 데이터베이스에 저장
     const { data, error } = await supabase
       .from('challengeReviews')

@@ -17,17 +17,17 @@
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
   }
-  .chips::-webkit-scrollbar {
+
+  .styled-scrollbar::-webkit-scrollbar {
     @apply w-[3px] h-[3px];
   }
 
-  .chips::-webkit-scrollbar-thumb {
+  .styled-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-gray-500;
   }
 
   .input-bg {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
-    backdrop-filter: blur(5px);
   }
 
   .button-icon {
@@ -74,7 +74,7 @@ input.exerciseInput[type='number'] {
   -moz-appearance: textfield;
 }
 body {
-  @apply font-sans leading-140 tracking-tighter;
+  @apply font-sans leading-140 tracking-[-0.4px];
 }
 
 .my-masonry-grid {
@@ -104,4 +104,179 @@ body {
 
 html {
   zoom: 100% !important;
+}
+
+/* input 자동완성 스타일 제거 */
+input,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input-wrapper {
+  position: relative;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%);
+}
+
+.input-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.input-wrapper input,
+.input-wrapper textarea {
+  position: relative;
+  z-index: 2;
+  background: transparent !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
+  background-clip: content-box !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+.has-value {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
+}
+
+/* 텍스트 에디터 스타일링 */
+
+.ProseMirror {
+  color: white;
+  z-index: 10;
+}
+
+.ProseMirror p {
+  color: white;
+  font-size: 15px;
+  z-index: 10;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: rgba(255, 255, 255, 0.4);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror a {
+  color: #12f287;
+}
+
+.ProseMirror pre {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.ProseMirror p strong {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ProseMirror p {
+  max-width: 100%;
+  margin: 0;
+}
+
+.ProseMirror p + p {
+  margin-top: 0.5em;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid #ccc;
+  margin: 0.5em 0;
+  padding-left: 1em;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ProseMirror img {
+  margin: 16px 0 16px 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+  color: white;
+}
+
+.ProseMirror li {
+  padding-left: 0.25em;
+  margin: 0.25em 0;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+
+.ProseMirror ol li {
+  padding-left: 0.5em;
+}
+
+.ProseMirror ol li::marker {
+  color: white;
+  font-size: 0.9em;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ul li::marker {
+  color: white;
+}
+
+.ProseMirror ul ul,
+.ProseMirror ol ul {
+  list-style-type: circle;
+}
+
+.ProseMirror ul ul ul,
+.ProseMirror ol ul ul,
+.ProseMirror ol ol ul {
+  list-style-type: square;
+}
+
+.ProseMirror ol ol,
+.ProseMirror ul ol {
+  list-style-type: lower-alpha;
+}
+
+.ProseMirror ul ol ol,
+.ProseMirror ol ol ol {
+  list-style-type: lower-roman;
+}
+.modal-shadow {
+  box-shadow: -4px -4px 8px 0px rgba(18, 242, 135, 0.1), 4px 4px 8px 0px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.toast-bg {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: -4px -4px 8px 0px rgba(18, 242, 135, 0.1), 4px 4px 8px 0px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+}
+p img {
+  margin: 16px 0 16px 0;
 }

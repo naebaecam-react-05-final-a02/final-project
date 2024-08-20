@@ -1,7 +1,7 @@
 const WelcomeMessage = ({ nickname }: { nickname: string }) => (
-  <div className="flex flex-col w-full px-4 justify-start items-start gap-2 mt-8">
+  <div className="flex flex-col w-full px-4 justify-start items-start gap-2 mt-8 sm:mt-10">
     <div className="flex flex-col justify-start items-start gap-1 ">
-      <div className="flex justify-start items-center gap-1 text-lg font-semibold ">
+      <div className="flex justify-start items-center gap-1 text-lg font-semibold text-white">
         <div>{nickname}</div>
         <div>님!</div>
       </div>

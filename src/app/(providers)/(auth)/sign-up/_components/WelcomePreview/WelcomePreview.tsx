@@ -19,21 +19,26 @@ const WelcomePreview = ({ currentStep, setCurrentStep }: WelcomePreviewProps) =>
   };
 
   return (
-    <>
-      <Swiper className="w-screen" allowSlidePrev={true} onSlideChange={handleSlideChange}>
+    <div className="flex flex-col sm:mb-10">
+      <Swiper className="w-full" allowSlidePrev={true} onSlideChange={handleSlideChange}>
         <SwiperSlide>
           <div className="flex flex-col justify-center items-center gap-4">
             <WelcomeMessage nickname={user?.nickname ?? '테스트'} />
             <div className="relative w-[196px] h-[426px] mt-8">
-              <Image src="/preview-image.png" alt="사이트 미리보기" fill className="object-contain" />
+              <Image src="/auth/preview-image.png" alt="사이트 미리보기" fill className="object-contain" />
             </div>
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <WelcomeMessage nickname={user?.nickname ?? '테스트'} />
+          <div className="flex flex-col justify-center items-center gap-4">
+            <WelcomeMessage nickname={user?.nickname ?? '테스트'} />
+            <div className="relative w-[196px] h-[426px] mt-8">
+              <Image src="/auth/preview-image1.png" alt="사이트 미리보기" fill className="object-contain" />
+            </div>
+          </div>
         </SwiperSlide>
       </Swiper>
-    </>
+    </div>
   );
 };
 

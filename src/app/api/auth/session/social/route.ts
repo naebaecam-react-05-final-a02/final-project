@@ -1,13 +1,10 @@
 import { createClient } from '@/supabase/server';
 import { Provider } from '@supabase/supabase-js';
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const provider = searchParams.get('provider') as Provider;
-
-  console.log(provider);
 
   if (!provider) {
     return NextResponse.json({ error: 'Provider is required' }, { status: 400 });
@@ -26,7 +23,7 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
 
     if (data && data.url) {
-      return NextResponse.redirect(data.url);
+      return NextResponse.json({ url: data.url });
     } else {
       throw new Error('No URL returned from Supabase');
     }

@@ -22,10 +22,10 @@ export const getDietsCalories = (diets: DietTableType[] | undefined | null) => {
 export const getFoodsCalories = (foods: FoodType[]) => {
   const calories = foods.reduce(
     (acc, cur) => {
-      acc.kcal += cur.kcal;
-      acc.carbohydrate += cur.carbohydrate;
-      acc.protein += cur.protein;
-      acc.fat += cur.fat;
+      acc.kcal += cur.kcal ?? 0;
+      acc.carbohydrate += cur.carbohydrate ?? 0;
+      acc.protein += cur.protein ?? 0;
+      acc.fat += cur.fat ?? 0;
       return acc;
     },
     { kcal: 0, carbohydrate: 0, protein: 0, fat: 0 },
@@ -40,4 +40,11 @@ export const getFoods = (diets: DietTableType[] | undefined | null) => {
   return diets.reduce((acc, cur) => {
     return [...acc, ...cur.foods];
   }, [] as FoodType[]);
+};
+
+export const formatCalory = (value: string) => {
+  let num = Number.parseInt(value);
+  if (num < 0) return 0;
+  if (num > 5000) return 5000;
+  return num;
 };

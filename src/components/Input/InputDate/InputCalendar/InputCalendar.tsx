@@ -46,9 +46,7 @@ const InputCalendar = ({ onSelectDate, selectedDate }: InputCalendarProps) => {
     setCurrentDisplayDate(date);
   }, []);
 
-  useEffect(() => {
-    console.log(currentDisplayDate);
-  }, [currentDisplayDate]);
+  useEffect(() => {}, [currentDisplayDate]);
 
   return (
     <div className="w-full p-4">
@@ -59,8 +57,8 @@ const InputCalendar = ({ onSelectDate, selectedDate }: InputCalendarProps) => {
           {/* <ChevronRight className="text-primary-100" /> */}
         </div>
         <div className="flex gap-4">
-          <ChevronLeft className="text-primary-100" onClick={handlePrevMonth} />
-          <ChevronRight className="text-primary-100" onClick={handleNextMonth} />
+          <ChevronLeft className="text-primary-100 cursor-pointer" onClick={handlePrevMonth} />
+          <ChevronRight className="text-primary-100 cursor-pointer" onClick={handleNextMonth} />
         </div>
       </header>
 

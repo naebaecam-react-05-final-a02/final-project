@@ -16,6 +16,7 @@ export const queryOptions = {
       }
       return user;
     },
+    staleTime: Infinity,
   }),
 };
 

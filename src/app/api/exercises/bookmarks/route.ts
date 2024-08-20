@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/supabase/server';
-import { ExerciseRecord } from '@/types/exercises';
+import { NextResponse } from 'next/server';
 interface ExerciseData {
   date: string;
   userId: string;
@@ -24,7 +23,7 @@ export async function GET() {
 
     const userId = user.id;
 
-    const { data, error } = await supabase.from('exercisesBookmarks').select('*, exercises(*)').eq('userId', userId);
+    const { data, error } = await supabase.from('exercisesBookmarks').select('*').eq('userId', userId);
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }

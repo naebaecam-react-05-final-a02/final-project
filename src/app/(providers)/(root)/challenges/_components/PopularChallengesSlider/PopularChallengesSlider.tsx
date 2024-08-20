@@ -1,18 +1,27 @@
+'use client';
+
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
+import { useGetPopularChallenges } from '@/hooks/challenge/useChallenge';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { loadingSlides, nextDummySlide, prevDummySlide } from '../../_constants/constants';
+import { PopularChallengesTypes } from '../../_types/types';
 import ArticleTitle from '../ArticleTitle/ArticleTitle';
 import SlideItem from './SlideItem/SlideItem';
 
 const PopularChallengesSlider = () => {
+  const { data: challenges, isPending } = useGetPopularChallenges();
+  console.log(challenges);
+
+  const getChallengeList = () => [prevDummySlide, ...challenges?.data, nextDummySlide];
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -42,18 +51,22 @@ const PopularChallengesSlider = () => {
             spaceBetween={0}
             slidesPerView={3}
             scrollbar={{ draggable: true, hide: true, enabled: false }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
           >
-            {Array.from({ length: 10 }, (_, i) => {
-              return (
-                <li className="flex items-center" key={i}>
-                  <SwiperSlide>
-                    <SlideItem index={i - 1} activeIndex={activeIndex} />
-                  </SwiperSlide>
-                </li>
-              );
-            })}
+            {isPending
+              ? loadingSlides.map((challenge: PopularChallengesTypes, i: number) => {
+                  return (
+                    <SwiperSlide key={challenge.id}>
+                      <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
+                    </SwiperSlide>
+                  );
+                })
+              : getChallengeList().map((challenge: PopularChallengesTypes, i: number) => {
+                  return (
+                    <SwiperSlide key={challenge.id}>
+                      <SlideItem challenge={challenge} index={i - 1} activeIndex={activeIndex} />
+                    </SwiperSlide>
+                  );
+                })}
           </Swiper>
         </div>
       </div>

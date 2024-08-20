@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const { field, value } = await request.json();
-  console.log(field, value);
 
   if (field !== 'email' && field !== 'nickname') {
     return NextResponse.json({ error: 'Invalid field' }, { status: 400 });

@@ -1,3 +1,4 @@
+import { ChallengeFilterTypes } from '@/types/challenge';
 import { Database } from '@/types/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -11,6 +12,12 @@ export const useChallengeUpdate = () => useMutation(mutationOptions.updateChalle
 
 // 챌린지 삭제
 export const useChallengeDelete = () => useMutation(mutationOptions.deleteChallenge);
+
+// 챌린지 신청
+export const useChallengeJoin = () => useMutation(mutationOptions.joinChallenge);
+
+// 챌린지 하차
+export const useChallengeLeave = () => useMutation(mutationOptions.leaveChallenge);
 
 // 챌린지 인증 등록(생성)
 export const useChallengeVerificationRegister = () => useMutation(mutationOptions.registerVerification);
@@ -28,5 +35,7 @@ export const useChallengeVerificationDelete = () => useMutation(mutationOptions.
 //챌린지 항목 조회
 export const useGetChallengeDetail = (id: number) => useQuery(queryOptions.getChallengeDetail(id));
 
-export const useGetPopularChallenges = ({ category }: { category: string }) =>
-  useQuery(queryOptions.popular({ category }));
+export const useGetPopularChallenges = () => useQuery(queryOptions.popular());
+
+export const useGetChallengeCount = ({ filter }: { filter: ChallengeFilterTypes }) =>
+  useQuery(queryOptions.count({ filter }));

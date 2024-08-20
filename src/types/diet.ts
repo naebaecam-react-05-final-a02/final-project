@@ -15,10 +15,12 @@ export type FoodType = {
   id?: string;
   foodType: string;
   foodName: string;
-  kcal: number;
-  carbohydrate: number;
-  protein: number;
-  fat: number;
+  kcal: number | null;
+  carbohydrate: number | null;
+  protein: number | null;
+  fat: number | null;
 };
 
 export type DietsLogType = DietTableType[];
+
+export type FoodTableType = Tables<'foods'>;

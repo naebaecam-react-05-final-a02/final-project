@@ -1,5 +1,6 @@
 'use client';
 
+import { useModal } from '@/contexts/modal.context/modal.context';
 import Mobile from '@/layouts/Mobile';
 import api from '@/service/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,6 +11,7 @@ import useInputs from './_hooks/useInputs';
 
 const ChallengeCreatePage = () => {
   const queryClient = useQueryClient();
+  const modal = useModal();
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [inputs, onChange, reset, setInputs] = useInputs({ title: '', content: '', startDate: '', endDate: '' });
@@ -29,12 +31,12 @@ const ChallengeCreatePage = () => {
     onSuccess: (result) => {
       if (result.status !== 200) return;
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      alert('수정이 완료되었습니다');
+      modal.alert(['수정이 완료되었습니다']);
     },
   });
 
   const handleUpdateProfile = async () => {
-    const yes = confirm('수정사항을 저장하시겠습니까?');
+    const yes = await modal.confirm(['수정사항을 저장하시겠습니까?']);
     if (!yes) return;
 
     const formData = new FormData();
@@ -46,8 +48,6 @@ const ChallengeCreatePage = () => {
 
     PostChallenge({ formData });
   };
-
-  console.log(inputs);
 
   return (
     <Mobile>

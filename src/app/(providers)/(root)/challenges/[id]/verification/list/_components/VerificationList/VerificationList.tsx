@@ -1,24 +1,27 @@
 'use client';
 
 import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
+import { useModal } from '@/contexts/modal.context/modal.context';
+import { useWindowWidthStore } from '@/stores/windowWidth.store';
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 import LocalBanner from '../LocalBanner';
 import VerificationCardSkeleton from '../VerificationCardSkeleton';
 import VerificationItem from '../VerificationItem';
 
-const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
+const VerificationList = ({ counts, title }: { counts: verificationsCountType; title: string }) => {
   const params = useParams();
-  const path = usePathname();
-  const redirect = `${path.replace('/list', '/register')}`;
-
+  const width = useWindowWidthStore((state) => state.width);
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
+  const modal = useModal();
+  const openVerificationModal = (data: any) => {
+    modal.custom.verification(data);
+  };
 
   const {
     data: verifications,
@@ -31,15 +34,13 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     getNextPageParam: (lastPage: verificationsType[], allPage: verificationsType[][]) => {
       // console.log('LASTPAGE', lastPage);
       // console.log('ALLPAGE', allPage);
-      const nextPage = lastPage.length === 5 ? allPage.length : undefined;
+      const nextPage = lastPage.length === 6 ? allPage.length : undefined;
       return nextPage;
     },
     initialPageParam: 1,
     select: (data) => data.pages.flatMap((p) => p),
     staleTime: Infinity,
   });
-
-  console.log(verifications);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -61,42 +62,51 @@ const VerificationList = ({ counts }: { counts: verificationsCountType }) => {
     };
   }, [verifications, fetchNextPage, hasNextPage]);
 
+  const breakPoint = {
+    default: 4,
+    700: 3,
+    500: 2,
+  };
+
   return (
-    <>
+    <div className="px-4">
       {!verifications ||
         (!verifications.length && (
           <div>
-            <div>
-              <p>헉..! 아직 아무도 인증하지 않았네요!</p>
-              <p>먼저 나서서 인증.. 해야겠지?</p>
-            </div>
-
-            <Link href={redirect}>
-              <button className="  select-none px-3 py-2 bg-blue-200 rounded border-blue-300 hover:shadow-md active:shadow-[inset_0_2px_4px_gray]">
-                인증하러가기
-              </button>
-            </Link>
+            <LocalBanner users={0} title={title} />
           </div>
         ))}
       {verifications && verifications.length > 0 && (
         <div className="flex flex-col gap-4 px-4">
-          <LocalBanner users={counts.totalUsers} />
+          <LocalBanner users={counts.totalUsers} title={title} />
 
           <ul>
-            <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
+            <Masonry breakpointCols={breakPoint} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
               {verifications?.map((verification, i) => (
-                <li className="list-none" key={i}>
+                <li
+                  className="list-none"
+                  key={verification.id}
+                  onClick={() => {
+                    openVerificationModal(verification);
+                  }}
+                >
                   <VerificationItem verification={verification} />
                 </li>
               ))}
+              {isFetching &&
+                hasNextPage &&
+                Array.from({ length: 6 }).map((_, i) => (
+                  <li key={i}>
+                    <VerificationCardSkeleton />
+                  </li>
+                ))}
             </Masonry>
           </ul>
-          {isFetching && hasNextPage && Array.from({ length: 5 }).map((_, i) => <VerificationCardSkeleton key={i} />)}
         </div>
       )}
 
       {!isFetching && hasNextPage && <div ref={obsRef} className="h-20 w-full" />}
-    </>
+    </div>
   );
 };
 

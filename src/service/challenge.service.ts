@@ -1,3 +1,4 @@
+import { ChallengeFilterTypes } from '@/types/challenge';
 import { Tables } from '@/types/supabase';
 import axios from 'axios';
 
@@ -7,6 +8,12 @@ class ChallengeAPI {
   constructor(baseURL: string = '/api/challenges') {
     this.baseURL = baseURL;
   }
+
+  getVerifications = async ({ challengeId }: { challengeId: number }) => {
+    const response = await axios.get(`${this.baseURL}/verification/${challengeId}`);
+    const data = response.data;
+    return data;
+  };
 
   registerChallenge = async (challengeData: Omit<Tables<'challenges'>, 'id'>) => {
     try {
@@ -35,6 +42,32 @@ class ChallengeAPI {
   deleteChallenge = async (cid: number) => {
     try {
       const response = await axios.delete(`${this.baseURL}/register?cid=${cid}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  joinChallenge = async (cid: number) => {
+    try {
+      const response = await axios.post(`${this.baseURL}/join?cid=${cid}`);
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+
+  leaveChallenge = async (cid: number) => {
+    try {
+      const response = await axios.delete(`${this.baseURL}/join?cid=${cid}`);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -90,9 +123,7 @@ class ChallengeAPI {
 
   getPopularChallenges = async ({ category }: { category: string }) => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${this.baseURL}/coming?category=${category}`,
-      );
+      const response = await axios.get(`${this.baseURL}/coming?category=all`);
       const data = await response.data;
       return data;
     } catch (error) {
@@ -102,12 +133,22 @@ class ChallengeAPI {
       throw error;
     }
   };
-  getPaginationChallenges = async ({ category, page, limit }: { category: string; page: number; limit: number }) => {
+  getPaginationChallenges = async ({
+    filter,
+    page,
+    limit,
+  }: {
+    filter: ChallengeFilterTypes;
+    page: number;
+    limit: number;
+  }) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/challenges/all?category=${category}&page=${page}&limit=${limit}`,
+        `${this.baseURL}/all?categories=${filter.categories.join(',')}&status=${filter.status.join(
+          ',',
+        )}&order=${filter.order.join(',')}&searchValue=${filter.searchValue}&page=${page}&limit=${limit}`,
       );
-      console.log(response);
+
       const data = await response.data;
       return data;
     } catch (error) {
@@ -134,8 +175,39 @@ class ChallengeAPI {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response);
+
     return response;
+  };
+  getChallengeCount = async ({ filter }: { filter: ChallengeFilterTypes }) => {
+    try {
+      const response = await axios.get(
+        `${this.baseURL}/all/count?categories=${filter.categories.join(',')}&status=${filter.status.join(
+          ',',
+        )}&order=${filter.order.join(',')}&searchValue=${filter.searchValue}`,
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || error.message);
+      }
+      throw error;
+    }
+  };
+  toggleLike = async ({ verificationId, isLiked }: { verificationId: number; isLiked: boolean }) => {
+    const response = isLiked
+      ? await axios.delete(`${this.baseURL}/verification/likes?verificationId=${verificationId}`)
+      : await axios.post(`${this.baseURL}/verification/likes?verificationId=${verificationId}`);
+    const data = response.data;
+    return data;
+  };
+
+  getPaginatedMyChallenges = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseURL}/me?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+  getPaginatedOwnerChallenges = async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await axios.get(`${this.baseURL}/owner?page=${page}&limit=${limit}`);
+    return response.data;
   };
 }
 

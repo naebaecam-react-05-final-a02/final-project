@@ -5,7 +5,9 @@ const validateEssentialInfo = (formState: FormState): { isValid: boolean; errors
   let isValid = true;
   const errors: Partial<FormState> = {};
 
-  if (!email.value.includes('@')) {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  if (!emailRegex.test(email.value)) {
     errors.email = { ...email, error: '유효한 이메일 주소를 입력해주세요.' };
     isValid = false;
   }

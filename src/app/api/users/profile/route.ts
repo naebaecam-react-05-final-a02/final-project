@@ -17,6 +17,7 @@ export async function PATCH(request: NextRequest) {
   const nickname = formData.get('nickname') as string;
   const height = formData.get('height') as string;
   const weight = formData.get('weight') as string;
+  const introduction = formData.get('introduction') as string;
   if (avatar) {
     const newImagePath = `${user?.id}/${uuidv4()}`;
     const { data: imageUploadResult, error: imageUploadError } = await supabase.storage
@@ -33,6 +34,7 @@ export async function PATCH(request: NextRequest) {
         nickname,
         height,
         weight,
+        introduction,
       })
       .eq('id', user?.id);
     if (updateError) {
@@ -45,6 +47,7 @@ export async function PATCH(request: NextRequest) {
         nickname,
         height,
         weight,
+        introduction,
       })
       .eq('id', user?.id);
     if (updateError) {

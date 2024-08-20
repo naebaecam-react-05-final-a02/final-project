@@ -13,7 +13,6 @@ class AuthAPI {
 
   // 회원가입
   signUp = async (data: FormData): Promise<UserInfo> => {
-    console.log(data);
     try {
       const response = await axios.post(`${this.baseUrl}/sign-up`, data, {
         headers: {
@@ -64,7 +63,7 @@ class AuthAPI {
       if (response.status === 204) {
         throw new Error('User not found');
       }
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -90,9 +89,15 @@ class AuthAPI {
   // 소셜 로그인
   signInWithOAuth = async (provider: Provider): Promise<void> => {
     try {
-      window.location.href = `${this.baseUrl}/session/social/?provider=${provider}`;
+      const response = await axios.get(`${this.baseUrl}/session/social/?provider=${provider}`);
+
+      if (response.data && response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        throw new Error('No URL returned from server');
+      }
     } catch (error) {
-      throw error;
+      console.error('OAuth error:', error);
     }
   };
 
