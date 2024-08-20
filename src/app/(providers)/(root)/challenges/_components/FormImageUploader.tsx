@@ -140,7 +140,7 @@ const FormImageUploader = forwardRef<HTMLInputElement, FormImageUploaderType>(
                   <li className="relative size-14 rounded-lg group" key={fileURL}>
                     <div
                       onClick={() => handleImageDel(idx)}
-                      className="rounded-full absolute top-0 right-0 group-hover:opacity-100 opacity-0 transition cursor-pointer bg-black aspect-square z-10"
+                      className="text-white rounded-full absolute top-0 right-0 group-hover:opacity-100 opacity-0 transition cursor-pointer bg-black aspect-square z-10"
                     >
                       <MdOutlineCancel />
                     </div>

@@ -105,7 +105,7 @@ const VerificationRegister = ({ cid, challengeTitle, userInfo }: VerificationReg
             });
           },
           onError: (error) => {
-            modal.alert(['이미지 업로드에 실패하였습니다.']);
+            modal.alert(['파일 형식이나 크기를 확인해주세요.']);
             console.error('UPLOAD FAILED', error);
           },
         },
