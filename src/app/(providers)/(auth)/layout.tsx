@@ -1,4 +1,4 @@
-import BackBoard from '@/layouts/AuthMobile/BackBoard/BackBoard';
+import BackBoard from '@/layouts/BackBoard/BackBoard';
 import React from 'react';
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
