@@ -74,10 +74,12 @@ const Mobile = ({
         {showHeader && isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
         <div
           ref={customElementRef}
-          className={`flex-1 w-full h-full overflow-scroll scroll ${showHeader && !isHeaderFixed ? '' : 'py-4'}`}
+          className={`flex flex-col items-center flex-1 w-full h-full overflow-scroll scroll ${
+            showHeader && !isHeaderFixed ? '' : 'py-4'
+          }`}
         >
           {showHeader && !isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
-          {children}
+          <div className="max-w-[800px] px-4 w-full">{children}</div>
         </div>
         {bottomButton && (
           <div

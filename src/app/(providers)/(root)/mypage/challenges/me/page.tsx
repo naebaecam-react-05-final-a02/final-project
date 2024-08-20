@@ -1,12 +1,13 @@
+import MyPageHeader from '@/components/Header/MyPageHeader';
 import Mobile from '@/layouts/Mobile';
 import MyChallengeList from '../_components/MyChallengeList';
 
-const AttemptingChallengesPage = () => {
+const ParticipatingChallengesPage = () => {
   return (
-    <Mobile>
+    <Mobile headerLayout={<MyPageHeader />}>
       <MyChallengeList />
     </Mobile>
   );
 };
 
-export default AttemptingChallengesPage;
+export default ParticipatingChallengesPage;

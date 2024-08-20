@@ -1,6 +1,7 @@
 'use client';
 
 import { fetchDataByInfinityQuery } from '@/app/(providers)/(root)/challenges/[id]/verification/_hooks/useVerification';
+import { useWindowWidthStore } from '@/stores/windowWidth.store';
 import { createClient } from '@/supabase/client';
 import { verificationsCountType, verificationsType } from '@/types/challenge';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -13,7 +14,7 @@ import VerificationItem from '../VerificationItem';
 
 const VerificationList = ({ counts, title }: { counts: verificationsCountType; title: string }) => {
   const params = useParams();
-
+  const width = useWindowWidthStore((state) => state.width);
   const obsRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 

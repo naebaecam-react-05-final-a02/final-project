@@ -23,6 +23,8 @@ const MyProfile = () => {
     enabled: !!user,
   });
 
+  console.log(user);
+
   const handleSignOut = () => {
     const deleteCookie = (name: string) => {
       document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
@@ -51,7 +53,7 @@ const MyProfile = () => {
             )}
           </div>
           <div className="flex flex-col justify-between">
-            <div className="flex gap-2 items-end">
+            <div className="flex gap-2 items-center">
               <div className="text-base font-base font-medium">{user?.nickname ?? `헬린이_${user?.userIndex}`}</div>
               <p className="text-xs font-light text-primary-100">LV.1</p>
             </div>
@@ -101,14 +103,14 @@ const MyProfile = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <Link href="/" className="w-full flex gap-2 justify-center items-center h-6">
+          <Link href="/mypage/challenges/me" className="w-full flex gap-2 justify-center items-center h-6">
             <p className="text-[14px] ">참여한 챌린지</p>
             <div className="w-5 h-5 flex justify-center items-center">
               <ArrowRight />
             </div>
           </Link>
           <div className="bg-white/20 w-[1px] h-3"></div>
-          <Link href="/" className="w-full flex gap-2 justify-center items-center h-6">
+          <Link href="/mypage/challenges/owner" className="w-full flex gap-2 justify-center items-center h-6">
             <p className="text-[14px] ">개최한 챌린지</p>
             <div className="w-5 h-5 flex justify-center items-center">
               <ArrowRight />
