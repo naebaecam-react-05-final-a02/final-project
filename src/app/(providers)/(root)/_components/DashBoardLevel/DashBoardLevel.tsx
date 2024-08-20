@@ -42,7 +42,10 @@ const DashBoardLevel = () => {
           <div className="absolute left-4 top-4 gap-y-1 grid">
             <h5 className="text-white/50 text-sm">헬린이</h5>
             <h6 className="text-[28px]">{`Lv.${curLevel}`}</h6>
-            <h6 className="text-sm">{`${((curExperience / requiredExperience) * 100).toFixed(1)}%`}</h6>
+            <div className="flex text-white/40 text-[10px] gap-x-1">
+              다음 레벨까지
+              <p className="text-primary-100">{`${(100 - (curExperience / requiredExperience) * 100).toFixed(0)}%`}</p>
+            </div>
           </div>
           <div className="absolute bottom-9">
             <div className="-rotate-[15deg] flex  w-[100px] justify-center items-center relative ">
