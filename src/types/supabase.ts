@@ -426,11 +426,19 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: 'communityQa_questionId_fkey';
-            columns: ['questionId'];
-            isOneToOne: true;
-            referencedRelation: 'communityPosts';
-            referencedColumns: ['id'];
+
+            foreignKeyName: "communityQa_answerId_fkey"
+            columns: ["answerId"]
+            isOneToOne: false
+            referencedRelation: "communityAnswer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communityQa_questionId_fkey"
+            columns: ["questionId"]
+            isOneToOne: false
+            referencedRelation: "communityPosts"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: 'communityQa_questionUserId_fkey';
@@ -687,20 +695,34 @@ export type Database = {
       };
       exercisesBookmarks: {
         Row: {
-          exerciseName: string;
-          id: number;
-          userId: string | null;
-        };
+
+          date: string | null
+          exerciseType: string | null
+          id: number
+          memo: string | null
+          name: string
+          record: Json | null
+          userId: string | null
+        }
         Insert: {
-          exerciseName: string;
-          id?: number;
-          userId?: string | null;
-        };
+          date?: string | null
+          exerciseType?: string | null
+          id?: number
+          memo?: string | null
+          name: string
+          record?: Json | null
+          userId?: string | null
+        }
         Update: {
-          exerciseName?: string;
-          id?: number;
-          userId?: string | null;
-        };
+          date?: string | null
+          exerciseType?: string | null
+          id?: number
+          memo?: string | null
+          name?: string
+          record?: Json | null
+          userId?: string | null
+        }
+
         Relationships: [
           {
             foreignKeyName: 'exercisesBookmarks_userId_fkey';
@@ -774,23 +796,24 @@ export type Database = {
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },
-        ];
-      };
+
+        ]
+      }
       level: {
         Row: {
-          experience: number;
-          level: number;
-        };
+          experience: number
+          level: number
+        }
         Insert: {
-          experience: number;
-          level?: number;
-        };
+          experience: number
+          level?: number
+        }
         Update: {
-          experience?: number;
-          level?: number;
-        };
-        Relationships: [];
-      };
+          experience?: number
+          level?: number
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           category: string;
@@ -896,8 +919,45 @@ export type Database = {
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },
-        ];
-      };
+        ]
+      }
+      userLevel: {
+        Row: {
+          experience: number
+          id: number
+          level: number
+          userId: string
+        }
+        Insert: {
+          experience?: number
+          id?: number
+          level?: number
+          userId: string
+        }
+        Update: {
+          experience?: number
+          id?: number
+          level?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "userLevel_level_fkey"
+            columns: ["level"]
+            isOneToOne: false
+            referencedRelation: "level"
+            referencedColumns: ["level"]
+          },
+          {
+            foreignKeyName: "userLevel_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+
       users: {
         Row: {
           createdAt: string;
