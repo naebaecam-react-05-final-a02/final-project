@@ -14,6 +14,7 @@ import {
 } from '@/hooks/community/useCommunity';
 import { useRouter } from 'next/navigation';
 
+import { useLevelUp } from '@/hooks/level/useLevel';
 import { AnswerResponse, CommunityPostData } from '@/types/community';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -39,9 +40,10 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
   const { data: isAcceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
 
   const { mutateAsync: deletePost } = useDeleteCommunityPost();
+  const { mutateAsync: deleteAnswer } = useDeleteAnswer();
 
   const { mutate: acceptAnswer } = useAcceptAnswer();
-  const { mutateAsync: deleteAnswer } = useDeleteAnswer();
+  const { mutate: levelUp } = useLevelUp();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { ref: buttonVisibilityRef, inView: buttonVisibilityInView } = useInView({
@@ -76,8 +78,9 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
     router.push('/community');
   };
 
-  const handleAcceptAnswer = (answerId: string) => {
+  const handleAcceptAnswer = (answerId: string, answerUserId: string) => {
     acceptAnswer({ questionId: postId, answerId });
+    levelUp({ exp: 100, uid: answerUserId });
   };
   const handleDeleteAnswer = async (answerId: string) => {
     const yes = await modal.confirm(['정말로 이 답변을 삭제하시겠습니까?']);

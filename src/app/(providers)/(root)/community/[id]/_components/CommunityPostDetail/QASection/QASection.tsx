@@ -8,7 +8,7 @@ interface QASectionProps {
   postId: string;
   acceptedAnswer: Answer | null;
   isAuthor: boolean;
-  onAcceptAnswer: (answerId: string) => void;
+  onAcceptAnswer: (answerId: string, answerUserId: string) => void;
   isAcceptedAnswerLoading: boolean;
   onEditAnswer: (answerId: string) => void;
   onDeleteAnswer: (answerId: string) => void;

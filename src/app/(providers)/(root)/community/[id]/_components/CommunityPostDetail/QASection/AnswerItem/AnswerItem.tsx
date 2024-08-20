@@ -16,7 +16,7 @@ interface AnswerItemProps {
   postId: string;
   isAuthor: boolean;
   acceptedAnswer: Answer | null;
-  onAcceptAnswer: (answerId: string) => void;
+  onAcceptAnswer: (answerId: string, answerUserId: string) => void;
   isAcceptedAnswerLoading: boolean;
   onEditAnswer: (answerId: string) => void;
   onDeleteAnswer: (answerId: string) => void;
@@ -98,7 +98,11 @@ const AnswerItem = ({
         </button>
       </div>
       {isAuthor && !acceptedAnswer && (
-        <Button onClick={() => onAcceptAnswer(answer.id)} disabled={isAcceptedAnswerLoading} className="mt-4">
+        <Button
+          onClick={() => onAcceptAnswer(answer.id, answer.userId)}
+          disabled={isAcceptedAnswerLoading}
+          className="mt-4"
+        >
           <span className="flex text-center items-center">
             채택하기 <FaChevronRight className="ml-1" />
           </span>
