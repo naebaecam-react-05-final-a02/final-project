@@ -97,7 +97,7 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
       <div className="relative z-0 flex-grow overflow-y-auto">
         {isSearching && (
           <div className="px-4 py-2 mb-4">
-            <h2 className="text-lg text-white font-semibold">'{searchTerm}' 검색 결과</h2>
+            <h2 className="text-lg text-white font-semibold">{`'${searchTerm}'`} 검색 결과</h2>
           </div>
         )}
         {posts.length === 0 ? (
