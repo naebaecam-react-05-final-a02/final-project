@@ -47,7 +47,6 @@ export const queryOptions = {
       }
       return allPages.length + 1;
     },
-    staleTime: Infinity,
   }),
 
   postDetail: (postId: string) => ({
