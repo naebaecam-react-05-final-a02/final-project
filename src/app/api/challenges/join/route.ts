@@ -24,6 +24,32 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed To Insert Participants', details: error.message }, { status: 400 });
     }
 
+    const { count: participantsCount, error: participantsCountError } = await supabase
+      .from('challengeParticipants')
+      .select('*', { count: 'exact', head: true })
+      .eq('challengeId', challengeId);
+
+    if (participantsCountError) {
+      console.error('Supabase count error:', participantsCountError);
+      return NextResponse.json(
+        { error: 'Failed To Get Participants Count', details: participantsCountError.message },
+        { status: 400 },
+      );
+    }
+
+    const { error: participantsCountUpdateError } = await supabase
+      .from('challenges')
+      .update({ participants: participantsCount })
+      .eq('id', Number(challengeId));
+
+    if (participantsCountUpdateError) {
+      console.error('Supabase update error:', participantsCountUpdateError);
+      return NextResponse.json(
+        { error: 'Failed To Update Verify Count', details: participantsCountUpdateError.message },
+        { status: 400 },
+      );
+    }
+
     return NextResponse.json({ message: 'Challenge Application Success ', data }, { status: 200 });
   } catch (error) {
     console.error('Unexpected insert error:', error);
@@ -52,6 +78,32 @@ export async function DELETE(req: NextRequest) {
     if (error) {
       console.error('Supabase delete error:', error);
       return NextResponse.json({ error: 'Failed To Leave Challenge', details: error.message }, { status: 400 });
+    }
+
+    const { count: participantsCount, error: participantsCountError } = await supabase
+      .from('challengeParticipants')
+      .select('*', { count: 'exact', head: true })
+      .eq('challengeId', challengeId);
+
+    if (participantsCountError) {
+      console.error('Supabase count error:', participantsCountError);
+      return NextResponse.json(
+        { error: 'Failed To Get Participants Count', details: participantsCountError.message },
+        { status: 400 },
+      );
+    }
+
+    const { error: participantsCountUpdateError } = await supabase
+      .from('challenges')
+      .update({ participants: participantsCount })
+      .eq('id', Number(challengeId));
+
+    if (participantsCountUpdateError) {
+      console.error('Supabase update error:', participantsCountUpdateError);
+      return NextResponse.json(
+        { error: 'Failed To Update Verify Count', details: participantsCountUpdateError.message },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json({ message: 'Challenge Leave Successfully', data }, { status: 201 });
