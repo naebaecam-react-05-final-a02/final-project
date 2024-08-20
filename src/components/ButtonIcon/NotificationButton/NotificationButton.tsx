@@ -26,7 +26,7 @@ const NotificationButton = () => {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'notifications', filter: `targetUserId=eq.${user.id}` },
         (payload) => {
-          console.log('PAYLOAD___', payload);
+          // console.log('PAYLOAD___', payload);
           queryClient.invalidateQueries({ queryKey: ['notifications'] });
         },
       )
