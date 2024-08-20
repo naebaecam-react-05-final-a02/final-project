@@ -6,7 +6,7 @@ import Input from '@/components/Input';
 import Loading from '@/components/Loading/Loading';
 import { useGetCommunityPostDetail, useUpdateCommunityPost } from '@/hooks/community/useCommunity';
 import Mobile from '@/layouts/Mobile';
-import { CommunityPostUpdateData } from '@/types/community';
+import { CommunityPostData, CommunityPostUpdateData } from '@/types/community';
 import { Editor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -15,10 +15,11 @@ import CommunityPostEditor from '../../../../write/_components/CommunityPostEdit
 
 interface CommunityPostEditFormProps {
   postId: string;
+  initialData: CommunityPostData;
 }
 
-const CommunityPostEditForm = ({ postId }: CommunityPostEditFormProps) => {
-  const { data: post, isLoading, error } = useGetCommunityPostDetail(postId);
+const CommunityPostEditForm = ({ postId, initialData }: CommunityPostEditFormProps) => {
+  const { data: post, isLoading, error } = useGetCommunityPostDetail(postId, initialData);
   const { mutate: updatePost, isPending: isUpdating } = useUpdateCommunityPost();
   const router = useRouter();
 

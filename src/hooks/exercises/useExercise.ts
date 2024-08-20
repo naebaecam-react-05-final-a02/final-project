@@ -1,3 +1,4 @@
+import { RecordData } from '@/types/exercises';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ExercisesQueryKeys, mutationOptions, queryOptions } from './queries';
 
@@ -16,40 +17,23 @@ export const useToggleBookmark = () => {
 
   return useMutation({
     ...mutationOptions.toggleBookmark,
-    onMutate: async (exerciseName: string) => {
+    onMutate: async (record: RecordData) => {
       await queryClient.cancelQueries({ queryKey: ExercisesQueryKeys.bookmark() });
+      const previousBookmarks = queryClient.getQueryData<RecordData[]>(ExercisesQueryKeys.bookmark());
 
-      const previousBookmarks = queryClient.getQueryData(ExercisesQueryKeys.bookmark());
-
-      queryClient.setQueryData(ExercisesQueryKeys.bookmark(), (old: any) => {
-        if (Array.isArray(old)) {
-          const exerciseIndex = old.findIndex((exercise) => exercise.exerciseName === exerciseName);
-          if (exerciseIndex !== -1) {
-            return old.filter((_, index) => index !== exerciseIndex);
-          } else {
-            return [...old, { exerciseName }];
-          }
+      queryClient.setQueryData<RecordData[]>(ExercisesQueryKeys.bookmark(), (old) => {
+        if (!old) return [record];
+        const index = old.findIndex((bookmark) => bookmark.name === record.name);
+        if (index > -1) {
+          return old.filter((_, i) => i !== index);
+        } else {
+          return [...old, record];
         }
-        return old;
       });
 
       return { previousBookmarks };
     },
-    onSuccess: (data, exerciseName) => {
-      queryClient.setQueryData(ExercisesQueryKeys.bookmark(), (old: any) => {
-        if (Array.isArray(old)) {
-          if (data.isBookmarked) {
-            if (!old.some((exercise) => exercise.exerciseName === exerciseName)) {
-              return [...old, { exerciseName }];
-            }
-          } else {
-            return old.filter((exercise) => exercise.exerciseName !== exerciseName);
-          }
-        }
-        return old;
-      });
-    },
-    onError: (err, exerciseName, context) => {
+    onError: (err, record, context) => {
       queryClient.setQueryData(ExercisesQueryKeys.bookmark(), context?.previousBookmarks);
       console.error('북마크 토글 실패:', err);
     },

@@ -51,7 +51,7 @@ const LogInForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full px-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center w-full">
       <EmailField value={formData.email} onChange={handleChange} error={errors.email} />
       <PasswordField value={formData.password} onChange={handleChange} error={errors.password} />
       <LoginOptions
@@ -59,7 +59,7 @@ const LogInForm = () => {
         onKeepLoggedInChange={(checked) => setFormData((prev) => ({ ...prev, keepLoggedIn: checked }))}
       />
       {errors.form && <div className="text-red-500">{errors.form}</div>}
-      <Button className="mt-12 mb-[35px]" disabled={isPending}>
+      <Button className="mt-12 mb-[70px]" disabled={isPending}>
         {isPending ? '로그인 중...' : '로그인'}
       </Button>
       {isPending && <Loading />}

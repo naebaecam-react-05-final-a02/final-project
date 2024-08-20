@@ -30,7 +30,7 @@ export const Toast = ({ content, id }: ToastTypes) => {
 
   return (
     <div
-      className={` relative flex justify-between gap-2 items-center mt-4 transition-all duration-500 w-[334px] h-[40px] pl-2 pr-4 rounded-2xl text-white toast-bg ${
+      className={`z-50 relative flex justify-between gap-2 items-center mt-4 transition-all duration-500 w-[334px] h-[40px] pl-2 pr-4 rounded-2xl text-white toast-bg ${
         show ? 'translate-x-0' : 'translate-x-[400px]'
       }`}
     >
