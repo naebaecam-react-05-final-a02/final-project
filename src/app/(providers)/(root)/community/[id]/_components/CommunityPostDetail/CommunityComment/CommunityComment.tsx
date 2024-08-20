@@ -2,6 +2,7 @@
 
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useAddComment, useDeleteComment, useGetComments, useUpdateComment } from '@/hooks/community/useCommunity';
+import { useLevelUp } from '@/hooks/level/useLevel';
 import { useCreateNotification } from '@/hooks/notifications/useNotifications';
 import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import CommentInput from './CommentInput';
@@ -19,12 +20,15 @@ const CommunityComment = ({ postId, postUserId }: CommunityCommentProps) => {
   const { mutateAsync: deleteComment } = useDeleteComment();
 
   const { mutate: createNotification } = useCreateNotification();
+  const { mutate: levelUp } = useLevelUp();
 
   const modal = useModal();
 
-  const handleAddComment = (content: string) => {
+  const handleAddComment = async (content: string) => {
     if (content.trim()) {
       addComment({ postId, content });
+      //LEVEL
+      levelUp({ exp: 1 });
       createNotification(makeNotificationData({ type: 'community', category: 'comment' }, postUserId, postId));
     }
   };

@@ -22,7 +22,7 @@ const SocialLogin = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mb-12">
+    <div className="flex flex-col gap-2 mb-16">
       <div className="text-white text-center text-[14px]">SNS로 간편 로그인하기</div>
       <SocialLoginButtons onSocialSignIn={handleSocialSignIn} />
       {isPending && <Loading />}

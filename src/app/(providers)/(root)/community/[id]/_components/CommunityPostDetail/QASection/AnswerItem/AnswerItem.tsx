@@ -16,7 +16,7 @@ interface AnswerItemProps {
   postId: string;
   isAuthor: boolean;
   acceptedAnswer: Answer | null;
-  onAcceptAnswer: (answerId: string) => void;
+  onAcceptAnswer: (answerId: string, answerUserId: string) => void;
   isAcceptedAnswerLoading: boolean;
   onEditAnswer: (answerId: string) => void;
   onDeleteAnswer: (answerId: string) => void;
@@ -45,7 +45,7 @@ const AnswerItem = ({
   };
 
   return (
-    <div className={`bg-whiteT-3  border-gradient-noti rounded-lg p-4 pb-6 ${isMenuOpen ? '' : 'backdrop-blur'}`}>
+    <div className={`bg-whiteT-3  border-gradient-noti rounded-lg p-4 pb-6  ${isMenuOpen ? '' : 'backdrop-blur'}`}>
       {isMenuOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setIsMenuOpen(false)} />}
       <div className="flex w-full items-center justify-between mb-4">
         <div className="flex items-center gap-1">
@@ -66,7 +66,7 @@ const AnswerItem = ({
                 {dayjs(answer.createdAt).format('YYYY. MM. DD')}
               </time>
             )}
-            {answer.user.id === userId && (
+            {answer.user.id === userId && !acceptedAnswer && (
               <DetailMenu
                 onEdit={() => onEditAnswer(answer.id)}
                 onDelete={() => onDeleteAnswer(answer.id)}
@@ -98,7 +98,11 @@ const AnswerItem = ({
         </button>
       </div>
       {isAuthor && !acceptedAnswer && (
-        <Button onClick={() => onAcceptAnswer(answer.id)} disabled={isAcceptedAnswerLoading} className="mt-4">
+        <Button
+          onClick={() => onAcceptAnswer(answer.id, answer.userId)}
+          disabled={isAcceptedAnswerLoading}
+          className="mt-4"
+        >
           <span className="flex text-center items-center">
             채택하기 <FaChevronRight className="ml-1" />
           </span>

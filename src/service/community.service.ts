@@ -7,8 +7,8 @@ import {
   CommunityPostCreateData,
   CommunityPostData,
   CommunityPostUpdateData,
-  CommunityVotePostData,
   LikeResponse,
+  PostsResponse,
   ReplyCreateData,
   ReplyData,
   ReplyUpdateData,
@@ -62,12 +62,12 @@ class CommunityAPI {
     pageParam = 1,
     category = '전체',
   }: {
-    pageParam?: number;
+    pageParam: number;
     category?: string;
-  }): Promise<{ data: CommunityPostData[]; page: number; limit: number; latestVotePost: CommunityVotePostData }> => {
+  }): Promise<PostsResponse> => {
     try {
-      const response = await axios.get(`${this.baseURL}/posts`, {
-        params: { page: pageParam, limit: 10, category },
+      const response = await axios.get<PostsResponse>(`${this.baseURL}/posts`, {
+        params: { page: pageParam, limit: 8, category },
       });
       return response.data;
     } catch (error) {
@@ -220,9 +220,9 @@ class CommunityAPI {
     }
   };
 
-  getPostLikes = async (postId: string): Promise<string[]> => {
+  getPostLikes = async () => {
     try {
-      const response = await axios.get(`${this.baseURL}/likes/${postId}`);
+      const response = await axios.get(`${this.baseURL}/likes`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

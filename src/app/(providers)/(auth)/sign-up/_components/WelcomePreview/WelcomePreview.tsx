@@ -19,7 +19,7 @@ const WelcomePreview = ({ currentStep, setCurrentStep }: WelcomePreviewProps) =>
   };
 
   return (
-    <>
+    <div className="flex flex-col sm:mb-10">
       <Swiper className="w-full" allowSlidePrev={true} onSlideChange={handleSlideChange}>
         <SwiperSlide>
           <div className="flex flex-col justify-center items-center gap-4">
@@ -38,7 +38,7 @@ const WelcomePreview = ({ currentStep, setCurrentStep }: WelcomePreviewProps) =>
           </div>
         </SwiperSlide>
       </Swiper>
-    </>
+    </div>
   );
 };
 

@@ -12,6 +12,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: '질문 ID가 필요합니다.' }, { status: 400 });
     }
 
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+
     // QA 테이블에서 데이터 조회
     const { data: qaData, error: qaError } = await supabase
       .from('communityQa')
@@ -27,18 +34,26 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(false, { status: 200 });
     }
 
-    if (qaData) {
-      // 답변 테이블에서 데이터 조회
-      const { data: answersData, error: answersError } = await supabase
-        .from('communityAnswer')
-        .select('*')
-        .eq('questionId', questionId)
-        .eq('id', qaData.answerId)
-        .single();
+    // 답변 테이블에서 데이터 조회
+    const { data: answerData, error: answerError } = await supabase
+      .from('communityAnswer')
+      .select(
+        `
+        *,
+        user:userId (
+          id,
+          nickname,
+          profileURL
+        )
+      `,
+      )
+      .eq('questionId', questionId)
+      .eq('id', qaData.answerId)
+      .single();
 
-      if (answersError) throw answersError;
-      return NextResponse.json(answersData, { status: 200 });
-    }
+    if (answerError) throw answerError;
+
+    return NextResponse.json(answerData, { status: 200 });
   } catch (error) {
     console.error('Error fetching QA data:', error);
     return NextResponse.json({ error: 'QA 데이터를 가져오는데 실패했습니다.' }, { status: 500 });
@@ -64,13 +79,25 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: '질문 ID와 답변 ID가 필요합니다.' }, { status: 400 });
     }
 
+    const { data: postExists, error: postCheckError } = await supabase
+      .from('communityPosts')
+      .select('id')
+      .eq('id', questionId)
+      .single();
+
+    if (postCheckError || !postExists) {
+      return NextResponse.json({ error: '해당 질문이 존재하지 않습니다.' }, { status: 404 });
+    }
+
     // QA 테이블 upsert
     const { data, error } = await supabase
       .from('communityQa')
       .upsert(
         {
+          questionId: questionId,
           answerId: answerId,
           isAccepted: true,
+          questionUserId: user.id,
         },
         {
           onConflict: 'questionId,questionUserId',

@@ -6,6 +6,7 @@ import DashBoardAPI from './dashboard.service';
 import DietAPI from './diet.service';
 import ExerciseAPI from './exercise.service';
 import ImageAPI from './image.service';
+import LevelAPI from './level.service';
 import NotificationsAPI from './notifications.service';
 import UsersAPI from './users.service';
 
@@ -20,6 +21,7 @@ class API {
   dashboard: DashBoardAPI;
   notifications: NotificationsAPI;
   community: CommunityAPI;
+  level: LevelAPI;
 
   constructor() {
     this.auth = new AuthAPI();
@@ -32,6 +34,7 @@ class API {
     this.dashboard = new DashBoardAPI();
     this.notifications = new NotificationsAPI();
     this.community = new CommunityAPI();
+    this.level = new LevelAPI();
   }
 }
 

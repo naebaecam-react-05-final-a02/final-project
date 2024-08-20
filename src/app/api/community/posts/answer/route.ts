@@ -1,4 +1,5 @@
 import { createClient } from '@/supabase/server';
+import { Answer } from '@/types/community';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -19,7 +20,14 @@ export async function GET(request: NextRequest) {
 
     if (userError) throw userError;
 
-    // communityAnswer 테이블에서 데이터 조회하고 users 테이블과 조인
+    const { data: qaData, error: qaError } = await supabase
+      .from('communityQa')
+      .select('answerId')
+      .eq('questionId', questionId)
+      .single();
+
+    if (qaError && qaError.code !== 'PGRST116') throw qaError;
+
     const { data: answers, error: answerError } = await supabase
       .from('communityAnswer')
       .select(
@@ -37,8 +45,6 @@ export async function GET(request: NextRequest) {
 
     if (answerError) throw answerError;
 
-    const hasUserAnswered = answers.some((answer) => answer.userId === user?.id);
-
     const { data: isLike, error: isLikeError } = await supabase
       .from('communityAnswerLikes')
       .select('*')
@@ -46,16 +52,29 @@ export async function GET(request: NextRequest) {
 
     if (isLikeError) throw isLikeError;
 
-    const answersWithLikes = answers.map((answer) => {
-      const likeInfo = isLike.find((like) => like.answerId === answer.id);
+    let acceptedAnswer = null;
+    let otherAnswers = answers;
 
+    if (qaData && qaData.answerId) {
+      acceptedAnswer = answers.find((answer) => answer.id === qaData.answerId);
+      otherAnswers = answers.filter((answer) => answer.id !== qaData.answerId);
+    }
+
+    const processAnswer = (answer: Answer) => {
+      const likeInfo = isLike.find((like) => like.answerId === answer.id);
       return {
         ...answer,
         isLiked: likeInfo ? likeInfo.isLike : null,
       };
-    });
+    };
+
+    const acceptedAnswerWithLike = acceptedAnswer ? processAnswer(acceptedAnswer) : null;
+    const answersWithLikes = otherAnswers.map(processAnswer);
+
+    const hasUserAnswered = answers.some((answer) => answer.userId === user?.id);
 
     const responseData = {
+      acceptedAnswer: acceptedAnswerWithLike,
       answers: answersWithLikes,
       hasUserAnswered,
     };

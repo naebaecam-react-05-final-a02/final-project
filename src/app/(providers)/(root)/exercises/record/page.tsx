@@ -11,12 +11,11 @@ import { useExerciseStore } from '@/stores/exercise.store';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useModal } from '@/contexts/modal.context/modal.context';
-import { CardioInput, WeightInput } from '@/types/exercises';
+import { CardioInput, RecordData, WeightInput } from '@/types/exercises';
 import { getFormattedDate } from '@/utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import ExerciseRecordForm from './_components/exerciseRecordForm/ExerciseRecordForm';
-import DownIcon from '/public/icons/chevron-down.svg';
 
 const ExerciseRecordPage = () => {
   const queryClient = useQueryClient();
@@ -29,15 +28,21 @@ const ExerciseRecordPage = () => {
   const [favoriteWorkouts, setFavoriteWorkouts] = useState<string[]>([]);
   const router = useRouter();
   const modal = useModal();
-  const [localBookmarkedExercises, setLocalBookmarkedExercises] = useState<string[]>([]);
+  const [localBookmarkedExercises, setLocalBookmarkedExercises] = useState<RecordData[]>([]);
 
   const { mutate: register, isPending } = useRegisterExercise();
   const { data: bookmarkData } = useGetExerciseBookmarks();
-  const { mutate: toggleBookmark } = useToggleBookmark();
+  const { mutate: toggleBookmark, isPending: BookBarkPending } = useToggleBookmark();
 
   const [isFirstChange, setIsFirstChange] = useState(false);
 
   useEffect(() => {}, [record.record]);
+
+  useEffect(() => {
+    if (bookmarkData) {
+      setLocalBookmarkedExercises(bookmarkData);
+    }
+  }, [bookmarkData]);
 
   const memoizedClearRecord = useCallback(() => {
     clearRecord();
@@ -50,12 +55,6 @@ const ExerciseRecordPage = () => {
       memoizedClearRecord();
     };
   }, [memoizedClearRecord]);
-
-  useEffect(() => {
-    if (bookmarkData) {
-      setLocalBookmarkedExercises(bookmarkData.map((item) => item.exerciseName));
-    }
-  }, [bookmarkData]);
 
   const filteredWorkouts = favoriteWorkouts.filter((workout) =>
     workout.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -142,51 +141,48 @@ const ExerciseRecordPage = () => {
       console.error('데이터 전송 중 오류 발생:', error);
     }
   };
-
-  const handleToggleBookmark = (exerciseName: string) => {
-    setLocalBookmarkedExercises((prev) =>
-      prev.includes(exerciseName) ? prev.filter((name) => name !== exerciseName) : [...prev, exerciseName],
-    );
-
-    toggleBookmark(exerciseName, {
+  const handleToggleBookmark = (recordToToggle: RecordData) => {
+    toggleBookmark(recordToToggle, {
+      onSuccess: (data) => {
+        setLocalBookmarkedExercises((prev) => {
+          if (data.isBookmarked) {
+            return [...prev, recordToToggle];
+          } else {
+            return prev.filter((item) => item.name !== recordToToggle.name);
+          }
+        });
+      },
       onError: (error) => {
         console.error('북마크 토글 실패:', error);
-        // 에러 시 로컬 상태 롤백
-        setLocalBookmarkedExercises((prev) =>
-          prev.includes(exerciseName) ? prev.filter((name) => name !== exerciseName) : [...prev, exerciseName],
-        );
       },
     });
   };
 
-  const bookmarkListOptions = bookmarkData?.map((item) => {
-    return {
-      value: item.exerciseName,
-      icon: (
-        <Star
-          width={20}
-          height={20}
-          className="cursor-pointer"
-          style={{
-            fill: localBookmarkedExercises.includes(item.exerciseName) ? '#12F287' : 'none',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleToggleBookmark(item.exerciseName);
-          }}
-        />
-      ),
-      onClick: (e: React.MouseEvent) => {
-        setRecord({ name: item.exerciseName });
-        setIsFirstChange(true);
-      },
-    };
-  });
-  const handleClickdown = () => {
-    console.log('나 찍힘');
-  };
+  const bookmarkListOptions = bookmarkData?.map((item) => ({
+    value: item.name,
+    icon: (
+      <Star
+        width={20}
+        height={20}
+        className="cursor-pointer"
+        style={{
+          fill: localBookmarkedExercises.some((bookmark) => bookmark.name === item.name) ? '#12F287' : 'none',
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleToggleBookmark(item);
+        }}
+      />
+    ),
+    onClick: (e: React.MouseEvent) => {
+      clearRecord();
+      setRecord(item);
+      setIsFirstChange(true);
+    },
+  }));
+
   return (
-    <Mobile headerLayout={<Header title={`투두 추가하기`} titleIcon={<DownIcon onClick={handleClickdown} />} />}>
+    <Mobile headerLayout={<Header title={`투두 추가하기`} />}>
       <div className="max-h-screen flex flex-col gap-4 p-5">
         <Input
           label="운동 이름"
@@ -199,7 +195,7 @@ const ExerciseRecordPage = () => {
           icon={
             <Star
               style={{
-                fill: localBookmarkedExercises.includes(record.name) ? '#12F287' : 'none',
+                fill: localBookmarkedExercises.some((bookmark) => bookmark.name === record.name) ? '#12F287' : 'none',
               }}
               className="cursor-pointer"
               width={20}
@@ -207,7 +203,7 @@ const ExerciseRecordPage = () => {
               onClick={(e) => {
                 e.stopPropagation();
                 if (record.name) {
-                  handleToggleBookmark(record.name);
+                  handleToggleBookmark(record);
                 }
               }}
             />
@@ -245,7 +241,7 @@ const ExerciseRecordPage = () => {
           icon={<Memo width={20} height={20} />}
         />
         <ExerciseRecordForm />
-        <Button className="mt-4" type="submit" onClick={handleSubmit}>
+        <Button className="mt-4" type="submit" disabled={isPending} onClick={handleSubmit}>
           등록하기
         </Button>
       </div>
