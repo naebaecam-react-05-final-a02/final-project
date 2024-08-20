@@ -9,7 +9,7 @@ const NotificationsPage = async () => {
   await queryClient.prefetchQuery(notificationsQueryOptions.getNotifications(supabase));
 
   return (
-    <div className="px-4 grid gap-y-6 flex-1  w-full h-full overflow-scroll scroll py-4 text-white">
+    <div className="px-4 flex flex-col gap-y-6 flex-1  w-full h-full overflow-scroll scroll py-4 text-white">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <NotificationList />
       </HydrationBoundary>
