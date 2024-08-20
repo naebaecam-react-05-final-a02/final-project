@@ -48,7 +48,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
   const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId, initialData.answers);
   const { data: isAcceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
 
-  const { mutateAsync: deletePost } = useDeleteCommunityPost();
+  const { mutate: deletePost } = useDeleteCommunityPost(post.category);
   const { mutateAsync: deleteAnswer } = useDeleteAnswer();
 
   const { mutate: acceptAnswer } = useAcceptAnswer();
@@ -69,17 +69,19 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
   const isAuthor = post.user.id === user?.id;
 
   const handleEdit = () => router.push(`/community/${postId}/edit`);
-  const handleDelete = async () => {
-    const yes = await modal.confirm(['정말로 이 게시글을 삭제하시겠습니까?']);
-    if (yes) {
-      try {
-        await deletePost(postId);
+  const handleDelete = () => {
+    modal.confirm(['정말로 이 게시글을 삭제하시겠습니까?']).then((yes) => {
+      if (yes) {
         router.push('/community');
-      } catch (error) {
-        console.error('Error deleting post:', error);
-        modal.alert(['게시글 삭제 중 오류가 발생했습니다.']);
+
+        deletePost(postId, {
+          onError: (error) => {
+            console.error('Error deleting post:', error);
+            modal.alert(['게시글 삭제 중 오류가 발생했습니다. 다시 시도해주세요.']);
+          },
+        });
       }
-    }
+    });
   };
   const handleClickBack = () => router.push('/community');
 
@@ -91,7 +93,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
     const yes = await modal.confirm(['정말로 이 답변을 삭제하시겠습니까?']);
     if (yes) {
       try {
-        await deleteAnswer({ answerId, questionId: postId });
+        deleteAnswer({ answerId, questionId: postId });
       } catch (error) {
         console.error('Error deleting answer:', error);
         modal.alert(['답변 삭제 중 오류가 발생했습니다.']);
