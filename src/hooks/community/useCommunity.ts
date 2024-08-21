@@ -37,10 +37,9 @@ export const useGetCommunityPosts = ({ category, categories, initialData }: UseG
 };
 
 // 커뮤니티 글 상세 조회
-export const useGetCommunityPostDetail = (postId: string, initialData: CommunityPostData) =>
+export const useGetCommunityPostDetail = (postId: string) =>
   useQuery({
     ...queryOptions.postDetail(postId),
-    initialData,
   });
 
 // 커뮤니티 글 등록

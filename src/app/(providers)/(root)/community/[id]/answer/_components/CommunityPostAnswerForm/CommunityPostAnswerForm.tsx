@@ -8,7 +8,6 @@ import { useModal } from '@/contexts/modal.context/modal.context';
 import { useCreateAnswer, useGetCommunityPostDetail } from '@/hooks/community/useCommunity';
 import { useLevelUp } from '@/hooks/level/useLevel';
 import { useCreateNotification } from '@/hooks/notifications/useNotifications';
-import { CommunityPostData } from '@/types/community';
 import { makeNotificationData } from '@/utils/notificationTypeConverter';
 import { Editor } from '@tiptap/react';
 import dayjs from 'dayjs';
@@ -19,12 +18,11 @@ import CommunityPostEditor from '../../../../write/_components/CommunityPostEdit
 
 interface CommunityPostAnswerFormProps {
   postId: string;
-  initialData: CommunityPostData;
 }
 
-const CommunityPostAnswerForm = ({ postId, initialData }: CommunityPostAnswerFormProps) => {
+const CommunityPostAnswerForm = ({ postId }: CommunityPostAnswerFormProps) => {
   const { mutate: createNotification } = useCreateNotification();
-  const { data: post, isLoading, error } = useGetCommunityPostDetail(postId, initialData);
+  const { data: post, isLoading, error } = useGetCommunityPostDetail(postId);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [content, setContent] = useState('');
   const [isContentValid, setIsContentValid] = useState(false);

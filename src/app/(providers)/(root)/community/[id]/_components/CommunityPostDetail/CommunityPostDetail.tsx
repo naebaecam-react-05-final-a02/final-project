@@ -13,7 +13,7 @@ import {
   useGetCommunityPostDetail,
 } from '@/hooks/community/useCommunity';
 import { useLevelUp } from '@/hooks/level/useLevel';
-import { AnswerResponse, CommunityPostData } from '@/types/community';
+import { AnswerResponse } from '@/types/community';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -37,18 +37,17 @@ const FloatingWriteButton = dynamic(() => import('../../../_components/Community
 interface CommunityPostDetailProps {
   postId: string;
   initialData: {
-    post: CommunityPostData;
     answers: AnswerResponse;
   };
 }
 
 const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) => {
-  const { data: post, isLoading } = useGetCommunityPostDetail(postId, initialData.post);
+  const { data: post, isLoading } = useGetCommunityPostDetail(postId);
   const { data: user } = useGetUser();
   const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId, initialData.answers);
   const { data: isAcceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
 
-  const { mutate: deletePost } = useDeleteCommunityPost(post.category);
+  const { mutate: deletePost } = useDeleteCommunityPost(post?.category || '');
   const { mutateAsync: deleteAnswer } = useDeleteAnswer();
 
   const { mutate: acceptAnswer } = useAcceptAnswer();
