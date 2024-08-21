@@ -124,7 +124,7 @@ const SignUpForm = () => {
 
   const renderHeader = () => {
     const config = headerConfigs[currentStep as keyof typeof headerConfigs] || {};
-    return <Header {...config} />;
+    return <Header className="!h-[56px] sm:!h-full" {...config} />;
   };
 
   return (
