@@ -1,17 +1,19 @@
-import { createClient } from '@/supabase/server';
+import { createClient } from '@/supabase/client';
 import { CommunityPostData } from '@/types/community';
 
+// 게시글 상세 정보 가져오기
 export async function getPostDetail(postId: string): Promise<CommunityPostData> {
   const supabase = createClient();
-
   const {
-    data: { user },
+    data: { session },
     error: authError,
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getSession();
 
-  if (authError) throw new Error(authError.message);
+  if (authError) {
+    throw new Error();
+  }
 
-  const userId = user?.id;
+  const userId = session?.user?.id;
 
   const { data: postData, error: postError } = await supabase
     .from('communityPosts')
@@ -33,16 +35,14 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
     .eq('communityPostsLikes.userId', userId)
     .single();
 
-  if (postError) throw new Error(postError.message);
+  if (postError) throw new Error('게시글 가져오기 오류: ' + postError.message);
 
-  supabase
-    .rpc('incrementViewCount', {
-      p_post_id: parseInt(postId),
-      p_user_id: userId,
-    })
-    .then(({ error }) => {
-      if (error) console.error('Error incrementing view count:', error);
-    });
+  const { data: viewData, error: viewError } = await supabase.rpc('incrementViewCount', {
+    p_post_id: parseInt(postId),
+    p_user_id: userId,
+  });
+
+  if (viewError) console.error('Error incrementing view count:', viewError);
 
   let responseCount;
   let isLiked;
@@ -51,9 +51,9 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
     const { data: isLike, error: isLikeError } = await supabase
       .from('communityPostsLikes')
       .select('*')
-      .eq('userId', user?.id);
+      .eq('userId', userId);
 
-    if (isLikeError) throw new Error(isLikeError.message);
+    if (isLikeError) throw new Error('좋아요 정보 가져오기 오류: ' + isLikeError.message);
 
     responseCount = postData.answerCount?.[0]?.count || 0;
     const likeInfo = isLike.find((like) => like.postId === postData.id);
@@ -67,6 +67,6 @@ export async function getPostDetail(postId: string): Promise<CommunityPostData> 
     ...postData,
     responseCount,
     isLiked,
-    views: postData.views + 1,
+    views: viewData?.views || postData.views,
   };
 }

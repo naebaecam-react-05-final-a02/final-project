@@ -1,3 +1,5 @@
+import { getPostDetail } from '@/app/(providers)/(root)/community/[id]/_utils/getPostDetail';
+import { getPosts } from '@/app/(providers)/(root)/community/_utils/getPosts';
 import api from '@/service/service';
 import {
   CommentCreateData,
@@ -38,7 +40,7 @@ export const queryOptions = {
     queryKey: communityQueryKeys.posts(category),
     queryFn: ({ pageParam = 1 }) => {
       const page = typeof pageParam === 'number' ? pageParam : 1;
-      return api.community.getPosts({ pageParam: page, category });
+      return getPosts(page, category);
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage: PostsResponse, allPages) => {
@@ -48,10 +50,9 @@ export const queryOptions = {
       return allPages.length + 1;
     },
   }),
-
   postDetail: (postId: string) => ({
     queryKey: communityQueryKeys.postDetail(postId),
-    queryFn: () => api.community.getPostDetail(postId),
+    queryFn: () => getPostDetail(postId),
   }),
   comments: (postId: string) => ({
     queryKey: communityQueryKeys.comments(postId),
