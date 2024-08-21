@@ -36,7 +36,7 @@ const MyChallengeList = () => {
 
   return (
     <>
-      <div className="w-full h-full">
+      <div className="w-full h-full flex flex-col gap-4">
         <div className="w-full flex justify-between items-center">
           <ArticleTitle icon="🤛" title="내가 참여중인 챌린지" />
         </div>

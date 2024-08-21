@@ -6,7 +6,7 @@ interface MyChallengesProps {
   data: joinedMyChallengesDataType;
 }
 
-const MyChallenges = ({ data }: MyChallengesProps) => {
+const MyChallenges = () => {
   return (
     <section className="flex flex-col gap-4">
       <MyChallengeList />
