@@ -72,11 +72,11 @@
 
 ## 주요 기능 🔨
 
-#### 회원가입, 로그인
+#### 회원가입, 로그인 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Sign%E2%80%90Up-&-Login)
 
 - 퍼널 구조로 개선된 사용자 경험 제공
 
-#### 대시보드
+#### 대시보드 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Dashboard)
 
 - 사용자 레벨 확인
 - 참여중인 챌린지 확인
@@ -84,22 +84,34 @@
 - 식단 기록 확인
 - 체중 그래프 확인
 
-#### 식단 기록
+#### 식단 기록 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Diet-Log)
 
 - 날짜, 끼니별로 식단 등록 및 수정
 - 식단 삭제
 - 음식 영양성분 검색
 
-#### 운동 기록
+#### 운동 기록 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Exercise-Log)
 
 - 운동 기록 생성 및 수정, 삭제
 - 운동 기록 생성 및 수정, 삭제
 - 운동 루틴 등록
 
-#### 알림
+#### 챌린지 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Challenge)
+
+- 챌린지 목록 조회
+- 챌린지 생성 및 수정,삭제
+- 챌린지 필터링 기능
+- 챌린지 인증
+
+#### 커뮤니티 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Community)
+
+- 질문과 답변 및 채택 기능
+- 투표 기능
+
+#### 알림 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Notification)
 
 - 챌린지, 커뮤니티, 운동과 식단에 대한 알림 제공
 
-#### 마이페이지
+#### 마이페이지 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/MyPage)
 
 - 프로필 조희 및 변경
