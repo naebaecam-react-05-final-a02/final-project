@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Loading from '@/components/Loading/Loading';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetCommunityPostDetail, useUpdateAnswer } from '@/hooks/community/useCommunity';
-import { Answer, CommunityPostData } from '@/types/community';
+import { Answer } from '@/types/community';
 import { Editor } from '@tiptap/react';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -18,11 +18,10 @@ interface EditAnswerFormProps {
   postId: string;
   answerId: string;
   initialAnswer: Answer;
-  initialData: CommunityPostData;
 }
 
-const EditAnswerForm = ({ postId, answerId, initialAnswer, initialData }: EditAnswerFormProps) => {
-  const { data: post, isLoading: postLoading, error: postError } = useGetCommunityPostDetail(postId, initialData);
+const EditAnswerForm = ({ postId, answerId, initialAnswer }: EditAnswerFormProps) => {
+  const { data: post, isLoading: postLoading, error: postError } = useGetCommunityPostDetail(postId);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [content, setContent] = useState(initialAnswer.content);
   const [isContentValid, setIsContentValid] = useState(true);
