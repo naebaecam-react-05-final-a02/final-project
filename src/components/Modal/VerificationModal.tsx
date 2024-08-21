@@ -19,8 +19,8 @@ const VerificationModal = ({ data, id: modalId, onSuccess }: VerificationModalPr
   const [isVisible, setIsVisible] = useState(true);
 
   const { challengeId, id, impression, users, imageURLs, likes_count, isLiked } = data;
-  console.log(data);
-  console.log(challengeId, id, impression, users, imageURLs, likes_count, isLiked);
+  // console.log(data);
+  // console.log(challengeId, id, impression, users, imageURLs, likes_count, isLiked);
 
   const queryClient = useQueryClient();
   // console.log(challengeId);

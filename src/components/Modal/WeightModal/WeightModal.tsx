@@ -72,7 +72,7 @@ const WeightModal = ({ id }: WeightModalProps) => {
                 placeholder="0"
                 unit="kg"
                 onChange={(e) => {
-                  console.log(e);
+                  // console.log(e);
                   setWeight(Number.parseInt(e.target.value));
                 }}
               />
