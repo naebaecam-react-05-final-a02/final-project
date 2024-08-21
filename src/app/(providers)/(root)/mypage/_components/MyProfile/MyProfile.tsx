@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import WeightChart from '../../../_components/WeightChart';
 import { userActivitiesTypes } from '../../_types/types';
 import EXPBar from '../EXPBar/EXPBar';
@@ -35,6 +36,11 @@ const MyProfile = () => {
     router.push('/log-in');
     window.location.reload();
   };
+  useEffect(() => {
+    if (!user) {
+      router.push('/log-in');
+    }
+  }, [user]);
 
   return (
     <section className="flex flex-col gap-6">

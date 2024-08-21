@@ -22,7 +22,7 @@ const ResetPasswordProcess = () => {
   sm:shadow-[-4px_-4px_8px_0px_rgba(255,255,255,0.1),4px_4px_8px_0px_rgba(0,0,0,0.3)]
   sm:backdrop-blur-[8px]"
     >
-      <Header showLogo className="mb-8 py-4" />
+      <Header showLogo className="mb-8 py-4 !h-[56px] sm:!h-full" />
       {step === 'request' && <RequestResetForm onSuccess={handleRequestSuccess} setError={setError} />}
       {step === 'reset' && <ResetPasswordForm email={email} setError={setError} />}
     </div>
