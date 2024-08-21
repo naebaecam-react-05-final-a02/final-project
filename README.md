@@ -3,7 +3,7 @@
 - 사용자들이 자신의 운동, 식단, 체중을 기록하고, 이를 분석하여 개인 맞춤형 건강 관리 대시보드를 제공하는 앱입니다.
 - 사용자는 목표를 설정하고 챌린지를 통해 자신을 테스트하며, 성과와 후기를 공유할 수 있습니다. 이 앱은 건강한 생활 습관을 유지하고 개선하는 데 도움을 주기 위해 설계되었습니다.
 
-[OOSIE 바로가기](https://oosie-project.vercel.app/)
+[OOSIE 바로가기](https://oosie.vercel.app/)
 
 ![브로셔](https://github.com/user-attachments/assets/f665318b-9eba-4064-956f-44de96ac7f01)
 <br/>
