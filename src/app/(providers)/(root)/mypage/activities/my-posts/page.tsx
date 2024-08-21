@@ -14,7 +14,7 @@ import { MyActivityPostTypes } from '../../_types/types';
 const LIMIT = 6;
 const MyPostsPage = () => {
   const {
-    data: MyPosts,
+    data: myPosts,
     isPending,
     isFetching,
     fetchNextPage,
@@ -39,14 +39,14 @@ const MyPostsPage = () => {
   if (isPending) return <Loading />;
   return (
     <Mobile headerLayout={<MyPageHeader />}>
-      {MyPosts?.pages.length === 0 ? (
+      {myPosts?.pages?.[0].error ? (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400">
           <FaRegCommentDots className="text-6xl mb-4" />
           <p className="text-lg font-semibold mb-2">아직 게시글이 없습니다</p>
         </div>
       ) : (
         <div className="flex flex-col gap-4 px-4">
-          {MyPosts?.pages.map((page) =>
+          {myPosts?.pages.map((page) =>
             page.data.map((post: MyActivityPostTypes) => (
               <Link href={`/community/${post.id}`} key={post.id}>
                 <MyActivityListItem post={post} />
