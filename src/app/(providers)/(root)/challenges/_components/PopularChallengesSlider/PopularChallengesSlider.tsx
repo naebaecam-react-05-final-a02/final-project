@@ -19,7 +19,7 @@ import SlideItem from './SlideItem/SlideItem';
 
 const PopularChallengesSlider = () => {
   const { data: challenges, isPending } = useGetPopularChallenges();
-  console.log(challenges);
+  // console.log(challenges);
 
   const getChallengeList = () => [prevDummySlide, ...challenges?.data, nextDummySlide];
   const [activeIndex, setActiveIndex] = useState<number>(0);
