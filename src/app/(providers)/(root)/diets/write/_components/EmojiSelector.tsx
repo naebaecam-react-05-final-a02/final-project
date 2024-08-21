@@ -30,7 +30,7 @@ const EmojiSelector = ({ foodType, handleEmojiChange }: EmojiSelectorProps) => {
         <>
           <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
           <div
-            className={`z-50 absolute top-full right-0 w-[calc(100vw-32px)] bg-blackT-50 border-2 border-primary-50 backdrop-blur-md mt-2 px-3 py-2 rounded-xl`}
+            className={`z-50 absolute top-full right-0 w-[calc(100vw-64px)] max-w-[calc(800px-64px)] bg-blackT-50 border-2 border-primary-50 backdrop-blur-md mt-2 px-3 py-2 rounded-xl`}
           >
             <div className="flex flex-wrap gap-1 overflow-hidden mb-3">
               <Swiper
