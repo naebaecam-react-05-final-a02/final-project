@@ -42,6 +42,8 @@ const MyProfile = () => {
     }
   }, [user]);
 
+  console.log(user?.introduction);
+
   return (
     <section className="flex flex-col gap-6">
       <article className="flex flex-col gap-6">
@@ -62,7 +64,7 @@ const MyProfile = () => {
         <div className="my-page-intro-bg px-3 py-2 rounded-b-2xl rounded-se-2xl h-[76px] relative ">
           <div className="rounded-b-2xl rounded-se-2xl absolute inset-0 border-2 border-white/10"></div>
 
-          {user?.introduction && user.introduction.length > 0 ? (
+          {user?.introduction && user?.introduction !== 'NULL' && user.introduction.length > 0 ? (
             <p className="text-[14px] text-white/70">{user.introduction}</p>
           ) : (
             <p className="text-[14px] text-white/70">
