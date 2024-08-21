@@ -52,12 +52,12 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   ]);
 
   return (
-    <div className="min-h-full overflow-hidden max-w-[800px] flex flex-col mx-auto ">
-      <div className="w-full px-4 mb-4 text-white">
+    <div className="min-h-full overflow-hidden max-w-[800px] flex flex-col mx-auto">
+      <div className="w-full mb-4 text-white">
         <DefaultHeader />
       </div>
 
-      <main className="flex flex-1 flex-col gap-y-3 min-h-fit px-4 mb-3">
+      <main className="flex flex-1 flex-col gap-y-3 min-h-fit  mb-20">
         {/* 등급/투두 진행 상황 */}
         <div className="grid grid-cols-[160px_1fr] gap-x-3 select-none ">
           <Card

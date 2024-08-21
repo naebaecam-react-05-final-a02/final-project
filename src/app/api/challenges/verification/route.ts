@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   try {
     const ChallengeVerifyData: ChallengeVerifyData = await req.json();
     const { data, error } = await supabase.from('challengeVerify').insert(ChallengeVerifyData);
-    console.log(ChallengeVerifyData);
+    // console.log(ChallengeVerifyData);
 
     if (error) {
       console.error('Supabase insert error:', error);

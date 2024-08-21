@@ -2,7 +2,7 @@ import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  console.log('call route handler');
+  // console.log('call route handler');
   const supabase = createClient();
   const {
     data: { user },
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   if (authError) {
     return NextResponse.json(JSON.stringify({ error: authError.message }), { status: 401 });
   }
-  console.log(authError);
+  // console.log(authError);
 
   const formData = await request.formData();
   const weight = formData.get('weight') as string;
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     date,
     userId: user?.id,
   });
-  console.log('postError', postError);
+  // console.log('postError', postError);
   if (postError)
     return NextResponse.json({
       error: postError.message,

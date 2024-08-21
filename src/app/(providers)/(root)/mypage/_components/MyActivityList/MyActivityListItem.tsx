@@ -17,7 +17,7 @@ interface MyActivityListItemProps {
 }
 
 const MyActivityListItem = ({ post }: MyActivityListItemProps) => {
-  console.log(post);
+  // console.log(post);
   const plainTextContent = htmlToPlainText(post.content);
   const imgMatch = post.content.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/);
 

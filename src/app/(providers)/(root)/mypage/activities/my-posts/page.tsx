@@ -27,7 +27,7 @@ const MyPostsPage = () => {
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
-  console.log(MyPosts);
+  // console.log(MyPosts);
 
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);

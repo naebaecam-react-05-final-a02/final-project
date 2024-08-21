@@ -2,7 +2,7 @@
 
 import { useGetLevel } from '@/hooks/level/useLevel';
 import { createClient } from '@/supabase/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const EXPBar = () => {
   const [percent, setPercent] = useState<number>(0);
@@ -10,22 +10,18 @@ const EXPBar = () => {
 
   const { data: userLevel, error: userLevelError, isPending } = useGetLevel(supabase);
 
-  if (userLevel?.experience && userLevel?.expInfo?.experience)
-    console.log((userLevel.experience / userLevel.expInfo.experience) * 100);
+  const EXPPercent = isPending
+    ? 0
+    : userLevel?.experience && userLevel?.expInfo?.experience
+    ? (userLevel.experience / userLevel.expInfo.experience) * 100
+    : 0;
 
-  useEffect(() => {
-    const EXPPercent = isPending
-      ? 0
-      : userLevel?.experience && userLevel?.expInfo?.experience
-      ? (userLevel.experience / userLevel.expInfo.experience) * 100
-      : 0;
-    setPercent(EXPPercent);
-  }, [percent, isPending]);
+  // console.log(EXPPercent);
 
   return (
     <div className="h-[22px]">
-      <div className="w-full h-[6px] rounded-full bg-white/10 overflow-hidden relative">
-        <div className={`w-[${percent}%] h-[6px] bg-primary-100 rounded-full `}></div>
+      <div className="w-full h-[6px] rounded-full bg-white/10 overflow-hidden">
+        <div style={{ width: `${EXPPercent}%` }} className={`h-full bg-primary-100  rounded-full`}></div>
       </div>
       <div className="flex justify-between h-[16px]">
         <p className="text-white text-[10px]">{percent}%</p>

@@ -33,9 +33,9 @@ export async function GET() {
 
   if (myAnswersError) return NextResponse.json(JSON.stringify({ error: myAnswersError.message }), { status: 500 });
 
-  console.log('likesPosts', likesPosts);
-  console.log('myPosts', myPosts);
-  console.log('myAnswers', myAnswers);
+  // console.log('likesPosts', likesPosts);
+  // console.log('myPosts', myPosts);
+  // console.log('myAnswers', myAnswers);
 
   return NextResponse.json({ likesPosts, myPosts, myAnswers });
 }
