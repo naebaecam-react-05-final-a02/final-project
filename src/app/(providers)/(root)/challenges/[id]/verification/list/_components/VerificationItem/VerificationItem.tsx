@@ -80,7 +80,7 @@ const VerificationItem = ({
               />
             )}
           </div>
-          <p className="text-white/70 text-[12px]">{users.nickname}</p>
+          <p className="text-white/70 text-[12px] line-clamp-1 max-w-[100px]">{users.nickname}</p>
         </div>
         <p className="text-[12px] text-white line-clamp-2">{impression}</p>
       </div>

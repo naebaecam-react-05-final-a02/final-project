@@ -78,8 +78,8 @@ const Mobile = ({
             showHeader && !isHeaderFixed ? '' : 'py-4'
           }`}
         >
-          {showHeader && !isHeaderFixed && <header className="w-full h-14 px-4">{headerLayout}</header>}
-          <div className="px-4 w-full">{children}</div>
+          {showHeader && !isHeaderFixed && <header className="w-full h-14">{headerLayout}</header>}
+          <div className="px-4 w-full pb-10">{children}</div>
         </div>
         {bottomButton && (
           <div

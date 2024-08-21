@@ -131,7 +131,7 @@ const MyProfileEditPage = () => {
         </TitleHeader>
       }
     >
-      <div className="px-4">
+      <div className="">
         <div className="flex flex-col justify-center items-center">
           <label htmlFor="avatar">
             <div className="relative w-16 h-16">

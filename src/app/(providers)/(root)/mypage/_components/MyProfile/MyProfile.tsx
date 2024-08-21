@@ -24,8 +24,6 @@ const MyProfile = () => {
     enabled: !!user,
   });
 
-  // console.log(user);
-
   const handleSignOut = () => {
     const deleteCookie = (name: string) => {
       document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
@@ -49,9 +47,7 @@ const MyProfile = () => {
       <article className="flex flex-col gap-6">
         <div className="flex gap-4">
           <div className="relative w-16 h-16 rounded-full border border-white overflow-hidden">
-            {user?.profileURL && (
-              <Image src={user?.profileURL ?? '/user/default-avatar.png'} alt={'프로필 이미지'} fill />
-            )}
+            <Image src={user?.profileURL ?? '/user/default-avatar.png'} alt={'프로필 이미지'} fill />
           </div>
           <div className=" flex-1 w-full flex flex-col justify-between">
             <div className="flex gap-2 items-center">

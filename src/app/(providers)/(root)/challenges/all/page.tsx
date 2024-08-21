@@ -9,7 +9,7 @@ import OrderTab from './_components/OrderTab/OrderTab';
 const AllChallengesPage = () => {
   return (
     <Mobile headerLayout={<ChallengesHeader title={'챌린지 목록'} />}>
-      <section className="px-4 flex flex-col gap-2 ">
+      <section className="flex flex-col gap-2 ">
         <OrderTab />
         <ChallengeList />
         <div className="fixed bottom-0 left-0 right-0 pointer-events-none">

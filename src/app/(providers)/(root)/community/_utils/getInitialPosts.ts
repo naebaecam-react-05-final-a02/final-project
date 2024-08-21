@@ -5,7 +5,7 @@ import { PostsResponse } from '@/types/community';
 export async function getInitialPosts(
   category: string = '전체',
   page: number = 1,
-  limit: number = 8,
+  limit: number = 6,
 ): Promise<PostsResponse | undefined> {
   const supabase = createClient();
 
@@ -51,10 +51,10 @@ export async function getInitialPosts(
       answerCount:communityAnswer(count),
       isLiked:communityPostsLikes!left(id)
     `,
-    { count: 'exact' },
+    { count: 'planned' },
   );
 
-  if (category !== '전체') {
+  if (category && category !== '전체') {
     query = query.eq('category', category);
   }
 
