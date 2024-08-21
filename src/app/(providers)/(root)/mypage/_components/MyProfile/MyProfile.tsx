@@ -24,7 +24,7 @@ const MyProfile = () => {
     enabled: !!user,
   });
 
-  console.log(user);
+  // console.log(user);
 
   const handleSignOut = () => {
     const deleteCookie = (name: string) => {

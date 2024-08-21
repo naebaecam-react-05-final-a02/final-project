@@ -7,9 +7,11 @@ const EXPBar = () => {
   const supabase = createClient();
 
   const { data: userLevel, error: userLevelError, isPending } = useGetLevel(supabase);
-  console.log(userLevel);
-  if (userLevel?.experience && userLevel?.expInfo?.experience)
-    console.log((userLevel.experience / userLevel.expInfo.experience) * 100);
+
+  // console.log(userLevel);
+  // if (userLevel?.experience && userLevel?.expInfo?.experience)
+  //   console.log((userLevel.experience / userLevel.expInfo.experience) * 100);
+
   const EXPPercent = isPending
     ? 0
     : userLevel?.experience && userLevel?.expInfo?.experience
