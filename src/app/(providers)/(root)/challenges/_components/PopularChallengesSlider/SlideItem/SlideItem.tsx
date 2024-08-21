@@ -59,15 +59,17 @@ const SlideItem = ({ challenge, index, activeIndex }: SlideItemProps) => {
         <p className="text-[12px] text-white/50 font-light">
           {challenge.startDate} ~ {challenge.endDate}
         </p>
-        <Link href={`/challenges/${challenge.id}/detail`}>
-          <button className="w-full h-12 relative rounded-lg overflow-hidden flex justify-center items-center">
-            <p className="absolute z-10 font-semibold">참여하기</p>
-            <div className="rounded-lg border border-white/30 absolute inset-0 backdrop-[5px] -z-10"></div>
-            <div className="h-1/2 w-full bg-gradient-to-b from-white/0 to-white/100 absolute bottom-0 opacity-50 backdrop-[5px]"></div>
-            <div className="w-full h-full flex justify-center items-center bg-radial-gradient-button rounded-lg absolute -z-20"></div>
-            <div className="absolute w-full h-full bg-primary-100/70"></div>
-          </button>
-        </Link>
+        {challenge.id === -1 || challenge.id === -5 ? null : (
+          <Link href={`/challenges/${challenge.id}/detail`}>
+            <button className="w-full h-12 relative rounded-lg overflow-hidden flex justify-center items-center">
+              <p className="absolute z-10 font-semibold">참여하기</p>
+              <div className="rounded-lg border border-white/30 absolute inset-0 backdrop-[5px] -z-10"></div>
+              <div className="h-1/2 w-full bg-gradient-to-b from-white/0 to-white/100 absolute bottom-0 opacity-50 backdrop-[5px]"></div>
+              <div className="w-full h-full flex justify-center items-center bg-radial-gradient-button rounded-lg absolute -z-20"></div>
+              <div className="absolute w-full h-full bg-primary-100/70"></div>
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
