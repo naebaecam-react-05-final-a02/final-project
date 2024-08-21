@@ -64,7 +64,7 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
   };
 
   return (
-    <div className="px-4">
+    <div className="px-4 mb-4">
       {!verifications ||
         (!verifications.length && (
           <div>
