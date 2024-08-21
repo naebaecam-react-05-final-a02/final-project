@@ -14,7 +14,7 @@ import { MyAnswerTypes } from '../../_types/types';
 const LIMIT = 6;
 const MyAnswersPage = () => {
   const {
-    data: MyAnswers,
+    data: myAnswers,
     isPending,
     isFetching,
     fetchNextPage,
@@ -37,14 +37,14 @@ const MyAnswersPage = () => {
   if (isPending) return <Loading />;
   return (
     <Mobile headerLayout={<MyPageHeader />}>
-      {MyAnswers?.pages.length === 0 ? (
+      {myAnswers?.pages?.[0].error ? (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400">
           <FaRegCommentDots className="text-6xl mb-4" />
           <p className="text-lg font-semibold mb-2">아직 게시글이 없습니다</p>
         </div>
       ) : (
         <div className="flex flex-col gap-4 px-4">
-          {MyAnswers?.pages.map((page) =>
+          {myAnswers?.pages.map((page) =>
             page.data.map((post: MyAnswerTypes) => (
               <Link href={`/community/${post.questionId}`} key={post.questionId}>
                 <MyActivityListItem post={post.post} />

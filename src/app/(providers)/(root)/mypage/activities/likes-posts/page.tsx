@@ -34,10 +34,12 @@ const LikesPostsPage = () => {
     }
   });
 
+  console.log(likesPosts);
+
   if (isPending) return <Loading />;
   return (
     <Mobile headerLayout={<MyPageHeader />}>
-      {likesPosts?.pages.length === 0 ? (
+      {likesPosts?.pages?.[0].error ? (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400">
           <FaRegCommentDots className="text-6xl mb-4" />
           <p className="text-lg font-semibold mb-2">아직 게시글이 없습니다</p>

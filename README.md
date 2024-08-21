@@ -3,7 +3,7 @@
 - 사용자들이 자신의 운동, 식단, 체중을 기록하고, 이를 분석하여 개인 맞춤형 건강 관리 대시보드를 제공하는 앱입니다.
 - 사용자는 목표를 설정하고 챌린지를 통해 자신을 테스트하며, 성과와 후기를 공유할 수 있습니다. 이 앱은 건강한 생활 습관을 유지하고 개선하는 데 도움을 주기 위해 설계되었습니다.
 
-[OOSIE 바로가기](https://oosie-project.vercel.app/)
+[OOSIE 바로가기](https://oosie.vercel.app/)
 
 ![브로셔](https://github.com/user-attachments/assets/f665318b-9eba-4064-956f-44de96ac7f01)
 <br/>
@@ -72,11 +72,11 @@
 
 ## 주요 기능 🔨
 
-#### 회원가입, 로그인
+#### 회원가입, 로그인 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Sign%E2%80%90Up-&-Login)
 
 - 퍼널 구조로 개선된 사용자 경험 제공
 
-#### 대시보드
+#### 대시보드 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Dashboard)
 
 - 사용자 레벨 확인
 - 참여중인 챌린지 확인
@@ -84,22 +84,34 @@
 - 식단 기록 확인
 - 체중 그래프 확인
 
-#### 식단 기록
+#### 식단 기록 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Diet-Log)
 
 - 날짜, 끼니별로 식단 등록 및 수정
 - 식단 삭제
 - 음식 영양성분 검색
 
-#### 운동 기록
+#### 운동 기록 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Exercise-Log)
 
 - 운동 기록 생성 및 수정, 삭제
 - 운동 기록 생성 및 수정, 삭제
 - 운동 루틴 등록
 
-#### 알림
+#### 챌린지 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Challenge)
+
+- 챌린지 목록 조회
+- 챌린지 생성 및 수정,삭제
+- 챌린지 필터링 기능
+- 챌린지 인증
+
+#### 커뮤니티 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Community)
+
+- 질문과 답변 및 채택 기능
+- 투표 기능
+
+#### 알림 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/Notification)
 
 - 챌린지, 커뮤니티, 운동과 식단에 대한 알림 제공
 
-#### 마이페이지
+#### 마이페이지 - [자세히 보기](https://github.com/naebaecam-react-05-final-a02/final-project/wiki/MyPage)
 
 - 프로필 조희 및 변경

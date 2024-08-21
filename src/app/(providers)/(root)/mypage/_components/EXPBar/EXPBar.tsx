@@ -22,7 +22,7 @@ const EXPBar = () => {
         <div style={{ width: `${EXPPercent}%` }} className={`h-full bg-primary-100  rounded-full`}></div>
       </div>
       <div className="flex justify-between h-[16px]">
-        <p className="text-white text-[10px]">{EXPPercent}%</p>
+        <p className="text-white text-[10px]">{EXPPercent.toFixed(2)}%</p>
         <p className="text-white/40 text-[10px]">100%</p>
       </div>
     </div>
