@@ -69,7 +69,7 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
   };
 
   return (
-    <div className="px-4 mb-4">
+    <div className=" mb-4">
       {!verifications ||
         (!verifications.length && (
           <div>
@@ -77,7 +77,7 @@ const VerificationList = ({ counts, title }: { counts: verificationsCountType; t
           </div>
         ))}
       {verifications && verifications.length > 0 && (
-        <div className="flex flex-col gap-4 px-4">
+        <div className="flex flex-col gap-4 ">
           <LocalBanner users={counts.totalUsers} title={title} />
 
           <ul>
