@@ -13,7 +13,7 @@ export default function HtmlLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="w-full h-full" lang="en">
+    <html className="w-full h-full scroll" lang="en">
       <body className="relative font-sans w-full h-full">{children}</body>
     </html>
   );
