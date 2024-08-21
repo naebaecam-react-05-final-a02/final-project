@@ -9,7 +9,7 @@ const EXPBar = () => {
   const supabase = createClient();
 
   const { data: userLevel, error: userLevelError, isPending } = useGetLevel(supabase);
-  console.log(userLevel);
+
   if (userLevel?.experience && userLevel?.expInfo?.experience)
     console.log((userLevel.experience / userLevel.expInfo.experience) * 100);
 
@@ -25,7 +25,7 @@ const EXPBar = () => {
   return (
     <div className="h-[22px]">
       <div className="w-full h-[6px] rounded-full bg-white/10 overflow-hidden relative">
-        <div className={`h-full bg-primary-100 rounded-full w-[${percent}%]`}></div>
+        <div className={`w-[${percent}%] h-[6px] bg-primary-100 rounded-full `}></div>
       </div>
       <div className="flex justify-between h-[16px]">
         <p className="text-white text-[10px]">{percent}%</p>
