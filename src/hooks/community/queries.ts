@@ -5,8 +5,6 @@ import {
   CommunityPostCreateData,
   CommunityPostUpdateData,
   PostsResponse,
-  ReplyCreateData,
-  ReplyUpdateData,
   VoteData,
   VoteUpdateData,
 } from '@/types/community';
@@ -19,13 +17,13 @@ interface PostsProps {
 
 export const communityQueryKeys = {
   all: ['community'] as const,
+  allPosts: ['community', 'posts', 'all'] as const,
   posts: (category: string) => ['community', 'posts', category] as const,
   postDetail: (postId: string) => ['community', 'post', postId] as const,
   comments: (postId: string) => ['community', 'comments', postId] as const,
   replies: (commentId: string) => ['community', 'replies', commentId] as const,
   postLikes: () => ['community', 'postLikes'] as const,
   commentLikes: (commentId: string) => ['community', 'commentLikes', commentId] as const,
-  replyLikes: (replyId: string) => ['community', 'replyLikes', replyId] as const,
   votes: () => ['community', 'vote'] as const,
   voters: () => ['community', 'voter', 'vote'] as const,
   answer: (answerId: string) => ['community', 'answer', answerId] as const,
@@ -49,7 +47,6 @@ export const queryOptions = {
       }
       return allPages.length + 1;
     },
-    staleTime: Infinity,
   }),
 
   postDetail: (postId: string) => ({
@@ -60,10 +57,6 @@ export const queryOptions = {
     queryKey: communityQueryKeys.comments(postId),
     queryFn: () => api.community.getComments(postId),
   }),
-  replies: (commentId: string) => ({
-    queryKey: communityQueryKeys.replies(commentId),
-    queryFn: () => api.community.getReplies(commentId),
-  }),
   postLikes: () => ({
     queryKey: communityQueryKeys.postLikes(),
     queryFn: () => api.community.getPostLikes(),
@@ -71,10 +64,6 @@ export const queryOptions = {
   commentLikes: (commentId: string) => ({
     queryKey: communityQueryKeys.commentLikes(commentId),
     queryFn: () => api.community.getCommentLikes(commentId),
-  }),
-  replyLikes: (replyId: string) => ({
-    queryKey: communityQueryKeys.replyLikes(replyId),
-    queryFn: () => api.community.getReplyLikes(replyId),
   }),
   vote: (postId: string) => ({
     queryKey: communityQueryKeys.votes(),
@@ -119,24 +108,12 @@ export const mutationOptions = {
     mutationFn: ({ postId, commentId }: { postId: string; commentId: string }) =>
       api.community.deleteComment(postId, commentId),
   },
-  addReply: {
-    mutationFn: (data: ReplyCreateData) => api.community.addReply(data),
-  },
-  updateReply: {
-    mutationFn: (data: ReplyUpdateData) => api.community.updateReply(data),
-  },
-  deleteReply: {
-    mutationFn: (replyId: string) => api.community.deleteReply(replyId),
-  },
   togglePostLike: {
     mutationFn: (postId: string) => api.community.togglePostLike(postId),
   },
   toggleCommentLike: {
     mutationFn: ({ postId, commentId }: { postId: string; commentId: string }) =>
       api.community.toggleCommentLike(postId, commentId),
-  },
-  toggleReplyLike: {
-    mutationFn: (replyId: string) => api.community.toggleReplyLike(replyId),
   },
   postVote: {
     mutationFn: (data: VoteData) => api.community.postVote(data),

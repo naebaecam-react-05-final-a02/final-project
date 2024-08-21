@@ -84,14 +84,16 @@ const AnswerItem = ({
       <div className="flex items-center justify-between gap-7 mt-10 mb-2 w-[166px] mx-auto">
         <button
           onClick={handleLike}
+          aria-label="like-button"
           disabled={isPending}
           className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
         >
           <BigThumbUp className={answer.isLiked === true ? 'text-primary-100' : 'text-transparent'} />
         </button>
-        {answer.score}
+        {answer.score || 0}
         <button
           onClick={handleDislike}
+          aria-label="hate-button"
           disabled={isPending}
           className="rounded-full border border-whiteT-20 bg-whiteT-10 backdrop-blur-sm p-2 pb-2.5"
         >

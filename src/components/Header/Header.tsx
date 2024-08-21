@@ -26,7 +26,7 @@ const Header = ({
   leftComponent,
 }: HeaderProps) => {
   return (
-    <header className={`flex w-full justify-between items-center  header-gradient px-4   ${className}`}>
+    <header className={`flex w-full h-full justify-between items-center header-gradient px-4 ${className}`}>
       {showBackButton ? (
         <BackButton customAction={customBackAction} />
       ) : leftComponent ? (
@@ -34,7 +34,7 @@ const Header = ({
       ) : (
         <span className="w-11"></span>
       )}
-      <div className="flex-grow flex justify-center items-center py-[18px] sm:py-[30px]">
+      <div className="flex-grow flex justify-center items-center py-[18px]">
         {showLogo ? (
           <Image src="/OOSIE.png" alt="Logo" width={105} height={28} />
         ) : title ? (
@@ -47,6 +47,7 @@ const Header = ({
       {icon ? (
         <button
           onClick={onClick}
+          aria-label={`${icon}-button`}
           className={`rounded-xl border-2 border-black/10 shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25),-2px_-2px_4px_0px_rgba(255,255,255,0.10)] backdrop-blur-[5px] p-2 z-[11] ${className}`}
         >
           {icon}

@@ -1,7 +1,6 @@
 'use client';
 
 import Loading from '@/components/Loading/Loading';
-import ModalPortalLayout from '@/components/ModalPortal/ModalPortalLayout';
 import { useModal } from '@/contexts/modal.context/modal.context';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useChallengeDelete } from '@/hooks/challenge/useChallenge';
@@ -64,9 +63,10 @@ const ThumbnailSection = ({ challenge }: ThumbnailProps) => {
           </div>
         )}
         {isMenuOpen && (
-          <ModalPortalLayout onClose={() => setIsMenuOpen(false)}>
+          <>
+            <div className="fixed inset-0 bg-black/70 bg-opacity-50 " onClick={() => setIsMenuOpen(false)} />
             <div
-              className="absolute top-10 right-9 rounded-lg border-primary-100/50 border-2 px-1 
+              className="absolute top-12 right-9 rounded-lg border-primary-100/50 border-2 px-1 
 flex flex-col gap-y-5 backdrop-blur-md select-none bg-white/5 w-fit "
             >
               <ul
@@ -91,7 +91,7 @@ flex flex-col gap-y-5 backdrop-blur-md select-none bg-white/5 w-fit "
                 </li>
               </ul>
             </div>
-          </ModalPortalLayout>
+          </>
         )}
       </header>
       <div

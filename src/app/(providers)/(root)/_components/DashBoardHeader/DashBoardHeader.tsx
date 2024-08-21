@@ -1,7 +1,6 @@
 'use client';
 
 import InputCalendar from '@/components/Input/InputDate/InputCalendar';
-import ModalPortalLayout from '@/components/ModalPortal/ModalPortalLayout';
 import { addDays, format, subDays } from 'date-fns';
 import Link from 'next/link';
 import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
@@ -47,16 +46,19 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
           {format(date, 'M/dd')}
         </div>
         {isCalendarOpen && (
-          <ModalPortalLayout onClose={() => setIsCalendarOpen(false)}>
+          <>
+            <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsCalendarOpen(false)} />
             <div
-              style={{ left: `${position.clientX}px` }}
               className={`absolute w-[280px]
-                ${position.clientY > 300 ? 'top-[430px]' : 'top-[275px]'}
+                -left-0 top-4
                 text-white mt-1 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden`}
             >
               <InputCalendar selectedDate={date} onSelectDate={handleDateSelected} />
             </div>
-          </ModalPortalLayout>
+            {/* <ModalPortalLayout onClose={() => setIsCalendarOpen(false)}>
+              
+            </ModalPortalLayout> */}
+          </>
         )}
 
         <div className="text-base cursor-pointer" onClick={handleNextDay}>
@@ -65,7 +67,7 @@ const DashBoardHeader = ({ date, setState, url, title }: DashBoardHeaderType) =>
       </div>
       <div className="absolute opacity-50 text-base left-1/2 transform -translate-x-1/2">{title}</div>
 
-      <div className="cursor-pointer text-xl opacity-70">
+      <div className="cursor-pointer text-xl opacity-70" aria-label="list-button">
         <Link href={url}>
           {/* <IoCreateOutline /> */}
           <FaListUl className="w-4 h-4" />

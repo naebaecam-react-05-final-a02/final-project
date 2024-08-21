@@ -133,6 +133,7 @@ const InputDate = ({
           </div>
           <button
             type="button"
+            aria-label="dropdown-calender-button"
             className={`absolute right-3 top-1/2 transform -translate-y-1/2 
               flex flex-col justify-center items-center 
               p-[2px] gap-[10px] rounded-[4px] 

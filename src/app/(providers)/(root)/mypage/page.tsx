@@ -7,7 +7,7 @@ import MyProfile from './_components/MyProfile';
 const MyProfilePage = () => {
   return (
     <Mobile headerLayout={<TitleHeader leftButton={<LogoSVG />} rightButton={<EditButton />} />}>
-      <article className="px-4">
+      <article className="">
         <MyProfile />
       </article>
     </Mobile>

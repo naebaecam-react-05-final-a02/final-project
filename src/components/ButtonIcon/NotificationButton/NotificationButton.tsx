@@ -1,7 +1,6 @@
 'use client';
 import NotificationSVG from '@/assets/nav/notification.svg';
 import ModalNotifications from '@/components/ModalNotifications';
-import ModalPortalLayout from '@/components/ModalPortal/ModalPortalLayout';
 import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetNotifications } from '@/hooks/notifications/useNotifications';
 import { queryClient } from '@/providers/QueryProvider';
@@ -27,12 +26,12 @@ const NotificationButton = () => {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'notifications', filter: `targetUserId=eq.${user.id}` },
         (payload) => {
-          console.log('PAYLOAD___', payload);
+          // console.log('PAYLOAD___', payload);
           queryClient.invalidateQueries({ queryKey: ['notifications'] });
         },
       )
       .subscribe((status) => {
-        console.log('STATUS___', status);
+        // console.log('STATUS___', status);
       });
     return () => {
       channels.unsubscribe();
@@ -57,9 +56,10 @@ const NotificationButton = () => {
     <>
       <div className="relative select-none">
         {isOpen && (
-          <ModalPortalLayout onClose={() => setIsOpen(false)}>
+          <>
+            <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
             <ModalNotifications notifications={notifications} onClose={() => setIsOpen(false)} />
-          </ModalPortalLayout>
+          </>
         )}
         {notifications && notifications?.length > 0 && (
           <div className="absolute rounded-full size-[6px] bg-primary-100 top-2 right-2 z-10" />

@@ -60,7 +60,7 @@ const JoinedChallenges = () => {
           if (challenges?.isProgress === 'RUN') {
             return (
               <Link
-                className="w-full line-clamp-1 h-5 break-words hover:shadow-md hover:font-bold"
+                className="w-full line-clamp-1 h-5 break-words hover:font-bold"
                 key={id}
                 href={`/challenges/${challengeId}/detail`}
               >

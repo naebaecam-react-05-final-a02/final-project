@@ -13,9 +13,9 @@
 
 #### ᕦ(ㅇㅈㅇ)ᕤ 이몸등장
 
-| 👑 곽재훈 <br/> <img width="62" alt="공주재훈" src="https://github.com/user-attachments/assets/e72de435-2cdc-4663-879f-bd532bef5a06"> | 이한별 <br/> <img width="62" alt="헬짱한별" src="https://github.com/user-attachments/assets/4e9e7425-4fe2-4746-b427-797a335198c0"> | 김승회 <br/> <img width="62" alt="쫑긋승회" src="https://github.com/user-attachments/assets/c02325e2-d323-4aa0-9149-46b1604540cd"> | 김소라 <br/> <img width="62" alt="댄싱머신소라" src="https://github.com/user-attachments/assets/a9f07462-1449-4a81-a06c-2273205745de"> | 임종하 <br/> <img width="62" alt="큐티종하" src="https://github.com/user-attachments/assets/32130382-6d0e-4846-91e5-ee1627938009"> | 전주용 <br/> | 하승우 튜터 <br/> <img width="62" alt="하승우 튜터" src="https://github.com/user-attachments/assets/69124e01-f1df-4a3b-8519-2fb6523da2c8"> | 안동훈 튜터 <br/> |
-| :-----------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: | :----------: | :----------------------------------------------------------------------------------------------------------------------------------------------: | :---------------: |
-|                                                                리더 + 개발자                                                                |                                                                   개발자                                                                   |                                                                  개발자                                                                   |                                                                     개발자                                                                      |                                                                 개발자                                                                  |   디자이너   |                                                                    담당 튜터                                                                     |     담당 튜터     |
+| 곽재훈 <br/> <img width="62" alt="공주재훈" src="https://github.com/user-attachments/assets/e72de435-2cdc-4663-879f-bd532bef5a06"> | 이한별 <br/> <img width="62" alt="헬짱한별" src="https://github.com/user-attachments/assets/4e9e7425-4fe2-4746-b427-797a335198c0"> | 김승회 <br/> <img width="62" alt="쫑긋승회" src="https://github.com/user-attachments/assets/c02325e2-d323-4aa0-9149-46b1604540cd"> | 김소라 <br/> <img width="62" alt="댄싱머신소라" src="https://github.com/user-attachments/assets/a9f07462-1449-4a81-a06c-2273205745de"> | 임종하 <br/> <img width="62" alt="큐티종하" src="https://github.com/user-attachments/assets/32130382-6d0e-4846-91e5-ee1627938009"> | 전주용 <br/> <img width="62" alt="주드래곤" src="https://github.com/user-attachments/assets/4514db57-f16f-42bd-a38a-f2fce44d6c20"> | 하승우 튜터 <br/> <img width="62" alt="하승우 튜터" src="https://github.com/user-attachments/assets/69124e01-f1df-4a3b-8519-2fb6523da2c8"> | 안동훈 튜터 <br/><img width="62" alt="안동훈 튜터" src="https://github.com/user-attachments/assets/d7dee829-6d62-4a0d-929f-1d06d9038ecb"> |
+| :--------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                           👑 리더<br/> 개발자                                                            |                                                                   개발자                                                                   |                                                                  개발자                                                                   |                                                                     개발자                                                                      |                                                                 개발자                                                                  |                                                                디자이너                                                                 |                                                                    담당 튜터                                                                     |                                                                     담당 튜터                                                                     |
 
 <br/>
 <br/>
@@ -28,32 +28,47 @@
 
 ## 개발 환경 💻
 
-<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
 
-- 모듈과 인터페이스를 제공하여, 코드의 재사용성을 높이고 모듈화가 용이해요.
-- 컴파일 시점에 타입 체크를 수행하여 안정적으로 코드 작성을 할 수 있어요.
-- 코드의 가독성을 높이고, 실수를 줄일 수 있어요. </br></br>
+- 코드 퀄리티, 가독성 향상
+- 컴파일 에러 예방
+- 손쉬운 디버깅
+- 객체 필드값을 IDE에서 리스트 업 -> 생산성 향상
+  </br>
 
-<img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/>
 
-- 더 나은 성능과 SEO가 가능해요.
-- 서버 사이드 렌더링(SSR)과 정적 사이트 생성(SSG)을 지원하여 사용자 경험을 개선할 수 있어요. </br></br>
+- 검색 엔진 최적화(SEO)
+- CSR 뿐만 아니라 SSR, SSG 페이지를 만들 수 있다
+- 이미지 최적화
+- 풍부한 생태계
+  </br>
 
-<img src="https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwind&logoColor=white"/> </br>
+<img src="https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
 
-- 디자인을 쉽고 빠르게 개발할 수 있어요.
-- 일관성이 있는 디자인이 가능해요. <br/><br/>
-
-<img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"/> </br>
-
-- 실시간 업데이트를 처리하는 실시간 기능이 제공돼요.
-- 백엔드 시스템 관리가 필요없으므로 프론트 개발 생산성을 높일 수 있어요. <br/><br/>
-
-<img src="https://img.shields.io/badge/zustand-F3DF49?style=for-the-badge&logo=zustand&logoColor=white"/> </br>
-
-- 불필요한 렌더링을 최소화할 수 있어요.
-- 보일러 플레이트가 적어서 효율적으로 코드를 관리할 수 있어요. <br/>
+- 클래스명 고민 필요 X
+- CSS 파일 별도 관리 X
+- 일관된 디자인
   <br/>
+
+<img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"/>
+
+- 다양한 기능을 제공하여 백엔드 인프라를 쉽게 구축할 수 있도록 함
+  <br/>
+
+<img src="https://img.shields.io/badge/zustand-F3DF49?style=for-the-badge&logo=zustand&logoColor=white"/>
+
+- 간결성
+- 불필요한 렌더링 최소화
+- SSR과의 호환성
+- 커뮤니티와 생태계
+  <br/>
+
+<img src="https://img.shields.io/badge/TANSTACK QUERY-FF4154?style=for-the-badge&logo=react-query&logoColor=white"/>
+
+- Next.js 14 및 Supabase와 함께 사용
+- 서버 상태 관리 최적화
+- 캐싱 등 성능 최적화 기능 제공 </br></br>
 
 ## 주요 기능 🔨
 

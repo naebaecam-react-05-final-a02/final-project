@@ -102,7 +102,7 @@ const InputSelect = ({
               bg-input-gradient backdrop-blur-[10px] focus:outline-none transition pr-10 py-[13.5px]
               ${isOpen ? 'z-20 border-gradient' : 'border-gradient-light'}
               ${className}
-              ${icon ? 'pl-11' : 'pl-3'} 
+              ${icon ? 'pl-11' : 'pl-3'}
               ${textAlign === 'left' ? 'text-left' : 'text-right'}
               ${readOnly ? 'cursor-pointer' : ''}`}
             value={inputValue}
@@ -119,6 +119,7 @@ const InputSelect = ({
           )}
           <button
             type="button"
+            aria-label="dropdown-button"
             className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col justify-center items-center p-[2px] gap-[10px] rounded-[4px] transition-all duration-300 ease-in-out text-whiteT-40
               ${isOpen ? 'bg-primary-10 rotate-180 z-20' : 'bg-[rgba(255,255,255,0.05)]'}`}
             onClick={toggleDropdown}
@@ -131,8 +132,11 @@ const InputSelect = ({
           <>
             <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-10" onClick={() => setIsOpen(false)} />
             <ul
-              className="absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 overflow-hidden
-            transform origin-top transition-all duration-300 ease-in-out scale-100 opacity-100"
+              style={{ maxHeight: maxHeight }}
+              className={`absolute left-0 flex flex-col gap-3 w-full mt-1 p-1.5 bg-white/10 backdrop-blur-[20px] rounded-lg border-2 border-primary-50 shadow-lg z-20 ${
+                maxHeight ? 'overflow-auto' : 'overflow-hidden'
+              }
+            transform origin-top transition-all duration-300 ease-in-out scale-100 opacity-100 styled-scrollbar`}
             >
               {dropdownOptions.map((option, index) => (
                 <li

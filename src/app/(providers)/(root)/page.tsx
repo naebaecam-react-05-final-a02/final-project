@@ -3,6 +3,7 @@ import DefaultHeader from '@/components/MobileHeader/MobileHeader';
 import NavBar from '@/components/NavBar';
 import { ExercisesQueryKeys } from '@/hooks/exercises/queries';
 import { levelQueryOptions } from '@/hooks/level/queries';
+import BackBoard from '@/layouts/BackBoard/BackBoard';
 import api from '@/service/service';
 import { createClient } from '@/supabase/server';
 import { getFormattedDate } from '@/utils/dateFormatter';
@@ -51,15 +52,12 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
   ]);
 
   return (
-    <div className="min-h-full overflow-hidden max-w-[900px] flex flex-col mx-auto ">
-      <div className="w-full px-4 mb-4 text-white">
+    <div className="min-h-full overflow-hidden max-w-[800px] flex flex-col mx-auto">
+      <div className="w-full mb-4 text-white px-4">
         <DefaultHeader />
       </div>
-      <div className="fixed inset-0 bg-[#0E0C15] -z-30 overflow-hidden">
-        <div className="w-[140px] h-[300px] absolute top-[70px] left-[48px] blur-[90px] rounded-full bg-[#52467B]"></div>
-        <div className="w-[340px] h-[105px] absolute bottom-[110px] right-[-24px] blur-[90px] bg-white/40 rounded-full"></div>
-      </div>
-      <main className="flex flex-1 flex-col gap-y-3 min-h-fit px-4 mb-3">
+
+      <main className="flex flex-1 flex-col gap-y-3 min-h-fit  mb-20 px-4">
         {/* 등급/투두 진행 상황 */}
         <div className="grid grid-cols-[160px_1fr] gap-x-3 select-none ">
           <Card
@@ -111,9 +109,8 @@ const RootPage = async ({ searchParams: { query } }: { searchParams: { query: st
           </div>
         </Card>
       </main>
-      <div className="px-4">
-        <NavBar />
-      </div>
+      <BackBoard />
+      <NavBar />
     </div>
   );
 };

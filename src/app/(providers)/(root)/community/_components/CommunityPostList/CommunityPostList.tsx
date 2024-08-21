@@ -6,14 +6,15 @@ import { useGetUser } from '@/hooks/auth/useUsers';
 import { useGetCommunityPosts } from '@/hooks/community/useCommunity';
 import { CommunityPostData, PostsResponse } from '@/types/community';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import { useInView } from 'react-intersection-observer';
 import { searchCommunityPosts } from '../../_utils/searchCommunityPosts';
 import CommunityListHeader from './CommunityListHeader';
 import CommunityPostListItem from './CommunityPostListItem';
-import FloatingWriteButton from './FloatingWriteButton';
-import VotePostPreview from './VotePostPreview';
+
+const FloatingWriteButton = lazy(() => import('./FloatingWriteButton'));
+const VotePostPreview = lazy(() => import('./VotePostPreview'));
 
 const categories = [{ value: '전체' }, { value: '자유 게시판' }, { value: 'Q&A 게시판' }, { value: '정보공유' }];
 
@@ -45,8 +46,10 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
   });
 
   useEffect(() => {
-    fetchCategoryData();
-  }, [fetchCategoryData]);
+    if (selectedCategory !== '전체') {
+      fetchCategoryData();
+    }
+  }, [selectedCategory, fetchCategoryData]);
 
   useEffect(() => {
     if (loadMoreInView && hasNextPage && !isFetchingNextPage && !isSearching) {
@@ -92,7 +95,13 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
         onSearchSubmit={handleSearchSubmit}
       />
       {!isSearching && (
-        <div className="px-4 mb-4">{latestVotePost && <VotePostPreview latestVotePost={latestVotePost} />}</div>
+        <div className="px-4 mb-4">
+          {latestVotePost && (
+            <Suspense fallback={<Loading />}>
+              <VotePostPreview latestVotePost={latestVotePost} />
+            </Suspense>
+          )}
+        </div>
       )}
       <div className="relative z-0 flex-grow overflow-y-auto">
         {isSearching && (
@@ -125,14 +134,16 @@ const CommunityPostList = ({ initialData }: CommunityPostListProps) => {
           <div className="max-w-[800px] mx-auto px-4 relative">
             <div className="absolute bottom-20 right-4 md:right-10 pointer-events-auto">
               <Link href="/community/write">
-                <FloatingWriteButton inView={buttonVisibilityInView} />
+                <Suspense fallback={<Loading />}>
+                  <FloatingWriteButton inView={buttonVisibilityInView} />
+                </Suspense>
               </Link>
             </div>
           </div>
         </div>
       </div>
       <div ref={buttonVisibilityRef} className="h-0 relative -z-10" />
-      <NavBar className="fixed bottom-0 max-w-[800px]" />
+      <NavBar />
     </div>
   );
 };

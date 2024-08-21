@@ -9,9 +9,6 @@ import {
   CommunityPostUpdateData,
   LikeResponse,
   PostsResponse,
-  ReplyCreateData,
-  ReplyData,
-  ReplyUpdateData,
   VoteData,
   VoteUpdateData,
 } from '@/types/community';
@@ -67,7 +64,7 @@ class CommunityAPI {
   }): Promise<PostsResponse> => {
     try {
       const response = await axios.get<PostsResponse>(`${this.baseURL}/posts`, {
-        params: { page: pageParam, limit: 8, category },
+        params: { page: pageParam, limit: 6, category },
       });
       return response.data;
     } catch (error) {
@@ -137,53 +134,6 @@ class CommunityAPI {
     }
   };
 
-  getReplies = async (commentId: string): Promise<ReplyData[]> => {
-    try {
-      const response = await axios.get(`${this.baseURL}/comments/${commentId}/replies`);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      throw error;
-    }
-  };
-
-  addReply = async (data: ReplyCreateData): Promise<ReplyData> => {
-    try {
-      const response = await axios.post(`${this.baseURL}/comments/${data.commentId}/replies`, data);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      throw error;
-    }
-  };
-
-  updateReply = async (data: ReplyUpdateData): Promise<ReplyData> => {
-    try {
-      const response = await axios.patch(`${this.baseURL}/replies/${data.id}`, data);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      throw error;
-    }
-  };
-
-  deleteReply = async (replyId: string): Promise<void> => {
-    try {
-      await axios.delete(`${this.baseURL}/replies/${replyId}`);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      throw error;
-    }
-  };
-
   togglePostLike = async (postId: string): Promise<{ isLiked: boolean; likes: number }> => {
     try {
       const response = await axios.patch(`${this.baseURL}/likes/${postId}`);
@@ -208,18 +158,6 @@ class CommunityAPI {
     }
   };
 
-  toggleReplyLike = async (replyId: string): Promise<{ isLiked: boolean; likes: number }> => {
-    try {
-      const response = await axios.patch(`${this.baseURL}/replies/${replyId}/likes`);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      throw error;
-    }
-  };
-
   getPostLikes = async () => {
     try {
       const response = await axios.get(`${this.baseURL}/likes`);
@@ -235,18 +173,6 @@ class CommunityAPI {
   getCommentLikes = async (commentId: string): Promise<string[]> => {
     try {
       const response = await axios.get(`${this.baseURL}/comments/${commentId}/likes`);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
-      }
-      throw error;
-    }
-  };
-
-  getReplyLikes = async (replyId: string): Promise<string[]> => {
-    try {
-      const response = await axios.get(`${this.baseURL}/replies/${replyId}/likes`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
