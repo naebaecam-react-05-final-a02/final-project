@@ -18,10 +18,12 @@ const EXPBar = () => {
     ? (userLevel.experience / userLevel.expInfo.experience) * 100
     : 0;
 
+  // console.log(EXPPercent);
+
   return (
     <div className="h-[22px]">
       <div className="w-full h-[6px] rounded-full bg-white/10 overflow-hidden">
-        <div className={`h-full bg-primary-100 w-[${EXPPercent}%] rounded-full `}></div>
+        <div style={{ width: `${EXPPercent}%` }} className={`h-full bg-primary-100  rounded-full`}></div>
       </div>
       <div className="flex justify-between h-[16px]">
         <p className="text-white text-[10px]">{EXPPercent}%</p>
