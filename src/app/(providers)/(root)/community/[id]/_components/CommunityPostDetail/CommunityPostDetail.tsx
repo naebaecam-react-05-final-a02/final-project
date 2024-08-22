@@ -13,7 +13,6 @@ import {
   useGetCommunityPostDetail,
 } from '@/hooks/community/useCommunity';
 import { useLevelUp } from '@/hooks/level/useLevel';
-import { AnswerResponse } from '@/types/community';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -36,15 +35,12 @@ const FloatingWriteButton = dynamic(() => import('../../../_components/Community
 
 interface CommunityPostDetailProps {
   postId: string;
-  initialData: {
-    answers: AnswerResponse;
-  };
 }
 
-const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) => {
+const CommunityPostDetail = ({ postId }: CommunityPostDetailProps) => {
   const { data: post, isLoading } = useGetCommunityPostDetail(postId);
   const { data: user } = useGetUser();
-  const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId, initialData.answers);
+  const { data: answers, isLoading: isAnswersLoading } = useGetAnswers(postId);
   const { data: isAcceptedAnswer, isLoading: isAcceptedAnswerLoading } = useGetAcceptedAnswer(postId);
 
   const { mutate: deletePost } = useDeleteCommunityPost(post?.category || '');
@@ -145,7 +141,7 @@ const CommunityPostDetail = ({ postId, initialData }: CommunityPostDetailProps) 
             answers={answers?.answers}
             userId={user?.id || ''}
             postId={postId}
-            acceptedAnswer={answers?.acceptedAnswer}
+            acceptedAnswer={answers?.acceptedAnswer || null}
             isAuthor={isAuthor}
             onAcceptAnswer={handleAcceptAnswer}
             isAcceptedAnswerLoading={isAcceptedAnswerLoading}
