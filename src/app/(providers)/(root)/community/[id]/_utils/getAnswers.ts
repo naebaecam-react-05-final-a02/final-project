@@ -1,4 +1,4 @@
-import { createClient } from '@/supabase/server';
+import { createClient } from '@/supabase/client';
 import { Answer } from '@/types/community';
 
 export async function getAnswers(questionId: string) {

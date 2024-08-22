@@ -212,8 +212,7 @@ export const useUpdateVote = () => {
 };
 
 // 답변 목록 조회
-export const useGetAnswers = (questionId: string, initialData: AnswerResponse) =>
-  useQuery({ ...queryOptions.answers(questionId), initialData });
+export const useGetAnswers = (questionId: string) => useQuery({ ...queryOptions.answers(questionId) });
 
 // 채택된 답변 조회
 export const useGetAcceptedAnswer = (questionId: string) => useQuery(queryOptions.acceptedAnswer(questionId));
