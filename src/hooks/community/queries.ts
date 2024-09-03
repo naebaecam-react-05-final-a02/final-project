@@ -1,3 +1,4 @@
+import { getAcceptedAnswer } from '@/app/(providers)/(root)/community/[id]/_utils/getAcceptedAnswer';
 import { getAnswers } from '@/app/(providers)/(root)/community/[id]/_utils/getAnswers';
 import { getPostDetail } from '@/app/(providers)/(root)/community/[id]/_utils/getPostDetail';
 import { getPosts } from '@/app/(providers)/(root)/community/_utils/getPosts';
@@ -85,7 +86,7 @@ export const queryOptions = {
   }),
   acceptedAnswer: (questionId: string) => ({
     queryKey: communityQueryKeys.acceptedAnswer(questionId),
-    queryFn: () => api.community.getAcceptedAnswer(questionId),
+    queryFn: () => getAcceptedAnswer(questionId),
   }),
 };
 
