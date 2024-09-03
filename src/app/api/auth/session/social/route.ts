@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
       },
     });
-
+    console.log('코드코드', data);
     if (error) throw error;
 
     if (data && data.url) {
